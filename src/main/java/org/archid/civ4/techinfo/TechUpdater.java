@@ -13,18 +13,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
+import org.archid.civ4.utils.IPropertyHandler;
+import org.archid.civ4.utils.PropertyHandler;
 
 public class TechUpdater {
 	
 	private static String newline = System.getProperty("line.separator");
 	
-	private String filePath;
+	private IPropertyHandler props = PropertyHandler.getInstance();
 	
-	public TechUpdater(String FilePath) {
-		this.filePath = FilePath;
-	}
 	
-	public void addColumn(int col, int count) {
+	public void addColumn() {
+		int col = Integer.parseInt(props.getAppProperty(TechExporterPropertyKeys.PROPERTY_KEY_INSERT_COL));
+		int count = Integer.parseInt(props.getAppProperty(TechExporterPropertyKeys.PROPERTY_KEY_COUNT, "1"));
 		Pattern pattern = Pattern.compile("\\s*?<iGridX>(\\d+).*");
 		try {
 			BufferedReader reader = getInputFile();
@@ -53,7 +54,9 @@ public class TechUpdater {
 		}
 	}
 	
-	public void addRow(int row, int count) {
+	public void addRow() {
+		int row = Integer.parseInt(props.getAppProperty(TechExporterPropertyKeys.PROPERTY_KEY_INSERT_ROW));
+		int count = Integer.parseInt(props.getAppProperty(TechExporterPropertyKeys.PROPERTY_KEY_COUNT, "1"));
 		Pattern pattern = Pattern.compile("\\s*?<iGridY>(\\d+).*");
 		try {
 			BufferedReader reader = getInputFile();
@@ -139,19 +142,21 @@ public class TechUpdater {
 	}
 	
 	private BufferedReader  getInputFile() throws IOException {
+		String filepath = props.getAppProperty(TechExporterPropertyKeys.PROPERTY_KEY_REF_SCHEMA);
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
-		String copyFile = filePath + "." + sdf.format(cal.getTime());
+		String copyFile = filepath + "." + sdf.format(cal.getTime());
 
 		File source = new File(copyFile);
-		FileUtils.moveFile(new File(filePath), source);
+		FileUtils.moveFile(new File(filepath), source);
 		FileReader reader = new FileReader(source);
 		BufferedReader bufferedReader = new BufferedReader(reader);
 		return bufferedReader;
 	}
 	
 	private BufferedWriter getOutputFile() throws IOException {
-		File file = new File(filePath);
+		String filepath = props.getAppProperty(TechExporterPropertyKeys.PROPERTY_KEY_REF_SCHEMA);
+		File file = new File(filepath);
 		FileUtils.touch(file);
 		FileWriter writer = new FileWriter(file);
 		BufferedWriter bufferedWriter = new BufferedWriter(writer);

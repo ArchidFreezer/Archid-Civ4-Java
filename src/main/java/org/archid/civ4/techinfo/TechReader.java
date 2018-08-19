@@ -11,13 +11,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.FilenameUtils;
+import org.archid.civ4.utils.IPropertyHandler;
+import org.archid.civ4.utils.PropertyHandler;
 
 public class TechReader {
 	
 	private static String filePath;
 
-	public static List<TechInfo> parse(String filePath) {
-		TechReader.filePath = filePath;
+	private static IPropertyHandler props = PropertyHandler.getInstance();
+
+	public static List<TechInfo> parse() {
+		TechReader.filePath = props.getAppProperty(TechExporterPropertyKeys.PROPERTY_KEY_REF_SCHEMA);
 		List<TechInfo> techInfos = new Vector<TechInfo>();
 
 		Pattern patternStartTag = Pattern.compile("\\s*?<TechInfo>.*");
@@ -162,8 +166,9 @@ public class TechReader {
 		return FilenameUtils.getBaseName(filePath);
 	}
 	
-	public static String getFilePathWithNewExtension(String ext) {
-		return getFileDir() + getFileBaseName() + "." + ext;
+	public static String getFileWithNewExtension(String ext) {
+		String path = props.getAppProperty(TechExporterPropertyKeys.PROPERTY_KEY_OUTPUT_DIR, getFileDir());
+		return path + getFileBaseName() + "." + ext;
 	}
 	
 }

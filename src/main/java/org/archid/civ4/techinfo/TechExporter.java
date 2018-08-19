@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
@@ -24,6 +26,9 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class TechExporter {
+	
+	/** Logging facility */
+	static Logger log = Logger.getLogger(TechExporter.class.getName());
 
 	private List<TechInfo> techinfos;
 	private Map<Integer, CellStyle> backgrounds;
@@ -91,7 +96,7 @@ public class TechExporter {
 	}
 	
 	private OutputStream getOutputStream() throws FileNotFoundException {
-		FileOutputStream output = new FileOutputStream(TechReader.getFilePathWithNewExtension("xlsx"));
+		FileOutputStream output = new FileOutputStream(TechReader.getFileWithNewExtension("xlsx"));
 		return output;
 	}
 	
