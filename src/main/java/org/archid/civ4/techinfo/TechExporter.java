@@ -1,7 +1,9 @@
 package org.archid.civ4.techinfo;
 
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -88,7 +90,7 @@ public class TechExporter {
 				sheet.autoSizeColumn(i);
 			}
 			
-			OutputStream output = getOutputStream();
+			OutputStream output = getOutputStream("xlsx");
 			wb.write(output);
 			output.close();
 			wb.close();
@@ -98,14 +100,42 @@ public class TechExporter {
 		
 	}
 	
+	public void createTXT() {
+		BufferedWriter output = null;
+		try {
+			output = getBufferedWriter("csv");
+			for (TechInfo techInfo: techinfos) {
+				output.write(techInfo.getType() + "," + techInfo.getGridX() + "," + techInfo.getGridY() + "\n");
+			}
+		} catch (FileNotFoundException e) {
+			log.error("Error getting the output file", e);
+		} catch (IOException e) {
+			log.error("Error writing to the output file", e);
+		} finally {
+			try {
+				if (null != output)
+					output.close();
+			} catch (IOException e) {
+				log.error("Error closing output file!");
+			}
+		}
+	}
+	
 	private int getCellCol(int gridX) {
 		return (--gridX * 2);
 	}
 	
-	private OutputStream getOutputStream() throws FileNotFoundException {
-		String outputFile = TechReader.getFileWithNewExtension("xlsx");
+	private OutputStream getOutputStream(String ext) throws FileNotFoundException {
+		String outputFile = TechReader.getFileWithNewExtension(ext);
 		log.info("Writing output to: " + outputFile);
 		FileOutputStream output = new FileOutputStream(outputFile);
+		return output;
+	}
+	
+	private BufferedWriter getBufferedWriter(String ext) throws IOException {
+		String outputFile = TechReader.getFileWithNewExtension(ext);
+		log.info("Writing output to: " + outputFile);
+		BufferedWriter output = new BufferedWriter(new FileWriter(outputFile));
 		return output;
 	}
 	

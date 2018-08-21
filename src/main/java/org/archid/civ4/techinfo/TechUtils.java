@@ -38,6 +38,7 @@ public class TechUtils {
 		actions.addOption(Option.builder("r").longOpt("row").hasArg(true).argName("Y").desc("row (Y) to insert").build());
 		actions.addOption(Option.builder("e").longOpt("element").numberOfArgs(2).argName("X Y").desc("x and y position of new element - not currently implemented").build());
 		actions.addOption(Option.builder("x").longOpt("xlsx").hasArg(false).desc("Create XLSX file").build());
+		actions.addOption(Option.builder("t").longOpt("txt").hasArg(false).desc("Create CSV file").build());
 
 		options.addOption(Option.builder("f").longOpt("file").required().hasArg(true).argName("FILE").desc("Civ4TechInfos.xml path").build());
 		options.addOption(Option.builder("o").longOpt("outputDir").required().hasArg(true).argName("Dir").desc("Directory to create the output in").build());
@@ -87,8 +88,11 @@ public class TechUtils {
 			else if (cmd.hasOption("e")) {
 				System.out.println("Functionality not implemented yet");
 			}
-			if (cmd.hasOption("x")) {
+			else if (cmd.hasOption("x")) {
 				new TechExporter(TechReader.parse()).createXLSX();
+			}
+			else if (cmd.hasOption("t")) {
+				new TechExporter(TechReader.parse()).createTXT();
 			}
 			if (cmd.hasOption("h")) {
 				printHelp(options);
