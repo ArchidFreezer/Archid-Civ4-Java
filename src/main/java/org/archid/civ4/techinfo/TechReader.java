@@ -11,11 +11,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.log4j.Logger;
 import org.archid.civ4.utils.IPropertyHandler;
 import org.archid.civ4.utils.PropertyHandler;
 
 public class TechReader {
 	
+	/** Logging facility */
+	static Logger log = Logger.getLogger(TechReader.class.getName());
+
 	private static String filePath;
 
 	private static IPropertyHandler props = PropertyHandler.getInstance();
@@ -153,6 +157,7 @@ public class TechReader {
 	}
 
 	private static BufferedReader  getInputFile() throws IOException {
+		log.info("Reading input file: " + filePath);
 		FileReader reader = new FileReader(new File(filePath));
 		BufferedReader bufferedReader = new BufferedReader(reader);
 		return bufferedReader;
@@ -167,8 +172,11 @@ public class TechReader {
 	}
 	
 	public static String getFileWithNewExtension(String ext) {
+		StringBuilder prefix = new StringBuilder(props.getAppProperty(TechExporterPropertyKeys.PROPERTY_KEY_PREFIX, ""));
+		if (prefix.length() > 0)
+			prefix.append("_");
 		String path = props.getAppProperty(TechExporterPropertyKeys.PROPERTY_KEY_OUTPUT_DIR, getFileDir());
-		return path + getFileBaseName() + "." + ext;
+		return path + prefix.toString() + getFileBaseName() + "." + ext;
 	}
 	
 }

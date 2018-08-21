@@ -55,6 +55,10 @@ public class TechExporter {
 			for (TechInfo techInfo: techinfos) {
 				// Get the row (iGridY value from tech)
 				int gridY = techInfo.getGridY();
+				if (gridY <= 0) {
+					log.info("Ignoring tech " + techInfo.getType() + " invalid gridY value: " + gridY);
+					continue;
+				}
 				if (gridY > maxGridY) maxGridY = gridY;
 				row = sheet.getRow(gridY - 1);
 				if (row == null)
@@ -62,6 +66,10 @@ public class TechExporter {
 				
 				// Get the col (iGridX from tech)
 				int gridX = techInfo.getGridX();
+				if (gridX <= 0) {
+					log.info("Ignoring tech " + techInfo.getType() + " invalid gridX value: " + gridX);
+					continue;
+				}
 				if (gridX > maxGridX) maxGridX = gridX;
 				cell = row.createCell(getCellCol(gridX), CellType.STRING);
 				cell.setCellValue(techInfo.getType());
@@ -85,8 +93,7 @@ public class TechExporter {
 			output.close();
 			wb.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("Error creating XLSX", e);
 		}
 		
 	}
@@ -96,7 +103,9 @@ public class TechExporter {
 	}
 	
 	private OutputStream getOutputStream() throws FileNotFoundException {
-		FileOutputStream output = new FileOutputStream(TechReader.getFileWithNewExtension("xlsx"));
+		String outputFile = TechReader.getFileWithNewExtension("xlsx");
+		log.info("Writing output to: " + outputFile);
+		FileOutputStream output = new FileOutputStream(outputFile);
 		return output;
 	}
 	
@@ -196,11 +205,16 @@ public class TechExporter {
     anchor.setDy2(100);
 
 
-		Comment comment = drawing.createCellComment(anchor);
-    RichTextString str = factory.createRichTextString(message.toString());
-    comment.setString(str);
+    try {
+			Comment comment = drawing.createCellComment(anchor);
+	    RichTextString str = factory.createRichTextString(message.toString());
+	    comment.setString(str);
+	    cell.setCellComment(comment);		
+    }
+    catch (Exception e) {
+    	log.error("Error creating cell comment for tech: " + info.getType() + "(" + info.getGridX() + "," + info.getGridY() + ") - comment likely to be incorrect", e);
+    }
 
-    cell.setCellComment(comment);		
 	}
 	
 }
