@@ -9,6 +9,9 @@ public interface ITechWorkbookConstants {
 
 	public static String LISTSHEET_TYPE = "Type";
 	public static String LISTSHEET_ERA = "Era";
+	public static String LISTSHEET_COST = "Cost";
+	public static String LISTSHEET_ADV_START_COST = "Advanced Start Cost";
+	public static String LISTSHEET_ASSET = "Asset";
 	public static String LISTSHEET_GRIDX = "GridX";
 	public static String LISTSHEET_GRIDY = "GridY";
 	public static String LISTSHEET_OR_TECH_PREREQ = "OrTechPrereq";
@@ -16,6 +19,10 @@ public interface ITechWorkbookConstants {
 	
 	public static String STYLE_REGEX_TECH_PREREQ_NOT_VALUE = "(\\s*?<PrereqTech>)[a-zA-Z_]+(.*)";
 
+	public static String STYLE_REGEX_ADV_START_COST_VALUE = "\\s*?<iAdvancedStartCost>(\\d+).*";
+	public static String STYLE_REGEX_ASSET_VALUE = "\\s*?<iAsset>(\\d+).*";
+	public static String STYLE_REGEX_COST_VALUE = "\\s*?<iCost>(\\d+).*";
+	public static String STYLE_REGEX_ERA_VALUE = "\\s*?<Era>([a-zA-Z_]+).*";
 	public static String STYLE_REGEX_IGRIDX_VALUE = "\\s*?<iGridX>(\\d+).*";
 	public static String STYLE_REGEX_IGRIDY_VALUE = "\\s*?<iGridY>(\\d+).*";
 	public static String STYLE_REGEX_TYPE_VALUE = "\\s*?<Type>([a-zA-Z_]+).*";

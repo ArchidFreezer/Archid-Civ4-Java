@@ -286,12 +286,30 @@ public class TechImporter {
 	private TechInfo parseComment(Comment comment, TechInfo info) {
 		String text = comment.getString().getString();
 		String[] lines = text.split("\\r?\\n");
+		Pattern patternCost = Pattern.compile("iCost: (\\d+)");
+		Pattern patternAdvStartCost = Pattern.compile("iAdvancedStartCost: (\\d+)");
+		Pattern patternAsset = Pattern.compile("iAsset: (\\d+)");
 		Pattern patternEra = Pattern.compile("Era: ([A-Za-z_]+)");
 		Pattern patternOr = Pattern.compile("OrTechPrereqs:");
 		Pattern patternAnd = Pattern.compile("AndTechPrereqs:");
 		Pattern patternTech = Pattern.compile("\\s*?([A-Z_]+)");
 		boolean bOr = false;
 		for (String line: lines) {
+			Matcher matcherCost = patternCost.matcher(line);
+			if (matcherCost.matches()) {
+				info.setCost(Integer.parseInt(matcherCost.group(1)));
+				continue;
+			}
+			Matcher matcherAdvStartCost = patternAdvStartCost.matcher(line);
+			if (matcherAdvStartCost.matches()) {
+				info.setAdvancedStartCost(Integer.parseInt(matcherAdvStartCost.group(1)));
+				continue;
+			}
+			Matcher matcherAsset = patternAsset.matcher(line);
+			if (matcherAsset.matches()) {
+				info.setAsset(Integer.parseInt(matcherAsset.group(1)));
+				continue;
+			}
 			Matcher matcherEra = patternEra.matcher(line);
 			if (matcherEra.matches()) {
 				info.setEra(matcherEra.group(1));

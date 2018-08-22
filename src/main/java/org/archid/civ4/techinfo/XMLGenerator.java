@@ -51,8 +51,14 @@ public class XMLGenerator {
 				xml.append(NEWLINE + indent + "<" + child.getTagName() + ">");
 				if (child.getTagName().equals("Type"))
 					xml.append(info.getType());
+				else if (child.getTagName().equals("iCost"))
+					xml.append(info.getCost());
+				else if (child.getTagName().equals("iAdvancedStartCost"))
+					xml.append(info.getAdvancedStartCost());
 				else if (child.getTagName().equals("Era"))
 					xml.append(info.getEra());
+				else if (child.getTagName().equals("iAsset"))
+					xml.append(info.getAsset());
 				else if (child.getTagName().equals("iGridX"))
 					xml.append(info.getGridX());
 				else if (child.getTagName().equals("iGridY"))

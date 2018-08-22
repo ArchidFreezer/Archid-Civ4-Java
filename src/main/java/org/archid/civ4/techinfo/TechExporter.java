@@ -74,6 +74,9 @@ public class TechExporter {
 		Row row = sheet.createRow(rowNum++);
 		addHeaderCell(row.createCell(colNum++), ITechWorkbookConstants.LISTSHEET_TYPE);
 		addHeaderCell(row.createCell(colNum++), ITechWorkbookConstants.LISTSHEET_ERA);
+		addHeaderCell(row.createCell(colNum++), ITechWorkbookConstants.LISTSHEET_COST);
+		addHeaderCell(row.createCell(colNum++), ITechWorkbookConstants.LISTSHEET_ADV_START_COST);
+		addHeaderCell(row.createCell(colNum++), ITechWorkbookConstants.LISTSHEET_ASSET);
 		addHeaderCell(row.createCell(colNum++), ITechWorkbookConstants.LISTSHEET_GRIDX);
 		addHeaderCell(row.createCell(colNum++), ITechWorkbookConstants.LISTSHEET_GRIDY);
 		addHeaderCell(row.createCell(colNum++), ITechWorkbookConstants.LISTSHEET_OR_TECH_PREREQ);
@@ -87,6 +90,9 @@ public class TechExporter {
 			colNum = 0;
 			addSingleCell(row.createCell(colNum++), techInfo.getType());
 			addSingleCell(row.createCell(colNum++), techInfo.getEra());
+			addSingleCell(row.createCell(colNum++), techInfo.getCost());
+			addSingleCell(row.createCell(colNum++), techInfo.getAdvancedStartCost());
+			addSingleCell(row.createCell(colNum++), techInfo.getAsset());
 			addSingleCell(row.createCell(colNum++), techInfo.getGridX());
 			addSingleCell(row.createCell(colNum++), techInfo.getGridY());
 			maxHeight = addRepeatingCell(row.createCell(colNum++), techInfo.getOrTechPrereqs(), maxHeight);
@@ -298,9 +304,12 @@ public class TechExporter {
 
     ClientAnchor anchor = factory.createClientAnchor();
     
-    int height = 3;
+    int height = 6;
     StringBuilder message = new StringBuilder("iGridX: " + info.getGridX());
     message.append("\niGridY: " + info.getGridY());
+    message.append("\niCost: " + info.getCost());
+    message.append("\niAdvancedStartCost: " + info.getAdvancedStartCost());
+    message.append("\niAsset: " + info.getAsset());
     message.append("\nEra: " + info.getEra());
     if (!info.getOrTechPrereqs().isEmpty()) {
     	height++;

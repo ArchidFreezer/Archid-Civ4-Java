@@ -7,6 +7,9 @@ public class TechInfo {
 	
 	private String era;
 	private String type;
+	private int cost;
+	private int advancedStartCost;
+	private int asset;
 	private int gridX;
 	private int gridY;
 	private List<String> orTechPrereqs = new Vector<String>();
@@ -60,6 +63,30 @@ public class TechInfo {
 
 	public void setGridY(int gridY) {
 		this.gridY = gridY;
+	}
+
+	public int getCost() {
+		return cost;
+	}
+
+	public void setCost(int cost) {
+		this.cost = cost;
+	}
+
+	public int getAdvancedStartCost() {
+		return advancedStartCost;
+	}
+
+	public void setAdvancedStartCost(int advancedStartCost) {
+		this.advancedStartCost = advancedStartCost;
+	}
+
+	public int getAsset() {
+		return asset;
+	}
+
+	public void setAsset(int asset) {
+		this.asset = asset;
 	}
 
 }

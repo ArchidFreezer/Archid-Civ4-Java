@@ -28,14 +28,17 @@ public class TechReader {
 		TechReader.filePath = props.getAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_TECHINFO_FILE);
 		List<TechInfo> techInfos = new Vector<TechInfo>();
 
-		Pattern patternStartTag = Pattern.compile("\\s*?<TechInfo>.*");
-		Pattern patternX = Pattern.compile("\\s*?<iGridX>(\\d+).*");
-		Pattern patternY = Pattern.compile("\\s*?<iGridY>(\\d+).*");
-		Pattern patternEra = Pattern.compile("\\s*?<Era>([a-zA-Z_]+).*");
-		Pattern patternType = Pattern.compile("\\s*?<Type>([a-zA-Z_]+).*");
-		Pattern patternOrTechPrereq = Pattern.compile("\\s*?<OrPreReqs>.*");
-		Pattern patternAndTechPrereq = Pattern.compile("\\s*?<AndPreReqs>.*");
-		Pattern patternEndTag = Pattern.compile("\\s*?</TechInfo>.*");
+		Pattern patternStartTag = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_TECH_TAG_START);
+		Pattern patternAsset = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_ASSET_VALUE);
+		Pattern patternAdvStartCost = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_ADV_START_COST_VALUE);
+		Pattern patternCost = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_COST_VALUE);
+		Pattern patternX = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_IGRIDX_VALUE);
+		Pattern patternY = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_IGRIDY_VALUE);
+		Pattern patternEra = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_ERA_VALUE);
+		Pattern patternType = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_TYPE_VALUE);
+		Pattern patternOrTechPrereq = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_OR_TECH_PREREQ_TAG_START);
+		Pattern patternAndTechPrereq = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_AND_TECH_PREREQ_TAG_START);
+		Pattern patternEndTag = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_TECH_TAG_END);
 		try {
 			
 			BufferedReader reader = getInputFile();
@@ -44,7 +47,6 @@ public class TechReader {
 			int maxGridX = 0; // Used to autosize all the cols
 			int gridY = 0;
 			int maxGridY = 0; // Used to create all the rows at one go
-			String type = "";
 			String era = "";
 			
 			List<String> eras = new ArrayList<String>();
@@ -59,12 +61,25 @@ public class TechReader {
 				{
 					info = new TechInfo();
 					bInTech = true;
+					continue;
 				}
 				Matcher matcherType = patternType.matcher(line);
 				if (matcherType.matches() && bInTech)
 				{
-					type = matcherType.group(1);
-					info.setType(type);
+					info.setType(matcherType.group(1));
+					continue;
+				}
+				Matcher matcherCost = patternCost.matcher(line);
+				if (matcherCost.matches() && bInTech)
+				{
+					info.setCost(Integer.parseInt(matcherCost.group(1)));
+					continue;
+				}
+				Matcher matcherAdvStartCost = patternAdvStartCost.matcher(line);
+				if (matcherAdvStartCost.matches() && bInTech)
+				{
+					info.setAdvancedStartCost(Integer.parseInt(matcherAdvStartCost.group(1)));
+					continue;
 				}
 				Matcher matcherEra = patternEra.matcher(line);
 				if (matcherEra.matches() && bInTech)
@@ -73,6 +88,13 @@ public class TechReader {
 					info.setEra(era);
 					if (!eras.contains(era))
 						eras.add(era);
+					continue;
+				}
+				Matcher matcherAsset = patternAsset.matcher(line);
+				if (matcherAsset.matches() && bInTech)
+				{
+					info.setAsset(Integer.parseInt(matcherAsset.group(1)));
+					continue;
 				}
 				Matcher matcherX = patternX.matcher(line);
 				if (matcherX.matches() && bInTech)
@@ -80,6 +102,7 @@ public class TechReader {
 					gridX = Integer.parseInt(matcherX.group(1));
 					info.setGridX(gridX);
 					if (gridX > maxGridX) maxGridX = gridX;
+					continue;
 				}
 				Matcher matcherY = patternY.matcher(line);
 				if (matcherY.matches() && bInTech)
@@ -87,16 +110,19 @@ public class TechReader {
 					gridY = Integer.parseInt(matcherY.group(1));
 					info.setGridY(gridY);
 					if (gridY > maxGridY) maxGridY = gridY;
+					continue;
 				}
 				Matcher matcherOrTechPrereq = patternOrTechPrereq.matcher(line);
 				if (matcherOrTechPrereq.matches() && bInTech)
 				{
 					setOrPrereqTechs(reader, info);
+					continue;
 				}
 				Matcher matcherAndTechPrereq = patternAndTechPrereq.matcher(line);
 				if (matcherAndTechPrereq.matches() && bInTech)
 				{
 					setAndPrereqTechs(reader, info);
+					continue;
 				}
 				Matcher matcherEndTag = patternEndTag.matcher(line);
 				if (matcherEndTag.matches() && bInTech)
