@@ -22,7 +22,6 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.archid.civ4.gui.SchemaHelpGenerator;
@@ -187,7 +186,6 @@ public class SchemaProcessor {
 	public static void main(String[] args) {
 
 		PropertyConfigurator.configure("log4j.properties");
-		Logger.getRootLogger().setLevel(Level.INFO);
 		
 		SchemaProcessor app = new SchemaProcessor(args);
 		app.parse();

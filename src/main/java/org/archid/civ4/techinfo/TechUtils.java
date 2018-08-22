@@ -42,9 +42,10 @@ public class TechUtils {
 		actions.addOption(Option.builder("t").longOpt("txt").hasArg(false).desc("Create CSV file").build());
 
 		options.addOption(Option.builder("f").longOpt("file").required().hasArg(true).argName("FILE").desc("Civ4TechInfos.xml path").build());
-		options.addOption(Option.builder("o").longOpt("outputDir").required().hasArg(true).argName("Dir").desc("Directory to create the output in").build());
 		options.addOption(Option.builder("n").longOpt("count").hasArg(true).argName("#").desc("number of rows/columns").build());
+		options.addOption(Option.builder("o").longOpt("outputDir").required().hasArg(true).argName("Dir").desc("Directory to create the output in").build());
 		options.addOption(Option.builder("p").longOpt("prefix").hasArg(true).argName("Prefix").desc("Prefix of output file").build());
+		options.addOption(Option.builder("s").longOpt("schemaDir").hasArg(true).argName("Dir").desc("Directory containing CIV4TechnologiesSchema.xml").build());
 		options.addOptionGroup(actions);
 		options.addOption("h", "help", false, "display usage");
 
@@ -93,8 +94,13 @@ public class TechUtils {
 				new TechExporter(TechReader.parse()).createXLSX();
 			}
 			else if (cmd.hasOption("i")) {
-				props.setAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_IMPORT_XLSX, cmd.getOptionValue("i"));
-				new TechImporter().importXLSX();
+				if (cmd.hasOption("s")) {
+					props.setAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_MOD_SCHEMA_DIR, cmd.getOptionValue("s"));
+					props.setAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_IMPORT_XLSX, cmd.getOptionValue("i"));
+					new TechImporter().importXLSX();					
+				} else {
+					log.error("A schema must be provided using the 's' argument to import from a spreadsheet");
+				}
 			}
 			else if (cmd.hasOption("t")) {
 				new TechExporter(TechReader.parse()).createTXT();
@@ -107,7 +113,6 @@ public class TechUtils {
 			System.out.println( "Parsing exception: " + exp.getMessage() );
 			printHelp(options);
 		}
-		
 
 	}
 	

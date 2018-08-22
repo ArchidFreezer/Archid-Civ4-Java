@@ -1,6 +1,8 @@
 package org.archid.civ4.techinfo;
 
 public interface ITechWorkbookConstants {
+	
+	public static String TECHINFO_SCHEMA_NAME = "Civ4TechInfos.xml";
 
 	public static String SHEETNAME_TREE = "TechTree";
 	public static String SHEETNAME_LIST = "TechList";

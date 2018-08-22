@@ -13,10 +13,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.archid.civ4.utils.IPropertyHandler;
 import org.archid.civ4.utils.PropertyHandler;
 
 public class TechUpdater {
+	
+	/** Logging facility */
+	static Logger log = Logger.getLogger(TechUpdater.class.getName());
 	
 	private static String newline = System.getProperty("line.separator");
 	
@@ -46,11 +50,9 @@ public class TechUpdater {
 			reader.close();
 			writer.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("Cannot find file to update", e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("Cannot update XML file", e);
 		}
 	}
 	
@@ -77,11 +79,9 @@ public class TechUpdater {
 			reader.close();
 			writer.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("Cannot find file to update", e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("Cannot update XML file", e);
 		}
 	}
 	
@@ -133,11 +133,9 @@ public class TechUpdater {
 			reader.close();
 			writer.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("Cannot find file to update", e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("Cannot update XML file", e);
 		}
 	}
 	

@@ -61,6 +61,55 @@ public class SchemaParser {
 	 * 
 	 * @throws FileNotFoundException
 	 */
+	public void parse(String modSchema) throws FileNotFoundException {
+		BufferedReader userIn = null;
+		XmlTagDefinition tag = null;
+		
+		userTags.clear();
+
+		schemaName = modSchema;
+
+		String line = null;
+		try {
+			tag = null;
+			userIn = new BufferedReader(new FileReader(modSchema));
+			line = userIn.readLine();
+			while (line != null) {
+				tag = parseTag(line, tag, userTags);
+				if (null != tag && tag.isCompleted()) {
+					log.debug("Adding tag " + tag.getTagName().toLowerCase() + " from " + modSchema);
+					userTags.put(tag.getTagName(), tag);
+					allUserTags.put(tag.getTagName(), tag);
+					tag = null;
+				}
+				line = userIn.readLine();
+			}
+			
+			for (XmlTagDefinition testTag: userTags.values()) {
+				if (!testTag.isCompleted())
+					log.warn("Tag: " + testTag.getTagName() + " in " + modSchema + " looks to either have a broken definition or referenced without being defined");
+			}
+		} catch (FileNotFoundException e) {
+			log.error("Could not find file: ", e);
+			throw e;
+		} catch (IOException e) {
+			log.error("IO error: ", e);
+		} finally {
+			try {
+				if (null != userIn)
+					userIn.close();
+			} catch (IOException e) {
+				log.error("Error closing the input file");
+			}
+		}
+
+	}
+
+	/**
+	 * Reads the schema file and populates the hash of tags
+	 * 
+	 * @throws FileNotFoundException
+	 */
 	public void parse(String modSchema, String refSchema) throws FileNotFoundException {
 		BufferedReader userIn = null;
 		BufferedReader btsIn = null;

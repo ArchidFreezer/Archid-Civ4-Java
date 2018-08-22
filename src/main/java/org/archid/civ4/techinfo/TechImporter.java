@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,8 +24,10 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.archid.civ4.schema.SchemaParser;
 import org.archid.civ4.utils.IPropertyHandler;
 import org.archid.civ4.utils.PropertyHandler;
+import org.archid.civ4.utils.PropertyKeys;
 
 public class TechImporter {
 
@@ -34,11 +37,19 @@ public class TechImporter {
 	private static String newline = System.getProperty("line.separator");
 	
 	private static IPropertyHandler props = PropertyHandler.getInstance();
+	private SchemaParser parser = new SchemaParser();
 
 	public void importXLSX() {
-		// Read the xlsx file to create the list of tech infos to update
-		Map<String, TechInfo> infos = parseXlsx();
-		updateInfosFile(infos);
+		
+		try {
+			String modSchema = props.getAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA_DIR, ".") + "\\" + ITechWorkbookConstants.TECHINFO_SCHEMA_NAME;
+			parser.parse(modSchema);
+			// Read the xlsx file to create the list of tech infos to update
+			Map<String, TechInfo> infos = parseXlsx();
+			updateInfosFile(infos);
+		} catch (FileNotFoundException e) {
+			log.error("Could not find schema file", e);
+		}
 	}
 	
 	private void updateInfosFile(Map<String, TechInfo> infos) {
@@ -80,16 +91,14 @@ public class TechImporter {
 				Matcher matcherX = patternX.matcher(line);
 				if (matcherX.matches() && bInTech)
 				{
-					int currX = Integer.parseInt(matcherX.group(1));
-					line = line.replaceAll(Integer.toString(currX), Integer.toString(info.getGridX()));
+					line = line.replaceAll(matcherX.group(1), Integer.toString(info.getGridX()));
 					writer.write(line + newline);
 					continue;
 				}
 				Matcher matcherY = patternY.matcher(line);
 				if (matcherY.matches() && bInTech)
 				{
-					int currY = Integer.parseInt(matcherY.group(1));
-					line = line.replaceAll(Integer.toString(currY), Integer.toString(info.getGridY()));
+					line = line.replaceAll(matcherY.group(1), Integer.toString(info.getGridY()));
 					writer.write(line + newline);
 					continue;
 				}
@@ -97,7 +106,7 @@ public class TechImporter {
 				if (matcherOrTechPrereq.matches() && bInTech)
 				{
 					writer.write(line + newline);
-					writer.write(getPrereqTechsElement(reader, info, ITechWorkbookConstants.STYLE_REGEX_OR_TECH_PREREQ_TAG_END));
+					writer.write(getPrereqTechsElement(reader, info.getOrTechPrereqs(), ITechWorkbookConstants.STYLE_REGEX_OR_TECH_PREREQ_TAG_END));
 					bWrittenOrPrereqs = true;
 					continue;
 				}
@@ -105,7 +114,7 @@ public class TechImporter {
 				if (matcherAndTechPrereq.matches() && bInTech)
 				{
 					writer.write(line + newline);
-					writer.write(getPrereqTechsElement(reader, info, ITechWorkbookConstants.STYLE_REGEX_OR_TECH_PREREQ_TAG_END));
+					writer.write(getPrereqTechsElement(reader, info.getAndTechPrereqs(), ITechWorkbookConstants.STYLE_REGEX_AND_TECH_PREREQ_TAG_END));
 					bWrittenAndPrereqs = true;
 					continue;
 				}
@@ -130,8 +139,8 @@ public class TechImporter {
 		
 	}
 
-	private String getPrereqTechsElement(BufferedReader reader, TechInfo info, String patternRegEX) throws IOException {
-		StringBuffer prereqs = new StringBuffer();
+	private String getPrereqTechsElement(BufferedReader reader, List<String> prereqs, String patternRegEX) throws IOException {
+		StringBuffer prereqString = new StringBuffer();
 		// We are already in the tag so we only need the prereqs and the end tag
 		// Get the spacing around the techs first
 		Pattern patternTag = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_TECH_PREREQ_NOT_VALUE);	
@@ -152,14 +161,14 @@ public class TechImporter {
 			Matcher matcherEnd = patternEnd.matcher(line);
 			if (matcherEnd.matches())
 			{
-				for (String prereq: info.getOrTechPrereqs()) {
-					prereqs.append(prereqPrefix + prereq + prereqPostfix + newline);
+				for (String prereq: prereqs) {
+					prereqString.append(prereqPrefix + prereq + prereqPostfix + newline);
 				}
-				prereqs.append(line + newline);
+				prereqString.append(line + newline);
 				bFinished = true;
 			}
 		}
-		return prereqs.toString();
+		return prereqString.toString();
 	}
 
 	private Map<String, TechInfo> parseXlsx() {
@@ -182,6 +191,10 @@ public class TechImporter {
 					TechInfo info = new TechInfo();
 					String type = cell.getStringCellValue();
 					info.setType(type);
+					Integer gridX = getGridXFromCell(cell);
+					info.setGridX(gridX);
+					Integer gridY = cell.getRowIndex() + 1;
+					info.setGridY(gridY);
 					infos.put(type, parseComment(sheet.getCellComment(cell.getAddress()), info));
 				}
 			}
@@ -200,26 +213,25 @@ public class TechImporter {
 		return infos;
 	}
 	
+	private Integer getGridXFromCell(Cell cell) {
+		Integer gridX = 0;
+		Integer colIndex = cell.getColumnIndex();
+		
+		if (colIndex > 0) {
+			gridX = colIndex / 2;
+		}
+		
+		return ++gridX;
+	}
+
 	private TechInfo parseComment(Comment comment, TechInfo info) {
 		String text = comment.getString().getString();
 		String[] lines = text.split("\\r?\\n");
-		Pattern patternX = Pattern.compile("iGridX: (\\d+)");
-		Pattern patternY = Pattern.compile("iGridY: (\\d+)");
 		Pattern patternOr = Pattern.compile("OrTechPrereqs:");
 		Pattern patternAnd = Pattern.compile("AndTechPrereqs:");
 		Pattern patternTech = Pattern.compile("\\s*?([A-Z_]+)");
 		boolean bOr = false;
 		for (String line: lines) {
-			Matcher matcherX = patternX.matcher(line);
-			if (matcherX.matches()) {
-				info.setGridX(Integer.parseInt(matcherX.group(1)));
-				continue;
-			}
-			Matcher matcherY = patternY.matcher(line);
-			if (matcherY.matches()) {
-				info.setGridY(Integer.parseInt(matcherY.group(1)));
-				continue;
-			}
 			Matcher matcherOr = patternOr.matcher(line);
 			if (matcherOr.matches()) {
 				bOr = true;
@@ -238,7 +250,6 @@ public class TechImporter {
 					info.addAndTechPrereq(matcherTech.group(1));
 				continue;
 			}
-			log.info("Comment: " + line);
 		}
 		return info;
 	}
