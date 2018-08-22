@@ -298,9 +298,10 @@ public class TechExporter {
 
     ClientAnchor anchor = factory.createClientAnchor();
     
-    int height = 2;
+    int height = 3;
     StringBuilder message = new StringBuilder("iGridX: " + info.getGridX());
     message.append("\niGridY: " + info.getGridY());
+    message.append("\nEra: " + info.getEra());
     if (!info.getOrTechPrereqs().isEmpty()) {
     	height++;
     	message.append("\nOrTechPrereqs:");

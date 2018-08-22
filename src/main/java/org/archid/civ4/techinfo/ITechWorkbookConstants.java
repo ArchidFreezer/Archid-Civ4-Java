@@ -2,7 +2,7 @@ package org.archid.civ4.techinfo;
 
 public interface ITechWorkbookConstants {
 	
-	public static String TECHINFO_SCHEMA_NAME = "Civ4TechInfos.xml";
+	public static String TECHINFO_SCHEMA_NAME = "CIV4TechnologiesSchema.xml";
 
 	public static String SHEETNAME_TREE = "TechTree";
 	public static String SHEETNAME_LIST = "TechList";
@@ -26,4 +26,6 @@ public interface ITechWorkbookConstants {
 	public static String STYLE_REGEX_OR_TECH_PREREQ_TAG_START = "\\s*?<OrPreReqs>.*";
 	public static String STYLE_REGEX_TECH_TAG_END = "\\s*?</TechInfo>.*";
 	public static String STYLE_REGEX_TECH_TAG_START = "\\s*?<TechInfo>.*";
+	public static String STYLE_REGEX_TECHS_TAG_END = "\\s*?</TechInfos>.*";
+	public static String STYLE_REGEX_TECHS_TAG_START = "\\s*?<TechInfos>.*";
 }

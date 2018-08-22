@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,7 +36,7 @@ public class TechImporter {
 	static Logger log = Logger.getLogger(TechImporter.class.getName());
 	
 	private static String newline = System.getProperty("line.separator");
-	
+
 	private static IPropertyHandler props = PropertyHandler.getInstance();
 	private SchemaParser parser = new SchemaParser();
 
@@ -54,43 +55,72 @@ public class TechImporter {
 	
 	private void updateInfosFile(Map<String, TechInfo> infos) {
 
-		Pattern patternStartTag = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_TECH_TAG_START);
+		Pattern patternTechsStartTag = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_TECHS_TAG_START);
+		Pattern patternTechsEndTag = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_TECHS_TAG_END);
+		Pattern patternTechStartTag = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_TECH_TAG_START);
+		Pattern patternTechEndTag = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_TECH_TAG_END);
 		Pattern patternX = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_IGRIDX_VALUE);
 		Pattern patternY = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_IGRIDY_VALUE);
 		Pattern patternType = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_TYPE_VALUE);
 		Pattern patternOrTechPrereq = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_OR_TECH_PREREQ_TAG_START);
 		Pattern patternAndTechPrereq = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_AND_TECH_PREREQ_TAG_START);
-		Pattern patternEndTag = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_TECH_TAG_END);
 		
 		try {
 			BufferedReader reader = getInputFile();
 			BufferedWriter writer = getOutputFile();
+			
+			String line = "";
+			
+			// First dump  out the header up to and including the <TechInfos> tag
+			while((line = reader.readLine()) != null)
+			{
+				writer.write(line + newline);
+				Matcher matcherTechsStartTag = patternTechsStartTag.matcher(line);
+				if (matcherTechsStartTag.matches()) {
+					break;
+				}
+
+			}
+
+			// Now loop through the existing techs in xml file
+			// We keep a note of the infos we process so we can add any new entries from the spreadsheet
+			List<String> processedInfos = new Vector<String>();
 			boolean bInTech = false;
 			boolean bWrittenOrPrereqs = false;
 			boolean bWrittenAndPrereqs = false;
 			TechInfo info = null;
-			String line = "";
+			String techStart = "";
 			while((line = reader.readLine()) != null)
 			{
-				Matcher matcherStartTag = patternStartTag.matcher(line);
-				if (matcherStartTag.matches() && !bInTech)
+				Matcher matcherTechStartTag = patternTechStartTag.matcher(line);
+				if (matcherTechStartTag.matches() && !bInTech)
 				{
 					bInTech = true;
 					bWrittenOrPrereqs = false;
 					bWrittenAndPrereqs = false;
-					writer.write(line + newline);
+					// Store this line in case we are removing the tech
+					techStart = line + newline;
 					continue;
 				}
 				Matcher matcherType = patternType.matcher(line);
 				if (matcherType.matches() && bInTech)
 				{
-					info = infos.get(matcherType.group(1));
+					String type = matcherType.group(1);
+					info = infos.get(type);
+					if (info == null) {
+						log.info("Removing tech: " + type);
+						continue;
+					}
+					processedInfos.add(info.getType());
+					// Now we know we aren't removing the tech we can add its line
+					writer.write(techStart);
 					writer.write(line + newline);
 					continue;
 				}
 				Matcher matcherX = patternX.matcher(line);
 				if (matcherX.matches() && bInTech)
 				{
+					if (info == null) continue;
 					line = line.replaceAll(matcherX.group(1), Integer.toString(info.getGridX()));
 					writer.write(line + newline);
 					continue;
@@ -98,6 +128,7 @@ public class TechImporter {
 				Matcher matcherY = patternY.matcher(line);
 				if (matcherY.matches() && bInTech)
 				{
+					if (info == null) continue;
 					line = line.replaceAll(matcherY.group(1), Integer.toString(info.getGridY()));
 					writer.write(line + newline);
 					continue;
@@ -105,6 +136,7 @@ public class TechImporter {
 				Matcher matcherOrTechPrereq = patternOrTechPrereq.matcher(line);
 				if (matcherOrTechPrereq.matches() && bInTech)
 				{
+					if (info == null) continue;
 					writer.write(line + newline);
 					writer.write(getPrereqTechsElement(reader, info.getOrTechPrereqs(), ITechWorkbookConstants.STYLE_REGEX_OR_TECH_PREREQ_TAG_END));
 					bWrittenOrPrereqs = true;
@@ -113,21 +145,31 @@ public class TechImporter {
 				Matcher matcherAndTechPrereq = patternAndTechPrereq.matcher(line);
 				if (matcherAndTechPrereq.matches() && bInTech)
 				{
+					if (info == null) continue;
 					writer.write(line + newline);
 					writer.write(getPrereqTechsElement(reader, info.getAndTechPrereqs(), ITechWorkbookConstants.STYLE_REGEX_AND_TECH_PREREQ_TAG_END));
 					bWrittenAndPrereqs = true;
 					continue;
 				}
-				Matcher matcherEndTag = patternEndTag.matcher(line);
-				if (matcherEndTag.matches() && bInTech)
+				Matcher matcherTechEndTag = patternTechEndTag.matcher(line);
+				if (matcherTechEndTag.matches() && bInTech)
 				{
+					bInTech = false;
+					if (info == null) continue;
 					if (!bWrittenOrPrereqs && !info.getOrTechPrereqs().isEmpty())
 						log.info("Did not write the OrTechPrereqs for " + info.getType());
 					if (!bWrittenAndPrereqs && !info.getAndTechPrereqs().isEmpty())
 						log.info("Did not write the AndTechPrereqs for " + info.getType());
-					bInTech = false;
 				}
-				writer.write(line + newline);
+				
+				Matcher matcherTechsEndTag = patternTechsEndTag.matcher(line);
+				if (matcherTechsEndTag.matches()) {
+					// We have found the end of the <TechInfos> so append any unprocessed infos
+					writer.write(appendNewTechs(infos, processedInfos));
+				}
+				
+				if (!bInTech || info != null)
+					writer.write(line + newline);
 			}
 			reader.close();
 			writer.close();
@@ -137,6 +179,20 @@ public class TechImporter {
 			log.error("Could not access the file", e);
 		}
 		
+	}
+
+	private String appendNewTechs(Map<String, TechInfo> infos, List<String> processedInfos) {
+		StringBuffer newTechsString = new StringBuffer();
+		
+		XMLGenerator xmlGen = new XMLGenerator(parser);
+		for (String key: infos.keySet()) {
+			if (!processedInfos.contains(key)) {
+				log.info("Appending new tech: " + key);
+				newTechsString.append(xmlGen.printTag(infos.get(key), parser.getTagDefinition("TechInfo"), 2, false));
+			}
+		}
+		
+		return newTechsString.toString();
 	}
 
 	private String getPrereqTechsElement(BufferedReader reader, List<String> prereqs, String patternRegEX) throws IOException {
@@ -188,8 +244,11 @@ public class TechImporter {
 				Iterator<Cell> itCell = row.cellIterator();
 				while (itCell.hasNext()) {
 					Cell cell = itCell.next();
-					TechInfo info = new TechInfo();
 					String type = cell.getStringCellValue();
+					// Handle cells that have been moved
+					if (type.isEmpty())
+						continue;
+					TechInfo info = new TechInfo();
 					info.setType(type);
 					Integer gridX = getGridXFromCell(cell);
 					info.setGridX(gridX);
@@ -227,11 +286,17 @@ public class TechImporter {
 	private TechInfo parseComment(Comment comment, TechInfo info) {
 		String text = comment.getString().getString();
 		String[] lines = text.split("\\r?\\n");
+		Pattern patternEra = Pattern.compile("Era: ([A-Za-z_]+)");
 		Pattern patternOr = Pattern.compile("OrTechPrereqs:");
 		Pattern patternAnd = Pattern.compile("AndTechPrereqs:");
 		Pattern patternTech = Pattern.compile("\\s*?([A-Z_]+)");
 		boolean bOr = false;
 		for (String line: lines) {
+			Matcher matcherEra = patternEra.matcher(line);
+			if (matcherEra.matches()) {
+				info.setEra(matcherEra.group(1));
+				continue;
+			}
 			Matcher matcherOr = patternOr.matcher(line);
 			if (matcherOr.matches()) {
 				bOr = true;
