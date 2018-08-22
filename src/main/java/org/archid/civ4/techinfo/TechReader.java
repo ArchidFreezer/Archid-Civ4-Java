@@ -25,7 +25,7 @@ public class TechReader {
 	private static IPropertyHandler props = PropertyHandler.getInstance();
 
 	public static List<TechInfo> parse() {
-		TechReader.filePath = props.getAppProperty(TechExporterPropertyKeys.PROPERTY_KEY_REF_SCHEMA);
+		TechReader.filePath = props.getAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_TECHINFO_FILE);
 		List<TechInfo> techInfos = new Vector<TechInfo>();
 
 		Pattern patternStartTag = Pattern.compile("\\s*?<TechInfo>.*");
@@ -172,10 +172,10 @@ public class TechReader {
 	}
 	
 	public static String getFileWithNewExtension(String ext) {
-		StringBuilder prefix = new StringBuilder(props.getAppProperty(TechExporterPropertyKeys.PROPERTY_KEY_PREFIX, ""));
+		StringBuilder prefix = new StringBuilder(props.getAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_PREFIX, ""));
 		if (prefix.length() > 0)
 			prefix.append("_");
-		String path = props.getAppProperty(TechExporterPropertyKeys.PROPERTY_KEY_OUTPUT_DIR, getFileDir());
+		String path = props.getAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_OUTPUT_DIR, getFileDir());
 		return path + prefix.toString() + getFileBaseName() + "." + ext;
 	}
 	

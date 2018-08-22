@@ -37,7 +37,8 @@ public class TechUtils {
 		actions.addOption(Option.builder("c").longOpt("col").hasArg(true).argName("X").desc("column (X) to insert").build());
 		actions.addOption(Option.builder("r").longOpt("row").hasArg(true).argName("Y").desc("row (Y) to insert").build());
 		actions.addOption(Option.builder("e").longOpt("element").numberOfArgs(2).argName("X Y").desc("x and y position of new element - not currently implemented").build());
-		actions.addOption(Option.builder("x").longOpt("xlsx").hasArg(false).desc("Create XLSX file").build());
+		actions.addOption(Option.builder("i").longOpt("import").hasArg(true).argName("XLSX").desc("Import XLSX file").build());
+		actions.addOption(Option.builder("x").longOpt("export").hasArg(false).desc("Create XLSX file").build());
 		actions.addOption(Option.builder("t").longOpt("txt").hasArg(false).desc("Create CSV file").build());
 
 		options.addOption(Option.builder("f").longOpt("file").required().hasArg(true).argName("FILE").desc("Civ4TechInfos.xml path").build());
@@ -69,20 +70,20 @@ public class TechUtils {
 			cmd = parser.parse(options, args);
 			
 			if (cmd.hasOption("f"))
-				props.setAppProperty(TechExporterPropertyKeys.PROPERTY_KEY_REF_SCHEMA, cmd.getOptionValue("f"));
+				props.setAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_TECHINFO_FILE, cmd.getOptionValue("f"));
 			if (cmd.hasOption("o"))
-				props.setAppProperty(TechExporterPropertyKeys.PROPERTY_KEY_OUTPUT_DIR, cmd.getOptionValue("o"));
+				props.setAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_OUTPUT_DIR, cmd.getOptionValue("o"));
 			if (cmd.hasOption("n"))
-				props.setAppProperty(TechExporterPropertyKeys.PROPERTY_KEY_COUNT, cmd.getOptionValue("n"));
+				props.setAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_COUNT, cmd.getOptionValue("n"));
 			if (cmd.hasOption("p"))
-				props.setAppProperty(TechExporterPropertyKeys.PROPERTY_KEY_PREFIX, cmd.getOptionValue("p"));
+				props.setAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_PREFIX, cmd.getOptionValue("p"));
 
 			if (cmd.hasOption("c")) {
-				props.setAppProperty(TechExporterPropertyKeys.PROPERTY_KEY_INSERT_COL, cmd.getOptionValue("c"));
+				props.setAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_INSERT_COL, cmd.getOptionValue("c"));
 				new TechUpdater().addColumn();
 			}
 			else if (cmd.hasOption("r")) {
-				props.setAppProperty(TechExporterPropertyKeys.PROPERTY_KEY_INSERT_ROW, cmd.getOptionValue("r"));
+				props.setAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_INSERT_ROW, cmd.getOptionValue("r"));
 				new TechUpdater().addRow();
 			}
 			else if (cmd.hasOption("e")) {
@@ -90,6 +91,10 @@ public class TechUtils {
 			}
 			else if (cmd.hasOption("x")) {
 				new TechExporter(TechReader.parse()).createXLSX();
+			}
+			else if (cmd.hasOption("i")) {
+				props.setAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_IMPORT_XLSX, cmd.getOptionValue("i"));
+				new TechImporter().importXLSX();
 			}
 			else if (cmd.hasOption("t")) {
 				new TechExporter(TechReader.parse()).createTXT();

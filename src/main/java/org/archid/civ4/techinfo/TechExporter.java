@@ -20,6 +20,7 @@ import org.apache.poi.ss.usermodel.Comment;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Drawing;
 import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.RichTextString;
 import org.apache.poi.ss.usermodel.Row;
@@ -31,64 +32,26 @@ public class TechExporter {
 	
 	/** Logging facility */
 	static Logger log = Logger.getLogger(TechExporter.class.getName());
+	
+	private Workbook wb = null;
+	private CellStyle csWrap = null;
+	private CellStyle csHeader = null;
 
 	private List<TechInfo> techinfos;
 	private Map<Integer, CellStyle> backgrounds;
 	
 	public TechExporter(List<TechInfo> techinfos) {
 		this.techinfos = techinfos;
+		
+		wb = new XSSFWorkbook();
+		preCreateCellStyles();
 	}
 
 	public void createXLSX() {
 		try {
 			
-			Workbook wb = new XSSFWorkbook();
-			Sheet sheet = wb.createSheet("TechTree");
-			
-			// Create some background colours for the different eras
-			preCreateCellStyles(wb);
-			
-			// Add the tech data
-			Row row;
-			Cell cell;
-			int maxGridX = 0; // Used to autosize all the cols
-			int maxGridY = 0; // Used to create all the rows at one go
-			List<String> eras = new ArrayList<String>(); // Used to add background colour to cells based on era
-			for (TechInfo techInfo: techinfos) {
-				// Get the row (iGridY value from tech)
-				int gridY = techInfo.getGridY();
-				if (gridY <= 0) {
-					log.info("Ignoring tech " + techInfo.getType() + " invalid gridY value: " + gridY);
-					continue;
-				}
-				if (gridY > maxGridY) maxGridY = gridY;
-				row = sheet.getRow(gridY - 1);
-				if (row == null)
-					row = sheet.createRow(gridY - 1);
-				
-				// Get the col (iGridX from tech)
-				int gridX = techInfo.getGridX();
-				if (gridX <= 0) {
-					log.info("Ignoring tech " + techInfo.getType() + " invalid gridX value: " + gridX);
-					continue;
-				}
-				if (gridX > maxGridX) maxGridX = gridX;
-				cell = row.createCell(getCellCol(gridX), CellType.STRING);
-				cell.setCellValue(techInfo.getType());
-				
-				String era = techInfo.getEra();
-				if (!eras.contains(era))
-					eras.add(era);
-				cell.setCellStyle(getStyle(eras.lastIndexOf(era)));
-				
-				setCellComment(cell, techInfo);
-			}
-			
-			// Autosize the columns
-			int iNumCols = getCellCol(maxGridX) + 1;
-			for (int i = 0; i < iNumCols; i++) {
-				sheet.autoSizeColumn(i);
-			}
+			createTechTreeSheet();
+			createTechListSheet();
 			
 			OutputStream output = getOutputStream("xlsx");
 			wb.write(output);
@@ -100,6 +63,120 @@ public class TechExporter {
 		
 	}
 	
+	private void createTechListSheet() {
+
+		Sheet sheet = wb.createSheet(ITechWorkbookConstants.SHEETNAME_LIST);
+		
+		int rowNum = 0;
+		int colNum = 0;
+		
+		// Create the header row
+		Row row = sheet.createRow(rowNum++);
+		addHeaderCell(row.createCell(colNum++), ITechWorkbookConstants.LISTSHEET_TYPE);
+		addHeaderCell(row.createCell(colNum++), ITechWorkbookConstants.LISTSHEET_ERA);
+		addHeaderCell(row.createCell(colNum++), ITechWorkbookConstants.LISTSHEET_GRIDX);
+		addHeaderCell(row.createCell(colNum++), ITechWorkbookConstants.LISTSHEET_GRIDY);
+		addHeaderCell(row.createCell(colNum++), ITechWorkbookConstants.LISTSHEET_OR_TECH_PREREQ);
+		addHeaderCell(row.createCell(colNum++), ITechWorkbookConstants.LISTSHEET_AND_TECH_PREREQ);
+
+		// Loop through the techs
+		for (TechInfo techInfo: techinfos) {
+			row = sheet.createRow(rowNum++);
+			int maxHeight = 0;
+
+			colNum = 0;
+			addSingleCell(row.createCell(colNum++), techInfo.getType());
+			addSingleCell(row.createCell(colNum++), techInfo.getEra());
+			addSingleCell(row.createCell(colNum++), techInfo.getGridX());
+			addSingleCell(row.createCell(colNum++), techInfo.getGridY());
+			maxHeight = addRepeatingCell(row.createCell(colNum++), techInfo.getOrTechPrereqs(), maxHeight);
+			maxHeight = addRepeatingCell(row.createCell(colNum++), techInfo.getAndTechPrereqs(), maxHeight);
+			
+			row.setHeightInPoints(maxHeight * sheet.getDefaultRowHeightInPoints());
+		}
+		
+		for (int i = 0; i < colNum; i++) {
+			sheet.autoSizeColumn(i);
+		}
+	}
+
+	private void addHeaderCell(Cell cell, String value) {
+		addSingleCell(cell, value);
+		cell.setCellStyle(csHeader);
+	}
+
+	private void addSingleCell(Cell cell, String value) {
+		cell.setCellValue(value);
+	}
+
+	private void addSingleCell(Cell cell, Integer value) {
+		cell.setCellValue(value);
+	}
+
+	private int addRepeatingCell(Cell cell, List<String> values, int maxHeight) {
+		
+		int currHeight = 0;
+		
+		cell.setCellStyle(csWrap);
+		StringBuffer cellvalue = new StringBuffer();
+		for (String value: values) {
+			if (currHeight++ > 0) cellvalue.append("\n");
+			cellvalue.append(value);
+		}
+		cell.setCellValue(cellvalue.toString());
+		if (currHeight > maxHeight) maxHeight = currHeight;
+		
+		return maxHeight;
+		
+	}
+
+	private void createTechTreeSheet() {
+		
+		Sheet sheet = wb.createSheet(ITechWorkbookConstants.SHEETNAME_TREE);
+		
+		// Add the tech data
+		Row row;
+		Cell cell;
+		int maxGridX = 0; // Used to autosize all the cols
+		int maxGridY = 0; // Used to create all the rows at one go
+		List<String> eras = new ArrayList<String>(); // Used to add background colour to cells based on era
+		for (TechInfo techInfo: techinfos) {
+			// Get the row (iGridY value from tech)
+			int gridY = techInfo.getGridY();
+			if (gridY <= 0) {
+				log.info("Ignoring tech " + techInfo.getType() + " invalid gridY value: " + gridY);
+				continue;
+			}
+			if (gridY > maxGridY) maxGridY = gridY;
+			row = sheet.getRow(gridY - 1);
+			if (row == null)
+				row = sheet.createRow(gridY - 1);
+			
+			// Get the col (iGridX from tech)
+			int gridX = techInfo.getGridX();
+			if (gridX <= 0) {
+				log.info("Ignoring tech " + techInfo.getType() + " invalid gridX value: " + gridX);
+				continue;
+			}
+			if (gridX > maxGridX) maxGridX = gridX;
+			cell = row.createCell(getCellCol(gridX), CellType.STRING);
+			cell.setCellValue(techInfo.getType());
+			
+			String era = techInfo.getEra();
+			if (!eras.contains(era))
+				eras.add(era);
+			cell.setCellStyle(getStyle(eras.lastIndexOf(era)));
+			
+			setCellComment(cell, techInfo);
+		}
+		
+		// Autosize the columns
+		int iNumCols = getCellCol(maxGridX) + 1;
+		for (int i = 0; i < iNumCols; i++) {
+			sheet.autoSizeColumn(i);
+		}
+	}
+
 	public void createTXT() {
 		BufferedWriter output = null;
 		try {
@@ -139,7 +216,9 @@ public class TechExporter {
 		return output;
 	}
 	
-	private void preCreateCellStyles(Workbook wb) {
+	private void preCreateCellStyles() {
+		
+		// Create the coloured backgrounds for the tech tree
 		backgrounds = new HashMap<Integer, CellStyle>();
 		CellStyle style = wb.createCellStyle();
 		style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
@@ -186,7 +265,22 @@ public class TechExporter {
 		style.setFillForegroundColor(IndexedColors.TEAL.getIndex());
 		backgrounds.put(10, style);
 		
-	}
+		// Create the list header style
+		Font headerFont = wb.createFont();
+		headerFont.setFontHeightInPoints((short) 11);
+		headerFont.setBold(true);
+		headerFont.setColor(IndexedColors.DARK_BLUE.getIndex());
+		csHeader = wb.createCellStyle();
+		csHeader.setFont(headerFont);
+		csHeader.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		csHeader.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+
+		
+		// Create word wrap style for multi line cells
+		csWrap = wb.createCellStyle();
+		csWrap.setWrapText(true);
+
+}
 	
 	private CellStyle getStyle(int index) {
 		if (index == -1)

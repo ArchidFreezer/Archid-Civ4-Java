@@ -24,9 +24,9 @@ public class TechUpdater {
 	
 	
 	public void addColumn() {
-		int col = Integer.parseInt(props.getAppProperty(TechExporterPropertyKeys.PROPERTY_KEY_INSERT_COL));
-		int count = Integer.parseInt(props.getAppProperty(TechExporterPropertyKeys.PROPERTY_KEY_COUNT, "1"));
-		Pattern pattern = Pattern.compile("\\s*?<iGridX>(\\d+).*");
+		int col = Integer.parseInt(props.getAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_INSERT_COL));
+		int count = Integer.parseInt(props.getAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_COUNT, "1"));
+		Pattern pattern = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_IGRIDX_VALUE);
 		try {
 			BufferedReader reader = getInputFile();
 			BufferedWriter writer = getOutputFile();
@@ -55,9 +55,9 @@ public class TechUpdater {
 	}
 	
 	public void addRow() {
-		int row = Integer.parseInt(props.getAppProperty(TechExporterPropertyKeys.PROPERTY_KEY_INSERT_ROW));
-		int count = Integer.parseInt(props.getAppProperty(TechExporterPropertyKeys.PROPERTY_KEY_COUNT, "1"));
-		Pattern pattern = Pattern.compile("\\s*?<iGridY>(\\d+).*");
+		int row = Integer.parseInt(props.getAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_INSERT_ROW));
+		int count = Integer.parseInt(props.getAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_COUNT, "1"));
+		Pattern pattern = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_IGRIDY_VALUE);
 		try {
 			BufferedReader reader = getInputFile();
 			BufferedWriter writer = getOutputFile();
@@ -86,8 +86,8 @@ public class TechUpdater {
 	}
 	
 	public void addElement(int col, int row) {
-		Pattern patternX = Pattern.compile("\\s*?<iGridX>(\\d+).*");
-		Pattern patternY = Pattern.compile("\\s*?<iGridY>(\\d+).*");
+		Pattern patternX = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_IGRIDX_VALUE);
+		Pattern patternY = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_IGRIDY_VALUE);
 		try {
 			BufferedReader reader = getInputFile();
 			BufferedWriter writer = getOutputFile();
@@ -142,7 +142,7 @@ public class TechUpdater {
 	}
 	
 	private BufferedReader  getInputFile() throws IOException {
-		String filepath = props.getAppProperty(TechExporterPropertyKeys.PROPERTY_KEY_REF_SCHEMA);
+		String filepath = props.getAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_TECHINFO_FILE);
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
 		String copyFile = filepath + "." + sdf.format(cal.getTime());
@@ -155,7 +155,7 @@ public class TechUpdater {
 	}
 	
 	private BufferedWriter getOutputFile() throws IOException {
-		String filepath = props.getAppProperty(TechExporterPropertyKeys.PROPERTY_KEY_REF_SCHEMA);
+		String filepath = props.getAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_TECHINFO_FILE);
 		File file = new File(filepath);
 		FileUtils.touch(file);
 		FileWriter writer = new FileWriter(file);
