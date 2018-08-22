@@ -85,7 +85,7 @@ public class TechExporter {
 		// Loop through the techs
 		for (TechInfo techInfo: techinfos) {
 			row = sheet.createRow(rowNum++);
-			int maxHeight = 0;
+			int maxHeight = 1;
 
 			colNum = 0;
 			addSingleCell(row.createCell(colNum++), techInfo.getType());
