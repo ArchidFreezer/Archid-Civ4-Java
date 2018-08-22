@@ -43,7 +43,7 @@ public class TechUtils {
 
 		options.addOption(Option.builder("f").longOpt("file").required().hasArg(true).argName("FILE").desc("Civ4TechInfos.xml path").build());
 		options.addOption(Option.builder("n").longOpt("count").hasArg(true).argName("#").desc("number of rows/columns").build());
-		options.addOption(Option.builder("o").longOpt("outputDir").required().hasArg(true).argName("Dir").desc("Directory to create the output in").build());
+		options.addOption(Option.builder("o").longOpt("outputDir").hasArg(true).argName("Dir").desc("Directory to create the output in").build());
 		options.addOption(Option.builder("p").longOpt("prefix").hasArg(true).argName("Prefix").desc("Prefix of output file").build());
 		options.addOption(Option.builder("s").longOpt("schemaDir").hasArg(true).argName("Dir").desc("Directory containing CIV4TechnologiesSchema.xml").build());
 		options.addOptionGroup(actions);
@@ -72,26 +72,39 @@ public class TechUtils {
 			
 			if (cmd.hasOption("f"))
 				props.setAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_TECHINFO_FILE, cmd.getOptionValue("f"));
-			if (cmd.hasOption("o"))
-				props.setAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_OUTPUT_DIR, cmd.getOptionValue("o"));
 			if (cmd.hasOption("n"))
 				props.setAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_COUNT, cmd.getOptionValue("n"));
 			if (cmd.hasOption("p"))
 				props.setAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_PREFIX, cmd.getOptionValue("p"));
 
 			if (cmd.hasOption("c")) {
-				props.setAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_INSERT_COL, cmd.getOptionValue("c"));
-				new TechUpdater().addColumn();
+				if (cmd.hasOption("o")) {
+					props.setAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_OUTPUT_DIR, cmd.getOptionValue("o"));
+					props.setAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_INSERT_COL, cmd.getOptionValue("c"));
+					new TechUpdater().addColumn();					
+				} else {
+					log.error("An output dir must be provided using the 'o' argument to add a column");
+				}
 			}
 			else if (cmd.hasOption("r")) {
-				props.setAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_INSERT_ROW, cmd.getOptionValue("r"));
-				new TechUpdater().addRow();
+				if (cmd.hasOption("o")) {
+					props.setAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_OUTPUT_DIR, cmd.getOptionValue("o"));
+					props.setAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_INSERT_ROW, cmd.getOptionValue("r"));
+					new TechUpdater().addRow();					
+				} else {
+					log.error("An output dir must be provided using the 'o' argument to add a column");
+				}
 			}
 			else if (cmd.hasOption("e")) {
 				System.out.println("Functionality not implemented yet");
 			}
 			else if (cmd.hasOption("x")) {
-				new TechExporter(TechReader.parse()).createXLSX();
+				if (cmd.hasOption("o")) {
+					props.setAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_OUTPUT_DIR, cmd.getOptionValue("o"));
+					new TechExporter(TechReader.parse()).createXLSX();
+				} else {
+					log.error("An output dir must be provided using the 'o' argument to export to xlsx");
+				}
 			}
 			else if (cmd.hasOption("i")) {
 				if (cmd.hasOption("s")) {
