@@ -28,17 +28,17 @@ public class TechReader {
 		TechReader.filePath = props.getAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_TECHINFO_FILE);
 		List<TechInfo> techInfos = new Vector<TechInfo>();
 
-		Pattern patternStartTag = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_TECH_TAG_START);
-		Pattern patternAsset = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_ASSET_VALUE);
-		Pattern patternAdvStartCost = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_ADV_START_COST_VALUE);
-		Pattern patternCost = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_COST_VALUE);
-		Pattern patternX = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_IGRIDX_VALUE);
-		Pattern patternY = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_IGRIDY_VALUE);
-		Pattern patternEra = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_ERA_VALUE);
-		Pattern patternType = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_TYPE_VALUE);
-		Pattern patternOrTechPrereq = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_OR_TECH_PREREQ_TAG_START);
-		Pattern patternAndTechPrereq = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_AND_TECH_PREREQ_TAG_START);
-		Pattern patternEndTag = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_TECH_TAG_END);
+		Pattern patternStartTag = Pattern.compile(ITechInfoConstants.STYLE_REGEX_TECH_TAG_START);
+		Pattern patternAsset = Pattern.compile(ITechInfoConstants.STYLE_REGEX_ASSET_VALUE);
+		Pattern patternAdvStartCost = Pattern.compile(ITechInfoConstants.STYLE_REGEX_ADV_START_COST_VALUE);
+		Pattern patternCost = Pattern.compile(ITechInfoConstants.STYLE_REGEX_COST_VALUE);
+		Pattern patternX = Pattern.compile(ITechInfoConstants.STYLE_REGEX_IGRIDX_VALUE);
+		Pattern patternY = Pattern.compile(ITechInfoConstants.STYLE_REGEX_IGRIDY_VALUE);
+		Pattern patternEra = Pattern.compile(ITechInfoConstants.STYLE_REGEX_ERA_VALUE);
+		Pattern patternType = Pattern.compile(ITechInfoConstants.STYLE_REGEX_TYPE_VALUE);
+		Pattern patternOrTechPrereq = Pattern.compile(ITechInfoConstants.STYLE_REGEX_OR_TECH_PREREQ_TAG_START);
+		Pattern patternAndTechPrereq = Pattern.compile(ITechInfoConstants.STYLE_REGEX_AND_TECH_PREREQ_TAG_START);
+		Pattern patternEndTag = Pattern.compile(ITechInfoConstants.STYLE_REGEX_TECH_TAG_END);
 		try {
 			
 			BufferedReader reader = getInputFile();

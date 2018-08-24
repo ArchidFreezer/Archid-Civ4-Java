@@ -1,6 +1,6 @@
 package org.archid.civ4.techinfo;
 
-public interface ITechWorkbookConstants {
+public interface ITechInfoConstants {
 	
 	public static String TECHINFO_SCHEMA_NAME = "CIV4TechnologiesSchema.xml";
 

@@ -27,10 +27,8 @@ public class TechUpdater {
 	private IPropertyHandler props = PropertyHandler.getInstance();
 	
 	
-	public void addColumn() {
-		int col = Integer.parseInt(props.getAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_INSERT_COL));
-		int count = Integer.parseInt(props.getAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_COUNT, "1"));
-		Pattern pattern = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_IGRIDX_VALUE);
+	public void processInfoFile() {
+		Pattern pattern = Pattern.compile(ITechInfoConstants.STYLE_REGEX_TECH_TAG_START);
 		try {
 			BufferedReader reader = getInputFile();
 			BufferedWriter writer = getOutputFile();
@@ -40,10 +38,7 @@ public class TechUpdater {
 				Matcher matcher = pattern.matcher(line);
 				if (matcher.matches())
 				{
-					int currX = Integer.parseInt(matcher.group(1));
-					if (currX >= col) {
-						line = line.replaceAll(Integer.toString(currX), Integer.toString(currX + count));
-					}
+					// Do stuff
 				}
 				writer.write(line + newline);
 			}
@@ -56,88 +51,6 @@ public class TechUpdater {
 		}
 	}
 	
-	public void addRow() {
-		int row = Integer.parseInt(props.getAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_INSERT_ROW));
-		int count = Integer.parseInt(props.getAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_COUNT, "1"));
-		Pattern pattern = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_IGRIDY_VALUE);
-		try {
-			BufferedReader reader = getInputFile();
-			BufferedWriter writer = getOutputFile();
-			String line = "";
-			while((line = reader.readLine()) != null)
-			{
-				Matcher matcher = pattern.matcher(line);
-				if (matcher.matches())
-				{
-					int currY = Integer.parseInt(matcher.group(1));
-					if (currY >= row) {
-						line = line.replaceAll(Integer.toString(currY), Integer.toString(currY + count));
-					}
-				}
-				writer.write(line + newline);
-			}
-			reader.close();
-			writer.close();
-		} catch (FileNotFoundException e) {
-			log.error("Cannot find file to update", e);
-		} catch (IOException e) {
-			log.error("Cannot update XML file", e);
-		}
-	}
-	
-	public void addElement(int col, int row) {
-		Pattern patternX = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_IGRIDX_VALUE);
-		Pattern patternY = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_IGRIDY_VALUE);
-		try {
-			BufferedReader reader = getInputFile();
-			BufferedWriter writer = getOutputFile();
-			String line = "";
-			boolean checkedBoth = false;
-			boolean foundX = false;
-			int currX = 0;
-			String lineX = "";
-			while((line = reader.readLine()) != null)
-			{
-				Matcher matcherX = patternX.matcher(line);
-				if (matcherX.matches())
-				{
-					currX = Integer.parseInt(matcherX.group(1));
-					if (currX >= col) {
-						lineX = line.replaceAll(Integer.toString(currX), Integer.toString(++currX));
-						foundX = true;
-					} else {
-						lineX = line;
-					}
-				}
-				if (foundX) {
-					checkedBoth = true;
-					Matcher matcherY = patternY.matcher(line);
-					if (matcherY.matches())
-					{
-						int currY = Integer.parseInt(matcherY.group(1));
-						if (currY >= row) {
-							line = line.replaceAll(Integer.toString(currY), Integer.toString(++currY));
-						}
-					}
-				}
-				if (checkedBoth)
-				{
-					writer.write(lineX + newline);
-					writer.write(line + newline);
-					foundX = false;
-					checkedBoth = false;
-				} else if (!foundX) {
-					writer.write(line + newline);
-				}
-			}
-			reader.close();
-			writer.close();
-		} catch (FileNotFoundException e) {
-			log.error("Cannot find file to update", e);
-		} catch (IOException e) {
-			log.error("Cannot update XML file", e);
-		}
-	}
 	
 	private BufferedReader  getInputFile() throws IOException {
 		String filepath = props.getAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_TECHINFO_FILE);

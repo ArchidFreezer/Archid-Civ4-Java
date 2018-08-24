@@ -43,7 +43,7 @@ public class TechImporter {
 	public void importXLSX() {
 		
 		try {
-			String modSchema = props.getAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA_DIR, ".") + "\\" + ITechWorkbookConstants.TECHINFO_SCHEMA_NAME;
+			String modSchema = props.getAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA_DIR, ".") + "\\" + ITechInfoConstants.TECHINFO_SCHEMA_NAME;
 			parser.parse(modSchema);
 			// Read the xlsx file to create the list of tech infos to update
 			Map<String, TechInfo> infos = parseXlsx();
@@ -55,15 +55,15 @@ public class TechImporter {
 	
 	private void updateInfosFile(Map<String, TechInfo> infos) {
 
-		Pattern patternTechsStartTag = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_TECHS_TAG_START);
-		Pattern patternTechsEndTag = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_TECHS_TAG_END);
-		Pattern patternTechStartTag = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_TECH_TAG_START);
-		Pattern patternTechEndTag = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_TECH_TAG_END);
-		Pattern patternX = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_IGRIDX_VALUE);
-		Pattern patternY = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_IGRIDY_VALUE);
-		Pattern patternType = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_TYPE_VALUE);
-		Pattern patternOrTechPrereq = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_OR_TECH_PREREQ_TAG_START);
-		Pattern patternAndTechPrereq = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_AND_TECH_PREREQ_TAG_START);
+		Pattern patternTechsStartTag = Pattern.compile(ITechInfoConstants.STYLE_REGEX_TECHS_TAG_START);
+		Pattern patternTechsEndTag = Pattern.compile(ITechInfoConstants.STYLE_REGEX_TECHS_TAG_END);
+		Pattern patternTechStartTag = Pattern.compile(ITechInfoConstants.STYLE_REGEX_TECH_TAG_START);
+		Pattern patternTechEndTag = Pattern.compile(ITechInfoConstants.STYLE_REGEX_TECH_TAG_END);
+		Pattern patternX = Pattern.compile(ITechInfoConstants.STYLE_REGEX_IGRIDX_VALUE);
+		Pattern patternY = Pattern.compile(ITechInfoConstants.STYLE_REGEX_IGRIDY_VALUE);
+		Pattern patternType = Pattern.compile(ITechInfoConstants.STYLE_REGEX_TYPE_VALUE);
+		Pattern patternOrTechPrereq = Pattern.compile(ITechInfoConstants.STYLE_REGEX_OR_TECH_PREREQ_TAG_START);
+		Pattern patternAndTechPrereq = Pattern.compile(ITechInfoConstants.STYLE_REGEX_AND_TECH_PREREQ_TAG_START);
 		
 		try {
 			BufferedReader reader = getInputFile();
@@ -71,7 +71,7 @@ public class TechImporter {
 			
 			String line = "";
 			
-			// First dump  out the header up to and including the <TechInfos> tag
+			// First dump out the header up to and including the <TechInfos> tag
 			while((line = reader.readLine()) != null)
 			{
 				writer.write(line + newline);
@@ -138,7 +138,7 @@ public class TechImporter {
 				{
 					if (info == null) continue;
 					writer.write(line + newline);
-					writer.write(getPrereqTechsElement(reader, info.getOrTechPrereqs(), ITechWorkbookConstants.STYLE_REGEX_OR_TECH_PREREQ_TAG_END));
+					writer.write(getPrereqTechsElement(reader, info.getOrTechPrereqs(), ITechInfoConstants.STYLE_REGEX_OR_TECH_PREREQ_TAG_END));
 					bWrittenOrPrereqs = true;
 					continue;
 				}
@@ -147,7 +147,7 @@ public class TechImporter {
 				{
 					if (info == null) continue;
 					writer.write(line + newline);
-					writer.write(getPrereqTechsElement(reader, info.getAndTechPrereqs(), ITechWorkbookConstants.STYLE_REGEX_AND_TECH_PREREQ_TAG_END));
+					writer.write(getPrereqTechsElement(reader, info.getAndTechPrereqs(), ITechInfoConstants.STYLE_REGEX_AND_TECH_PREREQ_TAG_END));
 					bWrittenAndPrereqs = true;
 					continue;
 				}
@@ -199,7 +199,7 @@ public class TechImporter {
 		StringBuffer prereqString = new StringBuffer();
 		// We are already in the tag so we only need the prereqs and the end tag
 		// Get the spacing around the techs first
-		Pattern patternTag = Pattern.compile(ITechWorkbookConstants.STYLE_REGEX_TECH_PREREQ_NOT_VALUE);	
+		Pattern patternTag = Pattern.compile(ITechInfoConstants.STYLE_REGEX_TECH_PREREQ_NOT_VALUE);	
 		Pattern patternEnd = Pattern.compile(patternRegEX);
 		boolean bFinished = false;
 		String line = "";
@@ -237,7 +237,7 @@ public class TechImporter {
 			String filepath = props.getAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_IMPORT_XLSX);
 			log.info("Reading workbook: " + filepath);
 			wb = new XSSFWorkbook(filepath);
-			Sheet sheet = wb.getSheet(ITechWorkbookConstants.SHEETNAME_TREE);
+			Sheet sheet = wb.getSheet(ITechInfoConstants.SHEETNAME_TREE);
 			Iterator<Row> itRow = sheet.rowIterator();
 			while (itRow.hasNext()) {
 				Row row = itRow.next();

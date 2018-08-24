@@ -65,22 +65,22 @@ public class TechExporter {
 	
 	private void createTechListSheet() {
 
-		Sheet sheet = wb.createSheet(ITechWorkbookConstants.SHEETNAME_LIST);
+		Sheet sheet = wb.createSheet(ITechInfoConstants.SHEETNAME_LIST);
 		
 		int rowNum = 0;
 		int colNum = 0;
 		
 		// Create the header row
 		Row row = sheet.createRow(rowNum++);
-		addHeaderCell(row.createCell(colNum++), ITechWorkbookConstants.LISTSHEET_TYPE);
-		addHeaderCell(row.createCell(colNum++), ITechWorkbookConstants.LISTSHEET_ERA);
-		addHeaderCell(row.createCell(colNum++), ITechWorkbookConstants.LISTSHEET_COST);
-		addHeaderCell(row.createCell(colNum++), ITechWorkbookConstants.LISTSHEET_ADV_START_COST);
-		addHeaderCell(row.createCell(colNum++), ITechWorkbookConstants.LISTSHEET_ASSET);
-		addHeaderCell(row.createCell(colNum++), ITechWorkbookConstants.LISTSHEET_GRIDX);
-		addHeaderCell(row.createCell(colNum++), ITechWorkbookConstants.LISTSHEET_GRIDY);
-		addHeaderCell(row.createCell(colNum++), ITechWorkbookConstants.LISTSHEET_OR_TECH_PREREQ);
-		addHeaderCell(row.createCell(colNum++), ITechWorkbookConstants.LISTSHEET_AND_TECH_PREREQ);
+		addHeaderCell(row.createCell(colNum++), ITechInfoConstants.LISTSHEET_TYPE);
+		addHeaderCell(row.createCell(colNum++), ITechInfoConstants.LISTSHEET_ERA);
+		addHeaderCell(row.createCell(colNum++), ITechInfoConstants.LISTSHEET_COST);
+		addHeaderCell(row.createCell(colNum++), ITechInfoConstants.LISTSHEET_ADV_START_COST);
+		addHeaderCell(row.createCell(colNum++), ITechInfoConstants.LISTSHEET_ASSET);
+		addHeaderCell(row.createCell(colNum++), ITechInfoConstants.LISTSHEET_GRIDX);
+		addHeaderCell(row.createCell(colNum++), ITechInfoConstants.LISTSHEET_GRIDY);
+		addHeaderCell(row.createCell(colNum++), ITechInfoConstants.LISTSHEET_OR_TECH_PREREQ);
+		addHeaderCell(row.createCell(colNum++), ITechInfoConstants.LISTSHEET_AND_TECH_PREREQ);
 
 		// Loop through the techs
 		for (TechInfo techInfo: techinfos) {
@@ -138,7 +138,7 @@ public class TechExporter {
 
 	private void createTechTreeSheet() {
 		
-		Sheet sheet = wb.createSheet(ITechWorkbookConstants.SHEETNAME_TREE);
+		Sheet sheet = wb.createSheet(ITechInfoConstants.SHEETNAME_TREE);
 		
 		// Add the tech data
 		Row row;
