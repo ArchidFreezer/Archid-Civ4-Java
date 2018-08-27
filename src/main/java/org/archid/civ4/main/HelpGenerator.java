@@ -1,4 +1,4 @@
-package org.archid.civ4.schema;
+package org.archid.civ4.main;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -25,12 +25,17 @@ import org.apache.commons.cli.ParseException;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.archid.civ4.gui.SchemaHelpGenerator;
+import org.archid.civ4.schema.HtmlGenerator;
+import org.archid.civ4.schema.ISchemaPropertyhandler;
+import org.archid.civ4.schema.SchemaParser;
+import org.archid.civ4.schema.SchemaPropertyHandler;
+import org.archid.civ4.schema.XmlTagDefinition;
 import org.archid.civ4.utils.PropertyKeys;
 
-public class SchemaProcessor {
+public class HelpGenerator {
 
 	/** Logging facility */
-	static Logger log = Logger.getLogger(SchemaProcessor.class.getName());
+	static Logger log = Logger.getLogger(HelpGenerator.class.getName());
 	
 	/** Command line parser */
 	private String[] args = null;
@@ -41,7 +46,7 @@ public class SchemaProcessor {
 	/** Schema parser */
 	SchemaParser parser = new SchemaParser();
 	
-	public SchemaProcessor(String[] args) {
+	public HelpGenerator(String[] args) {
 		this.args = args;
 		
 		options.addOption("a", "parseAll", false, "Recurse the directories, parsing all schema files found");
@@ -187,7 +192,7 @@ public class SchemaProcessor {
 
 		PropertyConfigurator.configure("log4j.properties");
 		
-		SchemaProcessor app = new SchemaProcessor(args);
+		HelpGenerator app = new HelpGenerator(args);
 		app.parse();
 
 	}

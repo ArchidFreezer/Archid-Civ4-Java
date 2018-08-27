@@ -1,4 +1,4 @@
-package org.archid.civ4.techinfo;
+package org.archid.civ4.info.techinfo;
 
 import org.archid.civ4.utils.PropertyKeys;
 

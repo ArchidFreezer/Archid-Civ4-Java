@@ -2,12 +2,54 @@ package org.archid.civ4.utils;
 
 public class StringUtils {
 
-	/*
-	 * Convert Given String to Camel Case i.e.
-	 * Capitalise first letter of every word to upper case
-	 * "THIS_TEXT" -> "This_Text"
+	/**
+	 * Determine if a string contains any text or is null
+	 * 
+	 * @param s String to be examined.
+	 * 
+	 * @return true if the string is non-null and has at least 1 character in it.
 	 */
-	public static String camelCase(String str, char delim)
+	public static boolean hasCharacters(String s) {
+		return !isNullOrEmpty(s);
+	}
+
+	/**
+	 * Determine if a string is empty or null.
+	 * 
+	 * @param s String to be examined.
+	 * 
+	 * @return true if the String is null or has length == 0. false otherwise.
+	 */
+	public static boolean isNullOrEmpty(String s) {
+		if ((s == null) || (s.length() == 0)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Converts a string value to null if it is empty
+	 * 
+	 * @param s String to be examined
+	 * 
+	 * @return <code>null</code> if the string is already null or empty; otherwise the unchanged string
+	 */
+	public static String getNullIfEmpty(String s) {
+		return isNullOrEmpty(s) ? null : s;
+	}
+
+	/**
+	 * Convert String to Start Case i.e.
+	 * capitalise first letter of every word to upper case
+	 * "THIS_TEXT" -> "This_Text"
+	 * 
+	 * @param str {@code String} to parse
+	 * @param delim {@code char} delimiting the words
+	 * 
+	 * @return String converted to Start Case
+	 */
+	public static String startCase(String str, char delim)
 	{
 		StringBuilder builder = new StringBuilder(str);
 		
@@ -34,12 +76,17 @@ public class StringUtils {
 		return builder.toString();
 	}
 
-	/*
-	 * Convert Given String to Camel Case, removing the word delimiter i.e.
+	/**
+	 * Convert given String to Start Case, removing the word delimiter i.e.
 	 * Capitalise first letter of every word to upper case
 	 * "THIS_TEXT" -> "ThisText"
+	 * 
+	 * @param str {@code String} to parse
+	 * @param delim {@code char} delimiting the words
+	 * 
+	 * @return String converted to Start Case
 	 */
-	public static String camelCaseCompress(String str, char delim)
+	public static String startCaseCompress(String str, char delim)
 	{
 		StringBuilder input = new StringBuilder(str);
 		StringBuilder output = new StringBuilder();
@@ -68,12 +115,17 @@ public class StringUtils {
 		return output.toString();
 	}
 
-	/*
+	/**
 	 * Convert Given String to Camel Case, replacing the word delimiter with a space i.e.
 	 * Capitalise first letter of every word to upper case
 	 * "THIS_TEXT" -> "This Text"
+	 * 
+	 * @param str {@code String} to parse
+	 * @param delim {@code char} delimiting the words
+	 * 
+	 * @return String converted to Start Case with delimiter converted to a space
 	 */
-	public static String camelCaseSpace(String str, char delim)
+	public static String startCaseSpace(String str, char delim)
 	{
 		StringBuilder input = new StringBuilder(str);
 		StringBuilder output = new StringBuilder();
