@@ -51,7 +51,9 @@ public class StringUtils {
 	 */
 	public static String startCase(String str, char delim)
 	{
-		StringBuilder builder = new StringBuilder(str);
+		StringBuilder builder = new StringBuilder(str.toLowerCase());
+		
+		str = str.toLowerCase();
 		
 		// Flag to keep track if last visited character is a white space or not
 		boolean isLastSpace = true;
@@ -61,7 +63,7 @@ public class StringUtils {
 		{
 			char ch = builder.charAt(i);
 			
-			if(isLastSpace && ch >= 'a' && ch <='z')
+			if(isLastSpace)
 			{
 				// Character need to be converted to uppercase
 				builder.setCharAt(i, (char)(ch + ('A' - 'a') ));
@@ -88,8 +90,10 @@ public class StringUtils {
 	 */
 	public static String startCaseCompress(String str, char delim)
 	{
-		StringBuilder input = new StringBuilder(str);
+		StringBuilder input = new StringBuilder(str.toLowerCase());
 		StringBuilder output = new StringBuilder();
+		
+		str = str.toLowerCase();
 		
 		// Flag to keep track if last visited character is a white space or not
 		boolean isLastSpace = true;
@@ -99,7 +103,7 @@ public class StringUtils {
 		{
 			char ch = input.charAt(i);
 			
-			if(isLastSpace && ch >= 'a' && ch <='z')
+			if(isLastSpace)
 			{
 				// Character need to be converted to uppercase
 				output.append((char)(ch + ('A' - 'a') ));
@@ -127,7 +131,7 @@ public class StringUtils {
 	 */
 	public static String startCaseSpace(String str, char delim)
 	{
-		StringBuilder input = new StringBuilder(str);
+		StringBuilder input = new StringBuilder(str.toLowerCase());
 		StringBuilder output = new StringBuilder();
 		
 		// Flag to keep track if last visited character is a white space or not
@@ -138,7 +142,7 @@ public class StringUtils {
 		{
 			char ch = input.charAt(i);
 			
-			if(isLastSpace && ch >= 'a' && ch <='z')
+			if(isLastSpace)
 			{
 				// Character need to be converted to uppercase
 				output.append((char)(ch + ('A' - 'a') ));

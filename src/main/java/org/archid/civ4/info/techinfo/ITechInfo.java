@@ -1,15 +1,14 @@
-package org.archid.civ4.xml.techinfo;
+package org.archid.civ4.info.techinfo;
 
 import java.util.List;
 import java.util.Set;
 
+import org.archid.civ4.info.IInfo;
 import org.archid.civ4.utils.IKeyValuePair;
 
-public interface ITechInfo {
-
-	public String getType();
-
-	public void setType(String type);
+public interface ITechInfo extends IInfo {
+	
+	public static String SCHEMA_NAME = "CIV4TechnologiesSchema.xml";
 
 	public String getDescription();
 
@@ -22,6 +21,10 @@ public interface ITechInfo {
 	public String getHelp();
 
 	public void setHelp(String help);
+
+	public String getStrategy();
+
+	public void setStrategy(String strategy);
 
 	public String getAdvisor();
 

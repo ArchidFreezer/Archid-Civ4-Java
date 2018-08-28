@@ -35,7 +35,7 @@ public class JaxbUtils {
 	 * @see #marshallBoolean(boolean)
 	 */
 	public static boolean unmarshallBoolean(Integer val) {
-		return val != null;
+		return (val != null && val == 1);
 	}
 	
 	/**

@@ -6,6 +6,7 @@ package org.archid.civ4.utils;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -99,6 +100,17 @@ public class FileUtils {
 			return false;
 		}
 
+	}
+	
+	/**
+	 * Takes a path to a file name and returns the path to a file with the same base =name, but with a new file extension
+	 * 
+	 * @param filePath absolute or relative path to a file
+	 * @param ext new extension to use for the file
+	 * @return path to a file with the same path and basename but new extension
+	 */
+	public static String getNewExtension(String filePath, String ext) {
+		return FilenameUtils.getFullPath(filePath) + FilenameUtils.getBaseName(filePath) + "." + ext;
 	}
 
 }

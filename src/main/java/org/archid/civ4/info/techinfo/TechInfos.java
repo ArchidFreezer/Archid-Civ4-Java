@@ -1,4 +1,4 @@
-package org.archid.civ4.xml.techinfo;
+package org.archid.civ4.info.techinfo;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -6,68 +6,34 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.archid.civ4.info.AbstractInfos;
 import org.archid.civ4.utils.IKeyValuePair;
+import org.archid.civ4.utils.StringUtils;
 
 @XmlRootElement(name="Civ4TechInfos", namespace="x-schema:CIV4TechnologiesSchema.xml")
 @XmlAccessorType(XmlAccessType.NONE)
-public class TechInfos {
+public class TechInfos extends AbstractInfos<ITechInfo> {
 	
 	/** All know techs */
 	@XmlJavaTypeAdapter(TechMapAdapter.class)
 	@XmlElement(name="TechInfos")
-	private Map<String, ITechInfo> infos = new TreeMap<String, ITechInfo>();
+	public Map<String, ITechInfo> getInfoMap() {
+		return infos;
+	}
 
-	/**
-	 * Sets the collection of techs, replacing any existing collection
-	 * 
-	 * @param techInfos {@code Map} of techs keyed on the type
-	 */
-	public void setTechs(Map<String, ITechInfo> techInfos) {
-		this.infos = new TreeMap<String, ITechInfo>(techInfos);
+	@Override
+	public void setInfoMap(Map<String, ITechInfo> infos) {
+		this.infos = new TreeMap<String, ITechInfo>(infos);
 	}
 	
-	/**
-	 * Add a tech to the collection of techs. If a tech with the same type already exists it will be replaced
-	 * 
-	 * @param info {@code TechInfo} to add
-	 * @return {@code true} if the tech was added; otherwise {@code false}
-	 */
-	public boolean addTech(ITechInfo info) {
-		boolean isNew = false;
-		if (!infos.containsKey(info.getType())) {
-			infos.put(info.getType(), info);
-			isNew = true;
-		}
-		return isNew;
-	}
-	
-	/**
-	 * Gets a tech
-	 * 
-	 * @param type Type of the tech
-	 * @return tech with the given type if one exists; otherwise {@code null}
-	 */
-	public ITechInfo getTech(String type) {
-		return infos.get(type);
-	}
-	
-	
-	/**
-	 * Gets the collection of tech types
-	 * 
-	 * @return {@code Set} of tech types 
-	 */
-	public Set<String> getTechTypes() {
-		return infos.keySet();
-	}
-	
-	public static ITechInfo createTech(String type) {
+	public static ITechInfo createInfo(String type) {
 		return new TechInfo(type);
 	}
 
@@ -76,6 +42,7 @@ public class TechInfos {
 		private String description = "";
 		private String civilopedia;
 		private String help;
+		private String strategy;
 		private String advisor = "NO_ADVISOR";
 		private String era = "NO_ERA";
 		private String firstFreeUnitClass;
@@ -145,6 +112,14 @@ public class TechInfos {
 		
 		private TechInfo(String type) {
 			this.type = type;
+			description = "TXT_KEY_" + type;
+			civilopedia = "TXT_KEY_" + type + "_PEDIA";
+			help = "TXT_KEY_" + type + "_HELP";
+			strategy = "TXT_KEY_" + type + "_STRATEGY";
+			quote = "TXT_KEY_" + type + "_QUOTE";
+			sound = "AS2D_TECH_" + StringUtils.startCaseCompress(type.substring(type.indexOf('_') + 1), '_');
+			soundMp = sound;
+			button = "Art/Interface/Buttons/TechTree/" + type.substring(type.indexOf('_') + 1).toLowerCase() + ".dds";
 		}
 		
 		/* (non-Javadoc)
@@ -1075,7 +1050,7 @@ public class TechInfos {
 		
 		@Override
 		public List<IKeyValuePair<String, Integer>> getFlavors() {
-			return new ArrayList<IKeyValuePair<String, Integer>>(worldViewRevoltTurnChanges);
+			return new ArrayList<IKeyValuePair<String, Integer>>(flavors);
 		}
 
 		@Override
@@ -1151,6 +1126,16 @@ public class TechInfos {
 		@Override
 		public void setButton(String button) {
 			this.button = button;
+		}
+
+		@Override
+		public String getStrategy() {
+			return strategy;
+		}
+
+		@Override
+		public void setStrategy(String strategy) {
+			this.strategy = strategy;
 		}
 	}
 }

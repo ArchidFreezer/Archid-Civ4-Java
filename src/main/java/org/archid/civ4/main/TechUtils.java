@@ -11,6 +11,8 @@ import org.apache.commons.cli.ParseException;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.archid.civ4.info.techinfo.TechExporter;
+import org.archid.civ4.info.techinfo.TechImporter;
 //import org.archid.civ4.info.techinfo.TechExporter;
 //import org.archid.civ4.info.techinfo.TechImporter;
 //import org.archid.civ4.info.techinfo.TechReader;
@@ -78,7 +80,7 @@ public class TechUtils {
 			if (cmd.hasOption("x")) {
 				if (cmd.hasOption("o")) {
 					props.setAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_OUTPUT_DIR, cmd.getOptionValue("o"));
-//					new TechExporter(TechReader.parse()).createXLSX();
+					new TechExporter().createXLSX();
 				} else {
 					log.error("An output dir must be provided using the 'o' argument to export to xlsx");
 				}
@@ -86,7 +88,7 @@ public class TechUtils {
 				if (cmd.hasOption("s")) {
 					props.setAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_MOD_SCHEMA_DIR, cmd.getOptionValue("s"));
 					props.setAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_IMPORT_XLSX, cmd.getOptionValue("i"));
-//					new TechImporter().importXLSX();					
+					new TechImporter().importXLSX();					
 				} else {
 					log.error("A schema must be provided using the 's' argument to import from a spreadsheet");
 				}

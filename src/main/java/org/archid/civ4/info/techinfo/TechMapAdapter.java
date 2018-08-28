@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.archid.civ4.xml.techinfo;
+package org.archid.civ4.info.techinfo;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,6 +17,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import org.archid.civ4.utils.CollectionUtils;
 import org.archid.civ4.utils.IKeyValuePair;
 import org.archid.civ4.utils.KeyValuePair;
+import org.archid.civ4.utils.StringUtils;
 import org.archid.civ4.utils.JaxbUtils;
 
 /**
@@ -39,6 +40,8 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 		private String civilopedia;
 		@XmlElement(name="Help")
 		private String help;
+		@XmlElement(name="Strategy")
+		private String strategy;
 		@XmlElement(name="Advisor")
 		private String advisor;
 		@XmlElement(name="iAIWeight")
@@ -214,6 +217,7 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 			aTech.description = tech.getDescription();
 			aTech.civilopedia = JaxbUtils.marshallString(tech.getCivilopedia());
 			aTech.help = JaxbUtils.marshallString(tech.getHelp());
+			aTech.strategy = JaxbUtils.marshallString(tech.getStrategy());
 			aTech.advisor = tech.getAdvisor();
 			aTech.aiWeight = JaxbUtils.marshallInteger(tech.getAiWeight());
 			aTech.aiTradeModifier = JaxbUtils.marshallInteger(tech.getAiTradeModifier());
@@ -365,10 +369,11 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 	public Map<String, ITechInfo> unmarshal(TechMap v) throws Exception {
 		Map<String, ITechInfo> map = new TreeMap<String, ITechInfo>();
 		for (AdaptedTech aTech: v.entries) {
-			ITechInfo tech = TechInfos.createTech(aTech.type);
+			ITechInfo tech = TechInfos.createInfo(aTech.type);
 			tech.setDescription(JaxbUtils.unmarshallString(aTech.description));
 			tech.setCivilopedia(JaxbUtils.unmarshallString(aTech.civilopedia));
 			tech.setHelp(JaxbUtils.unmarshallString(aTech.help));
+			tech.setStrategy(JaxbUtils.unmarshallString(aTech.strategy));
 			tech.setAdvisor(JaxbUtils.unmarshallString(aTech.advisor));
 			tech.setAiWeight(JaxbUtils.unmarshallInteger(aTech.aiWeight));
 			tech.setAiTradeModifier(JaxbUtils.unmarshallInteger(aTech.aiTradeModifier));
@@ -427,47 +432,52 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 
 			if (CollectionUtils.hasElements(aTech.domainExtraMoves)) {
 				for (AdaptedDomainExtraMoves adaptor: aTech.domainExtraMoves) {
-					tech.addDomainExtraMove(new KeyValuePair<String, Integer>(adaptor.domain, adaptor.moves));
+					if (adaptor.moves != 0)
+						tech.addDomainExtraMove(new KeyValuePair<String, Integer>(adaptor.domain, adaptor.moves));
 				}
 			}
 			
 			if (CollectionUtils.hasElements(aTech.worldViewRevoltTurnChanges)) {
 				for (AdaptedWorldViewRevoltTurnChanges adaptor: aTech.worldViewRevoltTurnChanges) {
-					tech.addWorldViewRevoltTurnChange(new KeyValuePair<String, Integer>(adaptor.worldView, adaptor.change));
+					if (StringUtils.hasCharacters(adaptor.worldView) && adaptor.change != 0)
+						tech.addWorldViewRevoltTurnChange(new KeyValuePair<String, Integer>(adaptor.worldView, adaptor.change));
 				}
 			}
 			
 			if (CollectionUtils.hasElements(aTech.flavors)) {
 				for (AdaptedFlavors adaptor: aTech.flavors) {
-					tech.addFlavor(new KeyValuePair<String, Integer>(adaptor.flavor, adaptor.value));
+					if (StringUtils.hasCharacters(adaptor.flavor) && adaptor.value != 0)
+						tech.addFlavor(new KeyValuePair<String, Integer>(adaptor.flavor, adaptor.value));
 				}
 			}
 			
-			if (CollectionUtils.hasElements(aTech.commerceFlexible)) {
+			if (CollectionUtils.hasNonZeroElements(aTech.commerceFlexible)) {
 				for (Integer flexible: aTech.commerceFlexible) {
-					tech.addCommerceFlexible(JaxbUtils.unmarshallBoolean(flexible));
+					tech.addCommerceFlexible(JaxbUtils.unmarshallBoolean(flexible));					
 				}
 			}
 			
 			if (CollectionUtils.hasElements(aTech.terrainTrades)) {
 				for (String terrain: aTech.terrainTrades) {
-					tech.addTerrainTrade(terrain);
+					if (StringUtils.hasCharacters(terrain))
+						tech.addTerrainTrade(terrain);
 				}
 			}
 			
-			if (CollectionUtils.hasElements(aTech.forestPlotYieldChanges)) {
+			if (CollectionUtils.hasNonZeroElements(aTech.forestPlotYieldChanges)) {
+				// Only add this tag if there are non-zero changes
 				for (Integer change: aTech.forestPlotYieldChanges) {
 					tech.addForestPlotYieldChange(change);
 				}
 			}
 			
-			if (CollectionUtils.hasElements(aTech.riverPlotYieldChanges)) {
+			if (CollectionUtils.hasNonZeroElements(aTech.riverPlotYieldChanges)) {
 				for (Integer change: aTech.riverPlotYieldChanges) {
 					tech.addRiverPlotYieldChange(change);
 				}
 			}
 			
-			if (CollectionUtils.hasElements(aTech.seaPlotYieldChanges)) {
+			if (CollectionUtils.hasNonZeroElements(aTech.seaPlotYieldChanges)) {
 				for (Integer change: aTech.seaPlotYieldChanges) {
 					tech.addSeaPlotYieldChange(change);
 				}
@@ -475,19 +485,22 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 			
 			if (CollectionUtils.hasElements(aTech.orPrereqs)) {
 				for (String prereq: aTech.orPrereqs) {
-					tech.addOrPrereq(prereq);
+					if (StringUtils.hasCharacters(prereq))
+						tech.addOrPrereq(prereq);
 				}
 			}
 			
 			if (CollectionUtils.hasElements(aTech.andPrereqs)) {
 				for (String prereq: aTech.andPrereqs) {
-					tech.addAndPrereq(prereq);
+					if (StringUtils.hasCharacters(prereq))
+						tech.addAndPrereq(prereq);
 				}
 			}
 			
 			if (CollectionUtils.hasElements(aTech.enabledWorldViews)) {
 				for (String worldView: aTech.enabledWorldViews) {
-					tech.addEnabledWorldViews(worldView);
+					if (StringUtils.hasCharacters(worldView))
+						tech.addEnabledWorldViews(worldView);
 				}
 			}
 			
