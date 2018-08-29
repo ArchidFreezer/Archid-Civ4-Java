@@ -54,8 +54,6 @@ public class InfoUtils {
 		actions.addOption(Option.builder("x").longOpt("export").hasArg(false).desc("Create XLSX file").build());
 
 		options.addOption(Option.builder("f").longOpt("file").required().hasArg(true).argName("FILE").desc("Civ4xxxInfos.xml path").build());
-		options.addOption(Option.builder("o").longOpt("outputDir").hasArg(true).argName("Dir").desc("Directory to create the output in").build());
-		options.addOption(Option.builder("p").longOpt("prefix").hasArg(true).argName("Prefix").desc("Prefix of output file").build());
 		options.addOption(Option.builder("t").longOpt("type").required().hasArg(true).argName("Info Type").desc("Tech, Building or Unit").build());
 		options.addOptionGroup(actions);
 		options.addOption("h", "help", false, "display usage");
@@ -69,8 +67,6 @@ public class InfoUtils {
 			
 			if (cmd.hasOption("f"))
 				props.setAppProperty(PropertyKeys.PROPERTY_KEY_INFOS_FILE, cmd.getOptionValue("f"));
-			if (cmd.hasOption("p"))
-				props.setAppProperty(PropertyKeys.PROPERTY_KEY_PREFIX, cmd.getOptionValue("p"));
 			if (cmd.hasOption("t")) {
 				if (cmd.getOptionValue("t").equalsIgnoreCase("tech"))
 					infoType = EInfos.TECH_INFOS;
@@ -79,12 +75,7 @@ public class InfoUtils {
 			}
 
 			if (cmd.hasOption("x") && infoType != null) {
-				if (cmd.hasOption("o")) {
-					props.setAppProperty(PropertyKeys.PROPERTY_KEY_OUTPUT_DIR, cmd.getOptionValue("o"));
-					ExporterFactory.getExporter(infoType).createXLSX();
-				} else {
-					log.error("An output dir must be provided using the 'o' argument to export to xlsx");
-				}
+				ExporterFactory.getExporter(infoType).createXLSX();
 			}	else if (cmd.hasOption("i") && infoType != null) {
 				props.setAppProperty(PropertyKeys.PROPERTY_KEY_IMPORT_XLSX, cmd.getOptionValue("i"));
 				ImporterFactory.getImporter(infoType).importXLSX();
