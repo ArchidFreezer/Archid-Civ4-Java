@@ -113,4 +113,14 @@ public class FileUtils {
 		return FilenameUtils.getFullPath(filePath) + FilenameUtils.getBaseName(filePath) + "." + ext;
 	}
 
+	public static void copyFile(File src, File dest) {
+		try {
+			org.apache.commons.io.FileUtils.copyFile(src, dest);
+		} catch (IOException e) {
+			log.warn("Could not copy file: " + src.getAbsolutePath(), e);
+		}
+	}
+	
+	
+
 }

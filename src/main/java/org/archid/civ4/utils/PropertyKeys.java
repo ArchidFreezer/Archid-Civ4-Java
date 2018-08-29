@@ -12,4 +12,8 @@ public interface PropertyKeys {
 	public final String PROPERTY_KEY_HTML_STYLESHEET = "html.stylesheet.name";
 	public final String PROPERTY_KEY_HTML_BREADCRUMB = "html.header.breadcrumb";
 	public final String PROPERTY_KEY_HTML_TITLE = "html.title";
+
+	public final String PROPERTY_KEY_PREFIX = "prefix";
+	public final String PROPERTY_KEY_IMPORT_XLSX = "import.xlsx";
+	public final String PROPERTY_KEY_INFOS_FILE = "infos.file";
 }

@@ -5,11 +5,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -24,13 +23,17 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.RichTextString;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.archid.civ4.info.InfosFactory;
 import org.archid.civ4.info.InfosFactory.EInfos;
+import org.archid.civ4.info.techinfo.ITechExporter.SheetHeaders;
 import org.archid.civ4.utils.FileUtils;
+import org.archid.civ4.utils.IKeyValuePair;
 import org.archid.civ4.utils.IPropertyHandler;
 import org.archid.civ4.utils.PropertyHandler;
+import org.archid.civ4.utils.PropertyKeys;
 
 public class TechExporter {
 	
@@ -47,7 +50,7 @@ public class TechExporter {
 	private Map<Integer, CellStyle> backgrounds;
 	
 	public TechExporter() {
-		infos = InfosFactory.getInfos(EInfos.TECH_INFOS, props.getAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_TECHINFO_FILE));
+		infos = InfosFactory.readInfos(EInfos.TECH_INFOS, props.getAppProperty(PropertyKeys.PROPERTY_KEY_INFOS_FILE));
 		
 		wb = new XSSFWorkbook();
 		preCreateCellStyles();
@@ -71,38 +74,95 @@ public class TechExporter {
 	
 	private void createTechListSheet() {
 
-		Sheet sheet = wb.createSheet(ITechInfoSpreadsheet.SHEETNAME_LIST);
+		Sheet sheet = wb.createSheet(ITechExporter.SHEETNAME_LIST);
 		
 		int rowNum = 0;
-		int colNum = 0;
 		
 		// Create the header row
 		Row row = sheet.createRow(rowNum++);
-		addHeaderCell(row.createCell(colNum++), ITechInfoSpreadsheet.LISTSHEET_TYPE);
-		addHeaderCell(row.createCell(colNum++), ITechInfoSpreadsheet.LISTSHEET_ERA);
-		addHeaderCell(row.createCell(colNum++), ITechInfoSpreadsheet.LISTSHEET_COST);
-		addHeaderCell(row.createCell(colNum++), ITechInfoSpreadsheet.LISTSHEET_ADV_START_COST);
-		addHeaderCell(row.createCell(colNum++), ITechInfoSpreadsheet.LISTSHEET_ASSET);
-		addHeaderCell(row.createCell(colNum++), ITechInfoSpreadsheet.LISTSHEET_GRIDX);
-		addHeaderCell(row.createCell(colNum++), ITechInfoSpreadsheet.LISTSHEET_GRIDY);
-		addHeaderCell(row.createCell(colNum++), ITechInfoSpreadsheet.LISTSHEET_OR_TECH_PREREQ);
-		addHeaderCell(row.createCell(colNum++), ITechInfoSpreadsheet.LISTSHEET_AND_TECH_PREREQ);
+		createSheetHeaders(row);
+		
+		// Freeze the first row
+		sheet.createFreezePane(1, 1);
 
 		// Loop through the techs
+		int colNum = 0;
 		for (ITechInfo techInfo: infos.getInfos()) {
 			row = sheet.createRow(rowNum++);
 			int maxHeight = 1;
 
 			colNum = 0;
 			addSingleCell(row.createCell(colNum++), techInfo.getType());
-			addSingleCell(row.createCell(colNum++), techInfo.getEra());
+			addSingleCell(row.createCell(colNum++), techInfo.getDescription());
+			addSingleCell(row.createCell(colNum++), techInfo.getCivilopedia());
+			addSingleCell(row.createCell(colNum++), techInfo.getHelp());
+			addSingleCell(row.createCell(colNum++), techInfo.getStrategy());
+			addSingleCell(row.createCell(colNum++), techInfo.getAdvisor());
+			addSingleCell(row.createCell(colNum++), techInfo.getAiWeight());
+			addSingleCell(row.createCell(colNum++), techInfo.getAiTradeModifier());
 			addSingleCell(row.createCell(colNum++), techInfo.getCost());
 			addSingleCell(row.createCell(colNum++), techInfo.getAdvancedStartCost());
+			addSingleCell(row.createCell(colNum++), techInfo.getAdvancedStartCostIncrease());
+			addSingleCell(row.createCell(colNum++), techInfo.getEra());
+			addSingleCell(row.createCell(colNum++), techInfo.getFirstFreeUnitClass());
+			addSingleCell(row.createCell(colNum++), techInfo.getFreeUnitClass());
+			addSingleCell(row.createCell(colNum++), techInfo.getFeatureProductionModifier());
+			addSingleCell(row.createCell(colNum++), techInfo.getWorkerSpeedModifier());
+			addSingleCell(row.createCell(colNum++), techInfo.getTradeRoutes());
+			addSingleCell(row.createCell(colNum++), techInfo.getHealth());
+			addSingleCell(row.createCell(colNum++), techInfo.getHappiness());
+			addSingleCell(row.createCell(colNum++), techInfo.getFirstFreeTechs());
 			addSingleCell(row.createCell(colNum++), techInfo.getAsset());
+			addSingleCell(row.createCell(colNum++), techInfo.getPower());
+			addSingleCell(row.createCell(colNum++), techInfo.isRepeat());
+			addSingleCell(row.createCell(colNum++), techInfo.isTrade());
+			addSingleCell(row.createCell(colNum++), techInfo.isEmbassyTrading());
+			addSingleCell(row.createCell(colNum++), techInfo.isFreeTradeAgreementTrading());
+			addSingleCell(row.createCell(colNum++), techInfo.isNonAggressionTrading());
+			addSingleCell(row.createCell(colNum++), techInfo.isDisable());
+			addSingleCell(row.createCell(colNum++), techInfo.isGoodyTech());
+			addSingleCell(row.createCell(colNum++), techInfo.isExtraWaterSeeFrom());
+			addSingleCell(row.createCell(colNum++), techInfo.isMapCentering());
+			addSingleCell(row.createCell(colNum++), techInfo.isMapVisible());
+			addSingleCell(row.createCell(colNum++), techInfo.isMapTrading());
+			addSingleCell(row.createCell(colNum++), techInfo.isTechTrading());
+			addSingleCell(row.createCell(colNum++), techInfo.isGoldTrading());
+			addSingleCell(row.createCell(colNum++), techInfo.isOpenBordersTrading());
+			addSingleCell(row.createCell(colNum++), techInfo.isLimitedBordersTrading());
+			addSingleCell(row.createCell(colNum++), techInfo.isDefensivePactTrading());
+			addSingleCell(row.createCell(colNum++), techInfo.isPermanentAllianceTrading());
+			addSingleCell(row.createCell(colNum++), techInfo.isVassalTrading());
+			addSingleCell(row.createCell(colNum++), techInfo.isBridgeBuilding());
+			addSingleCell(row.createCell(colNum++), techInfo.isIrrigation());
+			addSingleCell(row.createCell(colNum++), techInfo.isIgnoreIrrigation());
+			addSingleCell(row.createCell(colNum++), techInfo.isWaterWork());
+			addSingleCell(row.createCell(colNum++), techInfo.isCanPassPeaks());
+			addSingleCell(row.createCell(colNum++), techInfo.isMoveFastPeaks());
+			addSingleCell(row.createCell(colNum++), techInfo.isCanFoundOnPeaks());
 			addSingleCell(row.createCell(colNum++), techInfo.getGridX());
 			addSingleCell(row.createCell(colNum++), techInfo.getGridY());
+			maxHeight = addRepeatingPairCell(row.createCell(colNum++), techInfo.getDomainExtraMoves(), maxHeight);
+			maxHeight = addRepeatingCell(row.createCell(colNum++), techInfo.getCommerceFlexibles(), maxHeight);
+			maxHeight = addRepeatingCell(row.createCell(colNum++), techInfo.getTerrainTrades(), maxHeight);
+			addSingleCell(row.createCell(colNum++), techInfo.isRiverTrade());
+			addSingleCell(row.createCell(colNum++), techInfo.isCaptureCites());
+			addSingleCell(row.createCell(colNum++), techInfo.isUnitRangeUnbound());
+			addSingleCell(row.createCell(colNum++), techInfo.isUnitTerritoryUnbound());
+			addSingleCell(row.createCell(colNum++), techInfo.getUnitRangeChange());
+			addSingleCell(row.createCell(colNum++), techInfo.getUnitRangeModifier());
+			addSingleCell(row.createCell(colNum++), techInfo.getCultureDefenceModifier());
+			maxHeight = addRepeatingCell(row.createCell(colNum++), techInfo.getForestPlotYieldChanges(), maxHeight);
+			maxHeight = addRepeatingCell(row.createCell(colNum++), techInfo.getRiverPlotYieldChanges(), maxHeight);
+			maxHeight = addRepeatingCell(row.createCell(colNum++), techInfo.getSeaPlotYieldChanges(), maxHeight);
+			maxHeight = addRepeatingPairCell(row.createCell(colNum++), techInfo.getWorldViewRevoltTurnChanges(), maxHeight);
+			maxHeight = addRepeatingPairCell(row.createCell(colNum++), techInfo.getFlavors(), maxHeight);
 			maxHeight = addRepeatingCell(row.createCell(colNum++), techInfo.getOrPrereqs(), maxHeight);
 			maxHeight = addRepeatingCell(row.createCell(colNum++), techInfo.getAndPrereqs(), maxHeight);
+			maxHeight = addRepeatingCell(row.createCell(colNum++), techInfo.getEnabledWorldViews(), maxHeight);
+			addSingleCell(row.createCell(colNum++), techInfo.getQuote());
+			addSingleCell(row.createCell(colNum++), techInfo.getSound());
+			addSingleCell(row.createCell(colNum++), techInfo.getSoundMP());
+			addSingleCell(row.createCell(colNum++), techInfo.getButton());
 			
 			row.setHeightInPoints(maxHeight * sheet.getDefaultRowHeightInPoints());
 		}
@@ -112,26 +172,30 @@ public class TechExporter {
 		}
 	}
 
+	private void createSheetHeaders(Row row) {
+		int colNum = 0;
+		for (SheetHeaders header: SheetHeaders.values()) {
+			addHeaderCell(row.createCell(colNum++), header.toString());
+		}
+	}
+
 	private void addHeaderCell(Cell cell, String value) {
 		addSingleCell(cell, value);
 		cell.setCellStyle(csHeader);
 	}
 
-	private void addSingleCell(Cell cell, String value) {
-		cell.setCellValue(value);
+	private <T> void addSingleCell(Cell cell, T value) {
+		cell.setCellValue(value.toString());
+		cell.setCellStyle(csWrap);
 	}
 
-	private void addSingleCell(Cell cell, Integer value) {
-		cell.setCellValue(value);
-	}
-
-	private int addRepeatingCell(Cell cell, Set<String> set, int maxHeight) {
+	private <T> int addRepeatingCell(Cell cell, Collection<T> set, int maxHeight) {
 		
 		int currHeight = 0;
 		
 		cell.setCellStyle(csWrap);
 		StringBuffer cellvalue = new StringBuffer();
-		for (String value: set) {
+		for (T value: set) {
 			if (currHeight++ > 0) cellvalue.append("\n");
 			cellvalue.append(value);
 		}
@@ -142,9 +206,28 @@ public class TechExporter {
 		
 	}
 
+	private <S, T> int addRepeatingPairCell(Cell cell, Collection<IKeyValuePair<S, T>> list, int maxHeight) {
+		
+		int currHeight = 0;
+		
+		cell.setCellStyle(csWrap);
+		StringBuffer cellvalue = new StringBuffer();
+		for (IKeyValuePair<S, T> pair: list) {
+			if (currHeight > 0) cellvalue.append("\n");
+			cellvalue.append(pair.getKey() + "\n");
+			cellvalue.append(pair.getValue());
+			currHeight += 2;
+		}
+		cell.setCellValue(cellvalue.toString());
+		if (currHeight > maxHeight) maxHeight = currHeight;
+		
+		return maxHeight;
+		
+	}
+
 	private void createTechTreeSheet() {
 		
-		Sheet sheet = wb.createSheet(ITechInfoSpreadsheet.SHEETNAME_TREE);
+		Sheet sheet = wb.createSheet(ITechExporter.SHEETNAME_TREE);
 		
 		// Add the tech data
 		Row row;
@@ -194,7 +277,7 @@ public class TechExporter {
 	}
 	
 	private OutputStream getOutputStream(String ext) throws FileNotFoundException {
-		String outputFile = FileUtils.getNewExtension(props.getAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_TECHINFO_FILE), ext);
+		String outputFile = FileUtils.getNewExtension(props.getAppProperty(PropertyKeys.PROPERTY_KEY_INFOS_FILE), ext);
 		log.info("Writing output to: " + outputFile);
 		FileOutputStream output = new FileOutputStream(outputFile);
 		return output;
@@ -263,6 +346,7 @@ public class TechExporter {
 		// Create word wrap style for multi line cells
 		csWrap = wb.createCellStyle();
 		csWrap.setWrapText(true);
+		csWrap.setVerticalAlignment(VerticalAlignment.CENTER);
 
 }
 	
@@ -286,8 +370,6 @@ public class TechExporter {
     StringBuilder message = new StringBuilder("iGridX: " + info.getGridX());
     message.append("\niGridY: " + info.getGridY());
     message.append("\niCost: " + info.getCost());
-    message.append("\niAdvancedStartCost: " + info.getAdvancedStartCost());
-    message.append("\niAsset: " + info.getAsset());
     message.append("\nEra: " + info.getEra());
     if (!info.getOrPrereqs().isEmpty()) {
     	height++;

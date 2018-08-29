@@ -1,12 +1,6 @@
 package org.archid.civ4.main;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -27,7 +21,6 @@ import org.archid.civ4.info.InfosFactory.EInfos;
 import org.archid.civ4.info.techinfo.ITechInfo;
 import org.archid.civ4.info.techinfo.TechInfos;
 import org.archid.civ4.utils.KeyValuePair;
-import org.archid.civ4.utils.XmlPostProcessor;
 
 public class Tester {
 	
@@ -48,14 +41,14 @@ public class Tester {
 //			tester.buildTechs();
 //			tester.readTechs();
 //			tester.test2();
-//			tester.test3();
-			tester.test4();
+			tester.test3();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	private void buildTechs() throws JAXBException, XMLStreamException, FactoryConfigurationError {
 		
 		IInfos<ITechInfo> infos = new TechInfos();
@@ -92,7 +85,7 @@ public class Tester {
 		jaxbMarshaller.marshal(infos, System.out);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	private void readTechs() throws Exception {
 		File input = new File("E:/Projects/Civ4/tools/Java/Civ4TechInfos.xml");
 		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
@@ -114,7 +107,7 @@ public class Tester {
 		transformer.transform(new DOMSource(domResult.getNode()), new StreamResult(output));		
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	private void test2() throws Exception {
 		File input = new File("E:/Projects/Civ4/tools/Java/Civ4TechInfos.xml");
 		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
@@ -132,11 +125,7 @@ public class Tester {
 	}
 	
 	private void test3() {
-		XmlPostProcessor.tabifyAndComment("E:/Projects/Civ4/tools/Java/Out-Civ4TechInfos.xml", 4);
-	}
-	
-	private void test4() {
-		TechInfos infos = InfosFactory.getInfos(EInfos.TECH_INFOS, "E:/Projects/Civ4/tools/Java/Civ4TechInfos.xml");
+		TechInfos infos = InfosFactory.readInfos(EInfos.TECH_INFOS, "E:/Projects/Civ4/tools/Java/Civ4TechInfos.xml");
 		ITechInfo info = infos.getInfo("TECH_WOODWORKING");
 		info.setCanPassPeaks(true);
 		infos.addInfo(info);		

@@ -3,24 +3,24 @@ package org.archid.civ4.info.techinfo;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.commons.io.FileUtils;
+import java.util.List;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Comment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.archid.civ4.info.InfosFactory;
 import org.archid.civ4.info.InfosFactory.EInfos;
-import org.archid.civ4.utils.CollectionUtils;
+import org.archid.civ4.utils.FileUtils;
+import org.archid.civ4.utils.IKeyValuePair;
 import org.archid.civ4.utils.IPropertyHandler;
+import org.archid.civ4.utils.KeyValuePair;
 import org.archid.civ4.utils.PropertyHandler;
+import org.archid.civ4.utils.PropertyKeys;
 import org.archid.civ4.utils.StringUtils;
 
 public class TechImporter {
@@ -29,7 +29,7 @@ public class TechImporter {
 	static Logger log = Logger.getLogger(TechImporter.class.getName());
 	
 	private static IPropertyHandler props = PropertyHandler.getInstance();
-	private TechInfos xlsInfos = new TechInfos();
+	private TechInfos infos = new TechInfos();
 
 	public void importXLSX() {
 		
@@ -37,62 +37,23 @@ public class TechImporter {
 		parseXlsx();
 		try {
 			backupInfosFile();
-			updateInfosFile();
+			InfosFactory.writeInfos(EInfos.TECH_INFOS, props.getAppProperty(PropertyKeys.PROPERTY_KEY_INFOS_FILE), infos);
 		} catch (IOException e) {
 			log.error("Error backing up infos file ... aborting", e);
 		}
 	}
 	
-	private void updateInfosFile() {
-
-		TechInfos infos = InfosFactory.getInfos(EInfos.TECH_INFOS, props.getAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_TECHINFO_FILE));
-		
-		for (String xlsType: xlsInfos.getInfoTypes()) {
-			ITechInfo newInfo;
-			if (infos.containsInfo(xlsType)) {
-				newInfo = applyInfo(infos.getInfo(xlsType), xlsInfos.getInfo(xlsType));
-			} else {
-				newInfo = xlsInfos.getInfo(xlsType);
-			}
-			infos.addInfo(newInfo);
-		}
-		
-		InfosFactory.writeInfos(EInfos.TECH_INFOS, props.getAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_TECHINFO_FILE), infos);
-				
-	}
-
-	private ITechInfo applyInfo(ITechInfo fileInfo, ITechInfo xlsInfo) {
-		fileInfo.setGridX(xlsInfo.getGridX());
-		fileInfo.setGridY(xlsInfo.getGridY());
-		fileInfo.setCost(xlsInfo.getCost());
-		fileInfo.setAdvancedStartCost(xlsInfo.getAdvancedStartCost());
-		fileInfo.setAsset(xlsInfo.getAsset());
-		fileInfo.setEra(xlsInfo.getEra());
-		if (CollectionUtils.hasElements(xlsInfo.getOrPrereqs())) {
-			for (String prereq: xlsInfo.getOrPrereqs()) {
-				if (StringUtils.hasCharacters(prereq))
-					fileInfo.addOrPrereq(prereq);
-			}
-		}
-		if (CollectionUtils.hasElements(xlsInfo.getAndPrereqs())) {
-			for (String prereq: xlsInfo.getAndPrereqs()) {
-				if (StringUtils.hasCharacters(prereq))
-					fileInfo.addAndPrereq(prereq);
-			}
-		}
-		return fileInfo;
-	}
-
 	private void parseXlsx() {
-		
 		
 		// Open the spreadsheet and get the list of infos
 		Workbook wb = null;
 		try {
-			String filepath = props.getAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_IMPORT_XLSX);
+			String filepath = props.getAppProperty(PropertyKeys.PROPERTY_KEY_IMPORT_XLSX);
 			log.info("Reading workbook: " + filepath);
 			wb = new XSSFWorkbook(filepath);
-			Sheet sheet = wb.getSheet(ITechInfoSpreadsheet.SHEETNAME_TREE);
+			
+			// Get the iGridX and iGridY values from the tech tree
+			Sheet sheet = wb.getSheet(ITechExporter.SHEETNAME_TREE);
 			Iterator<Row> itRow = sheet.rowIterator();
 			while (itRow.hasNext()) {
 				Row row = itRow.next();
@@ -108,8 +69,125 @@ public class TechImporter {
 					info.setGridX(gridX);
 					Integer gridY = cell.getRowIndex() + 1;
 					info.setGridY(gridY);
-					xlsInfos.addInfo(parseComment(sheet.getCellComment(cell.getAddress()), info));
+					infos.addInfo(info);
 				}
+			}
+
+			// Get the rest of the values from the tech tree
+			sheet = wb.getSheet(ITechExporter.SHEETNAME_LIST);
+			itRow = sheet.rowIterator();
+			while (itRow.hasNext()) {
+				Row row = itRow.next();
+				int colNum = 0;
+				
+				String type = row.getCell(colNum++).getStringCellValue();
+				// Handle cells that have been moved
+				if (type.isEmpty())
+					continue;
+				ITechInfo info = infos.getInfo(type);
+				// Handle deleted techs
+				if (info == null)
+					continue;
+				info.setDescription(row.getCell(colNum++).getStringCellValue());
+				info.setCivilopedia(row.getCell(colNum++).getStringCellValue());
+				info.setHelp(row.getCell(colNum++).getStringCellValue());
+				info.setStrategy(row.getCell(colNum++).getStringCellValue());
+				info.setAdvisor(row.getCell(colNum++).getStringCellValue());
+				info.setAiWeight(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
+				info.setAiTradeModifier(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
+				info.setCost(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
+				info.setAdvancedStartCost(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
+				info.setAdvancedStartCostIncrease(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
+				info.setEra(row.getCell(colNum++).getStringCellValue());
+				info.setFirstFreeUnitClass(row.getCell(colNum++).getStringCellValue());
+				info.setFreeUnitClass(row.getCell(colNum++).getStringCellValue());
+				info.setFeatureProductionModifier(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
+				info.setWorkerSpeedModifier(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
+				info.setTradeRoutes(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
+				info.setHealth(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
+				info.setHappiness(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
+				info.setFirstFreeTechs(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
+				info.setAsset(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
+				info.setPower(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
+				info.setRepeat(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				info.setTrade(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				info.setEmbassyTrading(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				info.setFreeTradeAgreementTrading(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				info.setNonAggressionTrading(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				info.setDisable(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				info.setGoodyTech(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				info.setExtraWaterSeeFrom(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				info.setMapCentering(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				info.setMapVisible(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				info.setMapTrading(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				info.setTechTrading(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				info.setGoldTrading(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				info.setOpenBordersTrading(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				info.setLimitedBordersTrading(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				info.setDefensivePactTrading(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				info.setPermanentAllianceTrading(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				info.setVassalTrading(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				info.setBridgeBuilding(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				info.setIrrigation(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				info.setIgnoreIrrigation(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				info.setWaterWork(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				info.setCanPassPeaks(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				info.setMoveFastPeaks(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				info.setCanFoundOnPeaks(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				// We need to skip the iGridX & iGridY rows
+				colNum += 2;
+				for (IKeyValuePair<String, Integer> pair: parsePairs(row.getCell(colNum++))) {
+					info.addDomainExtraMove(pair);
+				}
+				for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+					if (StringUtils.hasCharacters(str))
+						info.addCommerceFlexible(Boolean.parseBoolean(str));
+				}
+				for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+					if (StringUtils.hasCharacters(str))
+						info.addTerrainTrade(str);
+				}
+				info.setRiverTrade(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				info.setCaptureCities(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				info.setUnitRangeUnbound(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				info.setUnitTerritoryUnbound(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+				info.setUnitRangeChange(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
+				info.setUnitRangeModifier(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
+				info.setCultureDefenceModifier(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
+				for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+					if (StringUtils.hasCharacters(str))
+						info.addForestPlotYieldChange(Integer.parseInt(str));
+				}
+				for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+					if (StringUtils.hasCharacters(str))
+						info.addRiverPlotYieldChange(Integer.parseInt(str));
+				}
+				for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+					if (StringUtils.hasCharacters(str))
+						info.addSeaPlotYieldChange(Integer.parseInt(str));
+				}
+				for (IKeyValuePair<String, Integer> pair: parsePairs(row.getCell(colNum++))) {
+					info.addWorldViewRevoltTurnChange(pair);
+				}
+				for (IKeyValuePair<String, Integer> pair: parsePairs(row.getCell(colNum++))) {
+					info.addFlavor(pair);
+				}
+				for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+					if (StringUtils.hasCharacters(str))
+						info.addOrPrereq(str);
+				}
+				for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+					if (StringUtils.hasCharacters(str))
+						info.addAndPrereq(str);
+				}
+				for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+					if (StringUtils.hasCharacters(str))
+						info.addEnabledWorldViews(str);
+				}
+				info.setQuote(row.getCell(colNum++).getStringCellValue());
+				info.setSound(row.getCell(colNum++).getStringCellValue());
+				info.setSoundMP(row.getCell(colNum++).getStringCellValue());
+				info.setButton(row.getCell(colNum++).getStringCellValue());
 			}
 		} catch (IOException e) {
 			log.error("Error opening workbook", e);
@@ -124,6 +202,26 @@ public class TechImporter {
 		}
 	}
 	
+	private List<IKeyValuePair<String, Integer>> parsePairs(Cell cell) {
+		List<IKeyValuePair<String, Integer>> list = new ArrayList<IKeyValuePair<String, Integer>>();
+		String[] arr = cell.getStringCellValue().split("\n");
+		if (arr.length > 1) {
+			boolean first = true;
+			String str = null;
+			for (String val: arr) {
+				if (StringUtils.hasCharacters(val)) {
+					if (first) {
+						str = val;
+					} else {
+						list.add(new KeyValuePair<String, Integer>(str, Integer.parseInt(val)));
+					}
+					first = !first;
+				}
+			}
+		}
+		return list;
+	}
+	
 	private Integer getGridXFromCell(Cell cell) {
 		Integer gridX = 0;
 		Integer colIndex = cell.getColumnIndex();
@@ -135,68 +233,16 @@ public class TechImporter {
 		return ++gridX;
 	}
 
-	private ITechInfo parseComment(Comment comment, ITechInfo info) {
-		String text = comment.getString().getString();
-		String[] lines = text.split("\\r?\\n");
-		Pattern patternCost = Pattern.compile("iCost: (\\d+)");
-		Pattern patternAdvStartCost = Pattern.compile("iAdvancedStartCost: (\\d+)");
-		Pattern patternAsset = Pattern.compile("iAsset: (\\d+)");
-		Pattern patternEra = Pattern.compile("Era: ([A-Za-z_]+)");
-		Pattern patternOr = Pattern.compile("OrTechPrereqs:");
-		Pattern patternAnd = Pattern.compile("AndTechPrereqs:");
-		Pattern patternTech = Pattern.compile("\\s*?([A-Z_]+)");
-		boolean bOr = false;
-		for (String line: lines) {
-			Matcher matcherCost = patternCost.matcher(line);
-			if (matcherCost.matches()) {
-				info.setCost(Integer.parseInt(matcherCost.group(1)));
-				continue;
-			}
-			Matcher matcherAdvStartCost = patternAdvStartCost.matcher(line);
-			if (matcherAdvStartCost.matches()) {
-				info.setAdvancedStartCost(Integer.parseInt(matcherAdvStartCost.group(1)));
-				continue;
-			}
-			Matcher matcherAsset = patternAsset.matcher(line);
-			if (matcherAsset.matches()) {
-				info.setAsset(Integer.parseInt(matcherAsset.group(1)));
-				continue;
-			}
-			Matcher matcherEra = patternEra.matcher(line);
-			if (matcherEra.matches()) {
-				info.setEra(matcherEra.group(1));
-				continue;
-			}
-			Matcher matcherOr = patternOr.matcher(line);
-			if (matcherOr.matches()) {
-				bOr = true;
-				continue;
-			}
-			Matcher matcherAnd = patternAnd.matcher(line);
-			if (matcherAnd.matches()) {
-				bOr = false;
-				continue;
-			}
-			Matcher matcherTech = patternTech.matcher(line);
-			if (matcherTech.matches()) {
-				if (bOr)
-					info.addOrPrereq(matcherTech.group(1));
-				else
-					info.addAndPrereq(matcherTech.group(1));
-				continue;
-			}
-		}
-		return info;
-	}
-
 	private void backupInfosFile() throws IOException {
-		String filepath = props.getAppProperty(TechUtilsPropertyKeys.PROPERTY_KEY_TECHINFO_FILE);
+		String srcpath = props.getAppProperty(PropertyKeys.PROPERTY_KEY_INFOS_FILE);
+		File src = new File(srcpath);
+		if (!src.exists()) return;
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
-		String copyFile = filepath + "." + sdf.format(cal.getTime());
-		log.info("Backing up original file to: " + copyFile);
+		String destpath = srcpath + "." + sdf.format(cal.getTime());
+		log.info("Backing up original file to: " + destpath);
 
-		File source = new File(copyFile);
-		FileUtils.copyFile(new File(filepath), source);
+		File dest = new File(destpath);
+		FileUtils.copyFile(src, dest);
 	}
 }

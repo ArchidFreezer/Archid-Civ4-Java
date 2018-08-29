@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -30,7 +28,7 @@ public class TechInfos extends AbstractInfos<ITechInfo> {
 
 	@Override
 	public void setInfoMap(Map<String, ITechInfo> infos) {
-		this.infos = new TreeMap<String, ITechInfo>(infos);
+		this.infos = infos;
 	}
 	
 	public static ITechInfo createInfo(String type) {
@@ -1137,5 +1135,6 @@ public class TechInfos extends AbstractInfos<ITechInfo> {
 		public void setStrategy(String strategy) {
 			this.strategy = strategy;
 		}
+
 	}
 }
