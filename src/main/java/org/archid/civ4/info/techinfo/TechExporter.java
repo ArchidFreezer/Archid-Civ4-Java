@@ -1,11 +1,6 @@
 package org.archid.civ4.info.techinfo;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,66 +8,31 @@ import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.ClientAnchor;
-import org.apache.poi.ss.usermodel.Comment;
-import org.apache.poi.ss.usermodel.CreationHelper;
-import org.apache.poi.ss.usermodel.Drawing;
 import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.RichTextString;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.VerticalAlignment;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.archid.civ4.info.InfosFactory;
+import org.archid.civ4.info.AbstractExporter;
+import org.archid.civ4.info.IInfos;
 import org.archid.civ4.info.InfosFactory.EInfos;
-import org.archid.civ4.info.techinfo.ITechExporter.SheetHeaders;
-import org.archid.civ4.utils.FileUtils;
-import org.archid.civ4.utils.IKeyValuePair;
-import org.archid.civ4.utils.IPropertyHandler;
-import org.archid.civ4.utils.PropertyHandler;
-import org.archid.civ4.utils.PropertyKeys;
 
-public class TechExporter {
+public class TechExporter extends AbstractExporter<IInfos<ITechInfo>, ITechInfo> implements ITechExporter {
 	
 	/** Logging facility */
 	static Logger log = Logger.getLogger(TechExporter.class.getName());
 	
-	private static IPropertyHandler props = PropertyHandler.getInstance();
-
-	private Workbook wb = null;
-	private CellStyle csWrap = null;
-	private CellStyle csHeader = null;
-
-	private TechInfos infos;
 	private Map<Integer, CellStyle> backgrounds;
 	
-	public TechExporter() {
-		infos = InfosFactory.readInfos(EInfos.TECH_INFOS, props.getAppProperty(PropertyKeys.PROPERTY_KEY_INFOS_FILE));
-		
-		wb = new XSSFWorkbook();
-		preCreateCellStyles();
+	public TechExporter(EInfos infoEnum) {
+		super(infoEnum);
 	}
 
-	public void createXLSX() {
-		try {
-			
-			createTechTreeSheet();
-			createTechListSheet();
-			
-			OutputStream output = getOutputStream("xlsx");
-			wb.write(output);
-			output.close();
-			wb.close();
-		} catch (IOException e) {
-			log.error("Error creating XLSX", e);
-		}
-		
+	protected void createSheets() {
+		super.createSheets();
+		createTechTreeSheet();
 	}
 	
-	private void createTechListSheet() {
+	protected void createInfoListSheet() {
 
 		Sheet sheet = wb.createSheet(ITechExporter.SHEETNAME_LIST);
 		
@@ -172,59 +132,6 @@ public class TechExporter {
 		}
 	}
 
-	private void createSheetHeaders(Row row) {
-		int colNum = 0;
-		for (SheetHeaders header: SheetHeaders.values()) {
-			addHeaderCell(row.createCell(colNum++), header.toString());
-		}
-	}
-
-	private void addHeaderCell(Cell cell, String value) {
-		addSingleCell(cell, value);
-		cell.setCellStyle(csHeader);
-	}
-
-	private <T> void addSingleCell(Cell cell, T value) {
-		cell.setCellValue(value.toString());
-		cell.setCellStyle(csWrap);
-	}
-
-	private <T> int addRepeatingCell(Cell cell, Collection<T> set, int maxHeight) {
-		
-		int currHeight = 0;
-		
-		cell.setCellStyle(csWrap);
-		StringBuffer cellvalue = new StringBuffer();
-		for (T value: set) {
-			if (currHeight++ > 0) cellvalue.append("\n");
-			cellvalue.append(value);
-		}
-		cell.setCellValue(cellvalue.toString());
-		if (currHeight > maxHeight) maxHeight = currHeight;
-		
-		return maxHeight;
-		
-	}
-
-	private <S, T> int addRepeatingPairCell(Cell cell, Collection<IKeyValuePair<S, T>> list, int maxHeight) {
-		
-		int currHeight = 0;
-		
-		cell.setCellStyle(csWrap);
-		StringBuffer cellvalue = new StringBuffer();
-		for (IKeyValuePair<S, T> pair: list) {
-			if (currHeight > 0) cellvalue.append("\n");
-			cellvalue.append(pair.getKey() + "\n");
-			cellvalue.append(pair.getValue());
-			currHeight += 2;
-		}
-		cell.setCellValue(cellvalue.toString());
-		if (currHeight > maxHeight) maxHeight = currHeight;
-		
-		return maxHeight;
-		
-	}
-
 	private void createTechTreeSheet() {
 		
 		Sheet sheet = wb.createSheet(ITechExporter.SHEETNAME_TREE);
@@ -276,14 +183,9 @@ public class TechExporter {
 		return (--gridX * 2);
 	}
 	
-	private OutputStream getOutputStream(String ext) throws FileNotFoundException {
-		String outputFile = FileUtils.getNewExtension(props.getAppProperty(PropertyKeys.PROPERTY_KEY_INFOS_FILE), ext);
-		log.info("Writing output to: " + outputFile);
-		FileOutputStream output = new FileOutputStream(outputFile);
-		return output;
-	}
-	
-	private void preCreateCellStyles() {
+	protected void preCreateCellStyles() {
+		
+		super.preCreateCellStyles();
 		
 		// Create the coloured backgrounds for the tech tree
 		backgrounds = new HashMap<Integer, CellStyle>();
@@ -332,22 +234,6 @@ public class TechExporter {
 		style.setFillForegroundColor(IndexedColors.TEAL.getIndex());
 		backgrounds.put(10, style);
 		
-		// Create the list header style
-		Font headerFont = wb.createFont();
-		headerFont.setFontHeightInPoints((short) 11);
-		headerFont.setBold(true);
-		headerFont.setColor(IndexedColors.DARK_BLUE.getIndex());
-		csHeader = wb.createCellStyle();
-		csHeader.setFont(headerFont);
-		csHeader.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-		csHeader.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-
-		
-		// Create word wrap style for multi line cells
-		csWrap = wb.createCellStyle();
-		csWrap.setWrapText(true);
-		csWrap.setVerticalAlignment(VerticalAlignment.CENTER);
-
 }
 	
 	private CellStyle getStyle(int index) {
@@ -360,55 +246,33 @@ public class TechExporter {
 		return backgrounds.get(index);
 	}
 	
-	private void setCellComment(Cell cell, ITechInfo info) {
-    Drawing<?> drawing = cell.getSheet().createDrawingPatriarch();
-    CreationHelper factory = cell.getSheet().getWorkbook().getCreationHelper();
-
-    ClientAnchor anchor = factory.createClientAnchor();
-    
-    int height = 6;
+	protected String getCellMessage(ITechInfo info) {
     StringBuilder message = new StringBuilder("iGridX: " + info.getGridX());
     message.append("\niGridY: " + info.getGridY());
     message.append("\niCost: " + info.getCost());
     message.append("\nEra: " + info.getEra());
     if (!info.getOrPrereqs().isEmpty()) {
-    	height++;
     	message.append("\nOrTechPrereqs:");
 	    for (String prereq: info.getOrPrereqs()) {
-	    	height++;
 	    	message.append("\n  " + prereq);
 	    }
     }
     if (!info.getAndPrereqs().isEmpty()) {
-    	height++;
     	message.append("\nAndTechPrereqs:");
 	    for (String prereq: info.getAndPrereqs()) {
-	    	height++;
 	    	message.append("\n  " + prereq);
 	    }
     }
-
-    int width = 2;
-    anchor.setCol1(cell.getColumnIndex());
-    anchor.setCol2(cell.getColumnIndex() + width);
-    anchor.setRow1(cell.getRowIndex());
-    anchor.setRow2(cell.getRowIndex() + height);
-    anchor.setDx1(100);
-    anchor.setDx2(100);
-    anchor.setDy1(100);
-    anchor.setDy2(100);
-
-
-    try {
-			Comment comment = drawing.createCellComment(anchor);
-	    RichTextString str = factory.createRichTextString(message.toString());
-	    comment.setString(str);
-	    cell.setCellComment(comment);		
-    }
-    catch (Exception e) {
-    	log.error("Error creating cell comment for tech: " + info.getType() + "(" + info.getGridX() + "," + info.getGridY() + ") - comment likely to be incorrect", e);
-    }
-
+    return message.toString();
+	}
+	
+	@Override
+	public List<String> getHeaders() {
+		List<String> headers = new ArrayList<>();
+		for (SheetHeaders header: SheetHeaders.values()) {
+			headers.add(header.toString());
+		}
+		return headers;
 	}
 	
 }

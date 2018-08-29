@@ -11,8 +11,9 @@ import org.apache.commons.cli.ParseException;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import org.archid.civ4.info.techinfo.TechExporter;
-import org.archid.civ4.info.techinfo.TechImporter;
+import org.archid.civ4.info.ExporterFactory;
+import org.archid.civ4.info.ImporterFactory;
+import org.archid.civ4.info.InfosFactory.EInfos;
 import org.archid.civ4.utils.IPropertyHandler;
 import org.archid.civ4.utils.PropertyHandler;
 import org.archid.civ4.utils.PropertyKeys;
@@ -32,22 +33,6 @@ public class InfoUtils {
 	private CommandLine cmd = null;
 	private IPropertyHandler props = PropertyHandler.getInstance();
 	
-	public InfoUtils(String[] args) {
-		this.args = args;
-		
-		OptionGroup actions = new OptionGroup();
-		actions.setRequired(true);
-		actions.addOption(Option.builder("i").longOpt("import").hasArg(true).argName("XLSX").desc("Import XLSX file").build());
-		actions.addOption(Option.builder("x").longOpt("export").hasArg(false).desc("Create XLSX file").build());
-
-		options.addOption(Option.builder("f").longOpt("file").required().hasArg(true).argName("FILE").desc("Civ4xxxInfos.xml path").build());
-		options.addOption(Option.builder("o").longOpt("outputDir").hasArg(true).argName("Dir").desc("Directory to create the output in").build());
-		options.addOption(Option.builder("p").longOpt("prefix").hasArg(true).argName("Prefix").desc("Prefix of output file").build());
-		options.addOptionGroup(actions);
-		options.addOption("h", "help", false, "display usage");
-
-	}
-
 	/**
 	 * @param args
 	 */
@@ -58,30 +43,51 @@ public class InfoUtils {
 		
 		InfoUtils app = new InfoUtils(args);
 		app.parse();
-
 	}
 	
-	public void parse() {
+	private InfoUtils(String[] args) {
+		this.args = args;
 		
+		OptionGroup actions = new OptionGroup();
+		actions.setRequired(true);
+		actions.addOption(Option.builder("i").longOpt("import").hasArg(true).argName("XLSX").desc("Import XLSX file").build());
+		actions.addOption(Option.builder("x").longOpt("export").hasArg(false).desc("Create XLSX file").build());
+
+		options.addOption(Option.builder("f").longOpt("file").required().hasArg(true).argName("FILE").desc("Civ4xxxInfos.xml path").build());
+		options.addOption(Option.builder("o").longOpt("outputDir").hasArg(true).argName("Dir").desc("Directory to create the output in").build());
+		options.addOption(Option.builder("p").longOpt("prefix").hasArg(true).argName("Prefix").desc("Prefix of output file").build());
+		options.addOption(Option.builder("t").longOpt("type").required().hasArg(true).argName("Info Type").desc("Tech, Building or Unit").build());
+		options.addOptionGroup(actions);
+		options.addOption("h", "help", false, "display usage");
+	}
+
+	private void parse() {		
 		CommandLineParser parser = new DefaultParser();
 		try {
+			EInfos infoType = null;
 			cmd = parser.parse(options, args);
 			
 			if (cmd.hasOption("f"))
 				props.setAppProperty(PropertyKeys.PROPERTY_KEY_INFOS_FILE, cmd.getOptionValue("f"));
 			if (cmd.hasOption("p"))
 				props.setAppProperty(PropertyKeys.PROPERTY_KEY_PREFIX, cmd.getOptionValue("p"));
+			if (cmd.hasOption("t")) {
+				if (cmd.getOptionValue("t").equalsIgnoreCase("tech"))
+					infoType = EInfos.TECH_INFOS;
+				else
+					log.error("Processing of type " + cmd.getOptionValue("t") + " is not implemented yet");	
+			}
 
-			if (cmd.hasOption("x")) {
+			if (cmd.hasOption("x") && infoType != null) {
 				if (cmd.hasOption("o")) {
 					props.setAppProperty(PropertyKeys.PROPERTY_KEY_OUTPUT_DIR, cmd.getOptionValue("o"));
-					new TechExporter().createXLSX();
+					ExporterFactory.getExporter(infoType).createXLSX();
 				} else {
 					log.error("An output dir must be provided using the 'o' argument to export to xlsx");
 				}
-			}	else if (cmd.hasOption("i")) {
+			}	else if (cmd.hasOption("i") && infoType != null) {
 				props.setAppProperty(PropertyKeys.PROPERTY_KEY_IMPORT_XLSX, cmd.getOptionValue("i"));
-				new TechImporter().importXLSX();					
+				ImporterFactory.getImporter(infoType).importXLSX();
 			}
 			
 			if (cmd.hasOption("h")) {
@@ -92,7 +98,6 @@ public class InfoUtils {
 			System.out.println( "Parsing exception: " + exp.getMessage() );
 			printHelp(options);
 		}
-
 	}
 	
 	private static void printHelp(final Options options) {

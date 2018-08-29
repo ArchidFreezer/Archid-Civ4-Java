@@ -23,9 +23,23 @@ public class InfosFactory {
 	/** Logging facility */
 	static Logger log = Logger.getLogger(InfosFactory.class.getName());
 	
-	public enum EInfos { TECH_INFOS	}
+	public static enum EInfos { TECH_INFOS	}
 
 	private static String newline = System.getProperty("line.separator");
+	
+	@SuppressWarnings("unchecked")
+	public static <T extends IInfos<S>, S extends IInfo> T getInfos(EInfos infoType) {
+		T infos = null;
+		switch(infoType) {
+		case TECH_INFOS:
+			infos = (T) new TechInfos();
+			break;
+		default:
+			log.error("Error getting infos file: unknown info type");
+			break;
+		}
+		return infos;
+	}
 
 	@SuppressWarnings("unchecked")
 	public static <T extends IInfos<S>, S extends IInfo> T readInfos(EInfos infoType, String xmlPath) {
