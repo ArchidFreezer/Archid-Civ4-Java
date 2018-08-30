@@ -32,7 +32,7 @@ public class TechExporter extends AbstractExporter<IInfos<ITechInfo>, ITechInfo>
 		createTechTreeSheet();
 	}
 	
-	protected void createInfoListSheet() {
+	protected Sheet createInfoListSheet() {
 
 		Sheet sheet = wb.createSheet(ITechExporter.SHEETNAME_LIST);
 		
@@ -130,6 +130,8 @@ public class TechExporter extends AbstractExporter<IInfos<ITechInfo>, ITechInfo>
 		for (int i = 0; i < colNum; i++) {
 			sheet.autoSizeColumn(i);
 		}
+		
+		return sheet;
 	}
 
 	private void createTechTreeSheet() {

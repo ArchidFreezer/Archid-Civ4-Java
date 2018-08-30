@@ -66,7 +66,7 @@ public class StringUtils {
 			if(isLastSpace)
 			{
 				// Character need to be converted to uppercase
-				builder.setCharAt(i, (char)(ch + ('A' - 'a') ));
+				builder.setCharAt(i, Character.isLetter(ch) ? (char)(ch + ('A' - 'a') ) : ch);
 				isLastSpace = false;
 			}
 			else if (ch != delim)
@@ -106,7 +106,7 @@ public class StringUtils {
 			if(isLastSpace)
 			{
 				// Character need to be converted to uppercase
-				output.append((char)(ch + ('A' - 'a') ));
+				output.append(Character.isLetter(ch) ? (char)(ch + ('A' - 'a') ) : ch);
 				isLastSpace = false;
 			}	else if (ch != delim) {
 				output.append(ch);
@@ -144,8 +144,8 @@ public class StringUtils {
 			
 			if(isLastSpace)
 			{
-				// Character need to be converted to uppercase
-				output.append((char)(ch + ('A' - 'a') ));
+				// Character need to be converted to uppercase if it is a letter
+				output.append(Character.isLetter(ch) ? (char)(ch + ('A' - 'a') ) : ch);
 				isLastSpace = false;
 			}	else if (ch != delim) {
 				output.append(ch);

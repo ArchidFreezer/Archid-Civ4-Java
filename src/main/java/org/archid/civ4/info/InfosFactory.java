@@ -102,7 +102,7 @@ public class InfosFactory {
 	private static void tabifyAndComment(String filePath, int count) {
 		
 		Pattern patternInfoStart = Pattern.compile(".*<[a-zA-Z]+Info>\\s*");
-		Pattern patternType = Pattern.compile(".*<Type>([a-zA-Z_]+).*");
+		Pattern patternType = Pattern.compile(".*<Type>([a-zA-Z0-9_]+).*");
 		
 		
 		StringBuffer replace = new StringBuffer();

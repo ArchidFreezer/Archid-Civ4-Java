@@ -18,6 +18,7 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.RichTextString;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -73,7 +74,7 @@ public abstract class AbstractExporter<T extends IInfos<S>, S extends IInfo> imp
 		createInfoListSheet();
 	}
 	
-	protected abstract void createInfoListSheet();
+	protected abstract Sheet createInfoListSheet();
 
 	protected void preCreateCellStyles() {
 		
