@@ -31,7 +31,7 @@ import org.archid.civ4.utils.PropertyKeys;
 public abstract class AbstractExporter<T extends IInfos<S>, S extends IInfo> implements IExporter {
 
 	/** Logging facility */
-	static Logger log = Logger.getLogger(AbstractImporter.class.getName());
+	static Logger log = Logger.getLogger(AbstractExporter.class.getName());
 
 	protected static IPropertyHandler props = PropertyHandler.getInstance();
 	protected T infos;

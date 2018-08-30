@@ -378,7 +378,7 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 			tech.setAiWeight(JaxbUtils.unmarshallInteger(aTech.aiWeight));
 			tech.setAiTradeModifier(JaxbUtils.unmarshallInteger(aTech.aiTradeModifier));
 			tech.setCost(JaxbUtils.unmarshallInteger(aTech.cost));
-			tech.setAdvancedStartCost(aTech.advancedStartCost);
+			tech.setAdvancedStartCost(JaxbUtils.unmarshallInteger(aTech.advancedStartCost));
 			tech.setAdvancedStartCostIncrease(JaxbUtils.unmarshallInteger(aTech.advancedStartCostIncrease));
 			tech.setEra(JaxbUtils.unmarshallString(aTech.era));
 			tech.setFirstFreeUnitClass(JaxbUtils.unmarshallString(aTech.firstFreeUnitClass));
