@@ -70,6 +70,8 @@ public class InfoUtils {
 			if (cmd.hasOption("t")) {
 				if (cmd.getOptionValue("t").equalsIgnoreCase("tech"))
 					infoType = EInfos.TECH_INFOS;
+				if (cmd.getOptionValue("t").equalsIgnoreCase("era"))
+					infoType = EInfos.ERA_INFOS;
 				else
 					log.error("Processing of type " + cmd.getOptionValue("t") + " is not implemented yet");	
 			}

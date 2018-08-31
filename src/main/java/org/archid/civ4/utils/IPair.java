@@ -7,37 +7,37 @@ package org.archid.civ4.utils;
  * 
  * @author jim
  *
- * @param <S> Object type of the key
- * @param <T> Object type of the value
+ * @param <K> Object type of the key
+ * @param <V> Object type of the value
  */
-public interface IKeyValuePair <S, T> {
+public interface IPair <K, V> {
 	
 	/**
 	 * Sets the key of the pair
 	 * 
 	 * @param key value to set as the key
 	 */
-	void setKey(S key);
+	void setKey(K key);
 	
 	/**
 	 * Gets the key of the pair
 	 * 
 	 * @return key
 	 */
-	public S getKey();
+	public K getKey();
 	
 	/**
 	 * Sets the value of the pair
 	 * 
 	 * @param value value to set
 	 */
-	void setValue(T value);
+	void setValue(V value);
 	
 	/**
 	 * Gets the value of the pair
 	 * 
 	 * @return value object
 	 */
-	public T getValue();
+	public V getValue();
 
 }

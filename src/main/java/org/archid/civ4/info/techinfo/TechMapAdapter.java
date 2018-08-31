@@ -15,8 +15,8 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.archid.civ4.utils.CollectionUtils;
-import org.archid.civ4.utils.IKeyValuePair;
-import org.archid.civ4.utils.KeyValuePair;
+import org.archid.civ4.utils.IPair;
+import org.archid.civ4.utils.Pair;
 import org.archid.civ4.utils.StringUtils;
 import org.archid.civ4.utils.JaxbUtils;
 
@@ -210,301 +210,301 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 
 	@Override
 	public TechMap marshal(Map<String, ITechInfo> v) throws Exception {
-		TechMap techMap = new TechMap();
-		for (ITechInfo tech: v.values()) {
-			AdaptedTech aTech = new AdaptedTech();
-			aTech.type = tech.getType();
-			aTech.description = tech.getDescription();
-			aTech.civilopedia = JaxbUtils.marshallString(tech.getCivilopedia());
-			aTech.help = JaxbUtils.marshallString(tech.getHelp());
-			aTech.strategy = JaxbUtils.marshallString(tech.getStrategy());
-			aTech.advisor = tech.getAdvisor();
-			aTech.aiWeight = JaxbUtils.marshallInteger(tech.getAiWeight());
-			aTech.aiTradeModifier = JaxbUtils.marshallInteger(tech.getAiTradeModifier());
-			aTech.cost = tech.getCost();
-			aTech.advancedStartCost = tech.getAdvancedStartCost();
-			aTech.advancedStartCostIncrease = JaxbUtils.marshallInteger(tech.getAdvancedStartCostIncrease());
-			aTech.era = tech.getEra();
-			aTech.firstFreeUnitClass = JaxbUtils.marshallString(tech.getFirstFreeUnitClass());
-			aTech.freeUnitClass = JaxbUtils.marshallString(tech.getFreeUnitClass());
-			aTech.featureProductionModifier = JaxbUtils.marshallInteger(tech.getFeatureProductionModifier());
-			aTech.workerSpeedModifier = JaxbUtils.marshallInteger(tech.getWorkerSpeedModifier());
-			aTech.tradeRoutes = JaxbUtils.marshallInteger(tech.getTradeRoutes());
-			aTech.health = JaxbUtils.marshallInteger(tech.getHealth());
-			aTech.happiness = JaxbUtils.marshallInteger(tech.getHappiness());
-			aTech.firstFreeTechs = JaxbUtils.marshallInteger(tech.getFirstFreeTechs());
-			aTech.asset = tech.getAsset();
-			aTech.power = JaxbUtils.marshallInteger(tech.getPower());
-			aTech.repeat = JaxbUtils.marshallBoolean(tech.isRepeat());
-			aTech.trade = JaxbUtils.marshallBoolean(tech.isTrade());
-			aTech.embassyTrading = JaxbUtils.marshallBoolean(tech.isEmbassyTrading());
-			aTech.freeTradeAgreementTrading = JaxbUtils.marshallBoolean(tech.isFreeTradeAgreementTrading());
-			aTech.nonAggressionTrading = JaxbUtils.marshallBoolean(tech.isNonAggressionTrading());
-			aTech.disable = JaxbUtils.marshallBoolean(tech.isDisable());
-			aTech.goodyTech = JaxbUtils.marshallBoolean(tech.isGoodyTech());
-			aTech.extraWaterSeeFrom = JaxbUtils.marshallBoolean(tech.isExtraWaterSeeFrom());
-			aTech.mapCentering = JaxbUtils.marshallBoolean(tech.isMapCentering());
-			aTech.mapVisible = JaxbUtils.marshallBoolean(tech.isMapVisible());
-			aTech.mapTrading = JaxbUtils.marshallBoolean(tech.isMapTrading());
-			aTech.techTrading = JaxbUtils.marshallBoolean(tech.isTechTrading());
-			aTech.goldTrading = JaxbUtils.marshallBoolean(tech.isGoldTrading());
-			aTech.openBordersTrading = JaxbUtils.marshallBoolean(tech.isOpenBordersTrading());
-			aTech.limitedBordersTrading = JaxbUtils.marshallBoolean(tech.isLimitedBordersTrading());
-			aTech.defensivePactTrading = JaxbUtils.marshallBoolean(tech.isDefensivePactTrading());
-			aTech.permanentAllianceTrading = JaxbUtils.marshallBoolean(tech.isPermanentAllianceTrading());
-			aTech.vassalTrading = JaxbUtils.marshallBoolean(tech.isVassalTrading());
-			aTech.bridgeBuilding = JaxbUtils.marshallBoolean(tech.isBridgeBuilding());
-			aTech.irrigation = JaxbUtils.marshallBoolean(tech.isIrrigation());
-			aTech.ignoreIrrigation = JaxbUtils.marshallBoolean(tech.isIgnoreIrrigation());
-			aTech.waterWork = JaxbUtils.marshallBoolean(tech.isWaterWork());
-			aTech.canPassPeaks = JaxbUtils.marshallBoolean(tech.isCanPassPeaks());
-			aTech.moveFastPeaks = JaxbUtils.marshallBoolean(tech.isMoveFastPeaks());
-			aTech.canFoundOnPeaks = JaxbUtils.marshallBoolean(tech.isCanFoundOnPeaks());
-			aTech.gridX = tech.getGridX();
-			aTech.gridY = tech.getGridY();
-			aTech.riverTrade = JaxbUtils.marshallBoolean(tech.isRiverTrade());
-			aTech.captureCities = JaxbUtils.marshallBoolean(tech.isCaptureCites());
-			aTech.unitRangeUnbound = JaxbUtils.marshallBoolean(tech.isUnitRangeUnbound());
-			aTech.unitTerritoryUnbound = JaxbUtils.marshallBoolean(tech.isUnitTerritoryUnbound());
-			aTech.unitRangeChange = JaxbUtils.marshallInteger(tech.getUnitRangeChange());
-			aTech.unitRangeModifier = JaxbUtils.marshallInteger(tech.getUnitRangeModifier());
-			aTech.cultureDefenceModifier = JaxbUtils.marshallInteger(tech.getCultureDefenceModifier());
-			aTech.quote = JaxbUtils.marshallString(tech.getQuote());
-			aTech.sound = JaxbUtils.marshallString(tech.getSound());
-			aTech.soundMP = JaxbUtils.marshallString(tech.getSoundMP());
-			aTech.button = tech.getButton();
+		TechMap map = new TechMap();
+		for (ITechInfo info: v.values()) {
+			AdaptedTech aInfo = new AdaptedTech();
+			aInfo.type = info.getType();
+			aInfo.description = info.getDescription();
+			aInfo.civilopedia = JaxbUtils.marshallString(info.getCivilopedia());
+			aInfo.help = JaxbUtils.marshallString(info.getHelp());
+			aInfo.strategy = JaxbUtils.marshallString(info.getStrategy());
+			aInfo.advisor = info.getAdvisor();
+			aInfo.aiWeight = JaxbUtils.marshallInteger(info.getAiWeight());
+			aInfo.aiTradeModifier = JaxbUtils.marshallInteger(info.getAiTradeModifier());
+			aInfo.cost = info.getCost();
+			aInfo.advancedStartCost = info.getAdvancedStartCost();
+			aInfo.advancedStartCostIncrease = JaxbUtils.marshallInteger(info.getAdvancedStartCostIncrease());
+			aInfo.era = info.getEra();
+			aInfo.firstFreeUnitClass = JaxbUtils.marshallString(info.getFirstFreeUnitClass());
+			aInfo.freeUnitClass = JaxbUtils.marshallString(info.getFreeUnitClass());
+			aInfo.featureProductionModifier = JaxbUtils.marshallInteger(info.getFeatureProductionModifier());
+			aInfo.workerSpeedModifier = JaxbUtils.marshallInteger(info.getWorkerSpeedModifier());
+			aInfo.tradeRoutes = JaxbUtils.marshallInteger(info.getTradeRoutes());
+			aInfo.health = JaxbUtils.marshallInteger(info.getHealth());
+			aInfo.happiness = JaxbUtils.marshallInteger(info.getHappiness());
+			aInfo.firstFreeTechs = JaxbUtils.marshallInteger(info.getFirstFreeTechs());
+			aInfo.asset = info.getAsset();
+			aInfo.power = JaxbUtils.marshallInteger(info.getPower());
+			aInfo.repeat = JaxbUtils.marshallBoolean(info.isRepeat());
+			aInfo.trade = JaxbUtils.marshallBoolean(info.isTrade());
+			aInfo.embassyTrading = JaxbUtils.marshallBoolean(info.isEmbassyTrading());
+			aInfo.freeTradeAgreementTrading = JaxbUtils.marshallBoolean(info.isFreeTradeAgreementTrading());
+			aInfo.nonAggressionTrading = JaxbUtils.marshallBoolean(info.isNonAggressionTrading());
+			aInfo.disable = JaxbUtils.marshallBoolean(info.isDisable());
+			aInfo.goodyTech = JaxbUtils.marshallBoolean(info.isGoodyTech());
+			aInfo.extraWaterSeeFrom = JaxbUtils.marshallBoolean(info.isExtraWaterSeeFrom());
+			aInfo.mapCentering = JaxbUtils.marshallBoolean(info.isMapCentering());
+			aInfo.mapVisible = JaxbUtils.marshallBoolean(info.isMapVisible());
+			aInfo.mapTrading = JaxbUtils.marshallBoolean(info.isMapTrading());
+			aInfo.techTrading = JaxbUtils.marshallBoolean(info.isTechTrading());
+			aInfo.goldTrading = JaxbUtils.marshallBoolean(info.isGoldTrading());
+			aInfo.openBordersTrading = JaxbUtils.marshallBoolean(info.isOpenBordersTrading());
+			aInfo.limitedBordersTrading = JaxbUtils.marshallBoolean(info.isLimitedBordersTrading());
+			aInfo.defensivePactTrading = JaxbUtils.marshallBoolean(info.isDefensivePactTrading());
+			aInfo.permanentAllianceTrading = JaxbUtils.marshallBoolean(info.isPermanentAllianceTrading());
+			aInfo.vassalTrading = JaxbUtils.marshallBoolean(info.isVassalTrading());
+			aInfo.bridgeBuilding = JaxbUtils.marshallBoolean(info.isBridgeBuilding());
+			aInfo.irrigation = JaxbUtils.marshallBoolean(info.isIrrigation());
+			aInfo.ignoreIrrigation = JaxbUtils.marshallBoolean(info.isIgnoreIrrigation());
+			aInfo.waterWork = JaxbUtils.marshallBoolean(info.isWaterWork());
+			aInfo.canPassPeaks = JaxbUtils.marshallBoolean(info.isCanPassPeaks());
+			aInfo.moveFastPeaks = JaxbUtils.marshallBoolean(info.isMoveFastPeaks());
+			aInfo.canFoundOnPeaks = JaxbUtils.marshallBoolean(info.isCanFoundOnPeaks());
+			aInfo.gridX = info.getGridX();
+			aInfo.gridY = info.getGridY();
+			aInfo.riverTrade = JaxbUtils.marshallBoolean(info.isRiverTrade());
+			aInfo.captureCities = JaxbUtils.marshallBoolean(info.isCaptureCites());
+			aInfo.unitRangeUnbound = JaxbUtils.marshallBoolean(info.isUnitRangeUnbound());
+			aInfo.unitTerritoryUnbound = JaxbUtils.marshallBoolean(info.isUnitTerritoryUnbound());
+			aInfo.unitRangeChange = JaxbUtils.marshallInteger(info.getUnitRangeChange());
+			aInfo.unitRangeModifier = JaxbUtils.marshallInteger(info.getUnitRangeModifier());
+			aInfo.cultureDefenceModifier = JaxbUtils.marshallInteger(info.getCultureDefenceModifier());
+			aInfo.quote = JaxbUtils.marshallString(info.getQuote());
+			aInfo.sound = JaxbUtils.marshallString(info.getSound());
+			aInfo.soundMP = JaxbUtils.marshallString(info.getSoundMP());
+			aInfo.button = info.getButton();
 
-			if (CollectionUtils.hasElements(tech.getDomainExtraMoves())) {
-				aTech.domainExtraMoves = new ArrayList<AdaptedDomainExtraMoves>();
-				for (IKeyValuePair<String, Integer> pair: tech.getDomainExtraMoves()) {
+			if (CollectionUtils.hasElements(info.getDomainExtraMoves())) {
+				aInfo.domainExtraMoves = new ArrayList<AdaptedDomainExtraMoves>();
+				for (IPair<String, Integer> pair: info.getDomainExtraMoves()) {
 					AdaptedDomainExtraMoves adaptor = new AdaptedDomainExtraMoves();
 					adaptor.domain = pair.getKey();
 					adaptor.moves = pair.getValue();
-					aTech.domainExtraMoves.add(adaptor);
+					aInfo.domainExtraMoves.add(adaptor);
 				}
 			}
 			
-			if (CollectionUtils.hasElements(tech.getWorldViewRevoltTurnChanges())) {
-				aTech.worldViewRevoltTurnChanges = new ArrayList<AdaptedWorldViewRevoltTurnChanges>();
-				for (IKeyValuePair<String, Integer> pair: tech.getWorldViewRevoltTurnChanges()) {
+			if (CollectionUtils.hasElements(info.getWorldViewRevoltTurnChanges())) {
+				aInfo.worldViewRevoltTurnChanges = new ArrayList<AdaptedWorldViewRevoltTurnChanges>();
+				for (IPair<String, Integer> pair: info.getWorldViewRevoltTurnChanges()) {
 					AdaptedWorldViewRevoltTurnChanges adaptor = new AdaptedWorldViewRevoltTurnChanges();
 					adaptor.worldView = pair.getKey();
 					adaptor.change = pair.getValue();
-					aTech.worldViewRevoltTurnChanges.add(adaptor);
+					aInfo.worldViewRevoltTurnChanges.add(adaptor);
 				}
 			}
 			
-			if (CollectionUtils.hasElements(tech.getFlavors())) {
-				aTech.flavors = new ArrayList<AdaptedFlavors>();
-				for (IKeyValuePair<String, Integer> pair: tech.getFlavors()) {
+			if (CollectionUtils.hasElements(info.getFlavors())) {
+				aInfo.flavors = new ArrayList<AdaptedFlavors>();
+				for (IPair<String, Integer> pair: info.getFlavors()) {
 					AdaptedFlavors adaptor = new AdaptedFlavors();
 					adaptor.flavor = pair.getKey();
 					adaptor.value = pair.getValue();
-					aTech.flavors.add(adaptor);
+					aInfo.flavors.add(adaptor);
 				}
 			}
 			
-			if (CollectionUtils.hasElements(tech.getCommerceFlexibles())) {
-				aTech.commerceFlexible = new ArrayList<Integer>();
-				for (Boolean flex: tech.getCommerceFlexibles()) {
-					aTech.commerceFlexible.add(flex ? 1 : 0);
+			if (CollectionUtils.hasElements(info.getCommerceFlexibles())) {
+				aInfo.commerceFlexible = new ArrayList<Integer>();
+				for (Boolean flex: info.getCommerceFlexibles()) {
+					aInfo.commerceFlexible.add(flex ? 1 : 0);
 				}
 			}
 			
-			if (CollectionUtils.hasElements(tech.getTerrainTrades())) {
-				aTech.terrainTrades = new HashSet<String>();
-				for (String terrain: tech.getTerrainTrades()) {
-					aTech.terrainTrades.add(terrain);
+			if (CollectionUtils.hasElements(info.getTerrainTrades())) {
+				aInfo.terrainTrades = new HashSet<String>();
+				for (String terrain: info.getTerrainTrades()) {
+					aInfo.terrainTrades.add(terrain);
 				}
 			}
 			
-			if (CollectionUtils.hasElements(tech.getForestPlotYieldChanges())) {
-				aTech.forestPlotYieldChanges = new ArrayList<Integer>();
-				for (Integer change: tech.getForestPlotYieldChanges()) {
-					aTech.forestPlotYieldChanges.add(change);
+			if (CollectionUtils.hasElements(info.getForestPlotYieldChanges())) {
+				aInfo.forestPlotYieldChanges = new ArrayList<Integer>();
+				for (Integer change: info.getForestPlotYieldChanges()) {
+					aInfo.forestPlotYieldChanges.add(change);
 				}
 			}
 			
-			if (CollectionUtils.hasElements(tech.getRiverPlotYieldChanges())) {
-				aTech.riverPlotYieldChanges = new ArrayList<Integer>();
-				for (Integer change: tech.getRiverPlotYieldChanges()) {
-					aTech.riverPlotYieldChanges.add(change);
+			if (CollectionUtils.hasElements(info.getRiverPlotYieldChanges())) {
+				aInfo.riverPlotYieldChanges = new ArrayList<Integer>();
+				for (Integer change: info.getRiverPlotYieldChanges()) {
+					aInfo.riverPlotYieldChanges.add(change);
 				}
 			}
 			
-			if (CollectionUtils.hasElements(tech.getSeaPlotYieldChanges())) {
-				aTech.seaPlotYieldChanges = new ArrayList<Integer>();
-				for (Integer change: tech.getSeaPlotYieldChanges()) {
-					aTech.seaPlotYieldChanges.add(change);
+			if (CollectionUtils.hasElements(info.getSeaPlotYieldChanges())) {
+				aInfo.seaPlotYieldChanges = new ArrayList<Integer>();
+				for (Integer change: info.getSeaPlotYieldChanges()) {
+					aInfo.seaPlotYieldChanges.add(change);
 				}
 			}
 			
-			if (CollectionUtils.hasElements(tech.getOrPrereqs())) {
-				aTech.orPrereqs = new HashSet<String>();
-				for (String prereq: tech.getOrPrereqs()) {
-					aTech.orPrereqs.add(prereq);
+			if (CollectionUtils.hasElements(info.getOrPrereqs())) {
+				aInfo.orPrereqs = new HashSet<String>();
+				for (String prereq: info.getOrPrereqs()) {
+					aInfo.orPrereqs.add(prereq);
 				}
 			}
 			
-			if (CollectionUtils.hasElements(tech.getAndPrereqs())) {
-				aTech.andPrereqs = new HashSet<String>();
-				for (String prereq: tech.getAndPrereqs()) {
-					aTech.andPrereqs.add(prereq);
+			if (CollectionUtils.hasElements(info.getAndPrereqs())) {
+				aInfo.andPrereqs = new HashSet<String>();
+				for (String prereq: info.getAndPrereqs()) {
+					aInfo.andPrereqs.add(prereq);
 				}
 			}
 			
-			if (CollectionUtils.hasElements(tech.getEnabledWorldViews())) {
-				aTech.enabledWorldViews = new HashSet<String>();
-				for (String worldView: tech.getEnabledWorldViews()) {
-					aTech.enabledWorldViews.add(worldView);
+			if (CollectionUtils.hasElements(info.getEnabledWorldViews())) {
+				aInfo.enabledWorldViews = new HashSet<String>();
+				for (String worldView: info.getEnabledWorldViews()) {
+					aInfo.enabledWorldViews.add(worldView);
 				}
 			}
 			
-			techMap.entries.add(aTech);
+			map.entries.add(aInfo);
 		}
-		return techMap;
+		return map;
 	}
 
 	@Override
 	public Map<String, ITechInfo> unmarshal(TechMap v) throws Exception {
 		Map<String, ITechInfo> map = new TreeMap<String, ITechInfo>();
-		for (AdaptedTech aTech: v.entries) {
-			ITechInfo tech = TechInfos.createInfo(aTech.type);
-			tech.setDescription(JaxbUtils.unmarshallString(aTech.description));
-			tech.setCivilopedia(JaxbUtils.unmarshallString(aTech.civilopedia));
-			tech.setHelp(JaxbUtils.unmarshallString(aTech.help));
-			tech.setStrategy(JaxbUtils.unmarshallString(aTech.strategy));
-			tech.setAdvisor(JaxbUtils.unmarshallString(aTech.advisor));
-			tech.setAiWeight(JaxbUtils.unmarshallInteger(aTech.aiWeight));
-			tech.setAiTradeModifier(JaxbUtils.unmarshallInteger(aTech.aiTradeModifier));
-			tech.setCost(JaxbUtils.unmarshallInteger(aTech.cost));
-			tech.setAdvancedStartCost(JaxbUtils.unmarshallInteger(aTech.advancedStartCost));
-			tech.setAdvancedStartCostIncrease(JaxbUtils.unmarshallInteger(aTech.advancedStartCostIncrease));
-			tech.setEra(JaxbUtils.unmarshallString(aTech.era));
-			tech.setFirstFreeUnitClass(JaxbUtils.unmarshallString(aTech.firstFreeUnitClass));
-			tech.setFreeUnitClass(JaxbUtils.unmarshallString(aTech.freeUnitClass));
-			tech.setFeatureProductionModifier(JaxbUtils.unmarshallInteger(aTech.featureProductionModifier));
-			tech.setWorkerSpeedModifier(JaxbUtils.unmarshallInteger(aTech.workerSpeedModifier));
-			tech.setTradeRoutes(JaxbUtils.unmarshallInteger(aTech.tradeRoutes));
-			tech.setHealth(JaxbUtils.unmarshallInteger(aTech.health));
-			tech.setHappiness(JaxbUtils.unmarshallInteger(aTech.happiness));
-			tech.setFirstFreeTechs(JaxbUtils.unmarshallInteger(aTech.firstFreeTechs));
-			tech.setAsset(JaxbUtils.unmarshallInteger(aTech.asset));
-			tech.setPower(JaxbUtils.unmarshallInteger(aTech.power));
-			tech.setRepeat(JaxbUtils.unmarshallBoolean(aTech.repeat));
-			tech.setTrade(JaxbUtils.unmarshallBoolean(aTech.trade));
-			tech.setEmbassyTrading(JaxbUtils.unmarshallBoolean(aTech.embassyTrading));
-			tech.setFreeTradeAgreementTrading(JaxbUtils.unmarshallBoolean(aTech.freeTradeAgreementTrading));
-			tech.setNonAggressionTrading(JaxbUtils.unmarshallBoolean(aTech.nonAggressionTrading));
-			tech.setDisable(JaxbUtils.unmarshallBoolean(aTech.disable));
-			tech.setGoodyTech(JaxbUtils.unmarshallBoolean(aTech.goodyTech));
-			tech.setExtraWaterSeeFrom(JaxbUtils.unmarshallBoolean(aTech.extraWaterSeeFrom));
-			tech.setMapCentering(JaxbUtils.unmarshallBoolean(aTech.mapCentering));
-			tech.setMapVisible(JaxbUtils.unmarshallBoolean(aTech.mapVisible));
-			tech.setMapTrading(JaxbUtils.unmarshallBoolean(aTech.mapTrading));
-			tech.setTechTrading(JaxbUtils.unmarshallBoolean(aTech.techTrading));
-			tech.setGoldTrading(JaxbUtils.unmarshallBoolean(aTech.goldTrading));
-			tech.setOpenBordersTrading(JaxbUtils.unmarshallBoolean(aTech.openBordersTrading));
-			tech.setLimitedBordersTrading(JaxbUtils.unmarshallBoolean(aTech.limitedBordersTrading));
-			tech.setDefensivePactTrading(JaxbUtils.unmarshallBoolean(aTech.defensivePactTrading));
-			tech.setPermanentAllianceTrading(JaxbUtils.unmarshallBoolean(aTech.permanentAllianceTrading));
-			tech.setVassalTrading(JaxbUtils.unmarshallBoolean(aTech.vassalTrading));
-			tech.setBridgeBuilding(JaxbUtils.unmarshallBoolean(aTech.bridgeBuilding));
-			tech.setIrrigation(JaxbUtils.unmarshallBoolean(aTech.irrigation));
-			tech.setIgnoreIrrigation(JaxbUtils.unmarshallBoolean(aTech.ignoreIrrigation));
-			tech.setWaterWork(JaxbUtils.unmarshallBoolean(aTech.waterWork));
-			tech.setCanPassPeaks(JaxbUtils.unmarshallBoolean(aTech.canPassPeaks));
-			tech.setMoveFastPeaks(JaxbUtils.unmarshallBoolean(aTech.moveFastPeaks));
-			tech.setCanFoundOnPeaks(JaxbUtils.unmarshallBoolean(aTech.canFoundOnPeaks));
-			tech.setGridX(JaxbUtils.unmarshallInteger(aTech.gridX));
-			tech.setGridY(JaxbUtils.unmarshallInteger(aTech.gridY));
-			tech.setRiverTrade(JaxbUtils.unmarshallBoolean(aTech.riverTrade));
-			tech.setCaptureCities(JaxbUtils.unmarshallBoolean(aTech.captureCities));
-			tech.setUnitRangeUnbound(JaxbUtils.unmarshallBoolean(aTech.unitRangeUnbound));
-			tech.setUnitTerritoryUnbound(JaxbUtils.unmarshallBoolean(aTech.unitTerritoryUnbound));
-			tech.setUnitRangeChange(JaxbUtils.unmarshallInteger(aTech.unitRangeChange));
-			tech.setUnitRangeModifier(JaxbUtils.unmarshallInteger(aTech.unitRangeModifier));
-			tech.setCultureDefenceModifier(JaxbUtils.unmarshallInteger(aTech.cultureDefenceModifier));
-			tech.setQuote(JaxbUtils.unmarshallString(aTech.quote));
-			tech.setSound(JaxbUtils.unmarshallString(aTech.sound));
-			tech.setSoundMP(JaxbUtils.unmarshallString(aTech.soundMP));
-			tech.setButton(JaxbUtils.unmarshallString(aTech.button));
+		for (AdaptedTech aInfo: v.entries) {
+			ITechInfo info = TechInfos.createInfo(aInfo.type);
+			info.setDescription(JaxbUtils.unmarshallString(aInfo.description));
+			info.setCivilopedia(JaxbUtils.unmarshallString(aInfo.civilopedia));
+			info.setHelp(JaxbUtils.unmarshallString(aInfo.help));
+			info.setStrategy(JaxbUtils.unmarshallString(aInfo.strategy));
+			info.setAdvisor(JaxbUtils.unmarshallString(aInfo.advisor));
+			info.setAiWeight(JaxbUtils.unmarshallInteger(aInfo.aiWeight));
+			info.setAiTradeModifier(JaxbUtils.unmarshallInteger(aInfo.aiTradeModifier));
+			info.setCost(JaxbUtils.unmarshallInteger(aInfo.cost));
+			info.setAdvancedStartCost(JaxbUtils.unmarshallInteger(aInfo.advancedStartCost));
+			info.setAdvancedStartCostIncrease(JaxbUtils.unmarshallInteger(aInfo.advancedStartCostIncrease));
+			info.setEra(JaxbUtils.unmarshallString(aInfo.era));
+			info.setFirstFreeUnitClass(JaxbUtils.unmarshallString(aInfo.firstFreeUnitClass));
+			info.setFreeUnitClass(JaxbUtils.unmarshallString(aInfo.freeUnitClass));
+			info.setFeatureProductionModifier(JaxbUtils.unmarshallInteger(aInfo.featureProductionModifier));
+			info.setWorkerSpeedModifier(JaxbUtils.unmarshallInteger(aInfo.workerSpeedModifier));
+			info.setTradeRoutes(JaxbUtils.unmarshallInteger(aInfo.tradeRoutes));
+			info.setHealth(JaxbUtils.unmarshallInteger(aInfo.health));
+			info.setHappiness(JaxbUtils.unmarshallInteger(aInfo.happiness));
+			info.setFirstFreeTechs(JaxbUtils.unmarshallInteger(aInfo.firstFreeTechs));
+			info.setAsset(JaxbUtils.unmarshallInteger(aInfo.asset));
+			info.setPower(JaxbUtils.unmarshallInteger(aInfo.power));
+			info.setRepeat(JaxbUtils.unmarshallBoolean(aInfo.repeat));
+			info.setTrade(JaxbUtils.unmarshallBoolean(aInfo.trade));
+			info.setEmbassyTrading(JaxbUtils.unmarshallBoolean(aInfo.embassyTrading));
+			info.setFreeTradeAgreementTrading(JaxbUtils.unmarshallBoolean(aInfo.freeTradeAgreementTrading));
+			info.setNonAggressionTrading(JaxbUtils.unmarshallBoolean(aInfo.nonAggressionTrading));
+			info.setDisable(JaxbUtils.unmarshallBoolean(aInfo.disable));
+			info.setGoodyTech(JaxbUtils.unmarshallBoolean(aInfo.goodyTech));
+			info.setExtraWaterSeeFrom(JaxbUtils.unmarshallBoolean(aInfo.extraWaterSeeFrom));
+			info.setMapCentering(JaxbUtils.unmarshallBoolean(aInfo.mapCentering));
+			info.setMapVisible(JaxbUtils.unmarshallBoolean(aInfo.mapVisible));
+			info.setMapTrading(JaxbUtils.unmarshallBoolean(aInfo.mapTrading));
+			info.setTechTrading(JaxbUtils.unmarshallBoolean(aInfo.techTrading));
+			info.setGoldTrading(JaxbUtils.unmarshallBoolean(aInfo.goldTrading));
+			info.setOpenBordersTrading(JaxbUtils.unmarshallBoolean(aInfo.openBordersTrading));
+			info.setLimitedBordersTrading(JaxbUtils.unmarshallBoolean(aInfo.limitedBordersTrading));
+			info.setDefensivePactTrading(JaxbUtils.unmarshallBoolean(aInfo.defensivePactTrading));
+			info.setPermanentAllianceTrading(JaxbUtils.unmarshallBoolean(aInfo.permanentAllianceTrading));
+			info.setVassalTrading(JaxbUtils.unmarshallBoolean(aInfo.vassalTrading));
+			info.setBridgeBuilding(JaxbUtils.unmarshallBoolean(aInfo.bridgeBuilding));
+			info.setIrrigation(JaxbUtils.unmarshallBoolean(aInfo.irrigation));
+			info.setIgnoreIrrigation(JaxbUtils.unmarshallBoolean(aInfo.ignoreIrrigation));
+			info.setWaterWork(JaxbUtils.unmarshallBoolean(aInfo.waterWork));
+			info.setCanPassPeaks(JaxbUtils.unmarshallBoolean(aInfo.canPassPeaks));
+			info.setMoveFastPeaks(JaxbUtils.unmarshallBoolean(aInfo.moveFastPeaks));
+			info.setCanFoundOnPeaks(JaxbUtils.unmarshallBoolean(aInfo.canFoundOnPeaks));
+			info.setGridX(JaxbUtils.unmarshallInteger(aInfo.gridX));
+			info.setGridY(JaxbUtils.unmarshallInteger(aInfo.gridY));
+			info.setRiverTrade(JaxbUtils.unmarshallBoolean(aInfo.riverTrade));
+			info.setCaptureCities(JaxbUtils.unmarshallBoolean(aInfo.captureCities));
+			info.setUnitRangeUnbound(JaxbUtils.unmarshallBoolean(aInfo.unitRangeUnbound));
+			info.setUnitTerritoryUnbound(JaxbUtils.unmarshallBoolean(aInfo.unitTerritoryUnbound));
+			info.setUnitRangeChange(JaxbUtils.unmarshallInteger(aInfo.unitRangeChange));
+			info.setUnitRangeModifier(JaxbUtils.unmarshallInteger(aInfo.unitRangeModifier));
+			info.setCultureDefenceModifier(JaxbUtils.unmarshallInteger(aInfo.cultureDefenceModifier));
+			info.setQuote(JaxbUtils.unmarshallString(aInfo.quote));
+			info.setSound(JaxbUtils.unmarshallString(aInfo.sound));
+			info.setSoundMP(JaxbUtils.unmarshallString(aInfo.soundMP));
+			info.setButton(JaxbUtils.unmarshallString(aInfo.button));
 
-			if (CollectionUtils.hasElements(aTech.domainExtraMoves)) {
-				for (AdaptedDomainExtraMoves adaptor: aTech.domainExtraMoves) {
+			if (CollectionUtils.hasElements(aInfo.domainExtraMoves)) {
+				for (AdaptedDomainExtraMoves adaptor: aInfo.domainExtraMoves) {
 					if (adaptor.moves != 0)
-						tech.addDomainExtraMove(new KeyValuePair<String, Integer>(adaptor.domain, adaptor.moves));
+						info.addDomainExtraMove(new Pair<String, Integer>(adaptor.domain, adaptor.moves));
 				}
 			}
 			
-			if (CollectionUtils.hasElements(aTech.worldViewRevoltTurnChanges)) {
-				for (AdaptedWorldViewRevoltTurnChanges adaptor: aTech.worldViewRevoltTurnChanges) {
+			if (CollectionUtils.hasElements(aInfo.worldViewRevoltTurnChanges)) {
+				for (AdaptedWorldViewRevoltTurnChanges adaptor: aInfo.worldViewRevoltTurnChanges) {
 					if (StringUtils.hasCharacters(adaptor.worldView) && adaptor.change != 0)
-						tech.addWorldViewRevoltTurnChange(new KeyValuePair<String, Integer>(adaptor.worldView, adaptor.change));
+						info.addWorldViewRevoltTurnChange(new Pair<String, Integer>(adaptor.worldView, adaptor.change));
 				}
 			}
 			
-			if (CollectionUtils.hasElements(aTech.flavors)) {
-				for (AdaptedFlavors adaptor: aTech.flavors) {
+			if (CollectionUtils.hasElements(aInfo.flavors)) {
+				for (AdaptedFlavors adaptor: aInfo.flavors) {
 					if (StringUtils.hasCharacters(adaptor.flavor) && adaptor.value != 0)
-						tech.addFlavor(new KeyValuePair<String, Integer>(adaptor.flavor, adaptor.value));
+						info.addFlavor(new Pair<String, Integer>(adaptor.flavor, adaptor.value));
 				}
 			}
 			
-			if (CollectionUtils.hasNonZeroElements(aTech.commerceFlexible)) {
-				for (Integer flexible: aTech.commerceFlexible) {
-					tech.addCommerceFlexible(JaxbUtils.unmarshallBoolean(flexible));					
+			if (CollectionUtils.hasNonZeroElements(aInfo.commerceFlexible)) {
+				for (Integer flexible: aInfo.commerceFlexible) {
+					info.addCommerceFlexible(JaxbUtils.unmarshallBoolean(flexible));					
 				}
 			}
 			
-			if (CollectionUtils.hasElements(aTech.terrainTrades)) {
-				for (String terrain: aTech.terrainTrades) {
+			if (CollectionUtils.hasElements(aInfo.terrainTrades)) {
+				for (String terrain: aInfo.terrainTrades) {
 					if (StringUtils.hasCharacters(terrain))
-						tech.addTerrainTrade(terrain);
+						info.addTerrainTrade(terrain);
 				}
 			}
 			
-			if (CollectionUtils.hasNonZeroElements(aTech.forestPlotYieldChanges)) {
+			if (CollectionUtils.hasNonZeroElements(aInfo.forestPlotYieldChanges)) {
 				// Only add this tag if there are non-zero changes
-				for (Integer change: aTech.forestPlotYieldChanges) {
-					tech.addForestPlotYieldChange(change);
+				for (Integer change: aInfo.forestPlotYieldChanges) {
+					info.addForestPlotYieldChange(change);
 				}
 			}
 			
-			if (CollectionUtils.hasNonZeroElements(aTech.riverPlotYieldChanges)) {
-				for (Integer change: aTech.riverPlotYieldChanges) {
-					tech.addRiverPlotYieldChange(change);
+			if (CollectionUtils.hasNonZeroElements(aInfo.riverPlotYieldChanges)) {
+				for (Integer change: aInfo.riverPlotYieldChanges) {
+					info.addRiverPlotYieldChange(change);
 				}
 			}
 			
-			if (CollectionUtils.hasNonZeroElements(aTech.seaPlotYieldChanges)) {
-				for (Integer change: aTech.seaPlotYieldChanges) {
-					tech.addSeaPlotYieldChange(change);
+			if (CollectionUtils.hasNonZeroElements(aInfo.seaPlotYieldChanges)) {
+				for (Integer change: aInfo.seaPlotYieldChanges) {
+					info.addSeaPlotYieldChange(change);
 				}
 			}
 			
-			if (CollectionUtils.hasElements(aTech.orPrereqs)) {
-				for (String prereq: aTech.orPrereqs) {
+			if (CollectionUtils.hasElements(aInfo.orPrereqs)) {
+				for (String prereq: aInfo.orPrereqs) {
 					if (StringUtils.hasCharacters(prereq))
-						tech.addOrPrereq(prereq);
+						info.addOrPrereq(prereq);
 				}
 			}
 			
-			if (CollectionUtils.hasElements(aTech.andPrereqs)) {
-				for (String prereq: aTech.andPrereqs) {
+			if (CollectionUtils.hasElements(aInfo.andPrereqs)) {
+				for (String prereq: aInfo.andPrereqs) {
 					if (StringUtils.hasCharacters(prereq))
-						tech.addAndPrereq(prereq);
+						info.addAndPrereq(prereq);
 				}
 			}
 			
-			if (CollectionUtils.hasElements(aTech.enabledWorldViews)) {
-				for (String worldView: aTech.enabledWorldViews) {
+			if (CollectionUtils.hasElements(aInfo.enabledWorldViews)) {
+				for (String worldView: aInfo.enabledWorldViews) {
 					if (StringUtils.hasCharacters(worldView))
-						tech.addEnabledWorldViews(worldView);
+						info.addEnabledWorldViews(worldView);
 				}
 			}
 			
-			map.put(aTech.type, tech);
+			map.put(aInfo.type, info);
 		}
 		return map;
 	}

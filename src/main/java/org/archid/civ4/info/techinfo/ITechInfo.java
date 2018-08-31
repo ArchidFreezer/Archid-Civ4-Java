@@ -4,12 +4,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.archid.civ4.info.IInfo;
-import org.archid.civ4.utils.IKeyValuePair;
+import org.archid.civ4.utils.IPair;
 
 public interface ITechInfo extends IInfo {
 	
-	public static String SCHEMA_NAME = "CIV4TechnologiesSchema.xml";
-
 	public String getDescription();
 
 	public void setDescription(String description);
@@ -202,9 +200,9 @@ public interface ITechInfo extends IInfo {
 
 	public void setGridY(int gridY);
 
-	public List<IKeyValuePair<String, Integer>> getDomainExtraMoves();
+	public List<IPair<String, Integer>> getDomainExtraMoves();
 	
-	public void addDomainExtraMove(IKeyValuePair<String, Integer> domainExtraMove);
+	public void addDomainExtraMove(IPair<String, Integer> domainExtraMove);
 	
 	public List<Boolean> getCommerceFlexibles();
 	
@@ -254,13 +252,13 @@ public interface ITechInfo extends IInfo {
 	
 	public void addSeaPlotYieldChange(int change);
 	
-	public List<IKeyValuePair<String, Integer>> getWorldViewRevoltTurnChanges();
+	public List<IPair<String, Integer>> getWorldViewRevoltTurnChanges();
 	
-	public void addWorldViewRevoltTurnChange(IKeyValuePair<String, Integer> worldViewRevoltTurnChange);
+	public void addWorldViewRevoltTurnChange(IPair<String, Integer> worldViewRevoltTurnChange);
 	
-	public List<IKeyValuePair<String, Integer>> getFlavors();
+	public List<IPair<String, Integer>> getFlavors();
 	
-	public void addFlavor(IKeyValuePair<String, Integer> flavor);
+	public void addFlavor(IPair<String, Integer> flavor);
 	
 	public Set<String> getOrPrereqs();
 	

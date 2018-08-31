@@ -6,7 +6,6 @@ package org.archid.civ4.info;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -17,7 +16,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlTransient
 public abstract class AbstractInfos<T extends IInfo> implements IInfos<T> {
 
-	protected Map<String, T> infos = new TreeMap<String, T>();
+	protected Map<String, T> infos;
+	
+	public AbstractInfos(Map<String, T> infos) {
+		this.infos = infos;
+	}
 
 	@Override
 	public boolean addInfo(T info) {

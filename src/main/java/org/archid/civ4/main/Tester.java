@@ -20,7 +20,7 @@ import org.archid.civ4.info.InfosFactory;
 import org.archid.civ4.info.InfosFactory.EInfos;
 import org.archid.civ4.info.techinfo.ITechInfo;
 import org.archid.civ4.info.techinfo.TechInfos;
-import org.archid.civ4.utils.KeyValuePair;
+import org.archid.civ4.utils.Pair;
 
 public class Tester {
 	
@@ -65,17 +65,17 @@ public class Tester {
 		info.addCommerceFlexible(false);
 		info.addCommerceFlexible(true);
 		info.addTerrainTrade("Terrain 1");
-		info.addFlavor(new KeyValuePair<String, Integer>("FLAVOR_MILITARY", 7));
-		info.addFlavor(new KeyValuePair<String, Integer>("FLAVOR_SCIENCE", 1));
-		info.addFlavor(new KeyValuePair<String, Integer>("FLAVOR_GOLD", 2));
+		info.addFlavor(new Pair<String, Integer>("FLAVOR_MILITARY", 7));
+		info.addFlavor(new Pair<String, Integer>("FLAVOR_SCIENCE", 1));
+		info.addFlavor(new Pair<String, Integer>("FLAVOR_GOLD", 2));
 		infos.addInfo(info);
 		
 		info = TechInfos.createInfo("TECH_TYPE_2");
 		info.setDescription("Description 2");
 		info.setCivilopedia("Civilopedia 2");
 		info.setType("Type 2");
-		info.addDomainExtraMove(new KeyValuePair<String, Integer>("Domain 1", 5));
-		info.addDomainExtraMove(new KeyValuePair<String, Integer>("Domain 2", 7));
+		info.addDomainExtraMove(new Pair<String, Integer>("Domain 1", 5));
+		info.addDomainExtraMove(new Pair<String, Integer>("Domain 2", 7));
 		infos.addInfo(info);
 		
 		Marshaller jaxbMarshaller = jaxbContext.createMarshaller();

@@ -12,7 +12,7 @@ import org.archid.civ4.info.AbstractImporter;
 import org.archid.civ4.info.IImporter;
 import org.archid.civ4.info.IInfos;
 import org.archid.civ4.info.InfosFactory.EInfos;
-import org.archid.civ4.utils.IKeyValuePair;
+import org.archid.civ4.utils.IPair;
 import org.archid.civ4.utils.PropertyKeys;
 import org.archid.civ4.utils.StringUtils;
 
@@ -21,8 +21,8 @@ public class TechImporter extends AbstractImporter<IInfos<ITechInfo>, ITechInfo>
 	/** Logging facility */
 	static Logger log = Logger.getLogger(TechImporter.class.getName());
 	
-	public TechImporter(EInfos T) {
-		super(T);
+	public TechImporter(EInfos infoEnum) {
+		super(infoEnum);
 	}
 
 	protected void parseXlsx() {
@@ -118,7 +118,8 @@ public class TechImporter extends AbstractImporter<IInfos<ITechInfo>, ITechInfo>
 				info.setCanFoundOnPeaks(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
 				// We need to skip the iGridX & iGridY rows
 				colNum += 2;
-				for (IKeyValuePair<String, Integer> pair: parsePairs(row.getCell(colNum++))) {
+				
+				for (IPair<String, Integer> pair: parsePairs(row.getCell(colNum++), String.class, Integer.class)) {
 					info.addDomainExtraMove(pair);
 				}
 				for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
@@ -148,10 +149,10 @@ public class TechImporter extends AbstractImporter<IInfos<ITechInfo>, ITechInfo>
 					if (StringUtils.hasCharacters(str))
 						info.addSeaPlotYieldChange(Integer.parseInt(str));
 				}
-				for (IKeyValuePair<String, Integer> pair: parsePairs(row.getCell(colNum++))) {
+				for (IPair<String, Integer> pair: parsePairs(row.getCell(colNum++), String.class, Integer.class)) {
 					info.addWorldViewRevoltTurnChange(pair);
 				}
-				for (IKeyValuePair<String, Integer> pair: parsePairs(row.getCell(colNum++))) {
+				for (IPair<String, Integer> pair: parsePairs(row.getCell(colNum++), String.class, Integer.class)) {
 					info.addFlavor(pair);
 				}
 				for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {

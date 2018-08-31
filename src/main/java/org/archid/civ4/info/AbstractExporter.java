@@ -24,10 +24,11 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.archid.civ4.info.InfosFactory.EInfos;
 import org.archid.civ4.utils.FileUtils;
-import org.archid.civ4.utils.IKeyValuePair;
+import org.archid.civ4.utils.IPair;
 import org.archid.civ4.utils.IPropertyHandler;
 import org.archid.civ4.utils.PropertyHandler;
 import org.archid.civ4.utils.PropertyKeys;
+import org.archid.civ4.utils.StringUtils;
 
 public abstract class AbstractExporter<T extends IInfos<S>, S extends IInfo> implements IExporter {
 
@@ -118,13 +119,13 @@ public abstract class AbstractExporter<T extends IInfos<S>, S extends IInfo> imp
 		
 	}
 
-	protected <U, V> int addRepeatingPairCell(Cell cell, Collection<IKeyValuePair<U, V>> list, int maxHeight) {
+	protected <U, V> int addRepeatingPairCell(Cell cell, Collection<IPair<U, V>> list, int maxHeight) {
 		
 		int currHeight = 0;
 		
 		cell.setCellStyle(csWrap);
 		StringBuffer cellvalue = new StringBuffer();
-		for (IKeyValuePair<U, V> pair: list) {
+		for (IPair<U, V> pair: list) {
 			if (currHeight > 0) cellvalue.append("\n");
 			cellvalue.append(pair.getKey() + "\n");
 			cellvalue.append(pair.getValue());
@@ -150,6 +151,8 @@ public abstract class AbstractExporter<T extends IInfos<S>, S extends IInfo> imp
 
     ClientAnchor anchor = factory.createClientAnchor();
     String message = getCellMessage(info);
+    if (StringUtils.isNullOrEmpty(message)) return;
+    
     int height = message.split("\n").length;
     int width = 2;
     anchor.setCol1(cell.getColumnIndex());

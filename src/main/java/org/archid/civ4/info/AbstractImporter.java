@@ -14,15 +14,16 @@ import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.archid.civ4.info.InfosFactory.EInfos;
 import org.archid.civ4.utils.FileUtils;
-import org.archid.civ4.utils.IKeyValuePair;
+import org.archid.civ4.utils.IPair;
 import org.archid.civ4.utils.IPropertyHandler;
-import org.archid.civ4.utils.KeyValuePair;
+import org.archid.civ4.utils.Pair;
 import org.archid.civ4.utils.PropertyHandler;
 import org.archid.civ4.utils.PropertyKeys;
 import org.archid.civ4.utils.StringUtils;
 
 /**
  * @author Jim
+ * @param <V>
  *
  */
 public abstract class AbstractImporter<T extends IInfos<S>, S extends IInfo> implements IImporter {
@@ -55,24 +56,40 @@ public abstract class AbstractImporter<T extends IInfos<S>, S extends IInfo> imp
 		}
 	}
 	
-	protected List<IKeyValuePair<String, Integer>> parsePairs(Cell cell) {
-		List<IKeyValuePair<String, Integer>> list = new ArrayList<IKeyValuePair<String, Integer>>();
+	protected <U, V> List<IPair<U, V>> parsePairs(Cell cell, Class<U> keyClass, Class<V> valClass) {
+		List<IPair<U, V>> list = new ArrayList<IPair<U, V>>();
 		String[] arr = cell.getStringCellValue().split("\n");
 		if (arr.length > 1) {
 			boolean first = true;
-			String str = null;
-			for (String val: arr) {
-				if (StringUtils.hasCharacters(val)) {
+			U key = null;
+			V val = null;
+			for (String str: arr) {
+				if (StringUtils.hasCharacters(str)) {
 					if (first) {
-						str = val;
+						key = getVal(str, keyClass);
 					} else {
-						list.add(new KeyValuePair<String, Integer>(str, Integer.parseInt(val)));
+						val = getVal(str, valClass);
+						list.add(new Pair<U, V>(key, val));
 					}
 					first = !first;
 				}
 			}
 		}
 		return list;
+	}
+	
+	@SuppressWarnings({ "unchecked" })
+	private <U> U getVal(String str, Class<U> valClass) {
+		U val = null;
+		if (valClass == String.class)
+			val = (U) str;
+		if (valClass == Integer.class)
+			val = (U) Integer.valueOf(str);
+		if (valClass == Boolean.class)
+			val = (U) Boolean.valueOf(str);
+		
+		return val;
+		
 	}
 	
 	protected void backupInfosFile() throws IOException {

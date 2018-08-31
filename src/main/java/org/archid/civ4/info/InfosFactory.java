@@ -15,6 +15,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.log4j.Logger;
+import org.archid.civ4.info.era.EraInfos;
 import org.archid.civ4.info.techinfo.TechInfos;
 import org.archid.civ4.utils.StringUtils;
 
@@ -23,7 +24,7 @@ public class InfosFactory {
 	/** Logging facility */
 	static Logger log = Logger.getLogger(InfosFactory.class.getName());
 	
-	public static enum EInfos { TECH_INFOS	}
+	public static enum EInfos { TECH_INFOS, ERA_INFOS	}
 
 	private static String newline = System.getProperty("line.separator");
 	
@@ -34,6 +35,9 @@ public class InfosFactory {
 		case TECH_INFOS:
 			infos = (T) new TechInfos();
 			break;
+		case ERA_INFOS:
+			infos = (T) new EraInfos();
+			break;
 		default:
 			log.error("Error getting infos file: unknown info type");
 			break;
@@ -41,6 +45,22 @@ public class InfosFactory {
 		return infos;
 	}
 
+	private static JAXBContext getContext(EInfos infoType) throws JAXBException {
+		JAXBContext jaxbContext = null;
+		switch (infoType) {
+		case TECH_INFOS:
+			jaxbContext = JAXBContext.newInstance(TechInfos.class);
+			break;
+		case ERA_INFOS:
+			jaxbContext = JAXBContext.newInstance(EraInfos.class);
+			break;
+		default:
+			log.error("Error reading infos file: unknown info type");
+			break;
+		}
+		return jaxbContext;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public static <T extends IInfos<S>, S extends IInfo> T readInfos(EInfos infoType, String xmlPath) {
 
@@ -48,15 +68,7 @@ public class InfosFactory {
 
 		try {
 			// Initialise the context
-			JAXBContext jaxbContext = null;
-			switch (infoType) {
-			case TECH_INFOS:
-				jaxbContext = JAXBContext.newInstance(TechInfos.class);
-				break;
-			default:
-				log.error("Error reading infos file: unknown info type");
-				break;
-			}
+			JAXBContext jaxbContext = getContext(infoType);
 			
 			// Read the infos
 			if (jaxbContext != null) {
@@ -73,15 +85,7 @@ public class InfosFactory {
 	public static <T extends IInfos<S>, S extends IInfo> void writeInfos(EInfos infoType, String xmlPath, T infos) {
 		try {
 			// Initialise the context
-			JAXBContext jaxbContext = null;
-			switch (infoType) {
-			case TECH_INFOS:
-				jaxbContext = JAXBContext.newInstance(TechInfos.class);
-				break;
-			default:
-				log.error("Error writing infos file: unknown info type");
-				break;
-			}
+			JAXBContext jaxbContext = getContext(infoType);
 			
 			// write the infos
 			if (jaxbContext != null) {

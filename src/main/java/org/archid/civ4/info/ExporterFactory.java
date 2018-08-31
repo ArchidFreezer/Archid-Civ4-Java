@@ -2,6 +2,7 @@ package org.archid.civ4.info;
 
 import org.apache.log4j.Logger;
 import org.archid.civ4.info.InfosFactory.EInfos;
+import org.archid.civ4.info.era.EraExporter;
 import org.archid.civ4.info.techinfo.TechExporter;
 
 public class ExporterFactory {
@@ -14,6 +15,9 @@ public class ExporterFactory {
 		switch (infoType) {
 		case TECH_INFOS:
 			exporter = new TechExporter(infoType);
+			break;
+		case ERA_INFOS:
+			exporter = new EraExporter(infoType);
 			break;
 		default:
 			log.error("Unknown exporter requested");

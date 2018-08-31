@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -12,12 +14,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.archid.civ4.info.AbstractInfos;
-import org.archid.civ4.utils.IKeyValuePair;
+import org.archid.civ4.utils.IPair;
 import org.archid.civ4.utils.StringUtils;
 
 @XmlRootElement(name="Civ4TechInfos", namespace="x-schema:CIV4TechnologiesSchema.xml")
 @XmlAccessorType(XmlAccessType.NONE)
 public class TechInfos extends AbstractInfos<ITechInfo> {
+	
+	public TechInfos() {
+		super(new TreeMap<String, ITechInfo>());
+	}
 	
 	/** All know techs */
 	@XmlJavaTypeAdapter(TechMapAdapter.class)
@@ -96,17 +102,17 @@ public class TechInfos extends AbstractInfos<ITechInfo> {
 		private boolean captureCities;
 		private boolean unitRangeUnbound;
 		private boolean unitTerritoryUnbound;
-		private List<IKeyValuePair<String, Integer>> domainExtraMoves = new ArrayList<IKeyValuePair<String, Integer>>();
-		private List<IKeyValuePair<String, Integer>> worldViewRevoltTurnChanges = new ArrayList<IKeyValuePair<String, Integer>>();
-		private List<IKeyValuePair<String, Integer>> flavors = new ArrayList<IKeyValuePair<String, Integer>>();
+		private List<IPair<String, Integer>> domainExtraMoves = new ArrayList<IPair<String, Integer>>();
+		private List<IPair<String, Integer>> worldViewRevoltTurnChanges = new ArrayList<IPair<String, Integer>>();
+		private List<IPair<String, Integer>> flavors = new ArrayList<IPair<String, Integer>>();
 		private List<Boolean> commerceFlexibles = new ArrayList<Boolean>();
 		private List<Integer> forestPlotYieldChanges = new ArrayList<Integer>();
 		private List<Integer> riverPlotYieldChanges = new ArrayList<Integer>();
 		private List<Integer> seaPlotYieldChanges = new ArrayList<Integer>();
-		private Set<String> terrainTrades = new HashSet<>();
-		private Set<String> orPrereqs = new HashSet<>();
-		private Set<String> andPrereqs = new HashSet<>();
-		private Set<String> enabledWorldViews = new HashSet<>();
+		private List<String> terrainTrades = new ArrayList<String>();
+		private List<String> orPrereqs = new ArrayList<String>();
+		private List<String> andPrereqs = new ArrayList<String>();
+		private List<String> enabledWorldViews = new ArrayList<String>();
 		
 		private TechInfo(String type) {
 			this.type = type;
@@ -892,15 +898,15 @@ public class TechInfos extends AbstractInfos<ITechInfo> {
 		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getDomainExtraMoves()
 		 */
 		@Override
-		public List<IKeyValuePair<String, Integer>> getDomainExtraMoves() {
-			return new ArrayList<IKeyValuePair<String, Integer>>(domainExtraMoves);
+		public List<IPair<String, Integer>> getDomainExtraMoves() {
+			return new ArrayList<IPair<String, Integer>>(domainExtraMoves);
 		}
 
 		/* (non-Javadoc)
 		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setDomainExtraMoves(java.util.List)
 		 */
 		@Override
-		public void addDomainExtraMove(IKeyValuePair<String, Integer> domainExtraMove) {
+		public void addDomainExtraMove(IPair<String, Integer> domainExtraMove) {
 			this.domainExtraMoves.add(domainExtraMove);
 		}
 
@@ -1037,22 +1043,22 @@ public class TechInfos extends AbstractInfos<ITechInfo> {
 		}
 
 		@Override
-		public List<IKeyValuePair<String, Integer>> getWorldViewRevoltTurnChanges() {
-			return new ArrayList<IKeyValuePair<String, Integer>>(worldViewRevoltTurnChanges);
+		public List<IPair<String, Integer>> getWorldViewRevoltTurnChanges() {
+			return new ArrayList<IPair<String, Integer>>(worldViewRevoltTurnChanges);
 		}
 
 		@Override
-		public void addWorldViewRevoltTurnChange(IKeyValuePair<String, Integer> worldViewRevoltTurnChange) {
+		public void addWorldViewRevoltTurnChange(IPair<String, Integer> worldViewRevoltTurnChange) {
 			worldViewRevoltTurnChanges.add(worldViewRevoltTurnChange);
 		}
 		
 		@Override
-		public List<IKeyValuePair<String, Integer>> getFlavors() {
-			return new ArrayList<IKeyValuePair<String, Integer>>(flavors);
+		public List<IPair<String, Integer>> getFlavors() {
+			return new ArrayList<IPair<String, Integer>>(flavors);
 		}
 
 		@Override
-		public void addFlavor(IKeyValuePair<String, Integer> flavor) {
+		public void addFlavor(IPair<String, Integer> flavor) {
 			flavors.add(flavor);
 		}
 
