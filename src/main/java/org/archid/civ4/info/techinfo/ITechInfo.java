@@ -1,8 +1,6 @@
 package org.archid.civ4.info.techinfo;
 
 import java.util.List;
-import java.util.Set;
-
 import org.archid.civ4.info.IInfo;
 import org.archid.utils.IPair;
 
@@ -208,7 +206,7 @@ public interface ITechInfo extends IInfo {
 	
 	public void addCommerceFlexible(boolean flexible);
 	
-	public Set<String> getTerrainTrades();
+	public List<String> getTerrainTrades();
 	
 	public void addTerrainTrade(String terrain);
 	
@@ -260,15 +258,15 @@ public interface ITechInfo extends IInfo {
 	
 	public void addFlavor(IPair<String, Integer> flavor);
 	
-	public Set<String> getOrPrereqs();
+	public List<String> getOrPrereqs();
 	
 	public void addOrPrereq(String tech);
 	
-	public Set<String> getAndPrereqs();
+	public List<String> getAndPrereqs();
 	
 	public void addAndPrereq(String tech);
 	
-	public Set<String> getEnabledWorldViews();
+	public List<String> getEnabledWorldViews();
 	
 	public void addEnabledWorldViews(String worldView);
 	

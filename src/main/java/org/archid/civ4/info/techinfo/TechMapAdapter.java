@@ -170,13 +170,13 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 		private List<AdaptedFlavors> flavors;
 		@XmlElementWrapper(name="OrPreReqs")
 		@XmlElement(name="PrereqTech")
-		private Set<String> orPrereqs;
+		private List<String> orPrereqs;
 		@XmlElementWrapper(name="AndPreReqs")
 		@XmlElement(name="PrereqTech")
-		private Set<String> andPrereqs;
+		private List<String> andPrereqs;
 		@XmlElementWrapper(name="EnabledWorldViews")
 		@XmlElement(name="WorldViewType")
-		private Set<String> enabledWorldViews;
+		private List<String> enabledWorldViews;
 		@XmlElement(name="Quote")
 		private String quote;
 		@XmlElement(name="Sound")
@@ -340,21 +340,21 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 			}
 			
 			if (CollectionUtils.hasElements(info.getOrPrereqs())) {
-				aInfo.orPrereqs = new HashSet<String>();
+				aInfo.orPrereqs = new ArrayList<String>();
 				for (String prereq: info.getOrPrereqs()) {
 					aInfo.orPrereqs.add(prereq);
 				}
 			}
 			
 			if (CollectionUtils.hasElements(info.getAndPrereqs())) {
-				aInfo.andPrereqs = new HashSet<String>();
+				aInfo.andPrereqs = new ArrayList<String>();
 				for (String prereq: info.getAndPrereqs()) {
 					aInfo.andPrereqs.add(prereq);
 				}
 			}
 			
 			if (CollectionUtils.hasElements(info.getEnabledWorldViews())) {
-				aInfo.enabledWorldViews = new HashSet<String>();
+				aInfo.enabledWorldViews = new ArrayList<String>();
 				for (String worldView: info.getEnabledWorldViews()) {
 					aInfo.enabledWorldViews.add(worldView);
 				}

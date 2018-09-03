@@ -3,7 +3,7 @@ package org.archid.civ4.info;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Collection;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
@@ -45,6 +45,7 @@ public abstract class AbstractExporter<T extends IInfos<S>, S extends IInfo> imp
 	
 	public AbstractExporter(EInfos infoEnum) {
 		this.infoEnum= infoEnum;
+		log.info("Parsing file: " + props.getAppProperty(PropertyKeys.PROPERTY_KEY_FILE_INFOS));
 		this.infos = InfosFactory.readInfos(infoEnum, props.getAppProperty(PropertyKeys.PROPERTY_KEY_FILE_INFOS));
 		wb = new XSSFWorkbook();
 		preCreateCellStyles();
@@ -102,13 +103,13 @@ public abstract class AbstractExporter<T extends IInfos<S>, S extends IInfo> imp
 		cell.setCellStyle(csWrap);
 	}
 
-	protected <U> int addRepeatingCell(Cell cell, Collection<U> set, int maxHeight) {
+	protected <U> int addRepeatingCell(Cell cell, List<U> list, int maxHeight) {
 		
 		int currHeight = 0;
 		
 		cell.setCellStyle(csWrap);
 		StringBuffer cellvalue = new StringBuffer();
-		for (U value: set) {
+		for (U value: list) {
 			if (currHeight++ > 0) cellvalue.append("\n");
 			cellvalue.append(value);
 		}
@@ -119,7 +120,7 @@ public abstract class AbstractExporter<T extends IInfos<S>, S extends IInfo> imp
 		
 	}
 
-	protected <U, V> int addRepeatingPairCell(Cell cell, Collection<IPair<U, V>> list, int maxHeight) {
+	protected <U, V> int addRepeatingPairCell(Cell cell, List<IPair<U, V>> list, int maxHeight) {
 		
 		int currHeight = 0;
 		

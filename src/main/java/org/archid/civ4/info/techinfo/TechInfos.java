@@ -1,10 +1,8 @@
 package org.archid.civ4.info.techinfo;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -930,8 +928,8 @@ public class TechInfos extends AbstractInfos<ITechInfo> {
 		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getTerrainTrades()
 		 */
 		@Override
-		public Set<String> getTerrainTrades() {
-			return new HashSet<String>(terrainTrades);
+		public List<String> getTerrainTrades() {
+			return new ArrayList<String>(terrainTrades);
 		}
 
 		/* (non-Javadoc)
@@ -1063,8 +1061,8 @@ public class TechInfos extends AbstractInfos<ITechInfo> {
 		}
 
 		@Override
-		public Set<String> getOrPrereqs() {
-			return new HashSet<String>(orPrereqs);
+		public List<String> getOrPrereqs() {
+			return new ArrayList<String>(orPrereqs);
 		}
 
 		@Override
@@ -1073,8 +1071,8 @@ public class TechInfos extends AbstractInfos<ITechInfo> {
 		}
 
 		@Override
-		public Set<String> getAndPrereqs() {
-			return new HashSet<String>(andPrereqs);
+		public List<String> getAndPrereqs() {
+			return new ArrayList<String>(andPrereqs);
 		}
 
 		@Override
@@ -1083,8 +1081,8 @@ public class TechInfos extends AbstractInfos<ITechInfo> {
 		}
 
 		@Override
-		public Set<String> getEnabledWorldViews() {
-			return new HashSet<String>(enabledWorldViews);
+		public List<String> getEnabledWorldViews() {
+			return new ArrayList<String>(enabledWorldViews);
 		}
 
 		@Override

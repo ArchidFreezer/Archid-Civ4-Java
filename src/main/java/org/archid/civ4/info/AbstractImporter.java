@@ -48,7 +48,9 @@ public abstract class AbstractImporter<T extends IInfos<S>, S extends IInfo> imp
 		// Read the xlsx file to create the list of tech infos to update
 		parseXlsx(getWorkbook());
 		try {
-			InfosFactory.writeInfos(infoEnum, Civ4FileUtils.prepareOutputFile(props.getAppProperty(PropertyKeys.PROPERTY_KEY_FILE_INFOS)), infos);
+			String outputFile = Civ4FileUtils.prepareOutputFile(props.getAppProperty(PropertyKeys.PROPERTY_KEY_FILE_INFOS));
+			log.info("Importing to " + outputFile);
+			InfosFactory.writeInfos(infoEnum, outputFile, infos);
 		} catch (IOException e) {
 			log.error("Error backing up infos file ... aborting", e);
 		}
