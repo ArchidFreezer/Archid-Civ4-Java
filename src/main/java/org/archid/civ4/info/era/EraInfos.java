@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.archid.civ4.info.AbstractInfos;
-import org.archid.civ4.utils.IPair;
+import org.archid.utils.IPair;
 
 @XmlRootElement(name="Civ4EraInfos", namespace="x-schema:CIV4GameInfoSchema.xml")
 @XmlAccessorType(XmlAccessType.NONE)

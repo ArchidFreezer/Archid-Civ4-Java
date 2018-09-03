@@ -1,7 +1,7 @@
 package org.archid.civ4.info.techinfo;
 
 import org.archid.civ4.info.IExporter;
-import org.archid.civ4.utils.StringUtils;
+import org.archid.utils.StringUtils;
 
 public interface ITechExporter extends IExporter{
 	

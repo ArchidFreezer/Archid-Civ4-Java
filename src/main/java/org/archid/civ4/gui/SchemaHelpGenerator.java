@@ -134,7 +134,7 @@ public class SchemaHelpGenerator extends JPanel implements ActionListener {
 			}
 			textArea.setCaretPosition(textArea.getDocument().getLength());
 		} else if (e.getSource() == outputButton) {
-			String dir = props.getAppProperty(SchemaPropertyKeys.PROPERTY_KEY_OUTPUT_DIR, ".");
+			String dir = props.getAppProperty(SchemaPropertyKeys.PROPERTY_KEY_HTML_OUTPUT_DIR, ".");
 			try {
 				fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				fc.setCurrentDirectory(new File(new File(dir).getCanonicalPath()));
@@ -145,7 +145,7 @@ public class SchemaHelpGenerator extends JPanel implements ActionListener {
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				outputDir = fc.getSelectedFile();
 				if (!dir.equals(fc.getSelectedFile().getPath()))
-					props.setAppProperty(SchemaPropertyKeys.PROPERTY_KEY_OUTPUT_DIR, fc.getSelectedFile().getPath());
+					props.setAppProperty(SchemaPropertyKeys.PROPERTY_KEY_HTML_OUTPUT_DIR, fc.getSelectedFile().getPath());
 				textArea.append("Output dir: " + outputDir.getName() + "." + newline);
 			} else {
 				textArea.append("Open command cancelled by user." + newline);
@@ -167,7 +167,7 @@ public class SchemaHelpGenerator extends JPanel implements ActionListener {
 					htmlGen.printAllTags(printableTags, false);
 					
 					// If the output folder doesn't contain the named stylesheet add it
-					Path stylesheetPath = Paths.get(props.getAppProperty(SchemaPropertyKeys.PROPERTY_KEY_OUTPUT_DIR, "."), props.getAppProperty(SchemaPropertyKeys.PROPERTY_KEY_HTML_STYLESHEET)); 
+					Path stylesheetPath = Paths.get(props.getAppProperty(SchemaPropertyKeys.PROPERTY_KEY_HTML_OUTPUT_DIR, "."), props.getAppProperty(SchemaPropertyKeys.PROPERTY_KEY_HTML_STYLESHEET)); 
 					if (!Files.exists(stylesheetPath))
 						htmlGen.createStylesheet();
 					

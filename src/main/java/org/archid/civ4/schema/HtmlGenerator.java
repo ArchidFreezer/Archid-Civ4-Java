@@ -17,7 +17,7 @@ import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.archid.civ4.schema.XmlTagDefinition.DataType;
-import org.archid.civ4.utils.PropertyKeys;
+import org.archid.utils.PropertyKeys;
 
 public class HtmlGenerator {
 

@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.archid.civ4.info.IInfo;
-import org.archid.civ4.utils.IPair;
+import org.archid.utils.IPair;
 
 public interface ITechInfo extends IInfo {
 	

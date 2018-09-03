@@ -17,7 +17,7 @@ import javax.xml.bind.Unmarshaller;
 import org.apache.log4j.Logger;
 import org.archid.civ4.info.era.EraInfos;
 import org.archid.civ4.info.techinfo.TechInfos;
-import org.archid.civ4.utils.StringUtils;
+import org.archid.utils.StringUtils;
 
 public class InfosFactory {
 	

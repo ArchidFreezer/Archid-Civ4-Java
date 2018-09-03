@@ -3,7 +3,7 @@ package org.archid.civ4.info.era;
 import java.util.List;
 
 import org.archid.civ4.info.IInfo;
-import org.archid.civ4.utils.IPair;
+import org.archid.utils.IPair;
 
 public interface IEraInfo  extends IInfo {
 

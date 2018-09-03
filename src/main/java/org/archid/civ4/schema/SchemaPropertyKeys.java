@@ -1,6 +1,6 @@
 package org.archid.civ4.schema;
 
-import org.archid.civ4.utils.PropertyKeys;
+import org.archid.utils.PropertyKeys;
 
 public interface SchemaPropertyKeys extends PropertyKeys {
 	

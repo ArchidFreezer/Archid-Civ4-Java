@@ -30,7 +30,7 @@ import org.archid.civ4.schema.ISchemaPropertyhandler;
 import org.archid.civ4.schema.SchemaParser;
 import org.archid.civ4.schema.SchemaPropertyHandler;
 import org.archid.civ4.schema.XmlTagDefinition;
-import org.archid.civ4.utils.PropertyKeys;
+import org.archid.utils.PropertyKeys;
 
 public class HelpGenerator {
 
@@ -86,7 +86,7 @@ public class HelpGenerator {
 				if (cmd.hasOption("R"))
 					props.setAppProperty(PropertyKeys.PROPERTY_KEY_REF_SCHEMA, cmd.getOptionValue("R"));
 				if (cmd.hasOption("o"))
-					props.setAppProperty(PropertyKeys.PROPERTY_KEY_OUTPUT_DIR, cmd.getOptionValue("o"));
+					props.setAppProperty(PropertyKeys.PROPERTY_KEY_HTML_OUTPUT_DIR, cmd.getOptionValue("o"));
 				
 				// Now perform the actions
 				if (cmd.hasOption("a"))

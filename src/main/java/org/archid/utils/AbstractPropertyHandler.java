@@ -1,4 +1,4 @@
-package org.archid.civ4.utils;
+package org.archid.utils;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,14 +15,8 @@ import org.apache.log4j.Logger;
 
 public abstract class AbstractPropertyHandler implements IPropertyHandler {
 		
-	protected enum PropertyFileTypes{
-		PROP_USER, PROP_DEFAULT, PROP_ALL;
-	}
-	
 	/** Internal path where the default property files are stored */
 	private final String DEFAULT_PATH = "/res/";
-	
-	static public final String APP_PROPERTY_FILE = "app";
 	
 	/** Logging facility */
 	Logger log = Logger.getLogger(AbstractPropertyHandler.class.getName());
@@ -67,6 +61,22 @@ public abstract class AbstractPropertyHandler implements IPropertyHandler {
 			result = getPropertyFile(file, PropertyFileTypes.PROP_DEFAULT).getProperty(property, defaultVal);
 		return result;
 	}
+
+	/* (non-Javadoc)
+	 * @see org.archid.utils.IPropertyHandler#removeAppProperty(java.lang.String)
+	 */
+	@Override
+	public void removeAppProperty(String property) {
+		getPropertyFile(APP_PROPERTY_FILE, PropertyFileTypes.PROP_USER).remove(property);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.archid.utils.IPropertyHandler#removeProperty(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public void removeProperty(String file, String property) {
+		getPropertyFile(file, PropertyFileTypes.PROP_USER).remove(property);
+	}
 	
 	/* (non-Javadoc)
 	 * @see org.archid.civ4.utils.IPropertyHandler#setAppProperty(java.lang.String, java.lang.String)
@@ -84,6 +94,11 @@ public abstract class AbstractPropertyHandler implements IPropertyHandler {
 		getPropertyFile(file, PropertyFileTypes.PROP_USER).setProperty(property, value);
 	}
 	
+	@Override
+	public boolean hasProperty(String property) {
+		return hasProperty(APP_PROPERTY_FILE, property);
+	}
+
 	/* (non-Javadoc)
 	 * @see org.archid.civ4.utils.IPropertyHandler#hasProperty(java.lang.String, java.lang.String)
 	 */
@@ -92,7 +107,7 @@ public abstract class AbstractPropertyHandler implements IPropertyHandler {
 		return hasProperty(file, property, PropertyFileTypes.PROP_ALL);
 	}
 	
-	protected boolean hasProperty(String file, String property, PropertyFileTypes types) {
+	public boolean hasProperty(String file, String property, PropertyFileTypes types) {
 		boolean found = false;
 		switch (types) {
 		case PROP_ALL:

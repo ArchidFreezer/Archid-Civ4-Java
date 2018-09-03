@@ -1,4 +1,4 @@
-package org.archid.civ4.utils;
+package org.archid.utils;
 
 /**
  * Implementation of the {@link IPair} interface

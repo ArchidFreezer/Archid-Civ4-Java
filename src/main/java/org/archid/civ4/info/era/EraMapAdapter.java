@@ -9,11 +9,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import org.archid.civ4.utils.CollectionUtils;
-import org.archid.civ4.utils.IPair;
-import org.archid.civ4.utils.JaxbUtils;
-import org.archid.civ4.utils.Pair;
-import org.archid.civ4.utils.StringUtils;
+import org.archid.utils.CollectionUtils;
+import org.archid.utils.IPair;
+import org.archid.utils.JaxbUtils;
+import org.archid.utils.Pair;
+import org.archid.utils.StringUtils;
 
 public class EraMapAdapter extends XmlAdapter<EraMapAdapter.EraMap, Map<String, IEraInfo>> {
 	

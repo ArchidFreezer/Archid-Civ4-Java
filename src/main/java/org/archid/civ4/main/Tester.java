@@ -20,7 +20,7 @@ import org.archid.civ4.info.InfosFactory;
 import org.archid.civ4.info.InfosFactory.EInfos;
 import org.archid.civ4.info.techinfo.ITechInfo;
 import org.archid.civ4.info.techinfo.TechInfos;
-import org.archid.civ4.utils.Pair;
+import org.archid.utils.Pair;
 
 public class Tester {
 	

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.archid.civ4.utils;
+package org.archid.utils;
 
 /**
  * @author Jim

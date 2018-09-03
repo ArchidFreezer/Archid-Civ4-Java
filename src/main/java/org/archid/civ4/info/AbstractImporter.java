@@ -3,23 +3,22 @@
  */
 package org.archid.civ4.info;
 
-import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.archid.civ4.info.InfosFactory.EInfos;
-import org.archid.civ4.utils.FileUtils;
-import org.archid.civ4.utils.IPair;
-import org.archid.civ4.utils.IPropertyHandler;
-import org.archid.civ4.utils.Pair;
-import org.archid.civ4.utils.PropertyHandler;
-import org.archid.civ4.utils.PropertyKeys;
-import org.archid.civ4.utils.StringUtils;
+import org.archid.utils.IPair;
+import org.archid.utils.IPropertyHandler;
+import org.archid.utils.Pair;
+import org.archid.utils.PropertyHandler;
+import org.archid.utils.PropertyKeys;
+import org.archid.utils.StringUtils;
+import org.archid.utils.civ4.Civ4FileUtils;
 
 /**
  * @author Jim
@@ -47,15 +46,26 @@ public abstract class AbstractImporter<T extends IInfos<S>, S extends IInfo> imp
 	public void importXLSX() {
 		
 		// Read the xlsx file to create the list of tech infos to update
-		parseXlsx();
+		parseXlsx(getWorkbook());
 		try {
-			backupInfosFile();
-			InfosFactory.writeInfos(infoEnum, props.getAppProperty(PropertyKeys.PROPERTY_KEY_INFOS_FILE), infos);
+			InfosFactory.writeInfos(infoEnum, Civ4FileUtils.prepareOutputFile(props.getAppProperty(PropertyKeys.PROPERTY_KEY_FILE_INFOS)), infos);
 		} catch (IOException e) {
 			log.error("Error backing up infos file ... aborting", e);
 		}
 	}
 	
+	private Workbook getWorkbook() {
+		String filepath = props.getAppProperty(PropertyKeys.PROPERTY_KEY_FILE_XSLX);
+		log.info("Reading workbook: " + filepath);
+		Workbook wb = null;
+		try {
+			wb = new XSSFWorkbook(filepath);
+		} catch (IOException e) {
+			log.error("Error opening workboook from file: " + filepath, e);
+		}
+		return wb;
+	}
+
 	protected <U, V> List<IPair<U, V>> parsePairs(Cell cell, Class<U> keyClass, Class<V> valClass) {
 		List<IPair<U, V>> list = new ArrayList<IPair<U, V>>();
 		String[] arr = cell.getStringCellValue().split("\n");
@@ -92,18 +102,5 @@ public abstract class AbstractImporter<T extends IInfos<S>, S extends IInfo> imp
 		
 	}
 	
-	protected void backupInfosFile() throws IOException {
-		String srcpath = props.getAppProperty(PropertyKeys.PROPERTY_KEY_INFOS_FILE);
-		File src = new File(srcpath);
-		if (!src.exists()) return;
-		Calendar cal = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
-		String destpath = srcpath + "." + sdf.format(cal.getTime());
-		log.info("Backing up original file to: " + destpath);
-
-		File dest = new File(destpath);
-		FileUtils.copyFile(src, dest);
-	}
-	
-	protected abstract void parseXlsx();
+	protected abstract void parseXlsx(Workbook wb);
 }

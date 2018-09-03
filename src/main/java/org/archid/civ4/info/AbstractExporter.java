@@ -1,6 +1,5 @@
 package org.archid.civ4.info;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -23,19 +22,19 @@ import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.archid.civ4.info.InfosFactory.EInfos;
-import org.archid.civ4.utils.FileUtils;
-import org.archid.civ4.utils.IPair;
-import org.archid.civ4.utils.IPropertyHandler;
-import org.archid.civ4.utils.PropertyHandler;
-import org.archid.civ4.utils.PropertyKeys;
-import org.archid.civ4.utils.StringUtils;
+import org.archid.utils.IPair;
+import org.archid.utils.IPropertyHandler;
+import org.archid.utils.PropertyHandler;
+import org.archid.utils.PropertyKeys;
+import org.archid.utils.StringUtils;
+import org.archid.utils.civ4.Civ4FileUtils;
 
 public abstract class AbstractExporter<T extends IInfos<S>, S extends IInfo> implements IExporter {
 
 	/** Logging facility */
 	static Logger log = Logger.getLogger(AbstractExporter.class.getName());
 
-	protected static IPropertyHandler props = PropertyHandler.getInstance();
+	protected IPropertyHandler props = PropertyHandler.getInstance();
 	protected T infos;
 	protected EInfos infoEnum;
 	
@@ -46,7 +45,7 @@ public abstract class AbstractExporter<T extends IInfos<S>, S extends IInfo> imp
 	
 	public AbstractExporter(EInfos infoEnum) {
 		this.infoEnum= infoEnum;
-		this.infos = InfosFactory.readInfos(infoEnum, props.getAppProperty(PropertyKeys.PROPERTY_KEY_INFOS_FILE));
+		this.infos = InfosFactory.readInfos(infoEnum, props.getAppProperty(PropertyKeys.PROPERTY_KEY_FILE_INFOS));
 		wb = new XSSFWorkbook();
 		preCreateCellStyles();
 	}
@@ -59,8 +58,9 @@ public abstract class AbstractExporter<T extends IInfos<S>, S extends IInfo> imp
 		try {
 			
 			createSheets();
-			
-			OutputStream output = getOutputStream("xlsx");
+			String outputFile = getOutputFile();
+			OutputStream output =  new FileOutputStream(outputFile);
+			log.info("Exporting data to " + outputFile);
 			wb.write(output);
 			output.close();
 			wb.close();
@@ -177,17 +177,15 @@ public abstract class AbstractExporter<T extends IInfos<S>, S extends IInfo> imp
 	}
 	
 	protected abstract String getCellMessage(S info);
-	
+
 	private void addHeaderCell(Cell cell, String value) {
 		addSingleCell(cell, value);
 		cell.setCellStyle(csHeader);
 	}
 
-	private OutputStream getOutputStream(String ext) throws FileNotFoundException {
-		String outputFile = FileUtils.getNewExtension(props.getAppProperty(PropertyKeys.PROPERTY_KEY_INFOS_FILE), ext);
-		log.info("Writing output to: " + outputFile);
-		FileOutputStream output = new FileOutputStream(outputFile);
-		return output;
+	private String getOutputFile() throws IOException {
+		String outputFile = props.hasProperty(IPropertyHandler.APP_PROPERTY_FILE, PropertyKeys.PROPERTY_KEY_FILE_XSLX, IPropertyHandler.PropertyFileTypes.PROP_USER) ? props.getAppProperty(PropertyKeys.PROPERTY_KEY_FILE_XSLX) : props.getAppProperty(PropertyKeys.PROPERTY_KEY_FILE_INFOS);
+		return Civ4FileUtils.prepareOutputFile(outputFile, "xlsx");
 	}
 	
 }

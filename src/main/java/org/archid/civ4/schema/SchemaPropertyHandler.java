@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.archid.civ4.utils.AbstractPropertyHandler;
+import org.archid.utils.AbstractPropertyHandler;
 
 public class SchemaPropertyHandler extends AbstractPropertyHandler implements ISchemaPropertyhandler {
 

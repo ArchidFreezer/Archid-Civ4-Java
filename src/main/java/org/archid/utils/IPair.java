@@ -1,4 +1,4 @@
-package org.archid.civ4.utils;
+package org.archid.utils;
 
 /**
  * Interface describing a class that contains a key-value pair.

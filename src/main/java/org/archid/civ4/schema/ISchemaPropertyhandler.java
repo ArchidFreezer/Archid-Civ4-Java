@@ -5,7 +5,7 @@ package org.archid.civ4.schema;
 
 import java.util.Set;
 
-import org.archid.civ4.utils.IPropertyHandler;
+import org.archid.utils.IPropertyHandler;
 
 /**
  * @author Jim

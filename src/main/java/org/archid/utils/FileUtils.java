@@ -1,10 +1,12 @@
 /**
  * 
  */
-package org.archid.civ4.utils;
+package org.archid.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
@@ -109,8 +111,20 @@ public class FileUtils {
 	 * @param ext new extension to use for the file
 	 * @return path to a file with the same path and basename but new extension
 	 */
-	public static String getNewExtension(String filePath, String ext) {
-		return FilenameUtils.getFullPath(filePath) + FilenameUtils.getBaseName(filePath) + "." + ext;
+	public static String getNewFilename(String filePath, String ext) {
+		return getNewFilename(filePath, ext, "");
+	}
+
+	/**
+	 * Takes a path to a file name and returns the path to a file with the same base =name, but with a new file extension
+	 * 
+	 * @param filePath absolute or relative path to a file
+	 * @param ext new extension to use for the file
+	 * @param prefix string to add to the start of the filename
+	 * @return path to a file with the same path and basename but new prefix and extension
+	 */
+	public static String getNewFilename(String filePath, String ext, String prefix) {
+		return FilenameUtils.getFullPath(filePath) + prefix + FilenameUtils.getBaseName(filePath) + "." + ext;
 	}
 
 	public static void copyFile(File src, File dest) {
@@ -121,6 +135,16 @@ public class FileUtils {
 		}
 	}
 	
+	public static void backupFile(String srcpath) throws IOException {
+		File src = new File(srcpath);
+		if (!src.exists()) return;
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
+		String destpath = srcpath + "." + sdf.format(cal.getTime());
+		File dest = new File(destpath);
+		log.info("Backing up " + srcpath + " to: " + destpath);
+		copyFile(src, dest);
+	}
 	
 
 }

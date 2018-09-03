@@ -1,7 +1,7 @@
 package org.archid.civ4.info.era;
 
 import org.archid.civ4.info.IExporter;
-import org.archid.civ4.utils.StringUtils;
+import org.archid.utils.StringUtils;
 
 public interface IEraExporter extends IExporter {
 
