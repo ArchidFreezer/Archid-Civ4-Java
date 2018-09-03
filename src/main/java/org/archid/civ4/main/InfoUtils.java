@@ -8,7 +8,6 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.archid.civ4.info.ExporterFactory;
@@ -39,7 +38,6 @@ public class InfoUtils {
 	public static void main(String[] args) {
 
 		PropertyConfigurator.configure("log4j.properties");
-		Logger.getRootLogger().setLevel(Level.INFO);
 		
 		InfoUtils app = new InfoUtils(args);
 		app.parse();
