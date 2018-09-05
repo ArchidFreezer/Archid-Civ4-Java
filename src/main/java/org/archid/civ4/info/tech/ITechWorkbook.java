@@ -1,9 +1,8 @@
-package org.archid.civ4.info.techinfo;
+package org.archid.civ4.info.tech;
 
-import org.archid.civ4.info.IExporter;
 import org.archid.utils.StringUtils;
 
-public interface ITechExporter extends IExporter{
+public interface ITechWorkbook {
 	
 
 	public static final String SHEETNAME_TREE = "TechTree";

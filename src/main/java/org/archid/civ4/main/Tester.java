@@ -18,8 +18,8 @@ import javax.xml.transform.stream.StreamResult;
 import org.archid.civ4.info.IInfos;
 import org.archid.civ4.info.InfosFactory;
 import org.archid.civ4.info.InfosFactory.EInfos;
-import org.archid.civ4.info.techinfo.ITechInfo;
-import org.archid.civ4.info.techinfo.TechInfos;
+import org.archid.civ4.info.tech.ITechInfo;
+import org.archid.civ4.info.tech.TechInfos;
 import org.archid.utils.Pair;
 
 public class Tester {

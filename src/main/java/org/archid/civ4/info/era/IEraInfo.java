@@ -5,7 +5,7 @@ import java.util.List;
 import org.archid.civ4.info.IInfo;
 import org.archid.utils.IPair;
 
-public interface IEraInfo  extends IInfo {
+public interface IEraInfo extends IInfo {
 
 	String getType();
 

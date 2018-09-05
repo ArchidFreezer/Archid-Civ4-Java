@@ -56,7 +56,7 @@ public class InfoUtils {
 		options.addOption(Option.builder("f").longOpt("file").required().hasArg(true).argName("XML").desc("Civ4xxxInfos.xml file to process").build());
 		options.addOption(Option.builder("o").longOpt("output").hasArg(true).argName("Output Dir").desc("Directory to create output files").build());
 		options.addOption(Option.builder("p").longOpt("prefix").hasArg(true).argName("Prefix").desc("Prefix to new output file").build());
-		options.addOption(Option.builder("t").longOpt("type").required().hasArg(true).argName("Info Type").desc("Valid values are: Tech & Era").build());
+		options.addOption(Option.builder("t").longOpt("type").required().hasArg(true).argName("Info Type").desc("Valid values are: Era, Tech & Unit").build());
 		options.addOption(Option.builder("x").longOpt("xlsx").hasArg(true).argName("XLSX").desc("XLSX file to use, required for import action").build());
 	}
 
@@ -75,10 +75,12 @@ public class InfoUtils {
 			if (cmd.hasOption("p"))
 				props.setAppProperty(PropertyKeys.PROPERTY_KEY_FILE_PREFIX, cmd.getOptionValue("p"));
 			if (cmd.hasOption("t")) {
-				if (cmd.getOptionValue("t").equalsIgnoreCase("tech"))
-					infoType = EInfos.TECH_INFOS;
-				else if (cmd.getOptionValue("t").equalsIgnoreCase("era"))
+				if (cmd.getOptionValue("t").equalsIgnoreCase("era"))
 					infoType = EInfos.ERA_INFOS;
+				else if (cmd.getOptionValue("t").equalsIgnoreCase("tech"))
+					infoType = EInfos.TECH_INFOS;
+				else if (cmd.getOptionValue("t").equalsIgnoreCase("unit"))
+					infoType = EInfos.UNIT_INFOS;
 				else
 					log.error("Processing of type " + cmd.getOptionValue("t") + " is not implemented yet");	
 			}

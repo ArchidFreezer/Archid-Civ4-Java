@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.archid.civ4.info.techinfo;
+package org.archid.civ4.info.tech;
 
 import java.util.ArrayList;
 import java.util.HashSet;

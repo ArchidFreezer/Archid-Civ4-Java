@@ -1,4 +1,4 @@
-package org.archid.civ4.info.techinfo;
+package org.archid.civ4.info.tech;
 
 import java.util.List;
 import org.archid.civ4.info.IInfo;

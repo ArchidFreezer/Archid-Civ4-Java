@@ -3,6 +3,30 @@ package org.archid.utils;
 public class JaxbUtils {
 	
 	/**
+	 * Used when unmarshalling a {@code Float} that could be {@code null} to populate a {@code float}
+	 * 
+	 * @param val {@code Float} value to check
+	 * @return {@code float} value of {@code val} if is is not null; otherwise 0
+	 * 
+	 * @see #marshallInteger(int)
+	 */
+	public static float unmarshallFloat(Float val) {
+		return val != null ? val : 0;
+	}
+
+	/**
+	 * Used when populating an {@code Float} for marshalling where the value should not be displayed if it is 0
+	 * 
+	 * @param val {@code float} to parse
+	 * @return {@code Float} value of {@code val} if it is non-zero; otherwise null
+	 * 
+	 * @see #unmarshallInteger(Integer)
+	 */
+	public static Float marshallFloat(float val) {
+		return val != 0 ? val : null;
+	}
+	
+	/**
 	 * Used when unmarshalling an {@code Integer} that could be {@code null} to populate an {@code int}
 	 * 
 	 * @param val {@code Integer} value to check

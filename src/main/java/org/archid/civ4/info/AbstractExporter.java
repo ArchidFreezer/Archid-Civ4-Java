@@ -76,7 +76,34 @@ public abstract class AbstractExporter<T extends IInfos<S>, S extends IInfo> imp
 		createInfoListSheet();
 	}
 	
-	protected abstract Sheet createInfoListSheet();
+	protected void createInfoListSheet() {
+		Sheet sheet = wb.createSheet(getInfoListSheetName());
+		
+		int rowNum = 0;
+		
+		// Create the header row
+		Row row = sheet.createRow(rowNum++);
+		createSheetHeaders(row);
+		
+		// Freeze the first row
+		sheet.createFreezePane(1, 1);
+
+		// Loop through the infos
+		for (S info: infos.getInfos()) {
+			populateRow(sheet.createRow(rowNum++), info);
+		}
+		
+		for (int i = 0; i < getNumCols(); i++) {
+			sheet.autoSizeColumn(i);
+		}
+		
+	};
+	
+	protected abstract void populateRow(Row row, S info);
+	
+	protected abstract int getNumCols();
+	
+	protected abstract String getInfoListSheetName();
 
 	protected void preCreateCellStyles() {
 		
@@ -146,12 +173,11 @@ public abstract class AbstractExporter<T extends IInfos<S>, S extends IInfo> imp
 		}
 	}
 
-	protected void setCellComment(Cell cell, S info) {
+	protected void setCellComment(Cell cell, String message) {
     Drawing<?> drawing = cell.getSheet().createDrawingPatriarch();
     CreationHelper factory = cell.getSheet().getWorkbook().getCreationHelper();
 
     ClientAnchor anchor = factory.createClientAnchor();
-    String message = getCellMessage(info);
     if (StringUtils.isNullOrEmpty(message)) return;
     
     int height = message.split("\n").length;
@@ -173,12 +199,10 @@ public abstract class AbstractExporter<T extends IInfos<S>, S extends IInfo> imp
 	    cell.setCellComment(comment);		
     }
     catch (Exception e) {
-    	log.error("Error creating cell comment for info: " + info.getType() + " - comment likely to be incorrect", e);
+    	log.error("Error creating cell comment - comment likely to be incorrect", e);
     }
 	}
 	
-	protected abstract String getCellMessage(S info);
-
 	private void addHeaderCell(Cell cell, String value) {
 		addSingleCell(cell, value);
 		cell.setCellStyle(csHeader);

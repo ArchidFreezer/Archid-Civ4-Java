@@ -3,7 +3,8 @@ package org.archid.civ4.info;
 import org.apache.log4j.Logger;
 import org.archid.civ4.info.InfosFactory.EInfos;
 import org.archid.civ4.info.era.EraExporter;
-import org.archid.civ4.info.techinfo.TechExporter;
+import org.archid.civ4.info.tech.TechExporter;
+import org.archid.civ4.info.unit.UnitExporter;
 
 public class ExporterFactory {
 
@@ -18,6 +19,9 @@ public class ExporterFactory {
 			break;
 		case ERA_INFOS:
 			exporter = new EraExporter(infoType);
+			break;
+		case UNIT_INFOS:
+			exporter = new UnitExporter(infoType);
 			break;
 		default:
 			log.error("Unknown exporter requested");

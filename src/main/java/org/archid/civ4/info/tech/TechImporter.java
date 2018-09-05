@@ -1,4 +1,4 @@
-package org.archid.civ4.info.techinfo;
+package org.archid.civ4.info.tech;
 
 import java.util.Iterator;
 
@@ -23,10 +23,19 @@ public class TechImporter extends AbstractImporter<IInfos<ITechInfo>, ITechInfo>
 		super(infoEnum);
 	}
 
+
+	/**
+	 * Overrides the the method from {@link AbstractImporter} to allow the {@code <TechInfo>} objects to be defined
+	 * by the tech tree sheet rather than the list sheet. A tech will be created for each one defined in the tech tree
+	 * sheet which will provide the {@code <Type>}, {@code <iGridX>} and {@code <iGridY>} tag values. All other values
+	 * are then populated from the list sheet.
+	 * 
+	 * @param wb {@link Workbook} containing the tech tree and list sheets
+	 */
 	protected void parseXlsx(Workbook wb) {
 		
 		// Get the iGridX and iGridY values from the tech tree
-		Sheet sheet = wb.getSheet(ITechExporter.SHEETNAME_TREE);
+		Sheet sheet = wb.getSheet(ITechWorkbook.SHEETNAME_TREE);
 		Iterator<Row> itRow = sheet.rowIterator();
 		while (itRow.hasNext()) {
 			Row row = itRow.next();
@@ -47,7 +56,7 @@ public class TechImporter extends AbstractImporter<IInfos<ITechInfo>, ITechInfo>
 		}
 
 		// Get the rest of the values from the tech tree
-		sheet = wb.getSheet(ITechExporter.SHEETNAME_LIST);
+		sheet = wb.getSheet(getListSheetName());
 		itRow = sheet.rowIterator();
 		while (itRow.hasNext()) {
 			Row row = itRow.next();
@@ -175,6 +184,22 @@ public class TechImporter extends AbstractImporter<IInfos<ITechInfo>, ITechInfo>
 		}
 		
 		return ++gridX;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.archid.civ4.info.IImporter#getListSheetName()
+	 */
+	@Override
+	public String getListSheetName() {
+		return ITechWorkbook.SHEETNAME_TREE;
+	}
+
+	/**
+	 * This method is not used in this class as the {@link AbstractImporter#parseXlsx(Workbook)} method is overriden  
+	 */
+	@Override
+	protected ITechInfo parseRow(Row row) {
+		return null;
 	}
 
 }
