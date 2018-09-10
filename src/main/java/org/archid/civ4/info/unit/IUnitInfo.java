@@ -728,9 +728,9 @@ public interface IUnitInfo  extends IInfo {
 
 	void addUnitCombatMod(IPair<String, Integer> unitCombatMod);
 
-	List<IPair<String, String>> getBuildings();
+	List<String> getBuildings();
 
-	void addBuilding(IPair<String, String> building);
+	void addBuilding(String building);
 
 	List<IPair<String, String>> getFeaturePassableTechs();
 

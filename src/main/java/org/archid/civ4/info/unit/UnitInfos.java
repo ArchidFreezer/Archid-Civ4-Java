@@ -171,6 +171,7 @@ public class UnitInfos extends AbstractInfos<IUnitInfo> {
 		private boolean stealPlans;
 		private boolean suicide;
 		private boolean workerTrade;
+		private List<String> buildings = new ArrayList<String>();
 		private List<String> builds = new ArrayList<String>();
 		private List<String> featureImpassables = new ArrayList<String>();
 		private List<String> featureNatives = new ArrayList<String>();
@@ -219,7 +220,6 @@ public class UnitInfos extends AbstractInfos<IUnitInfo> {
 		private List<IPair<String, Integer>> unitClassDefenseMods = new ArrayList<IPair<String, Integer>>();
 		private List<IPair<String, Integer>> unitCombatCollateralImmunes = new ArrayList<IPair<String, Integer>>();
 		private List<IPair<String, Integer>> unitCombatMods = new ArrayList<IPair<String, Integer>>();
-		private List<IPair<String, String>> buildings = new ArrayList<IPair<String, String>>();
 		private List<IPair<String, String>> featurePassableTechs = new ArrayList<IPair<String, String>>();
 		private List<IPair<String, String>> terrainPassableTechs = new ArrayList<IPair<String, String>>();
 		private UnitMeshGroups unitMeshGroups = new UnitMeshGroups();
@@ -3128,7 +3128,7 @@ public class UnitInfos extends AbstractInfos<IUnitInfo> {
 		 * @see org.archid.civ4.info.unit.IUnitInfo#getBuildings()
 		 */
 		@Override
-		public List<IPair<String, String>> getBuildings() {
+		public List<String> getBuildings() {
 			return buildings;
 		}
 
@@ -3136,7 +3136,7 @@ public class UnitInfos extends AbstractInfos<IUnitInfo> {
 		 * @see org.archid.civ4.info.unit.IUnitInfo#addBuilding(org.archid.utils.IPair)
 		 */
 		@Override
-		public void addBuilding(IPair<String, String> building) {
+		public void addBuilding(String building) {
 			buildings.add(building);
 		}
 

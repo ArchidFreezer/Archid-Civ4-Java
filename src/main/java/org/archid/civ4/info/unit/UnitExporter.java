@@ -107,7 +107,7 @@ public class UnitExporter extends AbstractExporter<IInfos<IUnitInfo>, IUnitInfo>
 		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getCorporationSpreads(), maxHeight);			
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getGreatPeoples(), maxHeight);			
 		addSingleCell(row.createCell(colNum++), info.getSlaveSpecialistType());
-		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getBuildings(), maxHeight);			
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getBuildings(), maxHeight);			
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getForceBuildings(), maxHeight);			
 		addSingleCell(row.createCell(colNum++), info.getHolyCity());
 		addSingleCell(row.createCell(colNum++), info.getReligionType());

@@ -1,14 +1,6 @@
 package org.archid.civ4.info;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -18,7 +10,6 @@ import org.apache.log4j.Logger;
 import org.archid.civ4.info.era.EraInfos;
 import org.archid.civ4.info.tech.TechInfos;
 import org.archid.civ4.info.unit.UnitInfos;
-import org.archid.utils.StringUtils;
 
 public class InfosFactory {
 	
@@ -27,8 +18,6 @@ public class InfosFactory {
 	
 	public static enum EInfos { ERA_INFOS, TECH_INFOS, UNIT_INFOS	}
 
-	private static String newline = System.getProperty("line.separator");
-	
 	@SuppressWarnings("unchecked")
 	public static <T extends IInfos<S>, S extends IInfo> T getInfos(EInfos infoType) {
 		T infos = null;
@@ -89,7 +78,7 @@ public class InfosFactory {
 		return infos;
 	}
 	
-	public static <T extends IInfos<S>, S extends IInfo> void writeInfos(EInfos infoType, String xmlPath, T infos, boolean comment) {
+	public static <T extends IInfos<S>, S extends IInfo> void writeInfos(EInfos infoType, String xmlPath, T infos) {
 		try {
 			// Initialise the context
 			JAXBContext jaxbContext = getContext(infoType);
@@ -102,60 +91,10 @@ public class InfosFactory {
 				jaxbMarshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
 				jaxbMarshaller.setProperty("com.sun.xml.internal.bind.xmlHeaders", "<?xml version=\"1.0\"?>");
 				jaxbMarshaller.marshal(infos, output);
-				tabifyAndComment(xmlPath, 4, comment);
 			}
 					
 		} catch (JAXBException e) {
 			log.error("Error marshalling the xml file", e);
-		}
-	}
-	
-	private static void tabifyAndComment(String filePath, int count, boolean comment) {
-		
-		Pattern patternInfoStart = Pattern.compile(".*<[a-zA-Z]+Info>\\s*");
-		Pattern patternType = Pattern.compile(".*<Type>([a-zA-Z0-9_]+).*");
-		
-		
-		StringBuffer replace = new StringBuffer();
-		for (int i = 0; i < count; i++) {
-			replace.append("\\s");
-		}
-		
-		StringBuffer outputString = new StringBuffer();
-		
-		File xmlFile = new File(filePath);
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(xmlFile));
-			String infoLine = "";
-			String line = "";
-			while ((line = reader.readLine()) != null) {
-				line = line.replaceAll(replace.toString(), "\t");
-				if (comment) {
-					Matcher matcher = patternInfoStart.matcher(line);
-					if (matcher.matches()) {
-						infoLine = line;
-						continue;
-					}
-					
-					matcher = patternType.matcher(line);
-					if (matcher.matches()) {
-						String type = StringUtils.startCaseSpace(matcher.group(1).substring(matcher.group(1).indexOf('_') + 1), '_');
-						outputString.append(infoLine + " <!-- " + type + " -->" + newline);
-						outputString.append(line + newline);
-						continue;
-					}
-				}
-				
-				outputString.append(line + newline);
-			}
-			reader.close();
-			
-			BufferedWriter writer = new BufferedWriter(new FileWriter(xmlFile));
-			writer.write(outputString.toString());
-			writer.close();
-			
-		} catch (IOException e) {
-			log.error("Could not access the file", e);
 		}
 	}
 }

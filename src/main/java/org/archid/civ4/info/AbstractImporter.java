@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -25,17 +24,21 @@ import org.archid.utils.civ4.Civ4FileUtils;
 
 /**
  * @author Jim
- * @param <V>
  *
+ * @param <T> Type that represents the collection of {@code <S>} infos being imported, subclass of {@link IInfos}
+ * @param <S> Type of info being imported, must be a subclass of {@link IInfo}
  */
 public abstract class AbstractImporter<T extends IInfos<S>, S extends IInfo> implements IImporter {
 
 	/** Logging facility */
 	static Logger log = Logger.getLogger(AbstractImporter.class.getName());
 
+	protected static final String newline = System.getProperty("line.separator");
+	
 	protected static IPropertyHandler props = PropertyHandler.getInstance();
 	protected T infos;
 	protected EInfos infoEnum;
+	protected IXmlFormatter formatter;
 	
 	/**
 	 * Constructor
@@ -44,9 +47,10 @@ public abstract class AbstractImporter<T extends IInfos<S>, S extends IInfo> imp
 	 * 
 	 * @param infoEnum {@link EInfos} enumeration value defining the type of info being imported
 	 */
-	public AbstractImporter(EInfos infoEnum) {
+	public AbstractImporter(EInfos infoEnum, IXmlFormatter formatter) {
 		this.infoEnum= infoEnum;
 		this.infos = InfosFactory.getInfos(infoEnum);
+		this.formatter = formatter;
 	}
 
 	/* (non-Javadoc)
@@ -60,7 +64,8 @@ public abstract class AbstractImporter<T extends IInfos<S>, S extends IInfo> imp
 		try {
 			String outputFile = Civ4FileUtils.prepareOutputFile(props.getAppProperty(PropertyKeys.PROPERTY_KEY_FILE_INFOS));
 			log.info("Importing to " + outputFile);
-			InfosFactory.writeInfos(infoEnum, outputFile, infos, commentXml());
+			InfosFactory.writeInfos(infoEnum, outputFile, infos);
+			if (formatter != null) formatter.format(outputFile);
 		} catch (IOException e) {
 			log.error("Error backing up infos file ... aborting", e);
 		}
@@ -166,16 +171,6 @@ public abstract class AbstractImporter<T extends IInfos<S>, S extends IInfo> imp
 	}
 	
 	/**
-	 * The XML file is commented using the {@code <Type>} tag by default, in order to prevent this
-	 * behaviour override this method to return {@code false}
-	 * 
-	 * @return {@code true} if the xml should be commend; otherwise {@code false}
-	 */
-	protected boolean commentXml() {
-		return true;
-	};
-	
-	/**
 	 * Takes a row from the spreadsheet and parses it into an info of the appropriate type. This method
 	 * needs to be implemented by the concrete classes for each specific info type
 	 *  
@@ -183,4 +178,18 @@ public abstract class AbstractImporter<T extends IInfos<S>, S extends IInfo> imp
 	 * @return instance of a subclass of {@link IInfo}
 	 */
 	protected abstract S parseRow(Row row);
+
+	/**
+	 * @return the formatter
+	 */
+	public IXmlFormatter getFormatter() {
+		return formatter;
+	}
+
+	/**
+	 * @param formatter the formatter to set
+	 */
+	public void setFormatter(IXmlFormatter formatter) {
+		this.formatter = formatter;
+	}
 }

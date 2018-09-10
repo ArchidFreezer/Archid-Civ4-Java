@@ -102,7 +102,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 		private Integer counterSpy;
 		@XmlElement(name="bFound")
 		private Integer found;
-		@XmlElement(name="bFound")
+		@XmlElement(name="bGoldenAge")
 		private Integer bGoldenAge;
 		@XmlElement(name="bInvisible")
 		private Integer invisible;
@@ -187,8 +187,8 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 		@XmlElement(name="SlaveSpecialistType")
 		private String slaveSpecialistType;
 		@XmlElementWrapper(name="Buildings")
-		@XmlElement(name="Building")
-		private List<AdaptedBuilding> buildings;
+		@XmlElement(name="BuildingType")
+		private List<String> buildings;
 		@XmlElementWrapper(name="ForceBuildings")
 		@XmlElement(name="BuildingType")
 		private List<String> forceBuildings;
@@ -505,13 +505,6 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 		public String tech;
 	}
 
-	private static class AdaptedBuilding {
-		@XmlElement(name="BuildingClassType")
-		public String buildingclass;
-		@XmlElement(name="BuildingType")
-		public String building;
-	}
-
 	private static class AdaptedTerrainAttack {
 		@XmlElement(name="TerrainType")
 		public String terrain;
@@ -636,6 +629,10 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			aInfo.destroy = JaxbUtils.marshallBoolean(info.isDestroy());
 			aInfo.stealPlans = JaxbUtils.marshallBoolean(info.isStealPlans());
 			aInfo.investigate = JaxbUtils.marshallBoolean(info.isInvestigate());
+			aInfo.counterSpy = JaxbUtils.marshallBoolean(info.isCounterSpy());
+			aInfo.found = JaxbUtils.marshallBoolean(info.isFound());
+			aInfo.bGoldenAge = JaxbUtils.marshallBoolean(info.isGoldenAge());
+			aInfo.invisible = JaxbUtils.marshallBoolean(info.isInvisible());
 			aInfo.firstStrikeImmune = JaxbUtils.marshallBoolean(info.isFirstStrikeImmune());
 			aInfo.noDefensiveBonus = JaxbUtils.marshallBoolean(info.isNoDefensiveBonus());
 			aInfo.ignoreBuildingDefense = JaxbUtils.marshallBoolean(info.isIgnoreBuildingDefense());
@@ -754,12 +751,9 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			aInfo.slaveSpecialistType = JaxbUtils.marshallString(info.getSlaveSpecialistType());
 
 			if (CollectionUtils.hasElements(info.getBuildings())) {
-				aInfo.buildings = new ArrayList<AdaptedBuilding>();
-				for (IPair<String, String> pair: info.getBuildings()) {
-					AdaptedBuilding adaptor = new AdaptedBuilding();
-					adaptor.buildingclass = pair.getKey();
-					adaptor.building = pair.getValue();
-					aInfo.buildings.add(adaptor);
+				aInfo.buildings = new ArrayList<String>();
+				for (String val: info.getBuildings()) {
+					aInfo.buildings.add(val);
 				}
 			}
 			
@@ -914,7 +908,8 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			aInfo.discoverMultiplier = JaxbUtils.marshallInteger(info.getDiscoverMultiplier());
 			aInfo.baseHurry = JaxbUtils.marshallInteger(info.getBaseHurry());
 			aInfo.hurryMultiplier = JaxbUtils.marshallInteger(info.getHurryMultiplier());
-			aInfo.baseTrade = JaxbUtils.marshallInteger(info.getTradeMultiplier());
+			aInfo.baseTrade = JaxbUtils.marshallInteger(info.getBaseTrade());
+			aInfo.tradeMultiplier = JaxbUtils.marshallInteger(info.getTradeMultiplier());
 			aInfo.greatWorkCulture = JaxbUtils.marshallInteger(info.getGreatWorkCulture());
 			aInfo.espionagePoints = JaxbUtils.marshallInteger(info.getEspionagePoints());
 			aInfo.spyEscapeChance = JaxbUtils.marshallInteger(info.getSpyEscapeChance());
@@ -1314,9 +1309,9 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			info.setSlaveSpecialistType(JaxbUtils.unmarshallString(aInfo.slaveSpecialistType));
 
 			if (CollectionUtils.hasElements(aInfo.buildings)) {
-				for (AdaptedBuilding adaptor: aInfo.buildings) {
-					if (StringUtils.hasCharacters(adaptor.buildingclass) && StringUtils.hasCharacters(adaptor.building)) {
-						info.addBuilding(new Pair<String, String>(adaptor.buildingclass, adaptor.building));
+				for (String val: aInfo.buildings) {
+					if (StringUtils.hasCharacters(val)) {
+						info.addBuilding(val);
 					}
 				}
 			}

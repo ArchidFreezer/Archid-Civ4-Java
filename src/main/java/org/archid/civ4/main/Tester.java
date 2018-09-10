@@ -1,6 +1,8 @@
 package org.archid.civ4.main;
 
 import java.io.File;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -21,6 +23,7 @@ import org.archid.civ4.info.InfosFactory.EInfos;
 import org.archid.civ4.info.tech.ITechInfo;
 import org.archid.civ4.info.tech.TechInfos;
 import org.archid.utils.Pair;
+import org.archid.utils.StringUtils;
 
 public class Tester {
 	
@@ -41,7 +44,8 @@ public class Tester {
 //			tester.buildTechs();
 //			tester.readTechs();
 //			tester.test2();
-			tester.test3();
+//			tester.test3();
+			tester.test4();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -125,9 +129,19 @@ public class Tester {
 	}
 	
 	private void test3() {
-		TechInfos infos = InfosFactory.readInfos(EInfos.TECH_INFOS, "E:/Projects/Civ4/tools/Java/Civ4TechInfos.xml");
-		ITechInfo info = infos.getInfo("TECH_WOODWORKING");
-		info.setCanPassPeaks(true);
-		infos.addInfo(info);		
+		Map<String, Integer> map = new TreeMap<String, Integer>();
+		for (int x = 0; x < 21; x=x+2) {
+			map.put(String.valueOf(x), x);
+		}
+		for (int x = 1; x < 20; x=x+2) {
+			map.put(String.valueOf(x), x);
+		}
+		for (Integer val: map.values()) {
+			System.out.println(val + "\n");
+		}
+	}
+
+	private void test4() {
+		System.out.println(StringUtils.padValue(5, 3, '0'));
 	}
 }

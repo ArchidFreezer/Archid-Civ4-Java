@@ -2,7 +2,7 @@ package org.archid.civ4.info.unit;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import org.archid.civ4.info.AbstractImporter;
 import org.archid.civ4.info.IInfos;
@@ -14,19 +14,13 @@ import org.archid.utils.StringUtils;
 
 public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>{
 
+	/** Logging facility */
+	static Logger log = Logger.getLogger(UnitImporter.class.getName());
+	
 	public UnitImporter(EInfos infoEnum) {
-		super(infoEnum);
+		super(infoEnum, new UnitInfoXmlFormatter());
 	}
 	
-	/**
-	 * Overrides the {@link AbstractImporter#commentXml} function to prevent the commenting of the info start tag
-	 */
-	@Override
-	protected boolean commentXml() {	return false; }
-
-	/* (non-Javadoc)
-	 * @see org.archid.civ4.info.AbstractImporter#parseRow(org.apache.poi.ss.usermodel.Row)
-	 */
 	@Override
 	protected IUnitInfo parseRow(Row row) {
 		int colNum = 0;
@@ -172,8 +166,9 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 	
 		info.setSlaveSpecialistType(row.getCell(colNum++).getStringCellValue());
 		
-		for (IPair<String, String> pair: parsePairs(row.getCell(colNum++), String.class, String.class)) {
-			info.addBuilding(pair);
+		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+			if (StringUtils.hasCharacters(str))
+				info.addBuilding(str);
 		}
 
 		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {

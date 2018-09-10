@@ -3,6 +3,7 @@ package org.archid.civ4.info.era;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import org.archid.civ4.info.AbstractImporter;
+import org.archid.civ4.info.DefaultXmlFormatter;
 import org.archid.civ4.info.IImporter;
 import org.archid.civ4.info.IInfos;
 import org.archid.civ4.info.InfosFactory.EInfos;
@@ -15,7 +16,7 @@ public class EraImporter extends AbstractImporter<IInfos<IEraInfo>, IEraInfo> im
 	static Logger log = Logger.getLogger(EraImporter.class.getName());
 	
 	public EraImporter(EInfos infoEnum) {
-		super(infoEnum);
+		super(infoEnum, new DefaultXmlFormatter(false));
 	}
 
 	@Override

@@ -158,4 +158,12 @@ public class StringUtils {
 	
 		return output.toString();
 	}
+	
+	public static String padValue(Integer val, int padlen, char padChar) {
+		StringBuilder sb = new StringBuilder(String.valueOf(val));
+		while (padlen - sb.length() > 0) {
+			sb.insert(0, padChar);
+		}
+		return sb.toString();
+	}
 }

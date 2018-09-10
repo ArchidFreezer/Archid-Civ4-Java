@@ -8,6 +8,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.archid.civ4.info.AbstractImporter;
+import org.archid.civ4.info.DefaultXmlFormatter;
 import org.archid.civ4.info.IImporter;
 import org.archid.civ4.info.IInfos;
 import org.archid.civ4.info.InfosFactory.EInfos;
@@ -20,7 +21,7 @@ public class TechImporter extends AbstractImporter<IInfos<ITechInfo>, ITechInfo>
 	static Logger log = Logger.getLogger(TechImporter.class.getName());
 	
 	public TechImporter(EInfos infoEnum) {
-		super(infoEnum);
+		super(infoEnum, new DefaultXmlFormatter());
 	}
 
 
@@ -191,7 +192,7 @@ public class TechImporter extends AbstractImporter<IInfos<ITechInfo>, ITechInfo>
 	 */
 	@Override
 	public String getListSheetName() {
-		return ITechWorkbook.SHEETNAME_TREE;
+		return ITechWorkbook.SHEETNAME_LIST;
 	}
 
 	/**
