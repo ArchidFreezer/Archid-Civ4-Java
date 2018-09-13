@@ -24,7 +24,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 		
 	}
 	
-	public static class AdaptedUnit {
+	private static class AdaptedUnit {
 		@XmlElement(name="Class")
 		private String clazz;
 		@XmlElement(name="Type")
@@ -451,121 +451,121 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 	
 	private static class AdaptedBonusProductionModifier {
 		@XmlElement(name="BonusType")
-		public String bonus;
+		private String bonus;
 		@XmlElement(name="iProductonModifier")
-		public Integer value;
+		private Integer value;
 	}
 
 	private static class AdaptedDomainMod {
 		@XmlElement(name="DomainType")
-		public String domain;
+		private String domain;
 		@XmlElement(name="iDomainMod")
-		public Integer value;
+		private Integer value;
 	}
 
 	private static class AdaptedUnitCombatCollateralImmune {
 		@XmlElement(name="UnitCombatType")
-		public String unitcombat;
+		private String unitcombat;
 		@XmlElement(name="iUnitCombatCollateralImmune")
-		public Integer value;
+		private Integer value;
 	}
 
 	private static class AdaptedUnitCombatMod {
 		@XmlElement(name="UnitCombatType")
-		public String unitcombat;
+		private String unitcombat;
 		@XmlElement(name="iUnitCombatMod")
-		public Integer value;
+		private Integer value;
 	}
 
 	private static class AdaptedUnitClassAttackMod {
 		@XmlElement(name="UnitClassType")
-		public String unitclass;
+		private String unitclass;
 		@XmlElement(name="iUnitClassMod")
-		public Integer value;
+		private Integer value;
 	}
 
 	private static class AdaptedUnitClassDefenseMod {
 		@XmlElement(name="UnitClassType")
-		public String unitclass;
+		private String unitclass;
 		@XmlElement(name="iUnitClassMod")
-		public Integer value;
+		private Integer value;
 	}
 
 	private static class AdaptedTerrainPassableTech {
 		@XmlElement(name="TerrainType")
-		public String terrain;
+		private String terrain;
 		@XmlElement(name="PassableTech")
-		public String tech;
+		private String tech;
 	}
 
 	private static class AdaptedFeaturePassableTech {
 		@XmlElement(name="FeatureType")
-		public String feature;
+		private String feature;
 		@XmlElement(name="PassableTech")
-		public String tech;
+		private String tech;
 	}
 
 	private static class AdaptedTerrainAttack {
 		@XmlElement(name="TerrainType")
-		public String terrain;
+		private String terrain;
 		@XmlElement(name="iTerrainAttack")
-		public Integer value;
+		private Integer value;
 	}
 
 	private static class AdaptedTerrainDefense {
 		@XmlElement(name="TerrainType")
-		public String terrain;
+		private String terrain;
 		@XmlElement(name="iTerrainDefense")
-		public Integer value;
+		private Integer value;
 	}
 
 	private static class AdaptedFeatureAttack {
 		@XmlElement(name="FeatureType")
-		public String feature;
+		private String feature;
 		@XmlElement(name="iFeatureAttack")
-		public Integer value;
+		private Integer value;
 	}
 
 	private static class AdaptedFeatureDefense {
 		@XmlElement(name="FeatureType")
-		public String feature;
+		private String feature;
 		@XmlElement(name="iFeatureDefense")
-		public Integer value;
+		private Integer value;
 	}
 
 	private static class AdaptedFlavour {
 		@XmlElement(name="FlavorType")
-		public String flavour;
+		private String flavour;
 		@XmlElement(name="iFlavor")
-		public Integer value;
+		private Integer value;
 	}
 
 	private static class AdaptedProductionTrait {
 		@XmlElement(name="ProductionTraitType")
-		public String trait;
+		private String trait;
 		@XmlElement(name="iProductionTrait")
-		public Integer value;
+		private Integer value;
 	}
 
 	private static class AdaptedFlankingStrike {
 		@XmlElement(name="FlankingStrikeUnitClass")
-		public String unitclass;
+		private String unitclass;
 		@XmlElement(name="iFlankingStrength")
-		public Integer strength;
+		private Integer strength;
 	}
 
 	private static class AdaptedReligionSpread {
 		@XmlElement(name="ReligionType")
-		public String religion;
+		private String religion;
 		@XmlElement(name="iReligionSpread")
-		public Integer spread;
+		private Integer spread;
 	}
 
 	private static class AdaptedCorporationSpread {
 		@XmlElement(name="CorporationType")
-		public String corporation;
+		private String corporation;
 		@XmlElement(name="iCorporationSpread")
-		public Integer spread;
+		private Integer spread;
 	}
 
 	@Override

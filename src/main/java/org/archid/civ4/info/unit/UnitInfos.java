@@ -37,7 +37,7 @@ public class UnitInfos extends AbstractInfos<IUnitInfo> {
 		return new UnitInfo(type);
 	}
 	
-	public static class UnitInfo implements IUnitInfo {
+	private static class UnitInfo implements IUnitInfo {
 		private String advisor;
 		private String bonusType;
 		private String capture;

@@ -1,8 +1,9 @@
 package org.archid.civ4.info.tech;
 
+import org.archid.civ4.info.IInfoWorkbook;
 import org.archid.utils.StringUtils;
 
-public interface ITechWorkbook {
+public interface ITechWorkbook extends IInfoWorkbook {
 	
 
 	public static final String SHEETNAME_TREE = "TechTree";

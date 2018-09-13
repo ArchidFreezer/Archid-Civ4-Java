@@ -31,7 +31,7 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 		 List<AdaptedTech> entries = new ArrayList<AdaptedTech>();		
 	}
 	
-	public static class AdaptedTech {
+	private static class AdaptedTech {
 		@XmlElement(name="Type")
 		private String type;
 		@XmlElement(name="Description")
@@ -189,23 +189,23 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 	
 	private static class AdaptedDomainExtraMoves {
 		@XmlElement(name="DomainType")
-		public String domain;
+		private String domain;
 		@XmlElement(name="iExtraMoves")
-		public Integer moves;
+		private Integer moves;
 	}
 	
 	private static class AdaptedWorldViewRevoltTurnChanges {
 		@XmlElement(name="WorldViewType")
-		public String worldView;
+		private String worldView;
 		@XmlElement(name="iChange")
-		public Integer change;
+		private Integer change;
 	}
 
 	private static class AdaptedFlavors {
 		@XmlElement(name="FlavorType")
-		public String flavor;
+		private String flavor;
 		@XmlElement(name="iFlavor")
-		public Integer value;
+		private Integer value;
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import org.archid.civ4.info.AbstractImporter;
+import org.archid.civ4.info.IInfoWorkbook;
 import org.archid.civ4.info.IInfos;
 import org.archid.civ4.info.InfosFactory.EInfos;
 import org.archid.civ4.info.unit.UnitInfos.UnitMeshGroup;
@@ -34,7 +35,7 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 		IUnitInfo info = UnitInfos.createInfo(type);
 		info.setUnitClass(clazz);
 		
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addUniqueName(str);
 		}
@@ -43,7 +44,7 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 		info.setCapture(row.getCell(colNum++).getStringCellValue());
 		info.setCombatType(row.getCell(colNum++).getStringCellValue());
 
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addSubCombatType(str);
 		}
@@ -55,7 +56,7 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 		info.setMaxAmmoTypeTier(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
 		info.setInvisibleType(row.getCell(colNum++).getStringCellValue());
 
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addSeeInvisble(str);
 		}
@@ -107,27 +108,27 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 		info.setWorkerTrade(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
 		info.setMilitaryTrade(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
 		
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addUnitClassUpgrade(str);
 		}
 	
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addUnitClassTarget(type);
 		}
 	
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addUnitCombatTarget(str);
 		}
 	
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addUnitClassDefender(str);
 		}
 	
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addUnitCombatDefender(str);
 		}
@@ -136,17 +137,17 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 			info.addFlankingStrike(pair);
 		}
 
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addUnitAI(str);
 		}
 	
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addNotUnitAIs(str);
 		}
 	
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addBuild(str);
 		}
@@ -159,19 +160,19 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 			info.addCorporationSpread(pair);
 		}
 
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addGreatPerson(str);
 		}
 	
 		info.setSlaveSpecialistType(row.getCell(colNum++).getStringCellValue());
 		
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addBuilding(str);
 		}
 
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addForceBuildings(str);
 		}
@@ -183,7 +184,7 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 		info.setPrereqCorporation(row.getCell(colNum++).getStringCellValue());
 		info.setPrereqBuilding(row.getCell(colNum++).getStringCellValue());
 		
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addPrereqTech(str);
 		}
@@ -191,62 +192,62 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 		info.setObsoleteTech(row.getCell(colNum++).getStringCellValue());
 		info.setBonusType(row.getCell(colNum++).getStringCellValue());
 
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addPrereqOrBonus(str);
 		}
 	
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addPrereqAndCivic(str);
 		}
 	
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addPrereqOrCivic(str);
 		}
 	
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addPrereqAndTerrain(str);
 		}
 	
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addPrereqOrTerrain(str);
 		}
 	
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addPrereqOrBuildingClass(str);
 		}
 	
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addPrereqNotBuildingClass(str);
 		}
 	
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addPrereqVicinityAndBonus(str);
 		}
 	
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addPrereqVicinityOrBonus(str);
 		}
 	
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addPrereqVicinityImprovement(str);
 		}
 	
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addPrereqVicinityFeature(str);
 		}
 	
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addPrereqWorldView(str);
 		}
@@ -290,12 +291,12 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 		info.setSpyEvasionChance(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
 		info.setSpyInterceptChance(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
 
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addTerrainImpassable(str);
 		}
 	
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addFeatureImpassable(str);
 		}
@@ -328,12 +329,12 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 		info.setHillsAttack(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
 		info.setHillsDefense(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
 
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addTerrainNative(str);
 		}
 	
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addFeatureNative(str);
 		}
@@ -378,12 +379,12 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 			info.addBonusProductionModifier(pair);
 		}
 
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addYieldFromKill(Integer.parseInt(str));
 		}
 	
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addCommerceFromKill(Integer.parseInt(str));
 		}
@@ -406,7 +407,7 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 		info.setCtrlDown(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
 		info.setHotKeyPriority(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
 
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
+		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				info.addFreePromotion(str);
 		}
@@ -419,7 +420,7 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 	}
 
 	private UnitMeshGroups getUnitMeshGroups(String stringCellValue) {
-		String[] rows = stringCellValue.split("\n");
+		String[] rows = stringCellValue.split(IInfoWorkbook.CELL_NEWLINE);
 		int index = 0;
 		UnitMeshGroups mesh = new UnitMeshGroups();
 		mesh.setGroupSize(Integer.parseInt(rows[index++]));
@@ -430,7 +431,7 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 		List<UnitMeshGroup> groups = new ArrayList<UnitMeshGroup>();
 		while (index < rows.length) {
 			String row = rows[index++];
-			if (row.equals(IUnitWorkbook.UNIT_MESH_GROUP_DELIM)) {
+			if (row.equals(IUnitWorkbook.CELL_GROUP_DELIM)) {
 				UnitMeshGroup group = new UnitMeshGroup();
 				group.setRequired(Integer.parseInt(rows[index++].trim()));
 				group.setEarlyArtDefineTag(rows[index++].trim());

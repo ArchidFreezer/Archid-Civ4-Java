@@ -4,6 +4,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
@@ -158,6 +159,29 @@ public abstract class AbstractExporter<T extends IInfos<S>, S extends IInfo> imp
 			cellvalue.append(pair.getKey() + "\n");
 			cellvalue.append(pair.getValue());
 			currHeight += 2;
+		}
+		cell.setCellValue(cellvalue.toString());
+		if (currHeight > maxHeight) maxHeight = currHeight;
+		
+		return maxHeight;
+		
+	}
+
+	protected <U, V> int addMapCell(Cell cell, Map<U, List<V>> map, int maxHeight) {
+		
+		int currHeight = 0;
+		
+		cell.setCellStyle(csWrap);
+		StringBuffer cellvalue = new StringBuffer();
+		for (U key: map.keySet()) {
+			if (currHeight > 0) cellvalue.append(IInfoWorkbook.CELL_NEWLINE + IInfoWorkbook.CELL_GROUP_DELIM + IInfoWorkbook.CELL_NEWLINE);
+			cellvalue.append(key);
+			currHeight++;
+			for (V item: map.get(key)) {
+				cellvalue.append(IInfoWorkbook.CELL_NEWLINE + IInfoWorkbook.CELL_GROUP_PAD + item);
+				currHeight++;
+			}
+			currHeight++;
 		}
 		cell.setCellValue(cellvalue.toString());
 		if (currHeight > maxHeight) maxHeight = currHeight;

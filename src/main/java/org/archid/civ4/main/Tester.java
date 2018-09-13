@@ -18,8 +18,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.archid.civ4.info.IInfos;
-import org.archid.civ4.info.InfosFactory;
-import org.archid.civ4.info.InfosFactory.EInfos;
 import org.archid.civ4.info.tech.ITechInfo;
 import org.archid.civ4.info.tech.TechInfos;
 import org.archid.utils.Pair;
@@ -128,6 +126,7 @@ public class Tester {
 		jaxbMarshaller.marshal(infos, output);
 	}
 	
+	@SuppressWarnings({ "unused" })
 	private void test3() {
 		Map<String, Integer> map = new TreeMap<String, Integer>();
 		for (int x = 0; x < 21; x=x+2) {
@@ -141,6 +140,7 @@ public class Tester {
 		}
 	}
 
+	@SuppressWarnings({ "unused" })
 	private void test4() {
 		System.out.println(StringUtils.padValue(5, 3, '0'));
 	}

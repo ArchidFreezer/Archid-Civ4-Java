@@ -1,12 +1,11 @@
 package org.archid.civ4.info.unit;
 
+import org.archid.civ4.info.IInfoWorkbook;
 import org.archid.utils.StringUtils;
 
-public interface IUnitWorkbook {
+public interface IUnitWorkbook extends IInfoWorkbook {
 	
 	public static final String SHEETNAME_LIST = "UnitList";
-	public static final String UNIT_MESH_GROUP_DELIM = "---";
-	public static final String UNIT_MESH_GROUP_PAD = "  ";
 
 	public enum SheetHeaders {
 		CLASS, TYPE, UNIQUE_NAMES, SPECIAL, CAPTURE, COMBAT_TYPE, SUB_COMBAT_TYPES, DOMAIN, DEFAULT_UNIT_AI, FIXED_AI, MAX_WEAPON_TYPE_TIER, MAX_AMMO_TYPE_TIER, INVISIBLE_TYPE, SEE_INVISIBLES, DESCRIPTION,

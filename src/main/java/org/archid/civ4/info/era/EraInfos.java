@@ -37,7 +37,7 @@ public class EraInfos extends AbstractInfos<IEraInfo > {
 		return new EraInfo(type);
 	}
 	
-	public static class EraInfo implements IEraInfo {
+	private static class EraInfo implements IEraInfo {
 		private String type;
 		private String description;
 		private String strategy;

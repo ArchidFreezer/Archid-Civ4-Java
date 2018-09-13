@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
+
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -120,6 +123,24 @@ public abstract class AbstractImporter<T extends IInfos<S>, S extends IInfo> imp
 			}
 		}
 		return list;
+	}
+	
+	/**
+	 * Reads the content of a workbook {@link Cell} containing a list of values delimited by {@link IInfoWorkbook.CELL_NEWLINE} and
+	 * calls the {@link Consumer} function provided with the value of the cell parsed as the class as defined in the {@code listClass} param
+	 * <p>
+	 * An example of invoking this would be:<br>
+	 * {@code parseList(cell, String.class, info::addArrayValMethodName)}
+	 * 
+	 * @param cell the workbook cell containing the data to parse
+	 * @param listClass {@link Class} to convert the cell values into 
+	 * @param func the {@link Consumer} function called with the value of the list items as a parameter
+	 */
+	protected <U> void parseList(Cell cell, Class<U> listClass, Consumer<U> func) {
+		for (String str: cell.getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
+			if (StringUtils.hasCharacters(str))
+				func.accept(getVal(str, listClass));
+		}
 	}
 	
 	/**

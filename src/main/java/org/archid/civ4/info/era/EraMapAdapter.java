@@ -22,7 +22,7 @@ public class EraMapAdapter extends XmlAdapter<EraMapAdapter.EraMap, Map<String, 
 		 List<AdaptedEra> entries = new ArrayList<AdaptedEra>();		
 	}
 	
-	public static class AdaptedEra {
+	private static class AdaptedEra {
 		@XmlElement(name="Type")
 		private String type;
 		@XmlElement(name="Description")
@@ -105,9 +105,9 @@ public class EraMapAdapter extends XmlAdapter<EraMapAdapter.EraMap, Map<String, 
 	
 	private static class AdaptedCitySoundscape {
 		@XmlElement(name="CitySizeType")
-		public String citySizeType;
+		private String citySizeType;
 		@XmlElement(name="SoundscapeScript")
-		public String soundscapeScript;
+		private String soundscapeScript;
 	}
 
 	@Override

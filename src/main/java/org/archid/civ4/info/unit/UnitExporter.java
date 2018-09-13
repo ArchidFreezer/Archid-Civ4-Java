@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import org.archid.civ4.info.AbstractExporter;
+import org.archid.civ4.info.IInfoWorkbook;
 import org.archid.civ4.info.IInfos;
 import org.archid.civ4.info.InfosFactory.EInfos;
 import org.archid.civ4.info.unit.IUnitWorkbook.SheetHeaders;
@@ -227,17 +228,17 @@ public class UnitExporter extends AbstractExporter<IInfos<IUnitInfo>, IUnitInfo>
 	private String getUnitMeshText(IUnitInfo info) {
 		StringBuilder sb = new StringBuilder();
 		UnitMeshGroups mesh = info.getUnitMeshGroups();
-		sb.append(mesh.getGroupSize() + "\n");
-		sb.append(mesh.getMaxSpeed() + "\n");
-		sb.append(mesh.getPadTime() + "\n");
-		sb.append(mesh.getMeleeWaveSize() + "\n");
+		sb.append(mesh.getGroupSize() + IInfoWorkbook.CELL_NEWLINE);
+		sb.append(mesh.getMaxSpeed() + IInfoWorkbook.CELL_NEWLINE);
+		sb.append(mesh.getPadTime() + IInfoWorkbook.CELL_NEWLINE);
+		sb.append(mesh.getMeleeWaveSize() + IInfoWorkbook.CELL_NEWLINE);
 		sb.append(mesh.getRangedWaveSize());
 		for (UnitMeshGroup group: mesh.getUnitMeshGroupList()) {
-			sb.append( "\n" + IUnitWorkbook.UNIT_MESH_GROUP_DELIM + "\n");
-			sb.append(IUnitWorkbook.UNIT_MESH_GROUP_PAD + group.getRequired() + "\n");
-			sb.append(IUnitWorkbook.UNIT_MESH_GROUP_PAD + group.getEarlyArtDefineTag() + "\n");
-			sb.append(IUnitWorkbook.UNIT_MESH_GROUP_PAD + group.getLateArtDefineTag() + "\n");
-			sb.append(IUnitWorkbook.UNIT_MESH_GROUP_PAD + group.getMiddleArtDefineTag());
+			sb.append(IInfoWorkbook.CELL_NEWLINE + IUnitWorkbook.CELL_GROUP_DELIM + IInfoWorkbook.CELL_NEWLINE);
+			sb.append(IUnitWorkbook.CELL_GROUP_PAD + group.getRequired() + IInfoWorkbook.CELL_NEWLINE);
+			sb.append(IUnitWorkbook.CELL_GROUP_PAD + group.getEarlyArtDefineTag() + IInfoWorkbook.CELL_NEWLINE);
+			sb.append(IUnitWorkbook.CELL_GROUP_PAD + group.getLateArtDefineTag() + IInfoWorkbook.CELL_NEWLINE);
+			sb.append(IUnitWorkbook.CELL_GROUP_PAD + group.getMiddleArtDefineTag());
 		}
 		
 		return sb.toString();

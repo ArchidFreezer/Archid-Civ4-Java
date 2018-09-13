@@ -1,8 +1,9 @@
 package org.archid.civ4.info.era;
 
+import org.archid.civ4.info.IInfoWorkbook;
 import org.archid.utils.StringUtils;
 
-public interface IEraWorkbook {
+public interface IEraWorkbook extends IInfoWorkbook {
 
 	public static final String SHEETNAME_LIST = "EraList";
 	

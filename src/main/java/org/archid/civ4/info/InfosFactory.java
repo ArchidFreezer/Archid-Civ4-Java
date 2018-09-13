@@ -7,6 +7,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.log4j.Logger;
+import org.archid.civ4.info.building.BuildingInfos;
 import org.archid.civ4.info.era.EraInfos;
 import org.archid.civ4.info.tech.TechInfos;
 import org.archid.civ4.info.unit.UnitInfos;
@@ -16,17 +17,20 @@ public class InfosFactory {
 	/** Logging facility */
 	static Logger log = Logger.getLogger(InfosFactory.class.getName());
 	
-	public static enum EInfos { ERA_INFOS, TECH_INFOS, UNIT_INFOS	}
+	public static enum EInfos { BUILDING_INFOS, ERA_INFOS, TECH_INFOS, UNIT_INFOS	}
 
 	@SuppressWarnings("unchecked")
 	public static <T extends IInfos<S>, S extends IInfo> T getInfos(EInfos infoType) {
 		T infos = null;
 		switch(infoType) {
-		case TECH_INFOS:
-			infos = (T) new TechInfos();
+		case BUILDING_INFOS:
+			infos = (T) new BuildingInfos();
 			break;
 		case ERA_INFOS:
 			infos = (T) new EraInfos();
+			break;
+		case TECH_INFOS:
+			infos = (T) new TechInfos();
 			break;
 		case UNIT_INFOS:
 			infos = (T) new UnitInfos();
@@ -41,11 +45,14 @@ public class InfosFactory {
 	private static JAXBContext getContext(EInfos infoType) throws JAXBException {
 		JAXBContext jaxbContext = null;
 		switch (infoType) {
-		case TECH_INFOS:
-			jaxbContext = JAXBContext.newInstance(TechInfos.class);
+		case BUILDING_INFOS:
+			jaxbContext = JAXBContext.newInstance(BuildingInfos.class);
 			break;
 		case ERA_INFOS:
 			jaxbContext = JAXBContext.newInstance(EraInfos.class);
+			break;
+		case TECH_INFOS:
+			jaxbContext = JAXBContext.newInstance(TechInfos.class);
 			break;
 		case UNIT_INFOS:
 			jaxbContext = JAXBContext.newInstance(UnitInfos.class);

@@ -75,6 +75,8 @@ public class InfoUtils {
 			if (cmd.hasOption("p"))
 				props.setAppProperty(PropertyKeys.PROPERTY_KEY_FILE_PREFIX, cmd.getOptionValue("p"));
 			if (cmd.hasOption("t")) {
+				if (cmd.getOptionValue("t").equalsIgnoreCase("building"))
+					infoType = EInfos.BUILDING_INFOS;
 				if (cmd.getOptionValue("t").equalsIgnoreCase("era"))
 					infoType = EInfos.ERA_INFOS;
 				else if (cmd.getOptionValue("t").equalsIgnoreCase("tech"))
