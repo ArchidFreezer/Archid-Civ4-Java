@@ -1,5 +1,9 @@
 package org.archid.civ4.main;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -12,6 +16,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.archid.civ4.info.ExporterFactory;
 import org.archid.civ4.info.ImporterFactory;
+import org.archid.civ4.info.InfosFactory;
 import org.archid.civ4.info.InfosFactory.EInfos;
 import org.archid.utils.IPropertyHandler;
 import org.archid.utils.PropertyHandler;
@@ -53,7 +58,7 @@ public class InfoUtils {
 		actions.addOption(Option.builder("h").longOpt("help").hasArg(false).desc("Display this usage message").build());
 		options.addOptionGroup(actions);
 
-		options.addOption(Option.builder("f").longOpt("file").required().hasArg(true).argName("XML").desc("Civ4xxxInfos.xml file to process").build());
+		options.addOption(Option.builder("f").longOpt("file").required().hasArg(true).argName("XML").desc("Path to Civ4xxxInfos.xml file to process. Filename must be provided if it is non standard").build());
 		options.addOption(Option.builder("o").longOpt("output").hasArg(true).argName("Output Dir").desc("Directory to create output files").build());
 		options.addOption(Option.builder("p").longOpt("prefix").hasArg(true).argName("Prefix").desc("Prefix to new output file").build());
 		options.addOption(Option.builder("t").longOpt("type").required().hasArg(true).argName("Info Type").desc("Valid values are: Era, Tech & Unit").build());
@@ -66,8 +71,6 @@ public class InfoUtils {
 			EInfos infoType = null;
 			cmd = parser.parse(options, args);
 			
-			if (cmd.hasOption("f"))
-				props.setAppProperty(PropertyKeys.PROPERTY_KEY_FILE_INFOS, cmd.getOptionValue("f"));
 			if (cmd.hasOption("o"))
 				props.setAppProperty(PropertyKeys.PROPERTY_KEY_OUTPUT_DIR, cmd.getOptionValue("o"));
 			else
@@ -77,7 +80,9 @@ public class InfoUtils {
 			if (cmd.hasOption("t")) {
 				if (cmd.getOptionValue("t").equalsIgnoreCase("building"))
 					infoType = EInfos.BUILDING_INFOS;
-				if (cmd.getOptionValue("t").equalsIgnoreCase("era"))
+				else if (cmd.getOptionValue("t").equalsIgnoreCase("buildingclass"))
+					infoType = EInfos.BUILDING_CLASS_INFOS;
+				else if (cmd.getOptionValue("t").equalsIgnoreCase("era"))
 					infoType = EInfos.ERA_INFOS;
 				else if (cmd.getOptionValue("t").equalsIgnoreCase("tech"))
 					infoType = EInfos.TECH_INFOS;
@@ -85,6 +90,16 @@ public class InfoUtils {
 					infoType = EInfos.UNIT_INFOS;
 				else
 					log.error("Processing of type " + cmd.getOptionValue("t") + " is not implemented yet");	
+			}
+			if (cmd.hasOption("f")) {
+				// If this is a folder then append the OOB filename for the info type
+				String pathVal = cmd.getOptionValue("f");
+				Path file = Paths.get(pathVal);
+				if (!Files.exists(file))
+					throw new ParseException("Path contained in 'f' argument does not exist");
+				else if (Files.isDirectory(file))
+					pathVal = Paths.get(pathVal, InfosFactory.getDefaultInfoFilename(infoType)).toString();
+				props.setAppProperty(PropertyKeys.PROPERTY_KEY_FILE_INFOS, pathVal);
 			}
 			if (cmd.hasOption("x")) {
 				props.setAppProperty(PropertyKeys.PROPERTY_KEY_FILE_XSLX, cmd.getOptionValue("x"));

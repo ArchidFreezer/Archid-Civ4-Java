@@ -2,6 +2,7 @@ package org.archid.civ4.info.unit;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import org.archid.civ4.info.AbstractImporter;
@@ -10,7 +11,6 @@ import org.archid.civ4.info.IInfos;
 import org.archid.civ4.info.InfosFactory.EInfos;
 import org.archid.civ4.info.unit.UnitInfos.UnitMeshGroup;
 import org.archid.civ4.info.unit.UnitInfos.UnitMeshGroups;
-import org.archid.utils.IPair;
 import org.archid.utils.StringUtils;
 
 public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>{
@@ -34,387 +34,189 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 		
 		IUnitInfo info = UnitInfos.createInfo(type);
 		info.setUnitClass(clazz);
-		
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addUniqueName(str);
-		}
-	
-		info.setSpecial(row.getCell(colNum++).getStringCellValue());
-		info.setCapture(row.getCell(colNum++).getStringCellValue());
-		info.setCombatType(row.getCell(colNum++).getStringCellValue());
-
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addSubCombatType(str);
-		}
-	
-		info.setDomain(row.getCell(colNum++).getStringCellValue());
-		info.setDefaultUnitAI(row.getCell(colNum++).getStringCellValue());
-		info.setFixedAI(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setMaxWeaponTypeTier(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setMaxAmmoTypeTier(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setInvisibleType(row.getCell(colNum++).getStringCellValue());
-
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addSeeInvisble(str);
-		}
-	
-		info.setDescription(row.getCell(colNum++).getStringCellValue());
-		info.setCivilopedia(row.getCell(colNum++).getStringCellValue());
-		info.setStrategy(row.getCell(colNum++).getStringCellValue());
-		info.setHelp(row.getCell(colNum++).getStringCellValue());
-		info.setAdvisor(row.getCell(colNum++).getStringCellValue());
-		info.setAnimal(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setFood(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setNoBadGoodies(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setOnlyDefensive(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setNoCapture(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setQuickCombat(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setRivalTerritory(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setMilitaryHappiness(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setMilitarySupport(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setMilitaryProduction(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setPillage(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setSpy(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setSabotage(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setDestroy(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setStealPlans(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setInvestigate(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setCounterSpy(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setFound(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setGoldenAge(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setInvisible(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setFirstStrikeImmune(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setNoDefensiveBonus(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setIgnoreBuildingDefense(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setCanMoveImpassable(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setCanMoveAllTerrain(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setFlatMovementCost(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setIgnoreTerrainCost(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setNukeImmune(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setPrereqBonuses(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setPrereqReligion(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setMechanized(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setRenderBelowWater(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setRenderAlways(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setSuicide(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setSingleBuild(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setSlave(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setLineOfSight(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setHiddenNationality(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setAlwaysHostile(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setWorkerTrade(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setMilitaryTrade(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addUnitClassUpgrade(str);
-		}
-	
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addUnitClassTarget(type);
-		}
-	
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addUnitCombatTarget(str);
-		}
-	
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addUnitClassDefender(str);
-		}
-	
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addUnitCombatDefender(str);
-		}
-	
-		for (IPair<String, Integer> pair: parsePairs(row.getCell(colNum++), String.class, Integer.class)) {
-			info.addFlankingStrike(pair);
-		}
-
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addUnitAI(str);
-		}
-	
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addNotUnitAIs(str);
-		}
-	
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addBuild(str);
-		}
-	
-		for (IPair<String, Integer> pair: parsePairs(row.getCell(colNum++), String.class, Integer.class)) {
-			info.addReligionSpread(pair);
-		}
-
-		for (IPair<String, Integer> pair: parsePairs(row.getCell(colNum++), String.class, Integer.class)) {
-			info.addCorporationSpread(pair);
-		}
-
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addGreatPerson(str);
-		}
-	
-		info.setSlaveSpecialistType(row.getCell(colNum++).getStringCellValue());
-		
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addBuilding(str);
-		}
-
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addForceBuildings(str);
-		}
-	
-		info.setHolyCity(row.getCell(colNum++).getStringCellValue());
-		info.setReligionType(row.getCell(colNum++).getStringCellValue());
-		info.setStateReligion(row.getCell(colNum++).getStringCellValue());
-		info.setPrereqReligionType(row.getCell(colNum++).getStringCellValue());
-		info.setPrereqCorporation(row.getCell(colNum++).getStringCellValue());
-		info.setPrereqBuilding(row.getCell(colNum++).getStringCellValue());
-		
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addPrereqTech(str);
-		}
-	
-		info.setObsoleteTech(row.getCell(colNum++).getStringCellValue());
-		info.setBonusType(row.getCell(colNum++).getStringCellValue());
-
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addPrereqOrBonus(str);
-		}
-	
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addPrereqAndCivic(str);
-		}
-	
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addPrereqOrCivic(str);
-		}
-	
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addPrereqAndTerrain(str);
-		}
-	
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addPrereqOrTerrain(str);
-		}
-	
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addPrereqOrBuildingClass(str);
-		}
-	
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addPrereqNotBuildingClass(str);
-		}
-	
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addPrereqVicinityAndBonus(str);
-		}
-	
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addPrereqVicinityOrBonus(str);
-		}
-	
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addPrereqVicinityImprovement(str);
-		}
-	
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addPrereqVicinityFeature(str);
-		}
-	
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addPrereqWorldView(str);
-		}
-	
-		info.setMinPopulation(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setMinCultureLevel(row.getCell(colNum++).getStringCellValue());
-		info.setPrereqPower(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		
-		for (IPair<String, Integer> pair: parsePairs(row.getCell(colNum++), String.class, Integer.class)) {
-			info.addProductionTrait(pair);
-		}
-
-		for (IPair<String, Integer> pair: parsePairs(row.getCell(colNum++), String.class, Integer.class)) {
-			info.addFlavour(pair);
-		}
-
-		info.setAiWeight(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setCost(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setEnslaveCount(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setHurryCostModifier(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setAdvancedStartCost(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setAdvancedStartCostIncrease(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setMinAreaSize(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setMoves(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setUnitRangeType(row.getCell(colNum++).getStringCellValue());
-		info.setNoRevealMap(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setAirRange(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setAirUnitCap(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setDropRange(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setNukeRange(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setWorkRate(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setBaseDiscover(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setDiscoverMultiplier(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setBaseHurry(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setHurryMultiplier(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setBaseTrade(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setTradeMultiplier(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setGreatWorkCulture(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setEspionagePoints(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setSpyEscapeChance(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setSpyEvasionChance(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setSpyInterceptChance(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addTerrainImpassable(str);
-		}
-	
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addFeatureImpassable(str);
-		}
-	
-		for (IPair<String, String> pair: parsePairs(row.getCell(colNum++), String.class, String.class)) {
-			info.addTerrainPassableTech(pair);
-		}
-
-		for (IPair<String, String> pair: parsePairs(row.getCell(colNum++), String.class, String.class)) {
-			info.addFeaturePassableTech(pair);
-		}
-
-		info.setCombat(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setCombatLimit(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setAirCombat(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setAirCombatLimit(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setXpValueAttack(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setXpValueDefense(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setFirstStrikes(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setChanceFirstStrikes(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setInterceptionProbability(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setEvasionProbability(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setWithdrawalProb(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setCollateralDamage(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setCollateralDamageLimit(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setCollateralDamageMaxUnits(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setCityAttack(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setCityDefense(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setAnimalCombat(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setHillsAttack(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setHillsDefense(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addTerrainNative(str);
-		}
-	
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addFeatureNative(str);
-		}
-	
-		for (IPair<String, Integer> pair: parsePairs(row.getCell(colNum++), String.class, Integer.class)) {
-			info.addTerrainAttack(pair);
-		}
-
-		for (IPair<String, Integer> pair: parsePairs(row.getCell(colNum++), String.class, Integer.class)) {
-			info.addTerrainDefense(pair);
-		}
-
-		for (IPair<String, Integer> pair: parsePairs(row.getCell(colNum++), String.class, Integer.class)) {
-			info.addFeatureAttacks(pair);
-		}
-
-		for (IPair<String, Integer> pair: parsePairs(row.getCell(colNum++), String.class, Integer.class)) {
-			info.addFeatureDefense(pair);
-		}
-
-		for (IPair<String, Integer> pair: parsePairs(row.getCell(colNum++), String.class, Integer.class)) {
-			info.addUnitClassAttackMod(pair);
-		}
-
-		for (IPair<String, Integer> pair: parsePairs(row.getCell(colNum++), String.class, Integer.class)) {
-			info.addUnitClassDefenseMod(pair);
-		}
-
-		for (IPair<String, Integer> pair: parsePairs(row.getCell(colNum++), String.class, Integer.class)) {
-			info.addUnitCombatMod(pair);
-		}
-
-		for (IPair<String, Integer> pair: parsePairs(row.getCell(colNum++), String.class, Integer.class)) {
-			info.addUnitCombatCollateralImmune(pair);
-		}
-
-		for (IPair<String, Integer> pair: parsePairs(row.getCell(colNum++), String.class, Integer.class)) {
-			info.addDomainMod(pair);
-		}
-
-		for (IPair<String, Integer> pair: parsePairs(row.getCell(colNum++), String.class, Integer.class)) {
-			info.addBonusProductionModifier(pair);
-		}
-
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addYieldFromKill(Integer.parseInt(str));
-		}
-	
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addCommerceFromKill(Integer.parseInt(str));
-		}
-	
-		info.setBombRate(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setBombardRate(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setSpecialCargo(row.getCell(colNum++).getStringCellValue());
-		info.setDomainCargo(row.getCell(colNum++).getStringCellValue());
-		info.setCargo(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setConscription(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setCultureGarrison(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setExtraCost(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setAsset(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setPower(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
+		parseListCell(row.getCell(colNum++), String.class, info::addUniqueName);
+		parseCell(row.getCell(colNum++), String.class, info::setSpecial);
+		parseCell(row.getCell(colNum++), String.class, info::setCapture);
+		parseCell(row.getCell(colNum++), String.class, info::setCombatType);
+		parseListCell(row.getCell(colNum++), String.class, info::addSubCombatType);
+		parseCell(row.getCell(colNum++), String.class, info::setDomain);
+		parseCell(row.getCell(colNum++), String.class, info::setDefaultUnitAI);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setFixedAI);
+		parseCell(row.getCell(colNum++), Integer.class, info::setMaxWeaponTypeTier);
+		parseCell(row.getCell(colNum++), Integer.class, info::setMaxAmmoTypeTier);
+		parseCell(row.getCell(colNum++), String.class, info::setInvisibleType);
+		parseListCell(row.getCell(colNum++), String.class, info::addSeeInvisble);
+		parseCell(row.getCell(colNum++), String.class, info::setDescription);
+		parseCell(row.getCell(colNum++), String.class, info::setCivilopedia);
+		parseCell(row.getCell(colNum++), String.class, info::setStrategy);
+		parseCell(row.getCell(colNum++), String.class, info::setHelp);
+		parseCell(row.getCell(colNum++), String.class, info::setAdvisor);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setAnimal);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setFood);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setNoBadGoodies);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setOnlyDefensive);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setNoCapture);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setQuickCombat);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setRivalTerritory);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setMilitaryHappiness);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setMilitarySupport);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setMilitaryProduction);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setPillage);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setSpy);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setSabotage);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setDestroy);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setStealPlans);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setInvestigate);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setCounterSpy);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setFound);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setGoldenAge);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setInvisible);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setFirstStrikeImmune);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setNoDefensiveBonus);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setIgnoreBuildingDefense);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setCanMoveImpassable);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setCanMoveAllTerrain);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setFlatMovementCost);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setIgnoreTerrainCost);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setNukeImmune);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setPrereqBonuses);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setPrereqReligion);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setMechanized);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setRenderBelowWater);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setRenderAlways);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setSuicide);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setSingleBuild);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setSlave);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setLineOfSight);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setHiddenNationality);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setAlwaysHostile);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setWorkerTrade);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setMilitaryTrade);
+		parseListCell(row.getCell(colNum++), String.class, info::addUnitClassUpgrade);
+		parseListCell(row.getCell(colNum++), String.class, info::addUnitClassTarget);
+		parseListCell(row.getCell(colNum++), String.class, info::addUnitCombatTarget);
+		parseListCell(row.getCell(colNum++), String.class, info::addUnitClassDefender);
+		parseListCell(row.getCell(colNum++), String.class, info::addUnitCombatDefender);
+		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addFlankingStrike);
+		parseListCell(row.getCell(colNum++), String.class, info::addUnitAI);
+		parseListCell(row.getCell(colNum++), String.class, info::addNotUnitAIs);
+		parseListCell(row.getCell(colNum++), String.class, info::addBuild);
+		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addReligionSpread);
+		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addCorporationSpread);
+		parseListCell(row.getCell(colNum++), String.class, info::addGreatPerson);
+		parseCell(row.getCell(colNum++), String.class, info::setSlaveSpecialistType);
+		parseListCell(row.getCell(colNum++), String.class, info::addBuilding);
+		parseListCell(row.getCell(colNum++), String.class, info::addForceBuildings);
+		parseCell(row.getCell(colNum++), String.class, info::setHolyCity);
+		parseCell(row.getCell(colNum++), String.class, info::setReligionType);
+		parseCell(row.getCell(colNum++), String.class, info::setStateReligion);
+		parseCell(row.getCell(colNum++), String.class, info::setPrereqReligionType);
+		parseCell(row.getCell(colNum++), String.class, info::setPrereqCorporation);
+		parseCell(row.getCell(colNum++), String.class, info::setPrereqBuilding);
+		parseListCell(row.getCell(colNum++), String.class, info::addPrereqTech);
+		parseCell(row.getCell(colNum++), String.class, info::setObsoleteTech);
+		parseCell(row.getCell(colNum++), String.class, info::setBonusType);
+		parseListCell(row.getCell(colNum++), String.class, info::addPrereqOrBonus);
+		parseListCell(row.getCell(colNum++), String.class, info::addPrereqAndCivic);
+		parseListCell(row.getCell(colNum++), String.class, info::addPrereqOrCivic);
+		parseListCell(row.getCell(colNum++), String.class, info::addPrereqAndTerrain);
+		parseListCell(row.getCell(colNum++), String.class, info::addPrereqOrTerrain);
+		parseListCell(row.getCell(colNum++), String.class, info::addPrereqOrBuildingClass);
+		parseListCell(row.getCell(colNum++), String.class, info::addPrereqNotBuildingClass);
+		parseListCell(row.getCell(colNum++), String.class, info::addPrereqVicinityAndBonus);
+		parseListCell(row.getCell(colNum++), String.class, info::addPrereqVicinityOrBonus);
+		parseListCell(row.getCell(colNum++), String.class, info::addPrereqVicinityImprovement);
+		parseListCell(row.getCell(colNum++), String.class, info::addPrereqVicinityFeature);
+		parseListCell(row.getCell(colNum++), String.class, info::addPrereqWorldView);
+		parseCell(row.getCell(colNum++), Integer.class, info::setMinPopulation);
+		parseCell(row.getCell(colNum++), String.class, info::setMinCultureLevel);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setPrereqPower);
+		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addProductionTrait);
+		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addFlavour);
+		parseCell(row.getCell(colNum++), Integer.class, info::setAiWeight);
+		parseCell(row.getCell(colNum++), Integer.class, info::setCost);
+		parseCell(row.getCell(colNum++), Integer.class, info::setEnslaveCount);
+		parseCell(row.getCell(colNum++), Integer.class, info::setHurryCostModifier);
+		parseCell(row.getCell(colNum++), Integer.class, info::setAdvancedStartCost);
+		parseCell(row.getCell(colNum++), Integer.class, info::setAdvancedStartCostIncrease);
+		parseCell(row.getCell(colNum++), Integer.class, info::setMinAreaSize);
+		parseCell(row.getCell(colNum++), Integer.class, info::setMoves);
+		parseCell(row.getCell(colNum++), String.class, info::setUnitRangeType);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setNoRevealMap);
+		parseCell(row.getCell(colNum++), Integer.class, info::setAirRange);
+		parseCell(row.getCell(colNum++), Integer.class, info::setAirUnitCap);
+		parseCell(row.getCell(colNum++), Integer.class, info::setDropRange);
+		parseCell(row.getCell(colNum++), Integer.class, info::setNukeRange);
+		parseCell(row.getCell(colNum++), Integer.class, info::setWorkRate);
+		parseCell(row.getCell(colNum++), Integer.class, info::setBaseDiscover);
+		parseCell(row.getCell(colNum++), Integer.class, info::setDiscoverMultiplier);
+		parseCell(row.getCell(colNum++), Integer.class, info::setBaseHurry);
+		parseCell(row.getCell(colNum++), Integer.class, info::setHurryMultiplier);
+		parseCell(row.getCell(colNum++), Integer.class, info::setBaseTrade);
+		parseCell(row.getCell(colNum++), Integer.class, info::setTradeMultiplier);
+		parseCell(row.getCell(colNum++), Integer.class, info::setGreatWorkCulture);
+		parseCell(row.getCell(colNum++), Integer.class, info::setEspionagePoints);
+		parseCell(row.getCell(colNum++), Integer.class, info::setSpyEscapeChance);
+		parseCell(row.getCell(colNum++), Integer.class, info::setSpyEvasionChance);
+		parseCell(row.getCell(colNum++), Integer.class, info::setSpyInterceptChance);
+		parseListCell(row.getCell(colNum++), String.class, info::addTerrainImpassable);
+		parseListCell(row.getCell(colNum++), String.class, info::addFeatureImpassable);
+		parsePairsCell(row.getCell(colNum++), String.class, String.class, info::addTerrainPassableTech);
+		parsePairsCell(row.getCell(colNum++), String.class, String.class, info::addFeaturePassableTech);
+		parseCell(row.getCell(colNum++), Integer.class, info::setCombat);
+		parseCell(row.getCell(colNum++), Integer.class, info::setCombatLimit);
+		parseCell(row.getCell(colNum++), Integer.class, info::setAirCombat);
+		parseCell(row.getCell(colNum++), Integer.class, info::setAirCombatLimit);
+		parseCell(row.getCell(colNum++), Integer.class, info::setXpValueAttack);
+		parseCell(row.getCell(colNum++), Integer.class, info::setXpValueDefense);
+		parseCell(row.getCell(colNum++), Integer.class, info::setFirstStrikes);
+		parseCell(row.getCell(colNum++), Integer.class, info::setChanceFirstStrikes);
+		parseCell(row.getCell(colNum++), Integer.class, info::setInterceptionProbability);
+		parseCell(row.getCell(colNum++), Integer.class, info::setEvasionProbability);
+		parseCell(row.getCell(colNum++), Integer.class, info::setWithdrawalProb);
+		parseCell(row.getCell(colNum++), Integer.class, info::setCollateralDamage);
+		parseCell(row.getCell(colNum++), Integer.class, info::setCollateralDamageLimit);
+		parseCell(row.getCell(colNum++), Integer.class, info::setCollateralDamageMaxUnits);
+		parseCell(row.getCell(colNum++), Integer.class, info::setCityAttack);
+		parseCell(row.getCell(colNum++), Integer.class, info::setCityDefense);
+		parseCell(row.getCell(colNum++), Integer.class, info::setAnimalCombat);
+		parseCell(row.getCell(colNum++), Integer.class, info::setHillsAttack);
+		parseCell(row.getCell(colNum++), Integer.class, info::setHillsDefense);
+		parseListCell(row.getCell(colNum++), String.class, info::addTerrainNative);
+		parseListCell(row.getCell(colNum++), String.class, info::addFeatureNative);
+		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addTerrainAttack);
+		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addTerrainDefense);
+		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addFeatureAttacks);
+		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addFeatureDefense);
+		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addUnitClassAttackMod);
+		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addUnitClassDefenseMod);
+		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addUnitCombatMod);
+		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addUnitCombatCollateralImmune);
+		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addDomainMod);
+		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addBonusProductionModifier);
+		parseListCell(row.getCell(colNum++), Integer.class, info::addYieldFromKill);
+		parseListCell(row.getCell(colNum++), Integer.class, info::addCommerceFromKill);
+		parseCell(row.getCell(colNum++), Integer.class, info::setBombRate);
+		parseCell(row.getCell(colNum++), Integer.class, info::setBombardRate);
+		parseCell(row.getCell(colNum++), String.class, info::setSpecialCargo);
+		parseCell(row.getCell(colNum++), String.class, info::setDomainCargo);
+		parseCell(row.getCell(colNum++), Integer.class, info::setCargo);
+		parseCell(row.getCell(colNum++), Integer.class, info::setConscription);
+		parseCell(row.getCell(colNum++), Integer.class, info::setCultureGarrison);
+		parseCell(row.getCell(colNum++), Integer.class, info::setExtraCost);
+		parseCell(row.getCell(colNum++), Integer.class, info::setAsset);
+		parseCell(row.getCell(colNum++), Integer.class, info::setPower);
 		info.setUnitMeshGroups(getUnitMeshGroups(row.getCell(colNum++).getStringCellValue()));
-		info.setFormationType(row.getCell(colNum++).getStringCellValue());
-		info.setHotKey(row.getCell(colNum++).getStringCellValue());
-		info.setAltDown(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setShiftDown(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setCtrlDown(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setHotKeyPriority(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-
-		for (String str: row.getCell(colNum++).getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
-			if (StringUtils.hasCharacters(str))
-				info.addFreePromotion(str);
-		}
-	
-		info.setLeaderPromotion(row.getCell(colNum++).getStringCellValue());
-		info.setLeaderExperience(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setOrderPriority(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
+		parseCell(row.getCell(colNum++), String.class, info::setFormationType);
+		parseCell(row.getCell(colNum++), String.class, info::setHotKey);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setAltDown);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setShiftDown);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setCtrlDown);
+		parseCell(row.getCell(colNum++), Integer.class, info::setHotKeyPriority);
+		parseListCell(row.getCell(colNum++), String.class, info::addFreePromotion);
+		parseCell(row.getCell(colNum++), String.class, info::setLeaderPromotion);
+		parseCell(row.getCell(colNum++), Integer.class, info::setLeaderExperience);
+		parseCell(row.getCell(colNum++), Integer.class, info::setOrderPriority);
 		
 		return info;
 	}

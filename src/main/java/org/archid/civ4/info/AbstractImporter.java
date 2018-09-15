@@ -7,9 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
-
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -92,20 +91,35 @@ public abstract class AbstractImporter<T extends IInfos<S>, S extends IInfo> imp
 	}
 
 	/**
-	 * Reads the contents of a workbook cell containing key value pairs of data delimited by the newline character and
-	 * returns a {@link List} of {@link IPair} objects whose key and value types are as defined by the parameters.
+	 * Reads the content of a workbook {@link Cell} containing a list of values delimited by {@link IInfoWorkbook.CELL_NEWLINE} and
+	 * calls the {@link Consumer} function provided with the value of the cell parsed as the class as defined in the {@code listClass} param
+	 * <p>
+	 * An example for a cell containing a list of Integers that are added to the info using its {@code setValMethodName} method would be: <p>
+	 * {@code parseCell(cell, Integer.class, info::setValMethodName)}
 	 * 
-	 * The following classes may be used as either the key or the value of the pair
-	 * <ul><li>{@link String}</li><li>Integer</li><li>Boolean</li><li>Float</li></ul>
-	 * 
-	 * @param cell {@link Cell} the sheet cell containing the data to parse
-	 * @param keyClass class of the key used in the pair
-	 * @param valClass class of the value used in the pair
-	 * @return {@link List}<{@link IPair}> containing the parsed contents of the cell 
+	 * @param cell the workbook cell containing the data to parse
+	 * @param valClass {@link Class} to convert the cell value into
+	 * @param func the {@link Consumer} function called with the cell value as a parameter
 	 */
-	protected <U, V> List<IPair<U, V>> parsePairs(Cell cell, Class<U> keyClass, Class<V> valClass) {
-		List<IPair<U, V>> list = new ArrayList<IPair<U, V>>();
-		String[] arr = cell.getStringCellValue().split("\n");
+	protected <U> void parseCell(Cell cell, Class<U> valClass, Consumer<U> func) {
+		func.accept(getVal(cell.getStringCellValue(), valClass));
+	}
+	
+	/**
+	 * Reads the content of a workbook {@link Cell} containing a list of value pairs delimited by {@link IInfoWorkbook.CELL_NEWLINE} and
+	 * calls the {@link Consumer} function provided with the value of the cell parsed into an {@link IPair} keyed by the {@code keyClass} parameter
+	 * and with a value of {@code valClass} 
+	 * <p>
+	 * An example for a cell containing a list of String/Integer pairs that are added to the info using its {@code addPairValMethodName} method would be: <br>
+	 * {@code parseCellPairs(cell, String.class, Integer.class, info::addPairValMethodName)}
+
+	 * @param cell the workbook cell containing the data to parse
+	 * @param keyClass {@link Class} of the pair key
+	 * @param valClass {@link Class} of the pair value
+	 * @param func the {@link Consumer} function called with a single {@code IPair} as a parameter
+	 */
+	protected <U, V> void parsePairsCell(Cell cell, Class<U> keyClass, Class<V> valClass, Consumer<IPair<U, V>> func) {
+		String[] arr = cell.getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE);
 		if (arr.length > 1) {
 			boolean first = true;
 			U key = null;
@@ -116,33 +130,57 @@ public abstract class AbstractImporter<T extends IInfos<S>, S extends IInfo> imp
 						key = getVal(str, keyClass);
 					} else {
 						val = getVal(str, valClass);
-						list.add(new Pair<U, V>(key, val));
+						func.accept(new Pair<U, V>(key, val));
 					}
 					first = !first;
 				}
 			}
 		}
-		return list;
 	}
 	
 	/**
 	 * Reads the content of a workbook {@link Cell} containing a list of values delimited by {@link IInfoWorkbook.CELL_NEWLINE} and
 	 * calls the {@link Consumer} function provided with the value of the cell parsed as the class as defined in the {@code listClass} param
 	 * <p>
-	 * An example of invoking this would be:<br>
-	 * {@code parseList(cell, String.class, info::addArrayValMethodName)}
+	 * An example for a cell containing a list of Integers that are added to the info using its {@code addArrayValMethodName} method would be: <p>
+	 * {@code parseCellList(cell, Integer.class, info::addArrayValMethodName)}
 	 * 
 	 * @param cell the workbook cell containing the data to parse
 	 * @param listClass {@link Class} to convert the cell values into 
-	 * @param func the {@link Consumer} function called with the value of the list items as a parameter
+	 * @param func the {@link Consumer} function called with a single list value as a parameter
 	 */
-	protected <U> void parseList(Cell cell, Class<U> listClass, Consumer<U> func) {
+	protected <U> void parseListCell(Cell cell, Class<U> listClass, Consumer<U> func) {
 		for (String str: cell.getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE)) {
 			if (StringUtils.hasCharacters(str))
 				func.accept(getVal(str, listClass));
 		}
 	}
 	
+	protected <U,V> void parseMapListCell(Cell cell, Class<U> keyClass, Class<V> listClass, BiConsumer<U, List<V>> func) {
+		String[] arr = cell.getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE);
+		if (arr.length > 1) {
+			boolean newEntry = true;
+			U key = null;
+			List<V> val = null;
+			for (String str: arr) {
+				if (StringUtils.hasCharacters(str)) {
+					if (str.equals(IInfoWorkbook.CELL_GROUP_DELIM)) {
+						func.accept(key, val);
+						newEntry = true;
+					} else if (newEntry) {
+						key = getVal(str, keyClass);
+						val = new ArrayList<V>();
+						newEntry = false;
+					} else {
+						val.add(getVal(str.trim(), listClass));
+					}
+				}
+			}
+			func.accept(key, val);
+		}
+		
+	}
+
 	/**
 	 * Takes a string and parses it into another class type. If the string cannot be parsed then {@code null} will be returned.
 	 * 

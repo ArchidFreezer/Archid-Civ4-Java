@@ -463,7 +463,7 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		private String bonus;
 		@XmlElementWrapper(name="YieldModifiers")
 		@XmlElement(name="iYield")
-		private List<Integer> yields;
+		private List<Integer> yields = new ArrayList<Integer>();
 	}
 
 	private static class AdaptedSpecialistYieldChange {
@@ -471,7 +471,7 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		private String specialist;
 		@XmlElementWrapper(name="YieldChanges")
 		@XmlElement(name="iYield")
-		private List<Integer> yields;
+		private List<Integer> yields = new ArrayList<Integer>();
 	}
 
 	private static class AdaptedBuildingChange {

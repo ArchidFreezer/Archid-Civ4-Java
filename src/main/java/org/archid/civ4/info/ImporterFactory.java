@@ -2,6 +2,8 @@ package org.archid.civ4.info;
 
 import org.apache.log4j.Logger;
 import org.archid.civ4.info.InfosFactory.EInfos;
+import org.archid.civ4.info.building.BuildingImporter;
+import org.archid.civ4.info.buildingclass.BuildingClassImporter;
 import org.archid.civ4.info.era.EraImporter;
 import org.archid.civ4.info.tech.TechImporter;
 import org.archid.civ4.info.unit.UnitImporter;
@@ -14,6 +16,12 @@ public class ImporterFactory {
 	public static IImporter getImporter(EInfos infoType) {
 		IImporter importer = null;
 		switch (infoType) {
+		case BUILDING_INFOS:
+			importer = new BuildingImporter(infoType);
+			break;
+		case BUILDING_CLASS_INFOS:
+			importer = new BuildingClassImporter(infoType);
+			break;
 		case ERA_INFOS:
 			importer = new EraImporter(infoType);
 			break;

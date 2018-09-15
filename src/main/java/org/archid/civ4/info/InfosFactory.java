@@ -1,6 +1,9 @@
 package org.archid.civ4.info;
 
 import java.io.File;
+import java.util.EnumMap;
+import java.util.Map;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -8,23 +11,43 @@ import javax.xml.bind.Unmarshaller;
 
 import org.apache.log4j.Logger;
 import org.archid.civ4.info.building.BuildingInfos;
+import org.archid.civ4.info.buildingclass.BuildingClassInfos;
 import org.archid.civ4.info.era.EraInfos;
 import org.archid.civ4.info.tech.TechInfos;
 import org.archid.civ4.info.unit.UnitInfos;
+import org.archid.utils.StringUtils;
 
 public class InfosFactory {
 	
 	/** Logging facility */
 	static Logger log = Logger.getLogger(InfosFactory.class.getName());
 	
-	public static enum EInfos { BUILDING_INFOS, ERA_INFOS, TECH_INFOS, UNIT_INFOS	}
+	public static enum EInfos { BUILDING_INFOS, BUILDING_CLASS_INFOS, ERA_INFOS, TECH_INFOS, UNIT_INFOS	}
+	
+	private static Map<EInfos, String> infoNames;
+	static {
+		infoNames = new EnumMap<EInfos, String>(EInfos.class);
+		infoNames.put(EInfos.BUILDING_INFOS, "CIV4BuildingInfos.xml");
+		infoNames.put(EInfos.BUILDING_CLASS_INFOS, "CIV4BuildingClassInfos.xml");
+		infoNames.put(EInfos.ERA_INFOS, "CIV4EraInfos.xml");
+		infoNames.put(EInfos.TECH_INFOS, "CIV4TechInfos.xml");
+		infoNames.put(EInfos.UNIT_INFOS, "CIV4UnitInfos.xml");
+	}
 
+	
+	public static String getDefaultInfoFilename(EInfos info) {
+		return infoNames.get(info) != null ? infoNames.get(info) : "CIV4" + StringUtils.startCaseCompress(info.name(), '_') + ".xml";  
+	}
+	
 	@SuppressWarnings("unchecked")
 	public static <T extends IInfos<S>, S extends IInfo> T getInfos(EInfos infoType) {
 		T infos = null;
 		switch(infoType) {
 		case BUILDING_INFOS:
 			infos = (T) new BuildingInfos();
+			break;
+		case BUILDING_CLASS_INFOS:
+			infos = (T) new BuildingClassInfos();
 			break;
 		case ERA_INFOS:
 			infos = (T) new EraInfos();
@@ -47,6 +70,9 @@ public class InfosFactory {
 		switch (infoType) {
 		case BUILDING_INFOS:
 			jaxbContext = JAXBContext.newInstance(BuildingInfos.class);
+			break;
+		case BUILDING_CLASS_INFOS:
+			jaxbContext = JAXBContext.newInstance(BuildingClassInfos.class);
 			break;
 		case ERA_INFOS:
 			jaxbContext = JAXBContext.newInstance(EraInfos.class);

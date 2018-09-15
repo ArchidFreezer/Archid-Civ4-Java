@@ -12,8 +12,6 @@ import org.archid.civ4.info.DefaultXmlFormatter;
 import org.archid.civ4.info.IImporter;
 import org.archid.civ4.info.IInfos;
 import org.archid.civ4.info.InfosFactory.EInfos;
-import org.archid.utils.IPair;
-import org.archid.utils.StringUtils;
 
 public class TechImporter extends AbstractImporter<IInfos<ITechInfo>, ITechInfo> implements IImporter {
 
@@ -72,107 +70,76 @@ public class TechImporter extends AbstractImporter<IInfos<ITechInfo>, ITechInfo>
 			// Handle deleted techs
 			if (info == null)
 				continue;
-			info.setDescription(row.getCell(colNum++).getStringCellValue());
-			info.setCivilopedia(row.getCell(colNum++).getStringCellValue());
-			info.setHelp(row.getCell(colNum++).getStringCellValue());
-			info.setStrategy(row.getCell(colNum++).getStringCellValue());
-			info.setAdvisor(row.getCell(colNum++).getStringCellValue());
-			info.setAiWeight(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-			info.setAiTradeModifier(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-			info.setCost(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-			info.setAdvancedStartCost(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-			info.setAdvancedStartCostIncrease(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-			info.setEra(row.getCell(colNum++).getStringCellValue());
-			info.setFirstFreeUnitClass(row.getCell(colNum++).getStringCellValue());
-			info.setFreeUnitClass(row.getCell(colNum++).getStringCellValue());
-			info.setFeatureProductionModifier(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-			info.setWorkerSpeedModifier(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-			info.setTradeRoutes(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-			info.setHealth(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-			info.setHappiness(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-			info.setFirstFreeTechs(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-			info.setAsset(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-			info.setPower(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-			info.setRepeat(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-			info.setTrade(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-			info.setEmbassyTrading(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-			info.setFreeTradeAgreementTrading(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-			info.setNonAggressionTrading(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-			info.setDisable(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-			info.setGoodyTech(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-			info.setExtraWaterSeeFrom(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-			info.setMapCentering(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-			info.setMapVisible(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-			info.setMapTrading(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-			info.setTechTrading(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-			info.setGoldTrading(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-			info.setOpenBordersTrading(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-			info.setLimitedBordersTrading(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-			info.setDefensivePactTrading(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-			info.setPermanentAllianceTrading(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-			info.setVassalTrading(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-			info.setBridgeBuilding(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-			info.setIrrigation(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-			info.setIgnoreIrrigation(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-			info.setWaterWork(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-			info.setCanPassPeaks(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-			info.setMoveFastPeaks(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-			info.setCanFoundOnPeaks(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
+			parseCell(row.getCell(colNum++), String.class, info::setDescription);
+			parseCell(row.getCell(colNum++), String.class, info::setCivilopedia);
+			parseCell(row.getCell(colNum++), String.class, info::setHelp);
+			parseCell(row.getCell(colNum++), String.class, info::setStrategy);
+			parseCell(row.getCell(colNum++), String.class, info::setAdvisor);
+			parseCell(row.getCell(colNum++), Integer.class, info::setAiWeight);
+			parseCell(row.getCell(colNum++), Integer.class, info::setAiTradeModifier);
+			parseCell(row.getCell(colNum++), Integer.class, info::setCost);
+			parseCell(row.getCell(colNum++), Integer.class, info::setAdvancedStartCost);
+			parseCell(row.getCell(colNum++), Integer.class, info::setAdvancedStartCostIncrease);
+			parseCell(row.getCell(colNum++), String.class, info::setEra);
+			parseCell(row.getCell(colNum++), String.class, info::setFirstFreeUnitClass);
+			parseCell(row.getCell(colNum++), String.class, info::setFreeUnitClass);
+			parseCell(row.getCell(colNum++), Integer.class, info::setFeatureProductionModifier);
+			parseCell(row.getCell(colNum++), Integer.class, info::setWorkerSpeedModifier);
+			parseCell(row.getCell(colNum++), Integer.class, info::setTradeRoutes);
+			parseCell(row.getCell(colNum++), Integer.class, info::setHealth);
+			parseCell(row.getCell(colNum++), Integer.class, info::setHappiness);
+			parseCell(row.getCell(colNum++), Integer.class, info::setFirstFreeTechs);
+			parseCell(row.getCell(colNum++), Integer.class, info::setAsset);
+			parseCell(row.getCell(colNum++), Integer.class, info::setPower);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setRepeat);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setTrade);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setEmbassyTrading);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setFreeTradeAgreementTrading);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setNonAggressionTrading);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setDisable);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setGoodyTech);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setExtraWaterSeeFrom);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setMapCentering);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setMapVisible);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setMapTrading);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setTechTrading);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setGoldTrading);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setOpenBordersTrading);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setLimitedBordersTrading);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setDefensivePactTrading);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setPermanentAllianceTrading);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setVassalTrading);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setBridgeBuilding);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setIrrigation);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setIgnoreIrrigation);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setWaterWork);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setCanPassPeaks);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setMoveFastPeaks);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setCanFoundOnPeaks);
 			// We need to skip the iGridX & iGridY rows
 			colNum += 2;
-			
-			for (IPair<String, Integer> pair: parsePairs(row.getCell(colNum++), String.class, Integer.class)) {
-				info.addDomainExtraMove(pair);
-			}
-			for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
-				if (StringUtils.hasCharacters(str))
-					info.addCommerceFlexible(Boolean.parseBoolean(str));
-			}
-			for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
-				if (StringUtils.hasCharacters(str))
-					info.addTerrainTrade(str);
-			}
-			info.setRiverTrade(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-			info.setCaptureCities(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-			info.setUnitRangeUnbound(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-			info.setUnitTerritoryUnbound(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-			info.setUnitRangeChange(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-			info.setUnitRangeModifier(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-			info.setCultureDefenceModifier(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-			for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
-				if (StringUtils.hasCharacters(str))
-					info.addForestPlotYieldChange(Integer.parseInt(str));
-			}
-			for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
-				if (StringUtils.hasCharacters(str))
-					info.addRiverPlotYieldChange(Integer.parseInt(str));
-			}
-			for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
-				if (StringUtils.hasCharacters(str))
-					info.addSeaPlotYieldChange(Integer.parseInt(str));
-			}
-			for (IPair<String, Integer> pair: parsePairs(row.getCell(colNum++), String.class, Integer.class)) {
-				info.addWorldViewRevoltTurnChange(pair);
-			}
-			for (IPair<String, Integer> pair: parsePairs(row.getCell(colNum++), String.class, Integer.class)) {
-				info.addFlavor(pair);
-			}
-			for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
-				if (StringUtils.hasCharacters(str))
-					info.addOrPrereq(str);
-			}
-			for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
-				if (StringUtils.hasCharacters(str))
-					info.addAndPrereq(str);
-			}
-			for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
-				if (StringUtils.hasCharacters(str))
-					info.addEnabledWorldViews(str);
-			}
-			info.setQuote(row.getCell(colNum++).getStringCellValue());
-			info.setSound(row.getCell(colNum++).getStringCellValue());
-			info.setSoundMP(row.getCell(colNum++).getStringCellValue());
-			info.setButton(row.getCell(colNum++).getStringCellValue());
+			parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addDomainExtraMove);
+			parseListCell(row.getCell(colNum++), Boolean.class, info::addCommerceFlexible);
+			parseListCell(row.getCell(colNum++), String.class, info::addTerrainTrade);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setRiverTrade);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setCaptureCities);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setUnitRangeUnbound);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setUnitTerritoryUnbound);
+			parseCell(row.getCell(colNum++), Integer.class, info::setUnitRangeChange);
+			parseCell(row.getCell(colNum++), Integer.class, info::setUnitRangeModifier);
+			parseCell(row.getCell(colNum++), Integer.class, info::setCultureDefenceModifier);
+			parseListCell(row.getCell(colNum++), Integer.class, info::addForestPlotYieldChange);
+			parseListCell(row.getCell(colNum++), Integer.class, info::addRiverPlotYieldChange);
+			parseListCell(row.getCell(colNum++), Integer.class, info::addSeaPlotYieldChange);
+			parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addWorldViewRevoltTurnChange);
+			parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addFlavor);
+			parseListCell(row.getCell(colNum++), String.class, info::addOrPrereq);
+			parseListCell(row.getCell(colNum++), String.class, info::addAndPrereq);
+			parseListCell(row.getCell(colNum++), String.class, info::addEnabledWorldViews);
+			parseCell(row.getCell(colNum++), String.class, info::setQuote);
+			parseCell(row.getCell(colNum++), String.class, info::setSound);
+			parseCell(row.getCell(colNum++), String.class, info::setSoundMP);
+			parseCell(row.getCell(colNum++), String.class, info::setButton);
 		}
 	}
 	

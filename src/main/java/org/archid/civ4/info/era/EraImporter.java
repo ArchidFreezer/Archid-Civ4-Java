@@ -7,8 +7,6 @@ import org.archid.civ4.info.DefaultXmlFormatter;
 import org.archid.civ4.info.IImporter;
 import org.archid.civ4.info.IInfos;
 import org.archid.civ4.info.InfosFactory.EInfos;
-import org.archid.utils.IPair;
-import org.archid.utils.StringUtils;
 
 public class EraImporter extends AbstractImporter<IInfos<IEraInfo>, IEraInfo> implements IImporter {
 
@@ -31,49 +29,41 @@ public class EraImporter extends AbstractImporter<IInfos<IEraInfo>, IEraInfo> im
 		IEraInfo info = EraInfos.createInfo(type);
 		info.setDescription(row.getCell(colNum++).getStringCellValue());
 		info.setStrategy(row.getCell(colNum++).getStringCellValue());
-		info.setNoGoodies(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setNoAnimals(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setNoBarbUnits(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setNoBarbCities(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setAdvancedStartPoints(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setStartingUnitMultiplier(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setStartingDefenseUnits(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setStartingWorkerUnits(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setStartingExploreUnits(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setStartingGold(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setMaxCities(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setFreePopulation(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setStartPercent(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setGrowthPercent(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setTrainPercent(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setConstructPercent(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setCreatePercent(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setResearchPercent(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setTechCostModifier(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setBuildPercent(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setImprovementPercent(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setGreatPeoplePercent(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setCulturePercent(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setAnarchyPercent(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setEventChancePerTurn(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setUnitRangeUnbound(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setUnitTerritoryUnbound(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-		info.setUnitRangeChange(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setUnitRangeModifier(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setSoundtrackSpace(Integer.parseInt(row.getCell(colNum++).getStringCellValue()));
-		info.setFirstSoundtrackFirst(Boolean.parseBoolean(row.getCell(colNum++).getStringCellValue()));
-
-		for (String str: row.getCell(colNum++).getStringCellValue().split("\n")) {
-			if (StringUtils.hasCharacters(str))
-				info.addEraInfoSoundtrack(str);
-		}
-
-		for (IPair<String, String> pair: parsePairs(row.getCell(colNum++), String.class, String.class)) {
-			info.addCitySoundscape(pair);
-		}
-		
-		info.setAudioUnitVictoryScript(row.getCell(colNum++).getStringCellValue());
-		info.setAudioUnitDefeatScript(row.getCell(colNum++).getStringCellValue());
+		parseCell(row.getCell(colNum++), Boolean.class, info::setNoGoodies);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setNoAnimals);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setNoBarbUnits);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setNoBarbCities);
+		parseCell(row.getCell(colNum++), Integer.class, info::setAdvancedStartPoints);
+		parseCell(row.getCell(colNum++), Integer.class, info::setStartingUnitMultiplier);
+		parseCell(row.getCell(colNum++), Integer.class, info::setStartingDefenseUnits);
+		parseCell(row.getCell(colNum++), Integer.class, info::setStartingWorkerUnits);
+		parseCell(row.getCell(colNum++), Integer.class, info::setStartingExploreUnits);
+		parseCell(row.getCell(colNum++), Integer.class, info::setStartingGold);
+		parseCell(row.getCell(colNum++), Integer.class, info::setMaxCities);
+		parseCell(row.getCell(colNum++), Integer.class, info::setFreePopulation);
+		parseCell(row.getCell(colNum++), Integer.class, info::setStartPercent);
+		parseCell(row.getCell(colNum++), Integer.class, info::setGrowthPercent);
+		parseCell(row.getCell(colNum++), Integer.class, info::setTrainPercent);
+		parseCell(row.getCell(colNum++), Integer.class, info::setConstructPercent);
+		parseCell(row.getCell(colNum++), Integer.class, info::setCreatePercent);
+		parseCell(row.getCell(colNum++), Integer.class, info::setResearchPercent);
+		parseCell(row.getCell(colNum++), Integer.class, info::setTechCostModifier);
+		parseCell(row.getCell(colNum++), Integer.class, info::setBuildPercent);
+		parseCell(row.getCell(colNum++), Integer.class, info::setImprovementPercent);
+		parseCell(row.getCell(colNum++), Integer.class, info::setGreatPeoplePercent);
+		parseCell(row.getCell(colNum++), Integer.class, info::setCulturePercent);
+		parseCell(row.getCell(colNum++), Integer.class, info::setAnarchyPercent);
+		parseCell(row.getCell(colNum++), Integer.class, info::setEventChancePerTurn);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setUnitRangeUnbound);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setUnitTerritoryUnbound);
+		parseCell(row.getCell(colNum++), Integer.class, info::setUnitRangeChange);
+		parseCell(row.getCell(colNum++), Integer.class, info::setUnitRangeModifier);
+		parseCell(row.getCell(colNum++), Integer.class, info::setSoundtrackSpace);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setFirstSoundtrackFirst);
+		parseListCell(row.getCell(colNum++), String.class, info::addEraInfoSoundtrack);
+		parsePairsCell(row.getCell(colNum++), String.class, String.class, info::addCitySoundscape);
+		parseCell(row.getCell(colNum++), String.class, info::setAudioUnitVictoryScript);
+		parseCell(row.getCell(colNum++), String.class, info::setAudioUnitDefeatScript);
 		
 		return info;
 	}

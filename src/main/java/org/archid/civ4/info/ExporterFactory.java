@@ -3,6 +3,7 @@ package org.archid.civ4.info;
 import org.apache.log4j.Logger;
 import org.archid.civ4.info.InfosFactory.EInfos;
 import org.archid.civ4.info.building.BuildingExporter;
+import org.archid.civ4.info.buildingclass.BuildingClassExporter;
 import org.archid.civ4.info.era.EraExporter;
 import org.archid.civ4.info.tech.TechExporter;
 import org.archid.civ4.info.unit.UnitExporter;
@@ -17,6 +18,9 @@ public class ExporterFactory {
 		switch (infoType) {
 		case BUILDING_INFOS:
 			exporter = new BuildingExporter(infoType);
+			break;
+		case BUILDING_CLASS_INFOS:
+			exporter = new BuildingClassExporter(infoType);
 			break;
 		case ERA_INFOS:
 			exporter = new EraExporter(infoType);

@@ -1,7 +1,10 @@
 package org.archid.civ4.info;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
@@ -48,8 +51,6 @@ public abstract class AbstractExporter<T extends IInfos<S>, S extends IInfo> imp
 		this.infoEnum= infoEnum;
 		log.info("Parsing file: " + props.getAppProperty(PropertyKeys.PROPERTY_KEY_FILE_INFOS));
 		this.infos = InfosFactory.readInfos(infoEnum, props.getAppProperty(PropertyKeys.PROPERTY_KEY_FILE_INFOS));
-		wb = new XSSFWorkbook();
-		preCreateCellStyles();
 	}
 
 	/* (non-Javadoc)
@@ -58,9 +59,16 @@ public abstract class AbstractExporter<T extends IInfos<S>, S extends IInfo> imp
 	@Override
 	public void createXLSX() {
 		try {
-			
-			createSheets();
 			String outputFile = getOutputFile();
+			if(new File(outputFile).isFile()) {
+				InputStream input = new FileInputStream(outputFile);
+				wb = new XSSFWorkbook(input);
+				input.close();
+			} else {
+				wb = new XSSFWorkbook();
+			}
+			preCreateCellStyles();
+			createSheets();
 			OutputStream output =  new FileOutputStream(outputFile);
 			log.info("Exporting data to " + outputFile);
 			wb.write(output);
@@ -167,7 +175,7 @@ public abstract class AbstractExporter<T extends IInfos<S>, S extends IInfo> imp
 		
 	}
 
-	protected <U, V> int addMapCell(Cell cell, Map<U, List<V>> map, int maxHeight) {
+	protected <U, V> int addMapListCell(Cell cell, Map<U, List<V>> map, int maxHeight) {
 		
 		int currHeight = 0;
 		
