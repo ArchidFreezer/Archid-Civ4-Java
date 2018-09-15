@@ -61,14 +61,15 @@ public abstract class AbstractImporter<T extends IInfos<S>, S extends IInfo> imp
 	public void importXLSX() {
 		
 		// Read the xlsx file to create the list of tech infos to update
-		parseXlsx(getWorkbook());
-		try {
-			String outputFile = Civ4FileUtils.prepareOutputFile(props.getAppProperty(PropertyKeys.PROPERTY_KEY_FILE_INFOS));
-			log.info("Importing to " + outputFile);
-			InfosFactory.writeInfos(infoEnum, outputFile, infos);
-			if (formatter != null) formatter.format(outputFile);
-		} catch (IOException e) {
-			log.error("Error backing up infos file ... aborting", e);
+		if (parseXlsx(getWorkbook())) {
+			try {
+				String outputFile = Civ4FileUtils.prepareOutputFile(props.getAppProperty(PropertyKeys.PROPERTY_KEY_FILE_INFOS));
+				log.info("Importing to " + outputFile);
+				InfosFactory.writeInfos(infoEnum, outputFile, infos);
+				if (formatter != null) formatter.format(outputFile);
+			} catch (IOException e) {
+				log.error("Error backing up infos file ... aborting", e);
+			}
 		}
 	}
 	
@@ -208,11 +209,17 @@ public abstract class AbstractImporter<T extends IInfos<S>, S extends IInfo> imp
 	 * Main function to read the {@link Workbook} and extract the info data from the tab containing the list of infos.
 	 * 
 	 * @param wb {@link Workbook} containing the info data
+	 * @return {@code true} if the workbook could be parsed and the sheet exists; otherwise {@code false}
 	 */
-	protected void parseXlsx(Workbook wb) {
+	protected boolean parseXlsx(Workbook wb) {
 
 		// Open the spreadsheet and get the list of infos
 		Sheet sheet = wb.getSheet(getListSheetName());
+		if (sheet == null) {
+			log.warn("Sheet " + getListSheetName() + " does not exist in the workbook");
+			return false;
+		}
+		
 		Iterator<Row> itRow = sheet.rowIterator();
 		while (itRow.hasNext()) {
 			Row row = itRow.next();
@@ -226,6 +233,7 @@ public abstract class AbstractImporter<T extends IInfos<S>, S extends IInfo> imp
 				infos.addInfo(info);
 			}
 		}
+		return true;
 	}
 	
 	/**

@@ -105,6 +105,8 @@ public class InfoUtils {
 				path = Paths.get(pathVal);
 				if (!Files.exists(path))
 					throw new ParseException("Path contained in 'f' argument does not exist");
+				else if (!Files.isDirectory(path) && infoType == null)
+					throw new ParseException("Path contained in 'f' argument must be a folder when processing all types");
 				else if (Files.isDirectory(path) && infoType != null)
 					// If this is a folder then append the OOB filename for the info type
 					pathVal = Paths.get(pathVal, infoType.toString()).toString();
@@ -120,8 +122,6 @@ public class InfoUtils {
 				} else {
 					// We are trying to process all known files so we need to walk through the files structure looking for 
 					// xml files that we know how to process
-					if (!Files.isDirectory(path))
-						throw new ParseException("Path contained in 'f' argument must be a folder when processing all types");
 					KnownInfosVisitor visitor = new KnownInfosVisitor();
 					Files.walkFileTree(path, visitor);
 					Map<EInfo, Path> infos = visitor.getInfos();
@@ -132,9 +132,18 @@ public class InfoUtils {
 						exporter.createXLSX();
 					}
 				}
-			}	else if (cmd.hasOption("i") && infoType != null) {
+			}	else if (cmd.hasOption("i")) {
 				if (cmd.hasOption("x")) {
-					ImporterFactory.getImporter(infoType).importXLSX();
+					if (infoType != null) {
+						ImporterFactory.getImporter(infoType).importXLSX();
+					} else {
+						for (EInfo info: EInfo.values()) {
+							if (info != EInfo.UNKNOWN) {
+								props.setAppProperty(PropertyKeys.PROPERTY_KEY_FILE_INFOS, Paths.get(path.toString(), info.toString()).toString());
+								ImporterFactory.getImporter(info).importXLSX();
+							}
+						}
+					}
 				} else {
 					throw new ParseException("xlsx file to process not provided");
 				}

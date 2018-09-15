@@ -31,10 +31,15 @@ public class TechImporter extends AbstractImporter<IInfos<ITechInfo>, ITechInfo>
 	 * 
 	 * @param wb {@link Workbook} containing the tech tree and list sheets
 	 */
-	protected void parseXlsx(Workbook wb) {
+	protected boolean parseXlsx(Workbook wb) {
 		
 		// Get the iGridX and iGridY values from the tech tree
 		Sheet sheet = wb.getSheet(ITechWorkbook.SHEETNAME_TREE);
+		if (sheet == null) {
+			log.warn("Sheet " + ITechWorkbook.SHEETNAME_TREE + " does not exist in the workbook");
+			return false;
+		}
+		
 		Iterator<Row> itRow = sheet.rowIterator();
 		while (itRow.hasNext()) {
 			Row row = itRow.next();
@@ -56,6 +61,11 @@ public class TechImporter extends AbstractImporter<IInfos<ITechInfo>, ITechInfo>
 
 		// Get the rest of the values from the tech tree
 		sheet = wb.getSheet(getListSheetName());
+		if (sheet == null) {
+			log.warn("Sheet " + getListSheetName() + " does not exist in the workbook");
+			return false;
+		}
+		
 		itRow = sheet.rowIterator();
 		while (itRow.hasNext()) {
 			Row row = itRow.next();
@@ -141,6 +151,8 @@ public class TechImporter extends AbstractImporter<IInfos<ITechInfo>, ITechInfo>
 			parseCell(row.getCell(colNum++), String.class, info::setSoundMP);
 			parseCell(row.getCell(colNum++), String.class, info::setButton);
 		}
+		
+		return true;
 	}
 	
 	private Integer getGridXFromCell(Cell cell) {
