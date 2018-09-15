@@ -4,15 +4,15 @@ import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import org.archid.civ4.info.AbstractImporter;
 import org.archid.civ4.info.DefaultXmlFormatter;
+import org.archid.civ4.info.EInfo;
 import org.archid.civ4.info.IInfos;
-import org.archid.civ4.info.InfosFactory.EInfos;
 
 public class BuildingImporter extends AbstractImporter<IInfos<IBuildingInfo>, IBuildingInfo> {
 
 	/** Logging facility */
 	static Logger log = Logger.getLogger(BuildingImporter.class.getName());
 	
-	public BuildingImporter(EInfos infoEnum) {
+	public BuildingImporter(EInfo infoEnum) {
 		super(infoEnum, new DefaultXmlFormatter());
 	}
 

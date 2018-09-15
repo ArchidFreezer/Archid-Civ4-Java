@@ -6,8 +6,8 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import org.archid.civ4.info.AbstractExporter;
+import org.archid.civ4.info.EInfo;
 import org.archid.civ4.info.IInfos;
-import org.archid.civ4.info.InfosFactory.EInfos;
 import org.archid.civ4.info.building.IBuildingWorkbook.SheetHeaders;
 
 public class BuildingExporter extends AbstractExporter<IInfos<IBuildingInfo>, IBuildingInfo>{
@@ -15,7 +15,7 @@ public class BuildingExporter extends AbstractExporter<IInfos<IBuildingInfo>, IB
 	/** Logging facility */
 	static Logger log = Logger.getLogger(BuildingExporter.class.getName());
 	
-	public BuildingExporter(EInfos infoEnum) {
+	public BuildingExporter(EInfo infoEnum) {
 		super(infoEnum);
 	}
 

@@ -14,8 +14,8 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.archid.civ4.info.AbstractExporter;
+import org.archid.civ4.info.EInfo;
 import org.archid.civ4.info.IInfos;
-import org.archid.civ4.info.InfosFactory.EInfos;
 import org.archid.civ4.info.tech.ITechWorkbook.SheetHeaders;
 
 public class TechExporter extends AbstractExporter<IInfos<ITechInfo>, ITechInfo> {
@@ -25,7 +25,7 @@ public class TechExporter extends AbstractExporter<IInfos<ITechInfo>, ITechInfo>
 	
 	private Map<Integer, CellStyle> backgrounds;
 	
-	public TechExporter(EInfos infoEnum) {
+	public TechExporter(EInfo infoEnum) {
 		super(infoEnum);
 	}
 

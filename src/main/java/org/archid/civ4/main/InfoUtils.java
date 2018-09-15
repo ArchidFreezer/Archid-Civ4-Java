@@ -1,8 +1,14 @@
 package org.archid.civ4.main;
 
+import java.io.IOException;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -14,10 +20,10 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.archid.civ4.info.EInfo;
 import org.archid.civ4.info.ExporterFactory;
+import org.archid.civ4.info.IExporter;
 import org.archid.civ4.info.ImporterFactory;
-import org.archid.civ4.info.InfosFactory;
-import org.archid.civ4.info.InfosFactory.EInfos;
 import org.archid.utils.IPropertyHandler;
 import org.archid.utils.PropertyHandler;
 import org.archid.utils.PropertyKeys;
@@ -58,17 +64,17 @@ public class InfoUtils {
 		actions.addOption(Option.builder("h").longOpt("help").hasArg(false).desc("Display this usage message").build());
 		options.addOptionGroup(actions);
 
-		options.addOption(Option.builder("f").longOpt("file").required().hasArg(true).argName("XML").desc("Path to Civ4xxxInfos.xml file to process. Filename must be provided if it is non standard").build());
+		options.addOption(Option.builder("f").longOpt("file").required().hasArg(true).argName("XML").desc("Path to Civ4xxxInfos.xml file to process or folder containing files for All option. Filename must be provided if it is non standard").build());
 		options.addOption(Option.builder("o").longOpt("output").hasArg(true).argName("Output Dir").desc("Directory to create output files").build());
 		options.addOption(Option.builder("p").longOpt("prefix").hasArg(true).argName("Prefix").desc("Prefix to new output file").build());
-		options.addOption(Option.builder("t").longOpt("type").required().hasArg(true).argName("Info Type").desc("Valid values are: Era, Tech & Unit").build());
+		options.addOption(Option.builder("t").longOpt("type").required().hasArg(true).argName("Info Type").desc("Type of info to process, such as Tech, Era; can be All to process all known files").build());
 		options.addOption(Option.builder("x").longOpt("xlsx").hasArg(true).argName("XLSX").desc("XLSX file to use, required for import action").build());
 	}
 
 	private void parse() {		
 		CommandLineParser parser = new DefaultParser();
 		try {
-			EInfos infoType = null;
+			EInfo infoType = null;
 			cmd = parser.parse(options, args);
 			
 			if (cmd.hasOption("o"))
@@ -78,35 +84,54 @@ public class InfoUtils {
 			if (cmd.hasOption("p"))
 				props.setAppProperty(PropertyKeys.PROPERTY_KEY_FILE_PREFIX, cmd.getOptionValue("p"));
 			if (cmd.hasOption("t")) {
-				if (cmd.getOptionValue("t").equalsIgnoreCase("building"))
-					infoType = EInfos.BUILDING_INFOS;
+				if (cmd.getOptionValue("t").equalsIgnoreCase("all"))
+					infoType = null;
+				else if (cmd.getOptionValue("t").equalsIgnoreCase("building"))
+					infoType = EInfo.BUILDING;
 				else if (cmd.getOptionValue("t").equalsIgnoreCase("buildingclass"))
-					infoType = EInfos.BUILDING_CLASS_INFOS;
+					infoType = EInfo.BUILDING_CLASS;
 				else if (cmd.getOptionValue("t").equalsIgnoreCase("era"))
-					infoType = EInfos.ERA_INFOS;
+					infoType = EInfo.ERA;
 				else if (cmd.getOptionValue("t").equalsIgnoreCase("tech"))
-					infoType = EInfos.TECH_INFOS;
+					infoType = EInfo.TECH;
 				else if (cmd.getOptionValue("t").equalsIgnoreCase("unit"))
-					infoType = EInfos.UNIT_INFOS;
+					infoType = EInfo.UNIT;
 				else
-					log.error("Processing of type " + cmd.getOptionValue("t") + " is not implemented yet");	
+					throw new ParseException("Processing of type " + cmd.getOptionValue("t") + " is not implemented yet");
 			}
+			Path path = null;
 			if (cmd.hasOption("f")) {
-				// If this is a folder then append the OOB filename for the info type
 				String pathVal = cmd.getOptionValue("f");
-				Path file = Paths.get(pathVal);
-				if (!Files.exists(file))
+				path = Paths.get(pathVal);
+				if (!Files.exists(path))
 					throw new ParseException("Path contained in 'f' argument does not exist");
-				else if (Files.isDirectory(file))
-					pathVal = Paths.get(pathVal, InfosFactory.getDefaultInfoFilename(infoType)).toString();
+				else if (Files.isDirectory(path) && infoType != null)
+					// If this is a folder then append the OOB filename for the info type
+					pathVal = Paths.get(pathVal, infoType.toString()).toString();
 				props.setAppProperty(PropertyKeys.PROPERTY_KEY_FILE_INFOS, pathVal);
 			}
 			if (cmd.hasOption("x")) {
 				props.setAppProperty(PropertyKeys.PROPERTY_KEY_FILE_XSLX, cmd.getOptionValue("x"));
 			}
 
-			if (cmd.hasOption("e") && infoType != null) {
-				ExporterFactory.getExporter(infoType).createXLSX();
+			if (cmd.hasOption("e")) {
+				if (infoType != null) {
+					ExporterFactory.getExporter(infoType).createXLSX();
+				} else {
+					// We are trying to process all known files so we need to walk through the files structure looking for 
+					// xml files that we know how to process
+					if (!Files.isDirectory(path))
+						throw new ParseException("Path contained in 'f' argument must be a folder when processing all types");
+					KnownInfosVisitor visitor = new KnownInfosVisitor();
+					Files.walkFileTree(path, visitor);
+					Map<EInfo, Path> infos = visitor.getInfos();
+					for (EInfo info: infos.keySet()) {
+						props.setAppProperty(PropertyKeys.PROPERTY_KEY_FILE_INFOS, infos.get(info).toString());
+						IExporter exporter = ExporterFactory.getExporter(info);
+						exporter.setBackup(false);
+						exporter.createXLSX();
+					}
+				}
 			}	else if (cmd.hasOption("i") && infoType != null) {
 				if (cmd.hasOption("x")) {
 					ImporterFactory.getImporter(infoType).importXLSX();
@@ -119,7 +144,7 @@ public class InfoUtils {
 				printHelp();
 			}
 			
-		} catch (ParseException e) {
+		} catch (ParseException | IOException e) {
 			log.error(e.getMessage() + System.lineSeparator());
 			printHelp();
 		}
@@ -128,6 +153,23 @@ public class InfoUtils {
 	private void printHelp() {
 		HelpFormatter formatter = new HelpFormatter();
 		formatter.printHelp(120, "UpdateTechs", "", options, "", true);		
+	}
+	
+	private class KnownInfosVisitor extends SimpleFileVisitor<Path> {
+		private Map<EInfo, Path> infos = new HashMap<EInfo, Path>();
+		
+		@Override
+		public FileVisitResult visitFile(Path file, BasicFileAttributes attr) {
+			EInfo info = EInfo.fromFile(file.getFileName().toString());
+			if (info != EInfo.UNKNOWN) {
+				infos.put(info, file);
+			}
+			return FileVisitResult.CONTINUE;
+		}
+		
+		public Map<EInfo, Path> getInfos() {
+			return infos;
+		}
 	}
 
 }

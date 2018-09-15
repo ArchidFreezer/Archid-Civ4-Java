@@ -20,15 +20,15 @@ public class Civ4FileUtils {
 	private static String getOutputFile(String srcName, String ext) {
 		String prefix = props.hasProperty(PropertyKeys.PROPERTY_KEY_FILE_PREFIX) ? props.getAppProperty(PropertyKeys.PROPERTY_KEY_FILE_PREFIX) : "";
 		String fileName = FilenameUtils.getBaseName(srcName);
-		return getOutputDir() + prefix + fileName + "." + ext;
+		return getOutputDir(srcName) + prefix + fileName + "." + ext;
 	}
 	
-	public static String getOutputDir() {
+	public static String getOutputDir(String srcName) {
 		String outputDir = "";
 		if (props.hasProperty(PropertyKeys.PROPERTY_KEY_OUTPUT_DIR)) {
 			outputDir = FilenameUtils.normalizeNoEndSeparator(props.getAppProperty(PropertyKeys.PROPERTY_KEY_OUTPUT_DIR)) + File.separator;
 		} else {
-			outputDir = FilenameUtils.getFullPath(props.getAppProperty(PropertyKeys.PROPERTY_KEY_FILE_INFOS));
+			outputDir = FilenameUtils.getFullPath(srcName);
 		}
 		return outputDir;
 	}
@@ -38,9 +38,13 @@ public class Civ4FileUtils {
 	}
 	
 	public static String prepareOutputFile(String srcName, String ext) throws IOException {
+		return prepareOutputFile(srcName, FilenameUtils.getExtension(srcName), true);
+	}
+	
+	public static String prepareOutputFile(String srcName, String ext, boolean backup) throws IOException {
 		String outputFile = Civ4FileUtils.getOutputFile(srcName, ext);
-		if (!FileUtils.ensureDirExists(Civ4FileUtils.getOutputDir()))	throw new IOException("Output directory " + Civ4FileUtils.getOutputDir() + " does not exist and cannot be created");
-		FileUtils.backupFile(outputFile);
+		if (!FileUtils.ensureDirExists(Civ4FileUtils.getOutputDir(srcName)))	throw new IOException("Output directory " + Civ4FileUtils.getOutputDir(srcName) + " does not exist and cannot be created");
+		if (backup) FileUtils.backupFile(outputFile);
 		return outputFile;
 	}
 	

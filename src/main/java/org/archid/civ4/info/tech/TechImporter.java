@@ -9,16 +9,16 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.archid.civ4.info.AbstractImporter;
 import org.archid.civ4.info.DefaultXmlFormatter;
+import org.archid.civ4.info.EInfo;
 import org.archid.civ4.info.IImporter;
 import org.archid.civ4.info.IInfos;
-import org.archid.civ4.info.InfosFactory.EInfos;
 
 public class TechImporter extends AbstractImporter<IInfos<ITechInfo>, ITechInfo> implements IImporter {
 
 	/** Logging facility */
 	static Logger log = Logger.getLogger(TechImporter.class.getName());
 	
-	public TechImporter(EInfos infoEnum) {
+	public TechImporter(EInfo infoEnum) {
 		super(infoEnum, new DefaultXmlFormatter());
 	}
 

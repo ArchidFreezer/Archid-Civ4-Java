@@ -1,7 +1,6 @@
 package org.archid.civ4.info;
 
 import org.apache.log4j.Logger;
-import org.archid.civ4.info.InfosFactory.EInfos;
 import org.archid.civ4.info.building.BuildingImporter;
 import org.archid.civ4.info.buildingclass.BuildingClassImporter;
 import org.archid.civ4.info.era.EraImporter;
@@ -13,22 +12,22 @@ public class ImporterFactory {
 	/** Logging facility */
 	static Logger log = Logger.getLogger(ImporterFactory.class.getName());
 	
-	public static IImporter getImporter(EInfos infoType) {
+	public static IImporter getImporter(EInfo infoType) {
 		IImporter importer = null;
 		switch (infoType) {
-		case BUILDING_INFOS:
+		case BUILDING:
 			importer = new BuildingImporter(infoType);
 			break;
-		case BUILDING_CLASS_INFOS:
+		case BUILDING_CLASS:
 			importer = new BuildingClassImporter(infoType);
 			break;
-		case ERA_INFOS:
+		case ERA:
 			importer = new EraImporter(infoType);
 			break;
-		case TECH_INFOS:
+		case TECH:
 			importer = new TechImporter(infoType);
 			break;
-		case UNIT_INFOS:
+		case UNIT:
 			importer = new UnitImporter(infoType);
 			break;
 		default:

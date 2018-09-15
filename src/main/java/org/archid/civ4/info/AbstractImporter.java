@@ -15,7 +15,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.archid.civ4.info.InfosFactory.EInfos;
 import org.archid.utils.IPair;
 import org.archid.utils.IPropertyHandler;
 import org.archid.utils.Pair;
@@ -39,7 +38,7 @@ public abstract class AbstractImporter<T extends IInfos<S>, S extends IInfo> imp
 	
 	protected static IPropertyHandler props = PropertyHandler.getInstance();
 	protected T infos;
-	protected EInfos infoEnum;
+	protected EInfo infoEnum;
 	protected IXmlFormatter formatter;
 	
 	/**
@@ -47,9 +46,9 @@ public abstract class AbstractImporter<T extends IInfos<S>, S extends IInfo> imp
 	 * 
 	 * Takes a parameter that defined the type of info being processed and loads the associated list of infos
 	 * 
-	 * @param infoEnum {@link EInfos} enumeration value defining the type of info being imported
+	 * @param infoEnum {@link EInfo} enumeration value defining the type of info being imported
 	 */
-	public AbstractImporter(EInfos infoEnum, IXmlFormatter formatter) {
+	public AbstractImporter(EInfo infoEnum, IXmlFormatter formatter) {
 		this.infoEnum= infoEnum;
 		this.infos = InfosFactory.getInfos(infoEnum);
 		this.formatter = formatter;

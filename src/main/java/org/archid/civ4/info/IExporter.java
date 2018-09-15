@@ -8,4 +8,6 @@ public interface IExporter {
 	
 	List<String> getHeaders();
 
+	void setBackup(boolean backup);
+	
 }

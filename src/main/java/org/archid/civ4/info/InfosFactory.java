@@ -1,8 +1,6 @@
 package org.archid.civ4.info;
 
 import java.io.File;
-import java.util.EnumMap;
-import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -15,47 +13,29 @@ import org.archid.civ4.info.buildingclass.BuildingClassInfos;
 import org.archid.civ4.info.era.EraInfos;
 import org.archid.civ4.info.tech.TechInfos;
 import org.archid.civ4.info.unit.UnitInfos;
-import org.archid.utils.StringUtils;
 
 public class InfosFactory {
 	
 	/** Logging facility */
 	static Logger log = Logger.getLogger(InfosFactory.class.getName());
 	
-	public static enum EInfos { BUILDING_INFOS, BUILDING_CLASS_INFOS, ERA_INFOS, TECH_INFOS, UNIT_INFOS	}
-	
-	private static Map<EInfos, String> infoNames;
-	static {
-		infoNames = new EnumMap<EInfos, String>(EInfos.class);
-		infoNames.put(EInfos.BUILDING_INFOS, "CIV4BuildingInfos.xml");
-		infoNames.put(EInfos.BUILDING_CLASS_INFOS, "CIV4BuildingClassInfos.xml");
-		infoNames.put(EInfos.ERA_INFOS, "CIV4EraInfos.xml");
-		infoNames.put(EInfos.TECH_INFOS, "CIV4TechInfos.xml");
-		infoNames.put(EInfos.UNIT_INFOS, "CIV4UnitInfos.xml");
-	}
-
-	
-	public static String getDefaultInfoFilename(EInfos info) {
-		return infoNames.get(info) != null ? infoNames.get(info) : "CIV4" + StringUtils.startCaseCompress(info.name(), '_') + ".xml";  
-	}
-	
 	@SuppressWarnings("unchecked")
-	public static <T extends IInfos<S>, S extends IInfo> T getInfos(EInfos infoType) {
+	public static <T extends IInfos<S>, S extends IInfo> T getInfos(EInfo infoType) {
 		T infos = null;
 		switch(infoType) {
-		case BUILDING_INFOS:
+		case BUILDING:
 			infos = (T) new BuildingInfos();
 			break;
-		case BUILDING_CLASS_INFOS:
+		case BUILDING_CLASS:
 			infos = (T) new BuildingClassInfos();
 			break;
-		case ERA_INFOS:
+		case ERA:
 			infos = (T) new EraInfos();
 			break;
-		case TECH_INFOS:
+		case TECH:
 			infos = (T) new TechInfos();
 			break;
-		case UNIT_INFOS:
+		case UNIT:
 			infos = (T) new UnitInfos();
 			break;
 		default:
@@ -65,22 +45,22 @@ public class InfosFactory {
 		return infos;
 	}
 
-	private static JAXBContext getContext(EInfos infoType) throws JAXBException {
+	private static JAXBContext getContext(EInfo infoType) throws JAXBException {
 		JAXBContext jaxbContext = null;
 		switch (infoType) {
-		case BUILDING_INFOS:
+		case BUILDING:
 			jaxbContext = JAXBContext.newInstance(BuildingInfos.class);
 			break;
-		case BUILDING_CLASS_INFOS:
+		case BUILDING_CLASS:
 			jaxbContext = JAXBContext.newInstance(BuildingClassInfos.class);
 			break;
-		case ERA_INFOS:
+		case ERA:
 			jaxbContext = JAXBContext.newInstance(EraInfos.class);
 			break;
-		case TECH_INFOS:
+		case TECH:
 			jaxbContext = JAXBContext.newInstance(TechInfos.class);
 			break;
-		case UNIT_INFOS:
+		case UNIT:
 			jaxbContext = JAXBContext.newInstance(UnitInfos.class);
 			break;
 		default:
@@ -91,7 +71,7 @@ public class InfosFactory {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static <T extends IInfos<S>, S extends IInfo> T readInfos(EInfos infoType, String xmlPath) {
+	public static <T extends IInfos<S>, S extends IInfo> T readInfos(EInfo infoType, String xmlPath) {
 
 		T infos = null;
 
@@ -111,7 +91,7 @@ public class InfosFactory {
 		return infos;
 	}
 	
-	public static <T extends IInfos<S>, S extends IInfo> void writeInfos(EInfos infoType, String xmlPath, T infos) {
+	public static <T extends IInfos<S>, S extends IInfo> void writeInfos(EInfo infoType, String xmlPath, T infos) {
 		try {
 			// Initialise the context
 			JAXBContext jaxbContext = getContext(infoType);

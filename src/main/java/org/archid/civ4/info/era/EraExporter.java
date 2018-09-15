@@ -6,8 +6,8 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import org.archid.civ4.info.AbstractExporter;
+import org.archid.civ4.info.EInfo;
 import org.archid.civ4.info.IInfos;
-import org.archid.civ4.info.InfosFactory.EInfos;
 import org.archid.civ4.info.era.IEraWorkbook.SheetHeaders;
 
 public class EraExporter extends AbstractExporter<IInfos<IEraInfo>, IEraInfo> {
@@ -15,7 +15,7 @@ public class EraExporter extends AbstractExporter<IInfos<IEraInfo>, IEraInfo> {
 	/** Logging facility */
 	static Logger log = Logger.getLogger(EraExporter.class.getName());
 	
-	public EraExporter(EInfos infoEnum) {
+	public EraExporter(EInfo infoEnum) {
 		super(infoEnum);
 	}
 

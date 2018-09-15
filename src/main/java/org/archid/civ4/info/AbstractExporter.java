@@ -25,7 +25,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.archid.civ4.info.InfosFactory.EInfos;
 import org.archid.utils.IPair;
 import org.archid.utils.IPropertyHandler;
 import org.archid.utils.PropertyHandler;
@@ -40,14 +39,16 @@ public abstract class AbstractExporter<T extends IInfos<S>, S extends IInfo> imp
 
 	protected IPropertyHandler props = PropertyHandler.getInstance();
 	protected T infos;
-	protected EInfos infoEnum;
+	protected EInfo infoEnum;
 	
 	protected Workbook wb = null;
 	protected CellStyle csWrap = null;
 	protected CellStyle csHeader = null;
 	
+	protected boolean backup = true;
 	
-	public AbstractExporter(EInfos infoEnum) {
+	
+	public AbstractExporter(EInfo infoEnum) {
 		this.infoEnum= infoEnum;
 		log.info("Parsing file: " + props.getAppProperty(PropertyKeys.PROPERTY_KEY_FILE_INFOS));
 		this.infos = InfosFactory.readInfos(infoEnum, props.getAppProperty(PropertyKeys.PROPERTY_KEY_FILE_INFOS));
@@ -242,7 +243,16 @@ public abstract class AbstractExporter<T extends IInfos<S>, S extends IInfo> imp
 
 	private String getOutputFile() throws IOException {
 		String outputFile = props.hasProperty(IPropertyHandler.APP_PROPERTY_FILE, PropertyKeys.PROPERTY_KEY_FILE_XSLX, IPropertyHandler.PropertyFileTypes.PROP_USER) ? props.getAppProperty(PropertyKeys.PROPERTY_KEY_FILE_XSLX) : props.getAppProperty(PropertyKeys.PROPERTY_KEY_FILE_INFOS);
-		return Civ4FileUtils.prepareOutputFile(outputFile, "xlsx");
+		if (props.hasProperty(IPropertyHandler.APP_PROPERTY_FILE, PropertyKeys.PROPERTY_KEY_FILE_XSLX, IPropertyHandler.PropertyFileTypes.PROP_USER)) {
+			outputFile = props.getAppProperty(PropertyKeys.PROPERTY_KEY_FILE_XSLX);
+		} else {
+			outputFile = props.getAppProperty(PropertyKeys.PROPERTY_KEY_FILE_INFOS);
+		}
+		return Civ4FileUtils.prepareOutputFile(outputFile, "xlsx", backup);
+	}
+
+	public void setBackup(boolean backup) {
+		this.backup = backup;
 	}
 	
 }
