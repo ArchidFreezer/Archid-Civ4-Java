@@ -8,11 +8,11 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.log4j.Logger;
-import org.archid.civ4.info.building.BuildingInfos;
-import org.archid.civ4.info.buildingclass.BuildingClassInfos;
-import org.archid.civ4.info.era.EraInfos;
-import org.archid.civ4.info.tech.TechInfos;
-import org.archid.civ4.info.unit.UnitInfos;
+import org.archid.civ4.info.archid.building.BuildingInfos;
+import org.archid.civ4.info.archid.buildingclass.BuildingClassInfos;
+import org.archid.civ4.info.archid.era.EraInfos;
+import org.archid.civ4.info.archid.tech.TechInfos;
+import org.archid.civ4.info.archid.unit.UnitInfos;
 
 public class InfosFactory {
 	

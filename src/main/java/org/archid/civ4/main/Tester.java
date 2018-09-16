@@ -18,11 +18,12 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.archid.civ4.info.IInfos;
-import org.archid.civ4.info.tech.ITechInfo;
-import org.archid.civ4.info.tech.TechInfos;
+import org.archid.civ4.info.archid.tech.ITechInfo;
+import org.archid.civ4.info.archid.tech.TechInfos;
 import org.archid.utils.Pair;
 import org.archid.utils.StringUtils;
 
+@SuppressWarnings({ "unchecked", "unused" })
 public class Tester {
 	
 	private JAXBContext jaxbContext;
@@ -50,7 +51,6 @@ public class Tester {
 		}
 	}
 	
-	@SuppressWarnings("unused")
 	private void buildTechs() throws JAXBException, XMLStreamException, FactoryConfigurationError {
 		
 		IInfos<ITechInfo> infos = new TechInfos();
@@ -87,7 +87,6 @@ public class Tester {
 		jaxbMarshaller.marshal(infos, System.out);
 	}
 
-	@SuppressWarnings({ "unchecked", "unused" })
 	private void readTechs() throws Exception {
 		File input = new File("E:/Projects/Civ4/tools/Java/Civ4TechInfos.xml");
 		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
@@ -109,7 +108,6 @@ public class Tester {
 		transformer.transform(new DOMSource(domResult.getNode()), new StreamResult(output));		
 	}
 	
-	@SuppressWarnings({ "unchecked", "unused" })
 	private void test2() throws Exception {
 		File input = new File("E:/Projects/Civ4/tools/Java/Civ4TechInfos.xml");
 		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
@@ -126,7 +124,6 @@ public class Tester {
 		jaxbMarshaller.marshal(infos, output);
 	}
 	
-	@SuppressWarnings({ "unused" })
 	private void test3() {
 		Map<String, Integer> map = new TreeMap<String, Integer>();
 		for (int x = 0; x < 21; x=x+2) {
@@ -140,7 +137,6 @@ public class Tester {
 		}
 	}
 
-	@SuppressWarnings({ "unused" })
 	private void test4() {
 		System.out.println(StringUtils.padValue(5, 3, '0'));
 	}
