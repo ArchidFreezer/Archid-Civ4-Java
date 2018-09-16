@@ -112,7 +112,7 @@ public class BuildingInfoXmlFormatter extends AbstractXmlFormatter {
 			groupCount++;
 		}
 		totalInfoCount += groupCount;
-		log.info("Wrote " + groupCount + " " + GROUP_STANDARD_LABEL + " buildings");
+		log.info("Processed " + groupCount + " " + GROUP_STANDARD_LABEL + " buildings");
 		
 		/*
 		 * Features
@@ -141,7 +141,7 @@ public class BuildingInfoXmlFormatter extends AbstractXmlFormatter {
 			groupCount++;
 		}
 		totalInfoCount += groupCount;
-		log.info("Wrote " + groupCount + " " + GROUP_AUTO_BUILD_LABEL + " buildings");
+		log.info("Processed " + groupCount + " " + GROUP_AUTO_BUILD_LABEL + " buildings");
 
 		/*
 		 * No construct
@@ -169,7 +169,7 @@ public class BuildingInfoXmlFormatter extends AbstractXmlFormatter {
 			groupCount++;
 		}
 		totalInfoCount += groupCount;
-		log.info("Wrote " + groupCount + " " + GROUP_NO_CONSTRUCT_LABEL + " buildings");
+		log.info("Processed " + groupCount + " " + GROUP_NO_CONSTRUCT_LABEL + " buildings");
 		log.info("Wrote " + totalInfoCount + " total buildings");
 		
 		// Output the file footer

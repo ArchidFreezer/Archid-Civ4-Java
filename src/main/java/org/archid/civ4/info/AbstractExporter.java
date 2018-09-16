@@ -103,6 +103,8 @@ public abstract class AbstractExporter<T extends IInfos<S>, S extends IInfo> imp
 			populateRow(sheet.createRow(rowNum++), info);
 		}
 		
+		log.info("Wrote " +  infos.getInfos().size() + " infos to " + getInfoListSheetName() + " sheet.");
+		
 		for (int i = 0; i < getNumCols(); i++) {
 			sheet.autoSizeColumn(i);
 		}
