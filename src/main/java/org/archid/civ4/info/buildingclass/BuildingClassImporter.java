@@ -13,7 +13,7 @@ public class BuildingClassImporter extends AbstractImporter<IInfos<IBuildingClas
 	static Logger log = Logger.getLogger(BuildingClassImporter.class.getName());
 	
 	public BuildingClassImporter(EInfo infoEnum) {
-		super(infoEnum, new DefaultXmlFormatter());
+		super(infoEnum, new DefaultXmlFormatter("BuildingClass"));
 	}
 
 	@Override

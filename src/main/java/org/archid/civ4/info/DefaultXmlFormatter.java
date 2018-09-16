@@ -19,14 +19,16 @@ public class DefaultXmlFormatter extends AbstractXmlFormatter {
 	/** Logging facility */
 	static Logger log = Logger.getLogger(DefaultXmlFormatter.class.getName());
 	
+	private String label;
 	private boolean sorted;
 	
-	public DefaultXmlFormatter() {
-		this(true);
+	public DefaultXmlFormatter(String label) {
+		this(label, true);
 	}
 
-	public DefaultXmlFormatter(boolean sorted) {
+	public DefaultXmlFormatter(String label, boolean sorted) {
 		this.sorted = sorted;
+		this.label = label;
 	}
 
 	/**
@@ -41,8 +43,10 @@ public class DefaultXmlFormatter extends AbstractXmlFormatter {
 		infoList.setSorted(sorted);
 		infoList.parse();
 		List<IXmlInfo> infos = infoList.getTypeIndex();
+		int infoCount = 0;
 		for (IXmlInfo info: infos) {
 			info.setStartTag(buildStarttag(info));
+			infoCount++;
 		}
 
 		File xmlFile = new File(path);
@@ -50,6 +54,7 @@ public class DefaultXmlFormatter extends AbstractXmlFormatter {
 			
 			BufferedWriter writer = new BufferedWriter(new FileWriter(xmlFile));
 			writer.write(infoList.toString());
+			log.info("Wrote " + infoCount + " " + label + " infos");
 			writer.close();
 			
 		} catch (IOException e) {

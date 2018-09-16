@@ -19,7 +19,7 @@ public class TechImporter extends AbstractImporter<IInfos<ITechInfo>, ITechInfo>
 	static Logger log = Logger.getLogger(TechImporter.class.getName());
 	
 	public TechImporter(EInfo infoEnum) {
-		super(infoEnum, new DefaultXmlFormatter());
+		super(infoEnum, new DefaultXmlFormatter("Tech"));
 	}
 
 

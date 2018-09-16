@@ -14,7 +14,7 @@ public class EraImporter extends AbstractImporter<IInfos<IEraInfo>, IEraInfo> im
 	static Logger log = Logger.getLogger(EraImporter.class.getName());
 	
 	public EraImporter(EInfo infoEnum) {
-		super(infoEnum, new DefaultXmlFormatter(false));
+		super(infoEnum, new DefaultXmlFormatter("Era", false));
 	}
 
 	@Override

@@ -80,7 +80,7 @@ public abstract class AbstractImporter<T extends IInfos<S>, S extends IInfo> imp
 	 */
 	private Workbook getWorkbook() {
 		String filepath = props.getAppProperty(PropertyKeys.PROPERTY_KEY_FILE_XSLX);
-		log.info("Reading workbook: " + filepath);
+		log.info("Importing " + StringUtils.startCaseCompress(infoEnum.name(), '_') + "Infos - Reading workbook: " + filepath);
 		Workbook wb = null;
 		try {
 			wb = new XSSFWorkbook(filepath);

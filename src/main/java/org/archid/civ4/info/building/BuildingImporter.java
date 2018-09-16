@@ -3,7 +3,6 @@ package org.archid.civ4.info.building;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import org.archid.civ4.info.AbstractImporter;
-import org.archid.civ4.info.DefaultXmlFormatter;
 import org.archid.civ4.info.EInfo;
 import org.archid.civ4.info.IInfos;
 
@@ -13,7 +12,7 @@ public class BuildingImporter extends AbstractImporter<IInfos<IBuildingInfo>, IB
 	static Logger log = Logger.getLogger(BuildingImporter.class.getName());
 	
 	public BuildingImporter(EInfo infoEnum) {
-		super(infoEnum, new DefaultXmlFormatter());
+		super(infoEnum, new BuildingInfoXmlFormatter());
 	}
 
 	@Override

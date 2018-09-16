@@ -84,6 +84,8 @@ public class UnitInfoXmlFormatter extends AbstractXmlFormatter {
 		// The units are processed by domain first, with air units being first and then naval and finally land
 		// There is an immobile domain, but that is treated with the land units
 		Map<String, Set<IXmlInfo>> domainMap = infoList.getIndexMap(TAG_DOMAIN);
+		// Record the total number of units processed
+		int totalInfoCount = 0;
 		
 		/*
 		 * Air Units
@@ -109,9 +111,13 @@ public class UnitInfoXmlFormatter extends AbstractXmlFormatter {
 			info.setStartTag(info.getStartTag() + ' ' + typeHeader.replaceAll("xxxTYPExxx", unitType));
 			sortedAirInfos.put(info.getStartTag(), info);
 		}
+		int groupCount = 0;
 		for (IXmlInfo info: sortedAirInfos.values()) {
 			groupSB.append(info.getXml());
+			groupCount++;
 		}
+		totalInfoCount += groupCount;
+		log.info("Wrote " + groupCount + " " + GROUP_AIR + " units");
 		groupXmls.put(GROUP_AIR, groupSB);
 		
 		/*
@@ -179,13 +185,18 @@ public class UnitInfoXmlFormatter extends AbstractXmlFormatter {
 			averages.put(str * 1.0 / count, combatType);
 		}
 		// Loop through the combat types, finally outputting the info data
+		groupCount = 0;
 		for (String combatType: averages.values()) {
 			groupSB.append(typeHeader.replaceAll("xxxTYPExxx", getCommentText(combatType)) + newline);
 			for (String unitClass: navalCombats.get(combatType).values()) {
-				for (IXmlInfo info: unitClassTypes.get(unitClass).values())
+				for (IXmlInfo info: unitClassTypes.get(unitClass).values()) {
 					groupSB.append(info.getXml());
+					groupCount++;
+				}
 			}
 		}
+		totalInfoCount += groupCount;
+		log.info("Wrote " + groupCount + " " + GROUP_NAVAL_LABEL + " units");
 		groupXmls.put(GROUP_NAVAL_LABEL, groupSB);
 
 
@@ -252,17 +263,26 @@ public class UnitInfoXmlFormatter extends AbstractXmlFormatter {
 				classUnitLists.get(unitClass).put(info.getStartTag(), info);
 			}
 			// Loop through the unit classes in the group outputting them in strength order
+			groupCount =0;
 			for (Set<String> unitClasses: classOrders.values()) {
 				for (String unitClass: unitClasses) {
 					for (IXmlInfo info: classUnitLists.get(unitClass).values()) {
 						groupSB.append(info.getXml());
+						groupCount++;
 					}
 				}
 			}
+			totalInfoCount += groupCount;
+			// We only process unit types that have not been processed previously so
+			//  there will be some combat classes that have no units in this group
+			if (groupCount > 0)
+				log.info("Wrote " + groupCount + " " + getCommentText(group) + " units");
+			
 			if (headerPrinted)
 				groupXmls.put(getCommentText(group), groupSB);
 		}
 		
+		log.info("Wrote " + totalInfoCount + " total units");
 		for (StringBuilder sb: groupXmls.values()) {
 			out.append(sb.toString());
 		}
