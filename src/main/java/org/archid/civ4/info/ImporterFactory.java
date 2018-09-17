@@ -1,11 +1,11 @@
 package org.archid.civ4.info;
 
 import org.apache.log4j.Logger;
-import org.archid.civ4.info.archid.building.BuildingImporter;
-import org.archid.civ4.info.archid.buildingclass.BuildingClassImporter;
-import org.archid.civ4.info.archid.era.EraImporter;
-import org.archid.civ4.info.archid.tech.TechImporter;
-import org.archid.civ4.info.archid.unit.UnitImporter;
+import org.archid.civ4.info.building.BuildingImporter;
+import org.archid.civ4.info.buildingclass.BuildingClassImporter;
+import org.archid.civ4.info.era.EraImporter;
+import org.archid.civ4.info.tech.TechImporter;
+import org.archid.civ4.info.unit.UnitImporter;
 
 public class ImporterFactory {
 

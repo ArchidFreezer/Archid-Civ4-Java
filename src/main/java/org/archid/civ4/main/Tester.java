@@ -18,8 +18,8 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.archid.civ4.info.IInfos;
-import org.archid.civ4.info.archid.tech.ITechInfo;
-import org.archid.civ4.info.archid.tech.TechInfos;
+import org.archid.civ4.info.tech.ITechInfo;
+import org.archid.civ4.info.tech.TechInfos;
 import org.archid.utils.Pair;
 import org.archid.utils.StringUtils;
 
