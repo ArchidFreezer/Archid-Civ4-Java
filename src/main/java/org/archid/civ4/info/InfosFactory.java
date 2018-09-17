@@ -9,6 +9,7 @@ import javax.xml.bind.Unmarshaller;
 
 import org.apache.log4j.Logger;
 import org.archid.civ4.info.bonus.BonusInfos;
+import org.archid.civ4.info.bonusclass.BonusClassInfos;
 import org.archid.civ4.info.building.BuildingInfos;
 import org.archid.civ4.info.buildingclass.BuildingClassInfos;
 import org.archid.civ4.info.era.EraInfos;
@@ -26,6 +27,9 @@ public class InfosFactory {
 		switch(infoType) {
 		case BONUS:
 			infos = (T) new BonusInfos();
+			break;
+		case BONUS_CLASS:
+			infos = (T) new BonusClassInfos();
 			break;
 		case BUILDING:
 			infos = (T) new BuildingInfos();
@@ -54,6 +58,9 @@ public class InfosFactory {
 		switch (infoType) {
 		case BONUS:
 			jaxbContext = JAXBContext.newInstance(BonusInfos.class);
+			break;
+		case BONUS_CLASS:
+			jaxbContext = JAXBContext.newInstance(BonusClassInfos.class);
 			break;
 		case BUILDING:
 			jaxbContext = JAXBContext.newInstance(BuildingInfos.class);

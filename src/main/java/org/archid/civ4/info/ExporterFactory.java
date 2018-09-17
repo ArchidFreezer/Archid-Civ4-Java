@@ -2,6 +2,7 @@ package org.archid.civ4.info;
 
 import org.apache.log4j.Logger;
 import org.archid.civ4.info.bonus.BonusExporter;
+import org.archid.civ4.info.bonusclass.BonusClassExporter;
 import org.archid.civ4.info.building.BuildingExporter;
 import org.archid.civ4.info.buildingclass.BuildingClassExporter;
 import org.archid.civ4.info.era.EraExporter;
@@ -18,6 +19,9 @@ public class ExporterFactory {
 		switch (infoType) {
 		case BONUS:
 			exporter = new BonusExporter(infoType);
+			break;
+		case BONUS_CLASS:
+			exporter = new BonusClassExporter(infoType);
 			break;
 		case BUILDING:
 			exporter = new BuildingExporter(infoType);
