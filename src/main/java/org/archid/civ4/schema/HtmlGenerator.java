@@ -361,7 +361,7 @@ public class HtmlGenerator {
 	
 	public void createStylesheet() {
 		// Only create the stylesheet if it doesn't already exist
-		Path stylesheetPath = Paths.get(props.getAppProperty(PropertyKeys.PROPERTY_KEY_OUTPUT_DIR, "."), props.getAppProperty(PropertyKeys.PROPERTY_KEY_HTML_STYLESHEET)); 
+		Path stylesheetPath = Paths.get(props.getAppProperty(PropertyKeys.PROPERTY_KEY_HTML_OUTPUT_DIR, "."), props.getAppProperty(PropertyKeys.PROPERTY_KEY_HTML_STYLESHEET)); 
 		if (Files.exists(stylesheetPath))
 			return;
 		
@@ -395,7 +395,7 @@ public class HtmlGenerator {
 	
 	protected void writeFile(String fileName, String content) {
 		BufferedWriter out = null;
-		String filePath = props.getAppProperty(PropertyKeys.PROPERTY_KEY_OUTPUT_DIR, ".") + "\\" + fileName;
+		String filePath = props.getAppProperty(PropertyKeys.PROPERTY_KEY_HTML_OUTPUT_DIR, ".") + "\\" + fileName;
 		try {
 			out = new BufferedWriter(new FileWriter(filePath));
 			out.write(content);
