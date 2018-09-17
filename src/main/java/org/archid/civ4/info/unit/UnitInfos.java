@@ -28,13 +28,13 @@ public class UnitInfos extends AbstractInfos<IUnitInfo> {
 		return infos;
 	}
 	
+	public static IUnitInfo createInfo(String type) {
+		return new UnitInfo(type);
+	}
+	
 	@Override
 	public void setInfoMap(Map<String, IUnitInfo> infos) {
 		this.infos = infos;
-	}
-	
-	public static IUnitInfo createInfo(String type) {
-		return new UnitInfo(type);
 	}
 	
 	private static class UnitInfo implements IUnitInfo {

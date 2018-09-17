@@ -86,6 +86,8 @@ public class InfoUtils {
 			if (cmd.hasOption("t")) {
 				if (cmd.getOptionValue("t").equalsIgnoreCase("all"))
 					infoType = null;
+				else if (cmd.getOptionValue("t").equalsIgnoreCase("bonus"))
+					infoType = EInfo.BONUS;
 				else if (cmd.getOptionValue("t").equalsIgnoreCase("building"))
 					infoType = EInfo.BUILDING;
 				else if (cmd.getOptionValue("t").equalsIgnoreCase("buildingclass"))

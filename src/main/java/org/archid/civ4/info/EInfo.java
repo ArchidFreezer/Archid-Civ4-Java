@@ -1,6 +1,7 @@
 package org.archid.civ4.info;
 
 public enum EInfo {
+	BONUS("CIV4BonusInfos.xml"),
 	BUILDING("CIV4BuildingInfos.xml"), 
 	BUILDING_CLASS("CIV4BuildingClassInfos.xml"),
 	ERA("CIV4EraInfos.xml"),

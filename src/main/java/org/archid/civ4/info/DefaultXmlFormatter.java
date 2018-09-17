@@ -63,7 +63,7 @@ public class DefaultXmlFormatter extends AbstractXmlFormatter {
 	}
 
 	private String buildStarttag(IXmlInfo info) {
-		return info.getStartTag() +  " <!-- " + getCommentText(info.getType()) + " -->";
+		return info.getStartTag() +  " " + typeHeader.replaceAll("xxxTYPExxx", getCommentText(info.getType()));
 	}
 
 }

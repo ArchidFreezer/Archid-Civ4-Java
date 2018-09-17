@@ -6,6 +6,7 @@ package org.archid.civ4.info;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -52,4 +53,5 @@ public abstract class AbstractInfos<T extends IInfo> implements IInfos<T> {
 	public boolean containsInfo(String type) {
 		return infos.containsKey(type);
 	}
+	
 }

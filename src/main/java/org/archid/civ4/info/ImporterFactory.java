@@ -1,6 +1,7 @@
 package org.archid.civ4.info;
 
 import org.apache.log4j.Logger;
+import org.archid.civ4.info.bonus.BonusImporter;
 import org.archid.civ4.info.building.BuildingImporter;
 import org.archid.civ4.info.buildingclass.BuildingClassImporter;
 import org.archid.civ4.info.era.EraImporter;
@@ -15,6 +16,9 @@ public class ImporterFactory {
 	public static IImporter getImporter(EInfo infoType) {
 		IImporter importer = null;
 		switch (infoType) {
+		case BONUS:
+			importer = new BonusImporter(infoType);
+			break;
 		case BUILDING:
 			importer = new BuildingImporter(infoType);
 			break;

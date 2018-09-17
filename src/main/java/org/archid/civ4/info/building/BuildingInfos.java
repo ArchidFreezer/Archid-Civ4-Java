@@ -29,13 +29,13 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo>{
 		return infos;
 	}
 
+	public static IBuildingInfo createInfo(String type) {
+		return new BuildingInfo(type);
+	}
+	
 	@Override
 	public void setInfoMap(Map<String, IBuildingInfo> infos) {
 		this.infos = infos;
-	}
-
-	public static IBuildingInfo createInfo(String type) {
-		return new BuildingInfo(type);
 	}
 	
 	private static class BuildingInfo implements IBuildingInfo {

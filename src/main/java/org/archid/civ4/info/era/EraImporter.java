@@ -27,8 +27,8 @@ public class EraImporter extends AbstractImporter<IInfos<IEraInfo>, IEraInfo> im
 			return null;
 		
 		IEraInfo info = EraInfos.createInfo(type);
-		info.setDescription(row.getCell(colNum++).getStringCellValue());
-		info.setStrategy(row.getCell(colNum++).getStringCellValue());
+		parseCell(row.getCell(colNum++), String.class, info::setDescription);
+		parseCell(row.getCell(colNum++), String.class, info::setStrategy);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setNoGoodies);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setNoAnimals);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setNoBarbUnits);

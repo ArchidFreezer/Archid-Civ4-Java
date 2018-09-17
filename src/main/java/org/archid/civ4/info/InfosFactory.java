@@ -8,6 +8,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.log4j.Logger;
+import org.archid.civ4.info.bonus.BonusInfos;
 import org.archid.civ4.info.building.BuildingInfos;
 import org.archid.civ4.info.buildingclass.BuildingClassInfos;
 import org.archid.civ4.info.era.EraInfos;
@@ -23,6 +24,9 @@ public class InfosFactory {
 	public static <T extends IInfos<S>, S extends IInfo> T getInfos(EInfo infoType) {
 		T infos = null;
 		switch(infoType) {
+		case BONUS:
+			infos = (T) new BonusInfos();
+			break;
 		case BUILDING:
 			infos = (T) new BuildingInfos();
 			break;
@@ -48,6 +52,9 @@ public class InfosFactory {
 	private static JAXBContext getContext(EInfo infoType) throws JAXBException {
 		JAXBContext jaxbContext = null;
 		switch (infoType) {
+		case BONUS:
+			jaxbContext = JAXBContext.newInstance(BonusInfos.class);
+			break;
 		case BUILDING:
 			jaxbContext = JAXBContext.newInstance(BuildingInfos.class);
 			break;

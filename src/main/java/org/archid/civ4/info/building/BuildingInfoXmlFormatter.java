@@ -31,8 +31,6 @@ public class BuildingInfoXmlFormatter extends AbstractXmlFormatter {
 	private static final String TAG_BUILDING_CLASS = "BuildingClass";
 	private final List<String> groups = new ArrayList<String>(Arrays.asList(GROUP_AUTO_BUILD_TAG, GROUP_NO_CONSTRUCT_TAG));
 	private final List<String> stores = new ArrayList<String>(Arrays.asList(TAG_BUILDING_CLASS));
-	private String groupHeader = "<!-- ************	-->\n<!-- xxxGROUPxxx -->\n<!-- ************	-->\n";
-	private String typeHeader = "<!-- xxxTYPExxx -->";
 
 	private StringBuilder out;
 	

@@ -30,15 +30,15 @@ public class TechInfos extends AbstractInfos<ITechInfo> {
 		return infos;
 	}
 
+	public static ITechInfo createInfo(String type) {
+		return new TechInfo(type);
+	}
+
 	@Override
 	public void setInfoMap(Map<String, ITechInfo> infos) {
 		this.infos = infos;
 	}
 	
-	public static ITechInfo createInfo(String type) {
-		return new TechInfo(type);
-	}
-
 	private static class TechInfo implements ITechInfo {
 		private String type = "";
 		private String description = "";

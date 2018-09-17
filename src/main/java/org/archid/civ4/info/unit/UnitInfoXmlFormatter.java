@@ -56,8 +56,6 @@ public class UnitInfoXmlFormatter extends AbstractXmlFormatter {
 	private final List<String> groups = new  ArrayList<String>(Arrays.asList(TAG_COMBAT_TYPE, TAG_DOMAIN));
 	private final List<String> stores = new  ArrayList<String>(Arrays.asList(TAG_UNIT_CLASS, TAG_COMBAT, GROUP_SETTLER_TAG, GROUP_GP_TAG, GROUP_EXEC_TAG, GROUP_MISSIONARY_TAG, GROUP_MISSILE_TAG1, GROUP_MISSILE_TAG2));
 	private final String groupMissingTagValue = "No Combat";
-	private String groupHeader = "<!-- ************	-->\n<!-- xxxGROUPxxx -->\n<!-- ************	-->\n";
-	private String typeHeader = "<!-- xxxTYPExxx -->";
 	
 	private Map<String, String> combatTypeMappings;
 	

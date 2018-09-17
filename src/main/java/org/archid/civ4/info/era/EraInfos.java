@@ -28,13 +28,13 @@ public class EraInfos extends AbstractInfos<IEraInfo > {
 		return infos;
 	}
 	
+	public static IEraInfo createInfo(String type) {
+		return new EraInfo(type);
+	}
+	
 	@Override
 	public void setInfoMap(Map<String, IEraInfo> infos) {
 		this.infos = infos;
-	}
-	
-	public static IEraInfo createInfo(String type) {
-		return new EraInfo(type);
 	}
 	
 	private static class EraInfo implements IEraInfo {
@@ -74,8 +74,8 @@ public class EraInfos extends AbstractInfos<IEraInfo > {
 		private boolean unitRangeUnbound;
 		private boolean unitTerritoryUnbound;
 		private boolean firstSoundtrackFirst;
-		List<String> eraInfoSoundtracks = new ArrayList<String>();
-		List<IPair<String, String>> citySoundscapes = new ArrayList<IPair<String, String>>();
+		private List<String> eraInfoSoundtracks = new ArrayList<String>();
+		private List<IPair<String, String>> citySoundscapes = new ArrayList<IPair<String, String>>();
 		
 		private EraInfo(String type) {
 			this.type = type;

@@ -22,11 +22,6 @@ public class BuildingClassInfos extends AbstractInfos<IBuildingClassInfo>{
 		super(new LinkedHashMap<String, IBuildingClassInfo>());
 	}
 	
-	@Override
-	public void setInfoMap(Map<String, IBuildingClassInfo> infos) {
-		this.infos = infos;
-	}
-
 	@XmlJavaTypeAdapter(BuildingClassMapAdapter.class)
 	@XmlElement(name="BuildingClassInfos")
 	@Override
@@ -36,6 +31,11 @@ public class BuildingClassInfos extends AbstractInfos<IBuildingClassInfo>{
 
 	public static IBuildingClassInfo createInfo(String type) {
 		return new BuildingClassInfo(type);
+	}
+	
+	@Override
+	public void setInfoMap(Map<String, IBuildingClassInfo> infos) {
+		this.infos = infos;
 	}
 	
 	private static class BuildingClassInfo implements IBuildingClassInfo {
