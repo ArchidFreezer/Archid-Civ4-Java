@@ -18,7 +18,7 @@ public interface IXmlInfo extends Comparable<IXmlInfo>{
 	String getType();
 
 	/**
-	 * Gets the value of any single line tag that was stored when the xml was parsed. If the tag was not stored then the {@code} null value will be returned.
+	 * Gets the value of any single line tag that was stored when the xml was parsed. If the tag was not stored then {@code null} will be returned.
 	 *  
 	 * @param tag name of the xml tag
 	 * @return value of the xml tag if it was stored; otherwise {@code null}

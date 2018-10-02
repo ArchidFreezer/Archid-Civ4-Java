@@ -83,7 +83,7 @@ public class XmlInfoList {
 		
 		StringBuffer replace = new StringBuffer();
 		for (int i = 0; i < padLen; i++) {
-			replace.append("\\s");
+			replace.append(" ");
 		}
 		
 		File xmlFile = new File(xmlPath);

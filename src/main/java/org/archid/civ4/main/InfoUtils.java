@@ -20,6 +20,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.archid.civ4.info.ConverterFactory;
 import org.archid.civ4.info.EInfo;
 import org.archid.civ4.info.ExporterFactory;
 import org.archid.civ4.info.IExporter;
@@ -59,6 +60,7 @@ public class InfoUtils {
 		
 		OptionGroup actions = new OptionGroup();
 		actions.setRequired(true);
+		actions.addOption(Option.builder("c").longOpt("convert").hasArg(false).desc("Convert from OOB to mod XML").build());
 		actions.addOption(Option.builder("i").longOpt("import").hasArg(false).desc("Import from XLSX file").build());
 		actions.addOption(Option.builder("e").longOpt("export").hasArg(false).desc("Export to XLSX file").build());
 		actions.addOption(Option.builder("h").longOpt("help").hasArg(false).desc("Display this usage message").build());
@@ -120,7 +122,12 @@ public class InfoUtils {
 				props.setAppProperty(PropertyKeys.PROPERTY_KEY_FILE_XSLX, cmd.getOptionValue("x"));
 			}
 
-			if (cmd.hasOption("e")) {
+			if (cmd.hasOption("c")) {
+				if (infoType == null)
+					throw new ParseException("Batch converting all types is not implemented yet");
+				ConverterFactory.getConverter(infoType).convert();
+				
+			} else if (cmd.hasOption("e")) {
 				if (infoType != null) {
 					ExporterFactory.getExporter(infoType).createXLSX();
 				} else {
