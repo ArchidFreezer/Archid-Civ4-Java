@@ -232,10 +232,6 @@ public interface IUnitInfo  extends IInfo {
 
 	void setDropRange(int dropRange);
 
-	int getEnslaveCount();
-
-	void setEnslaveCount(int enslaveCount);
-
 	int getEspionagePoints();
 
 	void setEspionagePoints(int espionagePoints);

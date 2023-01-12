@@ -138,7 +138,6 @@ public class UnitExporter extends AbstractExporter<IInfos<IUnitInfo>, IUnitInfo>
 		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getFlavours(), maxHeight);
 		addSingleCell(row.createCell(colNum++), info.getAiWeight());
 		addSingleCell(row.createCell(colNum++), info.getCost());
-		addSingleCell(row.createCell(colNum++), info.getEnslaveCount());
 		addSingleCell(row.createCell(colNum++), info.getHurryCostModifier());
 		addSingleCell(row.createCell(colNum++), info.getAdvancedStartCost());
 		addSingleCell(row.createCell(colNum++), info.getAdvancedStartCostIncrease());

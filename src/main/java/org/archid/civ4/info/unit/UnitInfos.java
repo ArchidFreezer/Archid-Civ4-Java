@@ -95,7 +95,6 @@ public class UnitInfos extends AbstractInfos<IUnitInfo> {
 		private int cultureGarrison;
 		private int discoverMultiplier;
 		private int dropRange;
-		private int enslaveCount;
 		private int espionagePoints;
 		private int evasionProbability;
 		private int extraCost;
@@ -1138,22 +1137,6 @@ public class UnitInfos extends AbstractInfos<IUnitInfo> {
 		@Override
 		public void setDropRange(int dropRange) {
 			this.dropRange = dropRange;
-		}
-
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.info.unit.IUnitInfo#getEnslaveCount()
-		 */
-		@Override
-		public int getEnslaveCount() {
-			return enslaveCount;
-		}
-
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.info.unit.IUnitInfo#setEnslaveCount(int)
-		 */
-		@Override
-		public void setEnslaveCount(int enslaveCount) {
-			this.enslaveCount = enslaveCount;
 		}
 
 		/* (non-Javadoc)

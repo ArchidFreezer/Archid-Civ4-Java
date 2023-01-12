@@ -135,7 +135,6 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addFlavour);
 		parseCell(row.getCell(colNum++), Integer.class, info::setAiWeight);
 		parseCell(row.getCell(colNum++), Integer.class, info::setCost);
-		parseCell(row.getCell(colNum++), Integer.class, info::setEnslaveCount);
 		parseCell(row.getCell(colNum++), Integer.class, info::setHurryCostModifier);
 		parseCell(row.getCell(colNum++), Integer.class, info::setAdvancedStartCost);
 		parseCell(row.getCell(colNum++), Integer.class, info::setAdvancedStartCostIncrease);

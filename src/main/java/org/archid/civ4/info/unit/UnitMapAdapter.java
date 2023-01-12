@@ -263,8 +263,6 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 		private Integer aiWeight;
 		@XmlElement(name="iCost")
 		private Integer cost;
-		@XmlElement(name="iEnslaveCount")
-		private Integer enslaveCount;
 		@XmlElement(name="iHurryCostModifier")
 		private Integer hurryCostModifier;
 		@XmlElement(name="iAdvancedStartCost")
@@ -891,7 +889,6 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			
 			aInfo.aiWeight = JaxbUtils.marshallInteger(info.getAiWeight());
 			aInfo.cost = JaxbUtils.marshallInteger(info.getCost());
-			aInfo.enslaveCount = JaxbUtils.marshallInteger(info.getEnslaveCount());
 			aInfo.hurryCostModifier = JaxbUtils.marshallInteger(info.getHurryCostModifier());
 			aInfo.advancedStartCost = JaxbUtils.marshallInteger(info.getAdvancedStartCost());
 			aInfo.advancedStartCostIncrease = JaxbUtils.marshallInteger(info.getAdvancedStartCostIncrease());
@@ -1446,7 +1443,6 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			
 			info.setAiWeight(JaxbUtils.unmarshallInteger(aInfo.aiWeight));
 			info.setCost(JaxbUtils.unmarshallInteger(aInfo.cost));
-			info.setEnslaveCount(JaxbUtils.unmarshallInteger(aInfo.enslaveCount));
 			info.setHurryCostModifier(JaxbUtils.unmarshallInteger(aInfo.hurryCostModifier));
 			info.setAdvancedStartCost(JaxbUtils.unmarshallInteger(aInfo.advancedStartCost));
 			info.setAdvancedStartCostIncrease(JaxbUtils.unmarshallInteger(aInfo.advancedStartCostIncrease));
