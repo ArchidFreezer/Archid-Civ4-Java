@@ -65,7 +65,7 @@ public class EraInfos extends AbstractInfos<IEraInfo > {
 		private int anarchyPercent;
 		private int eventChancePerTurn;
 		private int unitRangeChange;
-		private int unitRangePercentChange;
+		private int unitRangeModifier;
 		private int soundtrackSpace;
 		private boolean noGoodies;
 		private boolean noAnimals;
@@ -502,7 +502,7 @@ public class EraInfos extends AbstractInfos<IEraInfo > {
 		 */
 		@Override
 		public int getUnitRangeModifier() {
-			return unitRangePercentChange;
+			return unitRangeModifier;
 		}
 		
 		/* (non-Javadoc)
@@ -510,7 +510,7 @@ public class EraInfos extends AbstractInfos<IEraInfo > {
 		 */
 		@Override
 		public void setUnitRangeModifier(int unitRangePercentChange) {
-			this.unitRangePercentChange = unitRangePercentChange;
+			this.unitRangeModifier = unitRangePercentChange;
 		}
 		
 		/* (non-Javadoc)
