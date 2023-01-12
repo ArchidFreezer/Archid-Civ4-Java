@@ -109,6 +109,7 @@ public class TechInfos extends AbstractInfos<ITechInfo> {
 		private List<Integer> riverPlotYieldChanges = new ArrayList<Integer>();
 		private List<Integer> seaPlotYieldChanges = new ArrayList<Integer>();
 		private List<Integer> commerceModifiers = new ArrayList<Integer>();
+		private List<Integer> specialistExtraCommerces = new ArrayList<Integer>();
 		private List<String> terrainTrades = new ArrayList<String>();
 		private List<String> orPrereqs = new ArrayList<String>();
 		private List<String> andPrereqs = new ArrayList<String>();
@@ -1160,6 +1161,16 @@ public class TechInfos extends AbstractInfos<ITechInfo> {
 		@Override
 		public void addCommerceModifier(int change) {
 			commerceModifiers.add(change);
+		}
+
+		@Override
+		public List<Integer> getSpecialistExtraCommerces() {
+			return new ArrayList<Integer>(specialistExtraCommerces);
+		}
+
+		@Override
+		public void addSpecialistExtraCommerce(int change) {
+			specialistExtraCommerces.add(change);
 		}
 
 	}

@@ -89,6 +89,7 @@ public class TechExporter extends AbstractExporter<IInfos<ITechInfo>, ITechInfo>
 		addSingleCell(row.createCell(colNum++), info.getGridX());
 		addSingleCell(row.createCell(colNum++), info.getGridY());
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getCommerceModifiers(), maxHeight);
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getSpecialistExtraCommerces(), maxHeight);
 		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getDomainExtraMoves(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getCommerceFlexibles(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getTerrainTrades(), maxHeight);

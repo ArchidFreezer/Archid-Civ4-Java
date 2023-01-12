@@ -135,6 +135,9 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 		@XmlElementWrapper(name="CommerceModifiers")
 		@XmlElement(name="iCommerce")
 		private List<Integer> commerceModifiers;
+		@XmlElementWrapper(name="SpecialistExtraCommerces")
+		@XmlElement(name="iCommerce")
+		private List<Integer> specialistExtraCommerces;
 		@XmlElementWrapper(name="DomainExtraMoves")
 		@XmlElement(name="DomainExtraMove")
 		private List<AdaptedDomainExtraMoves> domainExtraMoves;
@@ -284,6 +287,13 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 				aInfo.commerceModifiers = new ArrayList<Integer>();
 				for (Integer change: info.getCommerceModifiers()) {
 					aInfo.commerceModifiers.add(change);
+				}
+			}
+			
+			if (CollectionUtils.hasElements(info.getSpecialistExtraCommerces())) {
+				aInfo.specialistExtraCommerces = new ArrayList<Integer>();
+				for (Integer change: info.getSpecialistExtraCommerces()) {
+					aInfo.specialistExtraCommerces.add(change);
 				}
 			}
 			
@@ -447,6 +457,12 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 			if (CollectionUtils.hasNonZeroElements(aInfo.commerceModifiers)) {
 				for (Integer change: aInfo.commerceModifiers) {
 					info.addCommerceModifier(change);
+				}
+			}
+			
+			if (CollectionUtils.hasNonZeroElements(aInfo.specialistExtraCommerces)) {
+				for (Integer change: aInfo.specialistExtraCommerces) {
+					info.addSpecialistExtraCommerce(change);
 				}
 			}
 			

@@ -210,6 +210,10 @@ public interface ITechInfo extends IInfo {
 	
 	public void addCommerceModifier(int change);
 	
+	public List<Integer> getSpecialistExtraCommerces();
+	
+	public void addSpecialistExtraCommerce(int change);
+	
 	public List<Boolean> getCommerceFlexibles();
 	
 	public void addCommerceFlexible(boolean flexible);
