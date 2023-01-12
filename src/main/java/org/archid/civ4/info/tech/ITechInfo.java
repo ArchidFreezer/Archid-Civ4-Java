@@ -50,6 +50,10 @@ public interface ITechInfo extends IInfo {
 
 	public void setEra(String era);
 
+	public String getFreeCapitalBuildingClass();
+
+	public void setFreeCapitalBuildingClass(String freeCapitalBuildingClass);
+
 	public String getFirstFreeUnitClass();
 
 	public void setFirstFreeUnitClass(String firstFreeUnitClass);

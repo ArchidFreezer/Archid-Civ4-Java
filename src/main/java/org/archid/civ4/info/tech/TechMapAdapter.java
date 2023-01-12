@@ -56,6 +56,8 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 		private Integer advancedStartCostIncrease;
 		@XmlElement(name="Era")
 		private String era = "NO_ERA";
+		@XmlElement(name="FreeCapitalBuildingClass")
+		private String freeCapitalBuildingClass;
 		@XmlElement(name="FirstFreeUnitClass")
 		private String firstFreeUnitClass;
 		@XmlElement(name="FreeUnitClass")
@@ -225,6 +227,7 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 			aInfo.advancedStartCost = info.getAdvancedStartCost();
 			aInfo.advancedStartCostIncrease = JaxbUtils.marshallInteger(info.getAdvancedStartCostIncrease());
 			aInfo.era = info.getEra();
+			aInfo.freeCapitalBuildingClass = JaxbUtils.marshallString(info.getFreeCapitalBuildingClass());
 			aInfo.firstFreeUnitClass = JaxbUtils.marshallString(info.getFirstFreeUnitClass());
 			aInfo.freeUnitClass = JaxbUtils.marshallString(info.getFreeUnitClass());
 			aInfo.featureProductionModifier = JaxbUtils.marshallInteger(info.getFeatureProductionModifier());
@@ -381,6 +384,7 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 			info.setAdvancedStartCost(JaxbUtils.unmarshallInteger(aInfo.advancedStartCost));
 			info.setAdvancedStartCostIncrease(JaxbUtils.unmarshallInteger(aInfo.advancedStartCostIncrease));
 			info.setEra(JaxbUtils.unmarshallString(aInfo.era));
+			info.setFreeCapitalBuildingClass(JaxbUtils.unmarshallString(aInfo.freeCapitalBuildingClass));
 			info.setFirstFreeUnitClass(JaxbUtils.unmarshallString(aInfo.firstFreeUnitClass));
 			info.setFreeUnitClass(JaxbUtils.unmarshallString(aInfo.freeUnitClass));
 			info.setFeatureProductionModifier(JaxbUtils.unmarshallInteger(aInfo.featureProductionModifier));

@@ -47,6 +47,7 @@ public class TechInfos extends AbstractInfos<ITechInfo> {
 		private String strategy;
 		private String advisor = "NO_ADVISOR";
 		private String era = "NO_ERA";
+		private String freeCapitalBuildingClass;
 		private String firstFreeUnitClass;
 		private String freeUnitClass;
 		private String quote;
@@ -69,7 +70,7 @@ public class TechInfos extends AbstractInfos<ITechInfo> {
 		private int gridX = 1;
 		private int gridY = 1;
 		private int unitRangeChange;
-		private int unitRangePercentChange;
+		private int unitRangeModifier;
 		private int cultureDefenceModifier;
 		private boolean repeat;
 		private boolean trade;
@@ -992,12 +993,12 @@ public class TechInfos extends AbstractInfos<ITechInfo> {
 
 		@Override
 		public int getUnitRangeModifier() {
-			return unitRangePercentChange;
+			return unitRangeModifier;
 		}
 
 		@Override
 		public void setUnitRangeModifier(int modifier) {
-			unitRangePercentChange = modifier;
+			unitRangeModifier = modifier;
 		}
 
 		@Override
@@ -1138,6 +1139,16 @@ public class TechInfos extends AbstractInfos<ITechInfo> {
 		@Override
 		public void setStrategy(String strategy) {
 			this.strategy = strategy;
+		}
+
+		@Override
+		public String getFreeCapitalBuildingClass() {
+			return freeCapitalBuildingClass;
+		}
+
+		@Override
+		public void setFreeCapitalBuildingClass(String freeCapitalBuildingClass) {
+			this.freeCapitalBuildingClass = freeCapitalBuildingClass;
 		}
 
 	}
