@@ -129,6 +129,7 @@ public class TechImporter extends AbstractImporter<IInfos<ITechInfo>, ITechInfo>
 			parseCell(row.getCell(colNum++), Boolean.class, info::setCanFoundOnPeaks);
 			// We need to skip the iGridX & iGridY rows
 			colNum += 2;
+			parseListCell(row.getCell(colNum++), Integer.class, info::addCommerceModifier);
 			parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addDomainExtraMove);
 			parseListCell(row.getCell(colNum++), Boolean.class, info::addCommerceFlexible);
 			parseListCell(row.getCell(colNum++), String.class, info::addTerrainTrade);

@@ -132,6 +132,9 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 		private Integer gridX;
 		@XmlElement(name="iGridY")
 		private Integer gridY;
+		@XmlElementWrapper(name="CommerceModifiers")
+		@XmlElement(name="iCommerce")
+		private List<Integer> commerceModifiers;
 		@XmlElementWrapper(name="DomainExtraMoves")
 		@XmlElement(name="DomainExtraMove")
 		private List<AdaptedDomainExtraMoves> domainExtraMoves;
@@ -277,6 +280,13 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 			aInfo.soundMP = JaxbUtils.marshallString(info.getSoundMP());
 			aInfo.button = info.getButton();
 
+			if (CollectionUtils.hasElements(info.getCommerceModifiers())) {
+				aInfo.commerceModifiers = new ArrayList<Integer>();
+				for (Integer change: info.getCommerceModifiers()) {
+					aInfo.commerceModifiers.add(change);
+				}
+			}
+			
 			if (CollectionUtils.hasElements(info.getDomainExtraMoves())) {
 				aInfo.domainExtraMoves = new ArrayList<AdaptedDomainExtraMoves>();
 				for (IPair<String, Integer> pair: info.getDomainExtraMoves()) {
@@ -434,6 +444,12 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 			info.setSoundMP(JaxbUtils.unmarshallString(aInfo.soundMP));
 			info.setButton(JaxbUtils.unmarshallString(aInfo.button));
 
+			if (CollectionUtils.hasNonZeroElements(aInfo.commerceModifiers)) {
+				for (Integer change: aInfo.commerceModifiers) {
+					info.addCommerceModifier(change);
+				}
+			}
+			
 			if (CollectionUtils.hasElements(aInfo.domainExtraMoves)) {
 				for (AdaptedDomainExtraMoves adaptor: aInfo.domainExtraMoves) {
 					if (adaptor.moves != 0)

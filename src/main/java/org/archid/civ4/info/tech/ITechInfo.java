@@ -206,6 +206,10 @@ public interface ITechInfo extends IInfo {
 	
 	public void addDomainExtraMove(IPair<String, Integer> domainExtraMove);
 	
+	public List<Integer> getCommerceModifiers();
+	
+	public void addCommerceModifier(int change);
+	
 	public List<Boolean> getCommerceFlexibles();
 	
 	public void addCommerceFlexible(boolean flexible);

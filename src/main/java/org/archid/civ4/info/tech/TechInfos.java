@@ -108,6 +108,7 @@ public class TechInfos extends AbstractInfos<ITechInfo> {
 		private List<Integer> forestPlotYieldChanges = new ArrayList<Integer>();
 		private List<Integer> riverPlotYieldChanges = new ArrayList<Integer>();
 		private List<Integer> seaPlotYieldChanges = new ArrayList<Integer>();
+		private List<Integer> commerceModifiers = new ArrayList<Integer>();
 		private List<String> terrainTrades = new ArrayList<String>();
 		private List<String> orPrereqs = new ArrayList<String>();
 		private List<String> andPrereqs = new ArrayList<String>();
@@ -1149,6 +1150,16 @@ public class TechInfos extends AbstractInfos<ITechInfo> {
 		@Override
 		public void setFreeCapitalBuildingClass(String freeCapitalBuildingClass) {
 			this.freeCapitalBuildingClass = freeCapitalBuildingClass;
+		}
+
+		@Override
+		public List<Integer> getCommerceModifiers() {
+			return new ArrayList<Integer>(commerceModifiers);
+		}
+
+		@Override
+		public void addCommerceModifier(int change) {
+			commerceModifiers.add(change);
 		}
 
 	}
