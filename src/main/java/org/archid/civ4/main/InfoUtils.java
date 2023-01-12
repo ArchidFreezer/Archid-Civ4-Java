@@ -126,7 +126,7 @@ public class InfoUtils {
 				if (infoType == null)
 					throw new ParseException("Batch converting all types is not implemented yet");
 				ConverterFactory.getConverter(infoType).convert();
-				
+				log.info("Finished");
 			} else if (cmd.hasOption("e")) {
 				if (infoType != null) {
 					ExporterFactory.getExporter(infoType).createXLSX();
@@ -143,6 +143,7 @@ public class InfoUtils {
 						exporter.createXLSX();
 					}
 				}
+				log.info("Finished");
 			}	else if (cmd.hasOption("i")) {
 				if (cmd.hasOption("x")) {
 					if (infoType != null) {
@@ -158,6 +159,7 @@ public class InfoUtils {
 				} else {
 					throw new ParseException("xlsx file to process not provided");
 				}
+				log.info("Finished");
 			}
 			
 			if (cmd.hasOption("h")) {
