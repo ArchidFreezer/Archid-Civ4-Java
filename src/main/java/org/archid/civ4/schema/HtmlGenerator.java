@@ -132,7 +132,7 @@ public class HtmlGenerator {
 				+ NEWLINE + "\t<frame src=\"" + startingFilename + "\" name=\"content\">"
 				+ NEWLINE + "\t<frameset>"
 				+ NEWLINE + "</html>");
-		writeFile("xml_frame.html", html.toString());
+		writeFile("index.html", html.toString());
 		
 		html.delete(0, html.length());
 		html.append("<html>"
