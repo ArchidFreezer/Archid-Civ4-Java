@@ -101,6 +101,7 @@ public class TechInfos extends AbstractInfos<ITechInfo> {
 		private boolean captureCities;
 		private boolean unitRangeUnbound;
 		private boolean unitTerritoryUnbound;
+		private boolean applyLeaderheadTraits;
 		private List<IPair<String, Integer>> domainExtraMoves = new ArrayList<IPair<String, Integer>>();
 		private List<IPair<String, Integer>> worldViewRevoltTurnChanges = new ArrayList<IPair<String, Integer>>();
 		private List<IPair<String, Integer>> flavors = new ArrayList<IPair<String, Integer>>();
@@ -1171,6 +1172,16 @@ public class TechInfos extends AbstractInfos<ITechInfo> {
 		@Override
 		public void addSpecialistExtraCommerce(int change) {
 			specialistExtraCommerces.add(change);
+		}
+
+		@Override
+		public boolean isApplyLeaderheadTraits() {
+			return applyLeaderheadTraits;
+		}
+
+		@Override
+		public void setApplyLeaderheadTraits(boolean applyTraits) {
+			this.applyLeaderheadTraits = applyTraits;
 		}
 
 	}

@@ -56,6 +56,8 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 		private Integer advancedStartCostIncrease;
 		@XmlElement(name="Era")
 		private String era = "NO_ERA";
+		@XmlElement(name="bApplyLeaderheadTraits")
+		private Integer applyLeaderheadTraits;
 		@XmlElement(name="FreeCapitalBuildingClass")
 		private String freeCapitalBuildingClass;
 		@XmlElement(name="FirstFreeUnitClass")
@@ -233,6 +235,7 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 			aInfo.advancedStartCost = info.getAdvancedStartCost();
 			aInfo.advancedStartCostIncrease = JaxbUtils.marshallInteger(info.getAdvancedStartCostIncrease());
 			aInfo.era = info.getEra();
+			aInfo.applyLeaderheadTraits = JaxbUtils.marshallBoolean(info.isApplyLeaderheadTraits());
 			aInfo.freeCapitalBuildingClass = JaxbUtils.marshallString(info.getFreeCapitalBuildingClass());
 			aInfo.firstFreeUnitClass = JaxbUtils.marshallString(info.getFirstFreeUnitClass());
 			aInfo.freeUnitClass = JaxbUtils.marshallString(info.getFreeUnitClass());
@@ -404,6 +407,7 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 			info.setAdvancedStartCost(JaxbUtils.unmarshallInteger(aInfo.advancedStartCost));
 			info.setAdvancedStartCostIncrease(JaxbUtils.unmarshallInteger(aInfo.advancedStartCostIncrease));
 			info.setEra(JaxbUtils.unmarshallString(aInfo.era));
+			info.setApplyLeaderheadTraits(JaxbUtils.unmarshallBoolean(aInfo.applyLeaderheadTraits));
 			info.setFreeCapitalBuildingClass(JaxbUtils.unmarshallString(aInfo.freeCapitalBuildingClass));
 			info.setFirstFreeUnitClass(JaxbUtils.unmarshallString(aInfo.firstFreeUnitClass));
 			info.setFreeUnitClass(JaxbUtils.unmarshallString(aInfo.freeUnitClass));

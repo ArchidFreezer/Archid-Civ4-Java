@@ -298,4 +298,8 @@ public interface ITechInfo extends IInfo {
 	
 	public void setButton(String button);
 	
+	public boolean isApplyLeaderheadTraits();
+	
+	public void setApplyLeaderheadTraits(boolean applyTraits);
+	
 }

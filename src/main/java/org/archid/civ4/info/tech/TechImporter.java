@@ -91,6 +91,7 @@ public class TechImporter extends AbstractImporter<IInfos<ITechInfo>, ITechInfo>
 			parseCell(row.getCell(colNum++), Integer.class, info::setAdvancedStartCost);
 			parseCell(row.getCell(colNum++), Integer.class, info::setAdvancedStartCostIncrease);
 			parseCell(row.getCell(colNum++), String.class, info::setEra);
+			parseCell(row.getCell(colNum++), Boolean.class, info::setApplyLeaderheadTraits);
 			parseCell(row.getCell(colNum++), String.class, info::setFreeCapitalBuildingClass);
 			parseCell(row.getCell(colNum++), String.class, info::setFirstFreeUnitClass);
 			parseCell(row.getCell(colNum++), String.class, info::setFreeUnitClass);
