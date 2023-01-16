@@ -50,7 +50,7 @@ public class TechExporter extends AbstractExporter<IInfos<ITechInfo>, ITechInfo>
 		addSingleCell(row.createCell(colNum++), info.getAdvancedStartCost());
 		addSingleCell(row.createCell(colNum++), info.getAdvancedStartCostIncrease());
 		addSingleCell(row.createCell(colNum++), info.getEra());
-		addSingleCell(row.createCell(colNum++), info.isApplyLeaderheadTraits());
+		addSingleCell(row.createCell(colNum++), info.isCivSettled());
 		addSingleCell(row.createCell(colNum++), info.getFreeCapitalBuildingClass());
 		addSingleCell(row.createCell(colNum++), info.getFirstFreeUnitClass());
 		addSingleCell(row.createCell(colNum++), info.getFreeUnitClass());
