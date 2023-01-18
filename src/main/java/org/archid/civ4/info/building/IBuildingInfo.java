@@ -488,6 +488,10 @@ public interface IBuildingInfo extends IInfo {
 
 	void setNumFreeBonuses(int numFreeBonuses);
 
+	int getObsoleteDefence();
+
+	void setObsoleteDefence(int defence);
+
 	int getOrderPriority();
 
 	void setOrderPriority(int orderPriority);

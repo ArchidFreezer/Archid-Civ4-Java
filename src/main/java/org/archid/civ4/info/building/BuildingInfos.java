@@ -160,6 +160,7 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo>{
 		private int nukeExplosionRand;
 		private int nukeModifier;
 		private int numFreeBonuses;
+		private int obsoleteDefence;
 		private int orderPriority;
 		private int power;
 		private int spaceProductionModifier;
@@ -3164,6 +3165,16 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo>{
 		@Override
 		public void addFlavor(IPair<String, Integer> flavor) {
 			flavors.add(flavor);
+		}
+
+		@Override
+		public int getObsoleteDefence() {
+			return obsoleteDefence;
+		}
+
+		@Override
+		public void setObsoleteDefence(int defence) {
+			this.obsoleteDefence = defence;
 		}
 	}
 

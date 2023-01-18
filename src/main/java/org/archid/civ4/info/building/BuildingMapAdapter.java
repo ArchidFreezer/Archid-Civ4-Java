@@ -304,6 +304,8 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		private Integer freeTechs;
 		@XmlElement(name="iDefense")
 		private Integer defense;
+		@XmlElement(name="iObsoleteDefence")
+		private Integer obsoleteDefence;
 		@XmlElement(name="iBombardDefense")
 		private Integer bombardDefense;
 		@XmlElement(name="iAllCityDefense")
@@ -765,6 +767,7 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 			info.setGlobalPopulationChange(JaxbUtils.unmarshallInteger(aInfo.globalPopulationChange));
 			info.setFreeTechs(JaxbUtils.unmarshallInteger(aInfo.freeTechs));
 			info.setDefense(JaxbUtils.unmarshallInteger(aInfo.defense));
+			info.setObsoleteDefence(JaxbUtils.unmarshallInteger(aInfo.obsoleteDefence));
 			info.setBombardDefense(JaxbUtils.unmarshallInteger(aInfo.bombardDefense));
 			info.setAllCityDefense(JaxbUtils.unmarshallInteger(aInfo.allCityDefense));
 			info.setEspionageDefense(JaxbUtils.unmarshallInteger(aInfo.espionageDefense));
@@ -1268,6 +1271,7 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 			aInfo.globalPopulationChange = JaxbUtils.marshallInteger(info.getGlobalPopulationChange());
 			aInfo.freeTechs = JaxbUtils.marshallInteger(info.getFreeTechs());
 			aInfo.defense = JaxbUtils.marshallInteger(info.getDefense());
+			aInfo.obsoleteDefence = JaxbUtils.marshallInteger(info.getObsoleteDefence());
 			aInfo.bombardDefense = JaxbUtils.marshallInteger(info.getBombardDefense());
 			aInfo.allCityDefense = JaxbUtils.marshallInteger(info.getAllCityDefense());
 			aInfo.espionageDefense = JaxbUtils.marshallInteger(info.getEspionageDefense());

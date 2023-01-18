@@ -159,6 +159,7 @@ public class BuildingImporter extends AbstractImporter<IInfos<IBuildingInfo>, IB
 		parseCell(row.getCell(colNum++), Integer.class, info::setGlobalPopulationChange);
 		parseCell(row.getCell(colNum++), Integer.class, info::setFreeTechs);
 		parseCell(row.getCell(colNum++), Integer.class, info::setDefense);
+		parseCell(row.getCell(colNum++), Integer.class, info::setObsoleteDefence);
 		parseCell(row.getCell(colNum++), Integer.class, info::setBombardDefense);
 		parseCell(row.getCell(colNum++), Integer.class, info::setAllCityDefense);
 		parseCell(row.getCell(colNum++), Integer.class, info::setEspionageDefense);

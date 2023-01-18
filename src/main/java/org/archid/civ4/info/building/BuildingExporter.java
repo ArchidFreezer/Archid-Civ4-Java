@@ -166,6 +166,7 @@ public class BuildingExporter extends AbstractExporter<IInfos<IBuildingInfo>, IB
 		addSingleCell(row.createCell(colNum++), info.getGlobalPopulationChange());
 		addSingleCell(row.createCell(colNum++), info.getFreeTechs());
 		addSingleCell(row.createCell(colNum++), info.getDefense());
+		addSingleCell(row.createCell(colNum++), info.getObsoleteDefence());
 		addSingleCell(row.createCell(colNum++), info.getBombardDefense());
 		addSingleCell(row.createCell(colNum++), info.getAllCityDefense());
 		addSingleCell(row.createCell(colNum++), info.getEspionageDefense());
