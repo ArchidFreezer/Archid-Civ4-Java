@@ -11,9 +11,11 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.archid.utils.IPair;
 import org.archid.utils.IPropertyHandler;
@@ -102,7 +104,17 @@ public abstract class AbstractImporter<T extends IInfos<S>, S extends IInfo> imp
 	 * @param func the {@link Consumer} function called with the cell value as a parameter
 	 */
 	protected <U> void parseCell(Cell cell, Class<U> valClass, Consumer<U> func) {
-		func.accept(getVal(cell.getStringCellValue(), valClass));
+		XSSFCell xsfCell = (XSSFCell) cell;
+		// This is a horrible kludge, but formatting a cell as text in Excel doesn't always seem to work properly
+		if (xsfCell.getCellTypeEnum() == CellType.NUMERIC) {
+			if (valClass == Integer.class || valClass == Boolean.class) {
+				func.accept(getVal(String.valueOf((int)cell.getNumericCellValue()), valClass));
+			} else if (valClass == Float.class) {
+				func.accept(getVal(String.valueOf(cell.getNumericCellValue()), valClass));
+			}
+		} else {
+			func.accept(getVal(cell.getStringCellValue(), valClass));
+		}
 	}
 	
 	/**
