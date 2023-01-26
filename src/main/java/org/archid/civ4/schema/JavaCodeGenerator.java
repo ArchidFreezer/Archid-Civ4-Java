@@ -25,6 +25,9 @@ public class JavaCodeGenerator {
 	static Logger log = Logger.getLogger(JavaCodeGenerator.class.getName());
 	
 	private final String NEWLINE = System.getProperty("line.separator");
+	private final String NEWLINET = NEWLINE + "\t";
+	private final String NEWLINETT = NEWLINE + "\t\t";
+	private final String NEWLINETTT = NEWLINE + "\t\t\t";
 	
 	private String namespaceFolder = null; // somevalue
 	private String infoName = null;        // SomeValueInfo
@@ -48,9 +51,96 @@ public class JavaCodeGenerator {
 		createPackageFolder();
 		createPackageInfoFile();
 		createInfoInterface();
+		createInfoClass();
 		
 	}
 	
+	private void createInfoClass() {
+		
+		// Sort the imports, this is cosmetic, but easy enough
+		Set<String> imports = new HashSet<String>(commonImports);
+		imports.add("import java.util.LinkedHashMap;");
+		imports.add("import java.util.Map;");
+		imports.add("import org.archid.civ4.info.AbstractInfos;");
+		imports.add("import javax.xml.bind.annotation.XmlAccessType;");
+		imports.add("import javax.xml.bind.annotation.XmlAccessorType;");
+		imports.add("import javax.xml.bind.annotation.XmlElement;");
+		imports.add("import javax.xml.bind.annotation.XmlRootElement;");
+		imports.add("import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;");
+
+		// Create the wrapper class
+		StringBuilder mainClass = new StringBuilder();
+		mainClass.append(NEWLINE + "@XmlRootElement(name=\"" + infoTopLevelTag + "\", namespace=\"x-schema:" + props.getAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA) + "\")");
+		mainClass.append(NEWLINE + "@XmlAccessorType(XmlAccessType.NONE)");
+		mainClass.append(NEWLINE + "public class " + infoNamePlural + " extends AbstractInfos<I" + infoName + "> {");
+		mainClass.append(NEWLINE);
+		mainClass.append(NEWLINET + "public " + infoNamePlural + "() {");
+		mainClass.append(NEWLINETT + "super(new LinkedHashMap<String, I" + infoName + ">());");
+		mainClass.append(NEWLINET + "}");
+		mainClass.append(NEWLINE);
+		mainClass.append(NEWLINET + "@XmlJavaTypeAdapter(" + infoNameRoot + "MapAdapter.class)");
+		mainClass.append(NEWLINET + "@XmlElement(name=\"" + infoNamePlural + "\")");
+		mainClass.append(NEWLINET + "public Map<String, I" + infoName + "> getInfoMap() {");
+		mainClass.append(NEWLINETT + "return infos;");
+		mainClass.append(NEWLINET + "}");
+		mainClass.append(NEWLINE);
+		mainClass.append(NEWLINET + "public static I" + infoName + " createInfo(String type) {");
+		mainClass.append(NEWLINETT + "return new " + infoName + "(type);");
+		mainClass.append(NEWLINET + "}");
+		mainClass.append(NEWLINE);
+		mainClass.append(NEWLINET + "@Override");
+		mainClass.append(NEWLINET + "public void setInfoMap(Map<String, I" + infoName + "> infos) {");
+		mainClass.append(NEWLINETT + "this.infos = infos;");
+		mainClass.append(NEWLINET + "}");
+		mainClass.append(NEWLINE);
+		
+		// Create the inner class
+		mainClass.append(NEWLINET + "private static class " + infoName + " implements I" + infoName + "{");
+		mainClass.append(NEWLINE);
+		StringBuffer vars = new StringBuffer();
+		StringBuffer methods = new StringBuffer();
+		// We always have the constructor first
+		methods.append(NEWLINE);
+		methods.append(NEWLINETT + "private " + infoName + "(String type) {");
+		methods.append(NEWLINETTT + "this.type = type;");
+		methods.append(NEWLINETT + "}");
+		for (XmlTagInstance mainChild : tagDefinition.getChildren()) {
+			Tag tag = infoTagData.get(mainChild.getTagName());
+			if (tag.requiresArray()) imports.add("import java.util.ArrayList;");
+			vars.append(NEWLINETT + "private " + tag.dataType + " " + tag.varName);
+			if (tag.varName.equals("type")) continue; // We have already dealt with this tags method
+			methods.append(NEWLINE);
+			methods.append(NEWLINETT + "@Override");
+			methods.append(NEWLINETT + "public " + tag.dataType + " " + tag.getterName + "() {");
+			methods.append(NEWLINETTT + "return " + tag.varName);
+			methods.append(NEWLINETT + "}");
+			methods.append(NEWLINE);
+			methods.append(NEWLINETT + "@Override");
+			methods.append(NEWLINETT + "public " + tag.setterSignature() + " {");
+			if (tag.requiresArray())
+				methods.append(NEWLINETTT + tag.varName + ".add(" + tag.setterVarName() + ");");
+			else
+				methods.append(NEWLINETTT + "this." + tag.varName + " = " + tag.setterVarName() + ";");
+			methods.append(NEWLINETT + "}");
+		}
+		mainClass.append(vars);
+		mainClass.append(methods);
+		mainClass.append(NEWLINET + "}");
+		mainClass.append(NEWLINE + "}");
+
+		StringBuilder file = new StringBuilder();
+		file.append(packageDef + NEWLINE);
+		List<String> sortedImports = new ArrayList<String>(imports);
+		Collections.sort(sortedImports);
+		for (String imp: sortedImports) {
+			file.append(NEWLINE + imp);
+		}
+		file.append(NEWLINE);
+		file.append(mainClass);
+		writeFile(infoNamePlural + ".java", file.toString());
+		
+	}
+
 	private void createInfoInterface() {
 		
 		StringBuilder file = new StringBuilder();
@@ -63,11 +153,13 @@ public class JavaCodeGenerator {
 		for (String imp: imports) {
 			file.append(NEWLINE + imp);
 		}
+		
+		// Now do the interface
 		file.append(NEWLINE + NEWLINE + "public interface I" + infoName + " extends IInfo {");
 		for (XmlTagInstance mainChild : tagDefinition.getChildren()) {
 			Tag tag = infoTagData.get(mainChild.getTagName());
-			file.append(NEWLINE + "\t" + tag.getterSignature() + ";");
-			file.append(NEWLINE + "\t" + tag.setterSignature() + ";");
+			file.append(NEWLINET + tag.getterSignature() + ";");
+			file.append(NEWLINET + tag.setterSignature() + ";");
 			file.append(NEWLINE);
 		}
 		file.append(NEWLINE + "}");
@@ -77,8 +169,8 @@ public class JavaCodeGenerator {
 
 	private void createPackageInfoFile() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("@javax.xml.bind.annotation.XmlSchema(namespace=\"x-schema:" + props.getAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA) + "\", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)"
-				+ NEWLINE + packageDef);
+		sb.append("@javax.xml.bind.annotation.XmlSchema(namespace=\"x-schema:" + props.getAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA) + "\", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)");
+		sb.append(NEWLINE + packageDef);
 		writeFile("package-info.java", sb.toString());
 	}
 
@@ -156,7 +248,7 @@ public class JavaCodeGenerator {
 			singularMap.put("Buildgings", "Building");
 			singularMap.put("Classes", "Class");
 			singularMap.put("Corporations", "Corporation");
-			singularMap.put("Events", "Ecent");
+			singularMap.put("Events", "Event");
 			singularMap.put("Improvements", "Improvement");
 			singularMap.put("Prereqs", "Prereq");
 			singularMap.put("Religions", "Religion");
@@ -286,43 +378,23 @@ public class JavaCodeGenerator {
 			return singular.toString(); 
 		}
 
-		public String dataType() {
-			return dataType;
-		}
-		
-		public String javaVariableName() {
-			return varName;
-		}
-		
 		public String getterSignature() {
 			return dataType + " " + getterName + "()";
 		}
 		
 		public String setterSignature() {
-			StringBuilder sb = new StringBuilder();
-			sb.append("void " + setterName + "(" + singularDataType + " ");
+			 return "void " + setterName + "(" + singularDataType + " " + setterVarName() + ")";
+		}
+		
+		public String setterVarName() {
 			if (numLevels > 0)
-				sb.append(StringUtils.lcaseFirstChar(singularForm(getTagRootName())));
+				return StringUtils.lcaseFirstChar(singularForm(getTagRootName()));
 			else
-				sb.append(StringUtils.lcaseFirstChar(getTagRootName()));
-			sb.append(")");
-			return sb.toString();
-		}
-		
-		public Integer numLeaves() {
-			return numLeaves;
-		}
-		
-		public String getterName() {
-			return getterName;
-		}
-		
-		public String setterName() {
-			return setterName;
+				return StringUtils.lcaseFirstChar(getTagRootName());
 		}
 		
 		public Boolean requiresArray() {
-			return numLevels == 1;
+			return numLevels > 0;
 		}
 		
 		public Boolean requiresAdapter() {
