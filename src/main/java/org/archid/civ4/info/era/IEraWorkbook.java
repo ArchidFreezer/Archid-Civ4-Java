@@ -21,7 +21,7 @@ public interface IEraWorkbook extends IInfoWorkbook {
 		 */
 		@Override
 		public String toString() {
-			return StringUtils.startCaseSpace(this.name(), '_');
+			return StringUtils.titleCaseSpace(this.name(), '_');
 		}
 		
 	}

@@ -56,7 +56,7 @@ public class StringUtils {
 	 * 
 	 * @return String converted to Start Case
 	 */
-	public static String startCase(String str, char delim)
+	public static String titleCase(String str, char delim)
 	{
 		StringBuilder builder = new StringBuilder(str.toLowerCase());
 		
@@ -95,7 +95,7 @@ public class StringUtils {
 	 * 
 	 * @return String converted to Start Case
 	 */
-	public static String startCaseCompress(String str, char delim)
+	public static String titleCaseCompress(String str, char delim)
 	{
 		StringBuilder input = new StringBuilder(str.toLowerCase());
 		StringBuilder output = new StringBuilder();
@@ -136,7 +136,7 @@ public class StringUtils {
 	 * 
 	 * @return String converted to Start Case with delimiter converted to a space
 	 */
-	public static String startCaseSpace(String str, char delim)
+	public static String titleCaseSpace(String str, char delim)
 	{
 		StringBuilder input = new StringBuilder(str.toLowerCase());
 		StringBuilder output = new StringBuilder();
@@ -175,7 +175,7 @@ public class StringUtils {
 	 * 
 	 * @return String converted to uppercase with words divided by the delimiter
 	 */
-	public static String ucaseSplit(String str, char delim) {
+	public static String uCaseSplit(String str, char delim) {
 		StringBuilder sb = new StringBuilder();
 		boolean first = true;
 		for (String word: findWordsInMixedCase(str)) {

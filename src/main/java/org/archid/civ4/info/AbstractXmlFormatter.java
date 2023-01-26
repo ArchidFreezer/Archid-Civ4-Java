@@ -9,7 +9,7 @@ public abstract class AbstractXmlFormatter implements IXmlFormatter {
 	protected String typeHeader = "<!-- xxxTYPExxx -->";
 
 	protected String getCommentText(String value) {
-		return StringUtils.startCaseSpace(value.substring(value.indexOf('_') + 1), '_');
+		return StringUtils.titleCaseSpace(value.substring(value.indexOf('_') + 1), '_');
 	}	
 
 }

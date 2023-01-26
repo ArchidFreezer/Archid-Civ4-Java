@@ -123,7 +123,7 @@ public class TechInfos extends AbstractInfos<ITechInfo> {
 			help = "TXT_KEY_" + type + "_HELP";
 			strategy = "TXT_KEY_" + type + "_STRATEGY";
 			quote = "TXT_KEY_" + type + "_QUOTE";
-			sound = "AS2D_TECH_" + StringUtils.startCaseCompress(type.substring(type.indexOf('_') + 1), '_');
+			sound = "AS2D_TECH_" + StringUtils.titleCaseCompress(type.substring(type.indexOf('_') + 1), '_');
 			soundMp = sound;
 			button = "Art/Interface/Buttons/TechTree/" + type.substring(type.indexOf('_') + 1).toLowerCase() + ".dds";
 		}

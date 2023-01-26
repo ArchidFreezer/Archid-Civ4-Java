@@ -122,7 +122,7 @@ public abstract class AbstractConverter implements IConverter {
 	}
 
 	private String getCommentText(String value) {
-		return StringUtils.startCaseSpace(value.substring(value.indexOf('_') + 1), '_');
+		return StringUtils.titleCaseSpace(value.substring(value.indexOf('_') + 1), '_');
 	}	
 	
 	protected abstract IXmlTaggedInfo updateCustomTags(IXmlTaggedInfo info);
