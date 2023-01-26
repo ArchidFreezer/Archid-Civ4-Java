@@ -52,9 +52,55 @@ public class JavaCodeGenerator {
 		createPackageInfoFile();
 		createInfoInterface();
 		createInfoClass();
-		
+		createInfoWorkbookInterface();
 	}
 	
+	private void createInfoWorkbookInterface() {
+		StringBuilder file = new StringBuilder();
+		file.append(packageDef);
+		file.append(NEWLINE);
+		file.append(NEWLINE + "import org.archid.civ4.info.IInfoWorkbook;");
+		file.append(NEWLINE + "import org.archid.utils.StringUtils;");
+		file.append(NEWLINE);
+		file.append(NEWLINE + "public interface I" + infoNameRoot + "Workbook extends IInfoWorkbook {");
+		file.append(NEWLINE);
+		file.append(NEWLINET + "public static final String SHEETNAME_LIST = \"" + infoNameRoot + "List\";");
+		file.append(NEWLINE);
+		file.append(NEWLINET + "public enum SheetHeaders {");
+		file.append(NEWLINETT);
+		StringBuilder row = new StringBuilder();
+		boolean first = true;
+		boolean reset = false;
+		for (XmlTagInstance mainChild : tagDefinition.getChildren()) {
+			Tag tag = infoTagData.get(mainChild.getTagName());
+			if (first) {
+				first = false;
+			} else if (reset) {
+				row.append(", " + NEWLINETT);
+				reset = false;
+			} else {
+				row.append(", ");
+			}
+			row.append(StringUtils.uCaseSplit(tag.rootName, '_'));
+			if (row.length() >= 170) {
+				file.append(row);
+				row.setLength(0);
+				reset = true;
+			}
+		}
+		file.append(row + ";");
+		file.append(NEWLINE);
+		file.append(NEWLINETT + "@Override");
+		file.append(NEWLINETT + "public String toString() {");
+		file.append(NEWLINETTT + "return StringUtils.titleCaseSpace(this.name(), '_');");
+		file.append(NEWLINETT + "}");
+		file.append(NEWLINET + "}");
+		file.append(NEWLINE + "}");
+
+		
+		writeFile("I" + infoNameRoot + "Workbook.java", file.toString());
+	}
+
 	private void createInfoClass() {
 		
 		// Sort the imports, this is cosmetic, but easy enough
@@ -97,8 +143,8 @@ public class JavaCodeGenerator {
 		// Create the inner class
 		mainClass.append(NEWLINET + "private static class " + infoName + " implements I" + infoName + "{");
 		mainClass.append(NEWLINE);
-		StringBuffer vars = new StringBuffer();
-		StringBuffer methods = new StringBuffer();
+		StringBuilder vars = new StringBuilder();
+		StringBuilder methods = new StringBuilder();
 		// We always have the constructor first
 		methods.append(NEWLINE);
 		methods.append(NEWLINETT + "private " + infoName + "(String type) {");
@@ -222,8 +268,9 @@ public class JavaCodeGenerator {
 	
 	private class Tag {
 		
-		private XmlTagDefinition tag = null;
-		private String varName = null;
+		private XmlTagDefinition tag = null; // iSomeTag
+		private String rootName = null;      // SomeTag
+		private String varName = null;       // someTag
 		private String getterName = null;
 		private String setterName = null;
 		private String dataType = null;
@@ -238,6 +285,7 @@ public class JavaCodeGenerator {
 			populateSingularMap();
 			numLevels = getNumLevels(tag, 0);
 			populateDataTypes();
+			rootName = getTagRootName();
 			varName = buildJavaVariableName();
 			getterName = buildGetterName();
 			setterName = buildSetterName();
@@ -315,7 +363,7 @@ public class JavaCodeGenerator {
 		}
 
 		private String buildJavaVariableName() {
-			return StringUtils.lcaseFirstChar(getTagRootName());
+			return StringUtils.lcaseFirstChar(rootName);
 		}
 
 		private String buildGetterName() {
