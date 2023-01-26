@@ -105,18 +105,20 @@ public class XmlTagDefinition {
 	}
 
 	public enum DataType {
-		STRING("text", "", "Text"), INTEGER("int", "0", "Integer"), BOOLEAN("boolean", "0", "Boolean"), FLOAT("float", "0.0", "Float"),  MULTI("comp", "", "Compound (Multi-line)");
+		STRING("text", "", "Text", "String"), INTEGER("int", "0", "Integer", "Integer"), BOOLEAN("boolean", "0", "Boolean", "Boolean"), FLOAT("float", "0.0", "Float", "String"),  MULTI("comp", "", "Compound (Multi-line)", "String");
 
 		/** Mixed case representation of the value for display */
 		private final String label;
 		private final String defaultVal;
 		private final String htmlText;
+		private final String javaType;
 
 		/** Constructor */
-		DataType(String label, String defaultVal, String htmlText) {
+		DataType(String label, String defaultVal, String htmlText, String javaType) {
 			this.label = label;
 			this.defaultVal = defaultVal;
 			this.htmlText = htmlText;
+			this.javaType = javaType;
 		}
 
 		/**
@@ -147,6 +149,10 @@ public class XmlTagDefinition {
 		
 		public String getHtmlLabel() {
 			return htmlText;
+		}
+		
+		public String getJavaType() {
+			return javaType;
 		}
 
 	}

@@ -12,6 +12,8 @@ public interface PropertyKeys {
 	public final String PROPERTY_KEY_HTML_BREADCRUMB = "html.header.breadcrumb";
 	public final String PROPERTY_KEY_HTML_TITLE = "html.title";
 	public final String PROPERTY_KEY_HTML_OUTPUT_DIR = "html.output.dir";
+	
+	public final String PROPERTY_KEY_JAVA_OUTPUT_DIR = "java.output.dir";
 
 	public final String PROPERTY_KEY_FILE_XSLX = "file.xlsx";
 	public final String PROPERTY_KEY_FILE_INFOS = "file.infos";

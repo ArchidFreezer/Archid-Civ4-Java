@@ -1,8 +1,15 @@
 package org.archid.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class StringUtils {
 
-	/**
+	static Pattern WORD_FINDER = Pattern.compile("(([A-Z]?[a-z]+)|([A-Z]))");
+	
+/**
 	 * Determine if a string contains any text or is null
 	 * 
 	 * @param s String to be examined.
@@ -166,4 +173,25 @@ public class StringUtils {
 		}
 		return sb.toString();
 	}
+	
+	public static String lcaseFirstChar(String val) {
+		return val.substring(0,1).toLowerCase() + val.substring(1);
+	}
+
+	/**
+	 * Takes a string in the form of separate words, camelCase or TitleCase and converts it to a list
+	 * of the individual words.
+	 *  
+	 * @param text value to parse
+	 * @return List<String> of words in the param
+	 */
+	public static List<String> findWordsInMixedCase(String text) {
+    Matcher matcher = WORD_FINDER.matcher(text);
+    List<String> words = new ArrayList<>();
+    while (matcher.find()) {
+        words.add(matcher.group(0));
+    }
+    return words;
+	}
+	
 }
