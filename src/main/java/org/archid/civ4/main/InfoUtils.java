@@ -98,6 +98,8 @@ public class InfoUtils {
 					infoType = EInfo.BUILDING_CLASS;
 				else if (cmd.getOptionValue("t").equalsIgnoreCase("era"))
 					infoType = EInfo.ERA;
+				else if (cmd.getOptionValue("t").equalsIgnoreCase("eventtrigger"))
+					infoType = EInfo.EVENT_TRIGGER;
 				else if (cmd.getOptionValue("t").equalsIgnoreCase("tech"))
 					infoType = EInfo.TECH;
 				else if (cmd.getOptionValue("t").equalsIgnoreCase("unit"))

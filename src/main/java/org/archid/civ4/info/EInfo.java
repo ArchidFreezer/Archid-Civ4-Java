@@ -6,6 +6,7 @@ public enum EInfo {
 	BUILDING("CIV4BuildingInfos.xml"), 
 	BUILDING_CLASS("CIV4BuildingClassInfos.xml"),
 	ERA("CIV4EraInfos.xml"),
+	EVENT_TRIGGER("CIV4EventTriggerInfos.xml"),
 	TECH("CIV4TechInfos.xml"),
 	UNIT("CIV4UnitInfos.xml"),
 	UNKNOWN("UnknownInfo");
