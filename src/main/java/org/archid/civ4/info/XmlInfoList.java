@@ -31,8 +31,8 @@ public class XmlInfoList {
 	
 	private boolean sorted = true;
 
-	private StringBuffer header = new StringBuffer();
-	private StringBuffer footer = new StringBuffer();
+	private StringBuilder header = new StringBuilder();
+	private StringBuilder footer = new StringBuilder();
 
 	/** {@link Map} keyed on {@code <Type>} tag values */ 
 	private Map<String, IXmlInfo> typeMap;
@@ -81,7 +81,7 @@ public class XmlInfoList {
 			storeTags = new ArrayList<String>();
 		}
 		
-		StringBuffer replace = new StringBuffer();
+		StringBuilder replace = new StringBuilder();
 		for (int i = 0; i < padLen; i++) {
 			replace.append(" ");
 		}
@@ -201,7 +201,7 @@ public class XmlInfoList {
 	}
 	
 	public String toString() {
-		StringBuffer sb= new StringBuffer(header);
+		StringBuilder sb= new StringBuilder(header);
 		for (IXmlInfo info: typeMap.values()) {
 			sb.append(info.getXml());
 		}
@@ -260,13 +260,13 @@ public class XmlInfoList {
 	
 	private class XmlInfo implements IXmlInfo {
 		
-		private StringBuffer xml;
+		private StringBuilder xml;
 		private String startTag;
 		private String type;
 		private Map<String, String> tags = new TreeMap<String, String>();
 		
 		private XmlInfo() {
-			xml = new StringBuffer();
+			xml = new StringBuilder();
 			// We need to initialise this with a value as it is used in the comparator
 			type = "";
 		}

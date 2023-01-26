@@ -166,6 +166,28 @@ public class StringUtils {
 		return output.toString();
 	}
 	
+	/**
+	 * Convert given string to upper case with word boundaries split by the delimiter, i.e.
+	 * "ThisIsAPieceOfText" -> "THIS_IS_A_PIECE_OF_TEXT"
+	 * 
+	 * @param str {@code String} to parse
+	 * @param delim {@code char} delimiting the words
+	 * 
+	 * @return String converted to uppercase with words divided by the delimiter
+	 */
+	public static String ucaseSplit(String str, char delim) {
+		StringBuilder sb = new StringBuilder();
+		boolean first = true;
+		for (String word: findWordsInMixedCase(str)) {
+			if (first)
+				first = false;
+			else
+				sb.append(delim);
+			sb.append(word.toUpperCase());
+		}
+		return sb.toString();
+	}
+	
 	public static String padValue(Integer val, int padlen, char padChar) {
 		StringBuilder sb = new StringBuilder(String.valueOf(val));
 		while (padlen - sb.length() > 0) {

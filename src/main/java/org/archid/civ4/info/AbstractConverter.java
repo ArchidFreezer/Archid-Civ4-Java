@@ -141,7 +141,7 @@ public abstract class AbstractConverter implements IConverter {
 
 		@Override
 		public String getXml() {
-			StringBuffer sb = new StringBuffer(startTag);
+			StringBuilder sb = new StringBuilder(startTag);
 			for (String key: tags.keySet()) {
 				sb.append(newline + tags.get(key));
 			}
@@ -202,7 +202,7 @@ public abstract class AbstractConverter implements IConverter {
 		private String tagEnd = "";
 		private String tagName = null;
 		private String tagStart = "";
-		private StringBuffer contents = new StringBuffer();
+		private StringBuilder contents = new StringBuilder();
 		private boolean complete = false;
 		
 		public void setTagName(String name) {

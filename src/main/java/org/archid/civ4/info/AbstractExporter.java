@@ -147,7 +147,7 @@ public abstract class AbstractExporter<T extends IInfos<S>, S extends IInfo> imp
 		int currHeight = 0;
 		
 		cell.setCellStyle(csWrap);
-		StringBuffer cellvalue = new StringBuffer();
+		StringBuilder cellvalue = new StringBuilder();
 		for (U value: list) {
 			if (currHeight++ > 0) cellvalue.append("\n");
 			cellvalue.append(value);
@@ -164,7 +164,7 @@ public abstract class AbstractExporter<T extends IInfos<S>, S extends IInfo> imp
 		int currHeight = 0;
 		
 		cell.setCellStyle(csWrap);
-		StringBuffer cellvalue = new StringBuffer();
+		StringBuilder cellvalue = new StringBuilder();
 		for (IPair<U, V> pair: list) {
 			if (currHeight > 0) cellvalue.append("\n");
 			cellvalue.append(pair.getKey() + "\n");
@@ -183,7 +183,7 @@ public abstract class AbstractExporter<T extends IInfos<S>, S extends IInfo> imp
 		int currHeight = 0;
 		
 		cell.setCellStyle(csWrap);
-		StringBuffer cellvalue = new StringBuffer();
+		StringBuilder cellvalue = new StringBuilder();
 		for (U key: map.keySet()) {
 			if (currHeight > 0) cellvalue.append(IInfoWorkbook.CELL_NEWLINE + IInfoWorkbook.CELL_GROUP_DELIM + IInfoWorkbook.CELL_NEWLINE);
 			cellvalue.append(key);

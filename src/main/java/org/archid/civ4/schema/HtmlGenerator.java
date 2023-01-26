@@ -157,7 +157,7 @@ public class HtmlGenerator {
 		
 		log.info("Creating html " + filenameRoot + " from " + mainChild.getTagName());
 		
-		StringBuffer html = new StringBuffer();
+		StringBuilder html = new StringBuilder();
 
 		// Output the HTML documentation
 		// This is the outer Civ4xxx tag and we want to go one level lower
