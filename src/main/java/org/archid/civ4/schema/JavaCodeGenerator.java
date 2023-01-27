@@ -486,7 +486,10 @@ public class JavaCodeGenerator {
 		methods.append(NEWLINETT + "}");
 		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
 			Tag tag = infoTagData.get(mainChild.getTagName());
-			vars.append(NEWLINETT + "private " + tag.dataType + " " + tag.varName + ";");
+			if (tag.requiresArray())
+					vars.append(NEWLINETT + "private " + tag.dataType + " " + tag.varName + " = new ArrayList<" + tag.singularDataType + ">();");
+			else 
+				vars.append(NEWLINETT + "private " + tag.dataType + " " + tag.varName + ";");
 			methods.append(NEWLINE);
 			methods.append(NEWLINETT + "@Override");
 			methods.append(NEWLINETT + "public " + tag.dataType + " " + tag.getterName + "() {");
@@ -538,6 +541,11 @@ public class JavaCodeGenerator {
 		// Now do the interface
 		file.append(NEWLINE + NEWLINE + "public interface I" + infoName + " extends IInfo {");
 		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
+			
+			// The Type tag is processed in the IInfo interface 
+			if (mainChild.getTagName().equals("Type"))
+				continue;
+				
 			Tag tag = infoTagData.get(mainChild.getTagName());
 			file.append(NEWLINET + tag.getterSignature() + ";");
 			file.append(NEWLINET + tag.setterSignature() + ";");
@@ -575,7 +583,10 @@ public class JavaCodeGenerator {
 	private void parseInfo(XmlTagDefinition info) {
 		for (XmlTagInstance tag: info.getChildren()) {
 			Tag tagData = new Tag(parser.getTagDefinition(tag.getTagName()));
-			if (tagData.requiresArray()) dynamicImports.add("import java.util.List;");
+			if (tagData.requiresArray()) {
+				dynamicImports.add("import java.util.List;");
+				dynamicImports.add("import java.util.ArrayList;");
+			}
 			if (tagData.leaves.size() == 2) dynamicImports.add("import org.archid.utils.IPair;");
 			if (tagData.leaves.size() == 3) dynamicImports.add("import org.archid.utils.ITriple;");
 			infoTagData.put(tag.getTagName(), tagData);
