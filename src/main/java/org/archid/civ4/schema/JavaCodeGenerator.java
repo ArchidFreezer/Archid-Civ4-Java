@@ -28,6 +28,9 @@ public class JavaCodeGenerator {
 	private final String NEWLINET = NEWLINE + "\t";
 	private final String NEWLINETT = NEWLINE + "\t\t";
 	private final String NEWLINETTT = NEWLINE + "\t\t\t";
+	private final String NEWLINETTTT = NEWLINE + "\t\t\t\t";
+	private final String NEWLINETTTTT = NEWLINE + "\t\t\t\t\t";
+	private final String NEWLINETTTTTT = NEWLINE + "\t\t\t\t\t\t";
 	
 	private String namespaceFolder = null; // somevalue
 	private String infoName = null;        // SomeValueInfo
@@ -35,10 +38,10 @@ public class JavaCodeGenerator {
 	private String infoNamePlural = null;  // SomeValueInfos
 	private String infoTopLevelTag = null; // Civ4SomeValueInfos
 	private String packageDef = null;
-	private XmlTagDefinition tagDefinition = null;
+	private XmlTagDefinition topLevelTagDefinition = null;
 	private SchemaParser parser = null;
 	private IPropertyHandler props = PropertyHandler.getInstance();
-	Set<String> commonImports = new HashSet<String>();
+	Set<String> dynamicImports = new HashSet<String>();
 	private Map<String, Tag> infoTagData = new HashMap<String, Tag>();
 
 	public JavaCodeGenerator(SchemaParser parser) {
@@ -53,8 +56,185 @@ public class JavaCodeGenerator {
 		createInfoInterface();
 		createInfoClass();
 		createInfoWorkbookInterface();
+		createInfoMapAdapter();
 	}
 	
+	private void createInfoMapAdapter() {
+		Set<String> imports = new HashSet<String>(dynamicImports);
+		imports.add("import java.util.ArrayList;");
+		imports.add("import java.util.List;");
+		imports.add("import java.util.Map;");
+		imports.add("import java.util.TreeMap;");
+		imports.add("import javax.xml.bind.annotation.XmlElement;");
+		imports.add("import javax.xml.bind.annotation.XmlElementWrapper;");
+		imports.add("import javax.xml.bind.annotation.adapters.XmlAdapter;");
+		imports.add("import org.archid.utils.CollectionUtils;");
+		imports.add("import org.archid.utils.JaxbUtils;");
+		imports.add("import org.archid.utils.StringUtils;");
+		
+		
+		// There are 3 core classes and the custom adapters inside the main class with each tag having entries
+		// in at least the 3 core classes so to prevent multiple iterations we will use 4 StringBuilders
+		StringBuilder adaptedClass = new StringBuilder();
+		adaptedClass.append(NEWLINET + "private static class Adapted" + infoNameRoot + " {");
+
+		StringBuilder customAdapters = new StringBuilder();
+
+		StringBuilder unmarshalClass = new StringBuilder();
+		unmarshalClass.append(NEWLINE);
+		unmarshalClass.append(NEWLINET + "@Override");
+		unmarshalClass.append(NEWLINET + "public Map<String, I" + infoName + "> unmarshal(" + infoNameRoot + "Map v) throws Exception {");
+		unmarshalClass.append(NEWLINETT + "Map<String, I" + infoName + "> map = new TreeMap<String, I" + infoName + ">();");
+		unmarshalClass.append(NEWLINETT + "for (Adapted" + infoNameRoot + " aInfo: v.entries) {");
+		unmarshalClass.append(NEWLINETTT + "I" + infoName + " info = " + infoNamePlural + ".createInfo(aInfo.type);");
+
+		StringBuilder marshalClass = new StringBuilder();
+		marshalClass.append(NEWLINE);
+		marshalClass.append(NEWLINET + "@Override");
+		marshalClass.append(NEWLINET + "public " + infoNameRoot + "Map marshal(Map<String, I" + infoName + "> v) throws Exception {");
+		marshalClass.append(NEWLINETT + infoNameRoot + "Map map = new " + infoNameRoot + "Map();");
+		marshalClass.append(NEWLINETT + "for (I" + infoName + " info: v.values()) {");
+		marshalClass.append(NEWLINETTT + "Adapted" + infoNameRoot + " aInfo = new Adapted" + infoNameRoot + "();");
+		marshalClass.append(NEWLINETTT + "aInfo.type = info.getType();");
+		
+		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
+			Tag tag = infoTagData.get(mainChild.getTagName());
+			// Process the adapted class
+			if (tag.requiresAdapter()) {
+				XmlTagDefinition innerTagXmlDef = parser.getTagDefinition(tag.tagDefinition.getChildren().get(0).getTagName());
+				adaptedClass.append(NEWLINETT + "@XmlElementWrapper(name=\"" + mainChild.getTagName() + "\")");
+				adaptedClass.append(NEWLINETT + "@XmlElement(name=\"" + innerTagXmlDef.getTagName() + "\")");
+				adaptedClass.append(NEWLINETT + "private List<Adapted" + mainChild.getTagName() + "> " + tag.varName);				
+			} else if (tag.requiresArray()) {
+				XmlTagDefinition innerTagXmlDef = parser.getTagDefinition(tag.tagDefinition.getChildren().get(0).getTagName());
+				adaptedClass.append(NEWLINETT + "@XmlElementWrapper(name=\"" + mainChild.getTagName() + "\")");
+				adaptedClass.append(NEWLINETT + "@XmlElement(name=\"" + innerTagXmlDef.getTagName() + "\")");
+				adaptedClass.append(NEWLINETT + "private " + tag.leaves.get(0).type + " " + tag.varName);				
+			} else {
+				adaptedClass.append(NEWLINETT + "@XmlElement(name=\"" + mainChild.getTagName() + "\")");
+				adaptedClass.append(NEWLINETT + "private " + tag.leaves.get(0).type + " " + tag.varName);				
+			}
+			
+			// Process any custom adapters
+			if (tag.requiresAdapter()) {
+				customAdapters.append(NEWLINE);
+				customAdapters.append(NEWLINET + "private static class Adapted" + mainChild.getTagName() + " {");
+				for (LeafData leaf: tag.leaves) {
+					customAdapters.append(NEWLINETT + "@XmlElement(name=\"" + leaf.name + "\")");
+					customAdapters.append(NEWLINETT + "private " + leaf.type + " " + leaf.varName);
+				}
+				customAdapters.append(NEWLINET + "}");
+			}
+			
+			// Process the unmarshall class
+			// The type is set when we instantiated the info class above and has no mutator
+			if (!tag.rootName.equals("Type")) {
+				if (tag.requiresAdapter()) {
+					unmarshalClass.append(NEWLINE);
+					unmarshalClass.append(NEWLINETTT + "if (CollectionUtils.hasElements(aInfo." + tag.varName + ")) {");
+					unmarshalClass.append(NEWLINETTTT + "for (Adapted" + mainChild.getTagName() + " adaptor: aInfo." + tag.varName + ") {");
+					unmarshalClass.append(NEWLINETTTTT + "if (StringUtils.hasCharacters(adaptor." + tag.leaves.get(0).varName + ")) {");
+					if (tag.leaves.size() == 2) {
+						imports.add("import org.archid.utils.Pair;");
+						unmarshalClass.append(NEWLINETTTTTT + "info." + tag.setterName + "(new Pair<" + tag.leaves.get(0).type + ", " + tag.leaves.get(1).type + ">(adaptor." + tag.leaves.get(0).varName + ", adaptor." + tag.leaves.get(1).varName + "));");
+					} else if (tag.leaves.size() == 3) {
+						imports.add("import org.archid.utils.Triple;");
+						unmarshalClass.append(NEWLINETTTTTT + "info." + tag.setterName + "(new Triple<" + tag.leaves.get(0).type + ", " + tag.leaves.get(1).type + ", " + tag.leaves.get(2).type + ">(adaptor." + tag.leaves.get(0).varName + ", adaptor." + tag.leaves.get(1).varName + ", adaptor." + tag.leaves.get(2).varName + "));");						
+					}
+					unmarshalClass.append(NEWLINETTTTT + "}");
+					unmarshalClass.append(NEWLINETTTT + "}");
+					unmarshalClass.append(NEWLINETTT + "}");
+				} else if (tag.requiresArray()) {
+					unmarshalClass.append(NEWLINE);
+					unmarshalClass.append(NEWLINETTT + "if (CollectionUtils.hasElements(aInfo." + tag.varName + ")) {");
+					unmarshalClass.append(NEWLINETTTT + "for (" + tag.singularDataType + " val: aInfo." + tag.varName + ") {");
+					unmarshalClass.append(NEWLINETTTTT + "if (StringUtils.hasCharacters(val)) {");
+					unmarshalClass.append(NEWLINETTTTTT + "info." + tag.setterName + "(val);");
+					unmarshalClass.append(NEWLINETTTTT + "}");
+					unmarshalClass.append(NEWLINETTTT + "}");
+					unmarshalClass.append(NEWLINETTT + "}");
+				} else {
+					unmarshalClass.append(NEWLINETTT + "info." + tag.setterName + "(JaxbUtils.unmarshall" + tag.dataType + "(aInfo." + tag.varName + "));");
+				}
+			}
+			
+			// Process the marshall class
+			if (!tag.rootName.equals("Type")) {
+				if (tag.requiresAdapter()) {
+					marshalClass.append(NEWLINE);
+					marshalClass.append(NEWLINETTT + "if (CollectionUtils.hasElements(info." + tag.getterName + "())) {");
+					marshalClass.append(NEWLINETTTT + "aInfo." + tag.varName + " = new ArrayList<Adapted" + mainChild.getTagName() + ">();");
+					if (tag.leaves.size() == 2) {
+						marshalClass.append(NEWLINETTTT + "for (IPair<" + tag.leaves.get(0).type + ", " + tag.leaves.get(1).type + "> pair: info." + tag.getterName + "()) {");
+						marshalClass.append(NEWLINETTTTT + "Adapted" + mainChild.getTagName() + " adaptor: new Adapted" + mainChild.getTagName() + "();");
+						marshalClass.append(NEWLINETTTTT + "adaptor." + tag.leaves.get(0).varName + " = pair.getKey();");
+						marshalClass.append(NEWLINETTTTT + "adaptor." + tag.leaves.get(1).varName + " = pair.getValue();");
+					} else if (tag.leaves.size() == 3) {
+						marshalClass.append(NEWLINETTTT + "for (ITriple<" + tag.leaves.get(0).type + ", " + tag.leaves.get(1).type + ", " + tag.leaves.get(2).type + "> triple: info." + tag.getterName + "()) {");
+						marshalClass.append(NEWLINETTTTT + "Adapted" + mainChild.getTagName() + " adaptor: new Adapted" + mainChild.getTagName() + "();");
+						marshalClass.append(NEWLINETTTTT + "adaptor." + tag.leaves.get(0).varName + " = triple.getKey();");
+						marshalClass.append(NEWLINETTTTT + "adaptor." + tag.leaves.get(1).varName + " = triple.getValue();");
+						marshalClass.append(NEWLINETTTTT + "adaptor." + tag.leaves.get(2).varName + " = triple.getData();");
+					}
+					marshalClass.append(NEWLINETTTTT + "aInfo." + tag.varName + ".add(adaptor);");
+					marshalClass.append(NEWLINETTTT + "}");
+					marshalClass.append(NEWLINETTT + "}");
+				} else if (tag.requiresArray()) {
+					marshalClass.append(NEWLINE);
+					marshalClass.append(NEWLINETTT + "if (CollectionUtils.hasElements(info." + tag.getterName + "())) {");
+					marshalClass.append(NEWLINETTTT + "aInfo." + tag.varName + " = new ArrayList<" + tag.singularDataType + ">();");
+					marshalClass.append(NEWLINETTTT + "for(" + tag.singularDataType + " val: info." + tag.getterName + "()) {");
+					marshalClass.append(NEWLINETTTTT + "aInfo." + tag.varName + ".add(val);");
+					marshalClass.append(NEWLINETTTT + "}");
+					marshalClass.append(NEWLINETTT + "}");
+				} else {
+					marshalClass.append(NEWLINETTT + "aInfo." + tag.varName + " = JaxbUtils.marshall" + tag.dataType + "(info." + tag.getterName + "());");
+				}
+			}
+			
+			
+		}
+		
+		adaptedClass.append(NEWLINET + "}");
+		
+		unmarshalClass.append(NEWLINE);
+		unmarshalClass.append(NEWLINETTT + "map.put(aInfo.type, info);");
+		unmarshalClass.append(NEWLINETT + "}");
+		unmarshalClass.append(NEWLINETT + "return map;");
+		unmarshalClass.append(NEWLINET + "}");
+		
+		marshalClass.append(NEWLINE);
+		marshalClass.append(NEWLINETTT + "map.entries.add(aInfo);");
+		marshalClass.append(NEWLINETT + "}");
+		marshalClass.append(NEWLINETT + "return map;");
+		marshalClass.append(NEWLINET + "}");
+		
+		StringBuilder file = new StringBuilder();
+		file.append(packageDef);
+		file.append(NEWLINE);
+		// Sort the imports
+		List<String> sortedImports = new ArrayList<String>(imports);
+		Collections.sort(sortedImports);
+		for (String imp: sortedImports) {
+			file.append(NEWLINE + imp);
+		}
+		file.append(NEWLINE);
+		file.append(NEWLINE + "public class " + infoNameRoot + "MapAdapter extends XmlAdapter<" + infoNameRoot + "MapAdapter." + infoNameRoot + "Map, Map<String, I" + infoName + ">> {");
+		file.append(NEWLINE);
+		file.append(NEWLINET + "public static class " + infoNameRoot + "Map {");
+		file.append(NEWLINETT + "@XmlElement(name = \"" + infoName + "\")");
+		file.append(NEWLINETT + "List<Adapted" + infoNameRoot + "> entries = new ArrayList<Adapted" + infoNameRoot + ">();");
+		file.append(NEWLINET + "}");
+		file.append(NEWLINE);
+		file.append(adaptedClass);
+		file.append(customAdapters);
+		file.append(unmarshalClass);
+		file.append(marshalClass);
+		file.append(NEWLINE + "}");
+
+		writeFile(infoNameRoot + "MapAdapter.java", file.toString());
+}
+
 	private void createInfoWorkbookInterface() {
 		StringBuilder file = new StringBuilder();
 		file.append(packageDef);
@@ -71,7 +251,7 @@ public class JavaCodeGenerator {
 		StringBuilder row = new StringBuilder();
 		boolean first = true;
 		boolean reset = false;
-		for (XmlTagInstance mainChild : tagDefinition.getChildren()) {
+		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
 			Tag tag = infoTagData.get(mainChild.getTagName());
 			if (first) {
 				first = false;
@@ -104,7 +284,7 @@ public class JavaCodeGenerator {
 	private void createInfoClass() {
 		
 		// Sort the imports, this is cosmetic, but easy enough
-		Set<String> imports = new HashSet<String>(commonImports);
+		Set<String> imports = new HashSet<String>(dynamicImports);
 		imports.add("import java.util.LinkedHashMap;");
 		imports.add("import java.util.Map;");
 		imports.add("import org.archid.civ4.info.AbstractInfos;");
@@ -150,7 +330,7 @@ public class JavaCodeGenerator {
 		methods.append(NEWLINETT + "private " + infoName + "(String type) {");
 		methods.append(NEWLINETTT + "this.type = type;");
 		methods.append(NEWLINETT + "}");
-		for (XmlTagInstance mainChild : tagDefinition.getChildren()) {
+		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
 			Tag tag = infoTagData.get(mainChild.getTagName());
 			if (tag.requiresArray()) imports.add("import java.util.ArrayList;");
 			vars.append(NEWLINETT + "private " + tag.dataType + " " + tag.varName);
@@ -174,8 +354,10 @@ public class JavaCodeGenerator {
 		mainClass.append(NEWLINET + "}");
 		mainClass.append(NEWLINE + "}");
 
+		// Construct the file
 		StringBuilder file = new StringBuilder();
-		file.append(packageDef + NEWLINE);
+		file.append(packageDef);
+		file.append(NEWLINE);
 		List<String> sortedImports = new ArrayList<String>(imports);
 		Collections.sort(sortedImports);
 		for (String imp: sortedImports) {
@@ -190,19 +372,20 @@ public class JavaCodeGenerator {
 	private void createInfoInterface() {
 		
 		StringBuilder file = new StringBuilder();
-		file.append(packageDef + NEWLINE);
+		file.append(packageDef);
+		file.append(NEWLINE);
 		
-		// Sort the imports, this is cosmetic, but easy enough
-		List<String> imports = new ArrayList<String>(commonImports);
+		Set<String> imports = new HashSet<String>(dynamicImports);
 		imports.add("import org.archid.civ4.info.IInfo;");
-		Collections.sort(imports);
-		for (String imp: imports) {
+		List<String> sortedImports = new ArrayList<String>(imports);
+		Collections.sort(sortedImports);
+		for (String imp: sortedImports) {
 			file.append(NEWLINE + imp);
 		}
 		
 		// Now do the interface
 		file.append(NEWLINE + NEWLINE + "public interface I" + infoName + " extends IInfo {");
-		for (XmlTagInstance mainChild : tagDefinition.getChildren()) {
+		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
 			Tag tag = infoTagData.get(mainChild.getTagName());
 			file.append(NEWLINET + tag.getterSignature() + ";");
 			file.append(NEWLINET + tag.setterSignature() + ";");
@@ -233,16 +416,16 @@ public class JavaCodeGenerator {
 		infoNameRoot = infoName.substring(0,infoName.length() - 4); // SomeValue
 		namespaceFolder = infoNameRoot.toLowerCase(); // somevalue
 		packageDef = "package org.archid.civ4.info." + namespaceFolder + ";";
-		tagDefinition = parser.getTagDefinition(infoName);
-		parseInfo(tagDefinition);
+		topLevelTagDefinition = parser.getTagDefinition(infoName);
+		parseInfo(topLevelTagDefinition);
 	}
 
 	private void parseInfo(XmlTagDefinition info) {
 		for (XmlTagInstance tag: info.getChildren()) {
 			Tag tagData = new Tag(parser.getTagDefinition(tag.getTagName()));
-			if (tagData.requiresArray()) commonImports.add("import java.util.List;");
-			if (tagData.numLeaves == 2) commonImports.add("import org.archid.utils.IPair;");
-			if (tagData.numLeaves == 3) commonImports.add("import org.archid.utils.ITriple;");
+			if (tagData.requiresArray()) dynamicImports.add("import java.util.List;");
+			if (tagData.leaves.size() == 2) dynamicImports.add("import org.archid.utils.IPair;");
+			if (tagData.leaves.size() == 3) dynamicImports.add("import org.archid.utils.ITriple;");
 			infoTagData.put(tag.getTagName(), tagData);
 		}
 	}
@@ -268,25 +451,25 @@ public class JavaCodeGenerator {
 	
 	private class Tag {
 		
-		private XmlTagDefinition tag = null; // iSomeTag
+		private XmlTagDefinition tagDefinition = null; // iSomeTag
 		private String rootName = null;      // SomeTag
 		private String varName = null;       // someTag
 		private String getterName = null;
 		private String setterName = null;
 		private String dataType = null;
 		private String singularDataType = null;
-		private Integer numLeaves = null;
 		private Integer numLevels = null;
+		private List<LeafData> leaves = new ArrayList<LeafData>(); 
 		private Map<String, String> singularMap = new HashMap<String, String>();
 		
 		
 		private Tag(XmlTagDefinition tag) {
-			this.tag = tag;
+			this.tagDefinition = tag;
 			populateSingularMap();
 			numLevels = getNumLevels(tag, 0);
-			populateDataTypes();
-			rootName = getTagRootName();
-			varName = buildJavaVariableName();
+			rootName = getTagRootName(tagDefinition.getTagName());
+			varName = buildJavaVariableName(tagDefinition.getTagName());
+			populateLeafData();
 			getterName = buildGetterName();
 			setterName = buildSetterName();
 		}
@@ -307,38 +490,50 @@ public class JavaCodeGenerator {
 			singularMap.put("Units", "Unit");
 		}
 
-		private void populateDataTypes() {
+		private void populateLeafData() {
 			if (numLevels == 0) {
-				dataType = tag.getDataType().getJavaType();
-				singularDataType = dataType;
-				numLeaves = 1;
+				LeafData leafData = new LeafData();
+				leafData.name = rootName;
+				leafData.varName = varName;
+				leafData.type = tagDefinition.getDataType().getJavaType();
+				leafData.singularType = tagDefinition.getDataType().getJavaType();
+				leaves.add(leafData);
+				dataType = leafData.type;
+				singularDataType = leafData.singularType;
 			} else if (numLevels == 1) {
-				singularDataType = parser.getTagDefinition(tag.getChildren().get(0).getTagName()).getDataType().getJavaType();
-				dataType = "List<" + singularDataType + ">";
-				numLeaves = 1;
+				LeafData leafData = new LeafData();
+				leafData.name = rootName;
+				leafData.varName = varName;
+				leafData.singularType = parser.getTagDefinition(tagDefinition.getChildren().get(0).getTagName()).getDataType().getJavaType();
+				leafData.type = "List<" + leafData.singularType + ">";
+				leaves.add(leafData);
+				dataType = leafData.type;
+				singularDataType = leafData.singularType;
 			} else if (numLevels == 2) {
 				StringBuilder sbInner = new StringBuilder();
 				// We need to drop down to the bottom level to determine how many leaf tags there are
-				XmlTagDefinition wrapper = parser.getTagDefinition(tag.getChildren().get(0).getTagName());
-				List<String> leafTypes = new ArrayList<String>();
+				XmlTagDefinition wrapper = parser.getTagDefinition(tagDefinition.getChildren().get(0).getTagName());
 				for (XmlTagInstance leaf: wrapper.getChildren()) {
-					leafTypes.add(parser.getTagDefinition(leaf.getTagName()).getDataType().getJavaType());
+					LeafData leafData = new LeafData();
+					leafData.name = leaf.getTagName();
+					leafData.varName = buildJavaVariableName(leaf.getTagName());
+					leafData.type = parser.getTagDefinition(leaf.getTagName()).getDataType().getJavaType();
+					leafData.singularType = leafData.type;
+					leaves.add(leafData);
 				}
-				if (leafTypes.size() == 2) {
-					numLeaves = 2;
+				if (leaves.size() == 2) {
 					sbInner.append("IPair<");
-				} else if (leafTypes.size() == 3) {
-					numLeaves = 3;
+				} else if (leaves.size() == 3) {
 					sbInner.append("ITriple<");
 				}
 				Boolean first = true;
-				for (String type: leafTypes) {
+				for (LeafData leaf: leaves) {
 					if (first) {
 						first = false;
 					} else {
 						sbInner.append(", ");
 					}
-					sbInner.append(type);
+					sbInner.append(leaf.type);
 				}
 				sbInner.append(">");
 				singularDataType = sbInner.toString();
@@ -351,8 +546,9 @@ public class JavaCodeGenerator {
 		}
 
 		private Integer getNumLevels(XmlTagDefinition tag, Integer level) {
-			if (tag.getChildren().size() == 0)
+			if (tag.getChildren().size() == 0) {
 				return level;
+			}
 			
 			level++;
 			for (XmlTagInstance child: tag.getChildren()) {
@@ -362,24 +558,24 @@ public class JavaCodeGenerator {
 			return level;
 		}
 
-		private String buildJavaVariableName() {
-			return StringUtils.lcaseFirstChar(rootName);
+		private String buildJavaVariableName(String var) {
+			
+			return StringUtils.lcaseFirstChar(getTagRootName(var));
 		}
 
 		private String buildGetterName() {
 			StringBuilder sb = new StringBuilder();
-			if (tag.getDataType() == DataType.BOOLEAN)
+			if (tagDefinition.getDataType() == DataType.BOOLEAN)
 				sb.append("is");
 			else
 				sb.append("get");
-			sb.append(getTagRootName());
+			sb.append(rootName);
 			return sb.toString();
 		}
 
-		private String getTagRootName() {
-			String tagName = tag.getTagName();
+		private String getTagRootName(String tagName) {
 			// Check if we need to truncate the fist character
-			switch (tag.getDataType()) {
+			switch (tagDefinition.getDataType()) {
 			case BOOLEAN:
 			case INTEGER:
 				tagName = tagName.substring(1);
@@ -393,9 +589,9 @@ public class JavaCodeGenerator {
 		private String buildSetterName() {
 			String setter = null;
 			if (numLevels > 0)
-				setter = "add" + singularForm(getTagRootName());
+				setter = "add" + singularForm(rootName);
 			else
-				setter = "add" + getTagRootName();
+				setter = "set" + rootName;
 			return setter;
 		}
 
@@ -436,9 +632,9 @@ public class JavaCodeGenerator {
 		
 		public String setterVarName() {
 			if (numLevels > 0)
-				return StringUtils.lcaseFirstChar(singularForm(getTagRootName()));
+				return StringUtils.lcaseFirstChar(singularForm(rootName));
 			else
-				return StringUtils.lcaseFirstChar(getTagRootName());
+				return StringUtils.lcaseFirstChar(rootName);
 		}
 		
 		public Boolean requiresArray() {
@@ -451,5 +647,14 @@ public class JavaCodeGenerator {
 		
 	}
 	
+	private class LeafData {
+		
+		private String name;
+		private String varName;
+		private String singularType;
+		private String type;
+
+	}
+
 	
 }
