@@ -2,7 +2,6 @@ package org.archid.civ4.info.eventtrigger;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import org.archid.civ4.info.AbstractExporter;
@@ -14,7 +13,7 @@ public class EventTriggerExporter extends AbstractExporter<IInfos<IEventTriggerI
 
 	/** Logging facility */
 	static Logger log = Logger.getLogger(EventTriggerExporter.class.getName());
-	
+
 	public EventTriggerExporter(EInfo infoEnum) {
 		super(infoEnum);
 	}
@@ -59,7 +58,7 @@ public class EventTriggerExporter extends AbstractExporter<IInfos<IEventTriggerI
 		addSingleCell(row.createCell(colNum++), info.getMaxOurLandmass());
 		addSingleCell(row.createCell(colNum++), info.getMinDifficulty());
 		addSingleCell(row.createCell(colNum++), info.getAngry());
-		addSingleCell(row.createCell(colNum++), info.getAngry());
+		addSingleCell(row.createCell(colNum++), info.getUnhealthy());
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getUnitsRequired(), maxHeight);
 		addSingleCell(row.createCell(colNum++), info.getNumUnits());
 		addSingleCell(row.createCell(colNum++), info.getNumUnitsGlobal());
@@ -113,7 +112,5 @@ public class EventTriggerExporter extends AbstractExporter<IInfos<IEventTriggerI
 		addSingleCell(row.createCell(colNum++), info.getPythonCallback());
 
 		row.setHeightInPoints(maxHeight * row.getSheet().getDefaultRowHeightInPoints());
-		
 	}
-	
 }

@@ -11,9 +11,9 @@ public class EventTriggerImporter extends AbstractImporter<IInfos<IEventTriggerI
 
 	/** Logging facility */
 	static Logger log = Logger.getLogger(EventTriggerImporter.class.getName());
-	
+
 	public EventTriggerImporter(EInfo infoEnum) {
-		super(infoEnum,  new DefaultXmlFormatter("EventTrigger"));
+		super(infoEnum, new DefaultXmlFormatter("EventTrigger"));
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class EventTriggerImporter extends AbstractImporter<IInfos<IEventTriggerI
 		// Handle cells that have been moved
 		if (type.isEmpty())
 			return null;
-		
+
 		IEventTriggerInfo info = EventTriggerInfos.createInfo(type);
 		parseListCell(row.getCell(colNum++), String.class, info::addWorldNewsText);
 		parsePairsCell(row.getCell(colNum++), String.class, String.class, info::addTriggerText);
@@ -39,7 +39,7 @@ public class EventTriggerImporter extends AbstractImporter<IInfos<IEventTriggerI
 		parseCell(row.getCell(colNum++), Boolean.class, info::setProbabilityBuildingMultiply);
 		parseCell(row.getCell(colNum++), String.class, info::setCivic);
 		parseCell(row.getCell(colNum++), Integer.class, info::setMinTreasury);
-		parseCell(row.getCell(colNum++), Integer.class, info::setMinTreasury);
+		parseCell(row.getCell(colNum++), Integer.class, info::setMinPopulation);
 		parseCell(row.getCell(colNum++), Integer.class, info::setMaxPopulation);
 		parseCell(row.getCell(colNum++), Integer.class, info::setMinMapLandmass);
 		parseCell(row.getCell(colNum++), Integer.class, info::setMinOurLandmass);
@@ -98,8 +98,7 @@ public class EventTriggerImporter extends AbstractImporter<IInfos<IEventTriggerI
 		parseCell(row.getCell(colNum++), String.class, info::setPythonCanDoCity);
 		parseCell(row.getCell(colNum++), String.class, info::setPythonCanDoUnit);
 		parseCell(row.getCell(colNum++), String.class, info::setPythonCallback);
-		
+
 		return info;
 	}
-
 }

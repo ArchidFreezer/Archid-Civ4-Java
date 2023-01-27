@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-
 import org.archid.utils.CollectionUtils;
 import org.archid.utils.IPair;
 import org.archid.utils.JaxbUtils;
@@ -18,10 +16,10 @@ import org.archid.utils.StringUtils;
 public class EventTriggerMapAdapter extends XmlAdapter<EventTriggerMapAdapter.EventTriggerMap, Map<String, IEventTriggerInfo>> {
 
 	public static class EventTriggerMap {
-		 @XmlElement(name = "EventTriggerInfo")
-		 List<AdaptedEventTrigger> entries = new ArrayList<AdaptedEventTrigger>();		
+		@XmlElement(name = "EventTriggerInfo")
+		List<AdaptedEventTrigger> entries = new ArrayList<AdaptedEventTrigger>();
 	}
-	
+
 	private static class AdaptedEventTrigger {
 		@XmlElement(name="Type")
 		private String type;
@@ -177,7 +175,6 @@ public class EventTriggerMapAdapter extends XmlAdapter<EventTriggerMapAdapter.Ev
 		private String pythonCanDoUnit;
 		@XmlElement(name="PythonCallback")
 		private String pythonCallback;
-		
 	}
 
 	private static class AdaptedTriggerTexts {
@@ -192,14 +189,15 @@ public class EventTriggerMapAdapter extends XmlAdapter<EventTriggerMapAdapter.Ev
 		Map<String, IEventTriggerInfo> map = new TreeMap<String, IEventTriggerInfo>();
 		for (AdaptedEventTrigger aInfo: v.entries) {
 			IEventTriggerInfo info = EventTriggerInfos.createInfo(aInfo.type);
-			
+
 			if (CollectionUtils.hasElements(aInfo.worldNewsTexts)) {
 				for (String val: aInfo.worldNewsTexts) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addWorldNewsText(val);
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.triggerTexts)) {
 				for (AdaptedTriggerTexts adaptor: aInfo.triggerTexts) {
 					if (StringUtils.hasCharacters(adaptor.text)) {
@@ -207,7 +205,6 @@ public class EventTriggerMapAdapter extends XmlAdapter<EventTriggerMapAdapter.Ev
 					}
 				}
 			}
-			
 			info.setSinglePlayer(JaxbUtils.unmarshallBoolean(aInfo.singlePlayer));
 			info.setPercentGamesActive(JaxbUtils.unmarshallInteger(aInfo.percentGamesActive));
 			info.setWeight(JaxbUtils.unmarshallInteger(aInfo.weight));
@@ -226,11 +223,11 @@ public class EventTriggerMapAdapter extends XmlAdapter<EventTriggerMapAdapter.Ev
 
 			if (CollectionUtils.hasElements(aInfo.unitsRequired)) {
 				for (String val: aInfo.unitsRequired) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addUnitRequired(val);
+					}
 				}
 			}
-			
 			info.setNumUnits(JaxbUtils.unmarshallInteger(aInfo.numUnits));
 			info.setNumUnitsGlobal(JaxbUtils.unmarshallInteger(aInfo.numUnitsGlobal));
 			info.setUnitDamagedWeight(JaxbUtils.unmarshallInteger(aInfo.unitDamagedWeight));
@@ -240,11 +237,11 @@ public class EventTriggerMapAdapter extends XmlAdapter<EventTriggerMapAdapter.Ev
 
 			if (CollectionUtils.hasElements(aInfo.buildingsRequired)) {
 				for (String val: aInfo.buildingsRequired) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addBuildingRequired(val);
+					}
 				}
 			}
-			
 			info.setNumBuildings(JaxbUtils.unmarshallInteger(aInfo.numBuildings));
 			info.setNumBuildingsGlobal(JaxbUtils.unmarshallInteger(aInfo.numBuildingsGlobal));
 			info.setNumPlotsRequired(JaxbUtils.unmarshallInteger(aInfo.numPlotsRequired));
@@ -253,55 +250,60 @@ public class EventTriggerMapAdapter extends XmlAdapter<EventTriggerMapAdapter.Ev
 
 			if (CollectionUtils.hasElements(aInfo.featuresRequired)) {
 				for (String val: aInfo.featuresRequired) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addFeatureRequired(val);
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.terrainsRequired)) {
 				for (String val: aInfo.terrainsRequired) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addTerrainRequired(val);
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.improvementsRequired)) {
 				for (String val: aInfo.improvementsRequired) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addImprovementRequired(val);
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.bonusesRequired)) {
 				for (String val: aInfo.bonusesRequired) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addBonusRequired(val);
+					}
 				}
 			}
 
 			if (CollectionUtils.hasElements(aInfo.routesRequired)) {
 				for (String val: aInfo.routesRequired) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addRouteRequired(val);
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.religionsRequired)) {
 				for (String val: aInfo.religionsRequired) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addReligionRequired(val);
+					}
 				}
 			}
-			
 			info.setNumReligions(JaxbUtils.unmarshallInteger(aInfo.numReligions));
 
 			if (CollectionUtils.hasElements(aInfo.corporationsRequired)) {
 				for (String val: aInfo.corporationsRequired) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addCorporationRequired(val);
+					}
 				}
 			}
-			
 			info.setNumCorporations(JaxbUtils.unmarshallInteger(aInfo.numCorporations));
 			info.setPickReligion(JaxbUtils.unmarshallBoolean(aInfo.pickReligion));
 			info.setStateReligion(JaxbUtils.unmarshallBoolean(aInfo.stateReligion));
@@ -311,41 +313,44 @@ public class EventTriggerMapAdapter extends XmlAdapter<EventTriggerMapAdapter.Ev
 
 			if (CollectionUtils.hasElements(aInfo.events)) {
 				for (String val: aInfo.events) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addEvent(val);
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.prereqEvents)) {
 				for (String val: aInfo.prereqEvents) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addPrereqEvent(val);
+					}
 				}
 			}
-			
 			info.setPrereqEventPlot(JaxbUtils.unmarshallBoolean(aInfo.prereqEventPlot));
-			
+
 			if (CollectionUtils.hasElements(aInfo.orPreReqs)) {
 				for (String val: aInfo.orPreReqs) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addOrPreReq(val);
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.andPreReqs)) {
 				for (String val: aInfo.andPreReqs) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addAndPreReq(val);
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.obsoleteTechs)) {
 				for (String val: aInfo.obsoleteTechs) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addObsoleteTech(val);
+					}
 				}
 			}
-			
 			info.setRecurring(JaxbUtils.unmarshallBoolean(aInfo.recurring));
 			info.setTeam(JaxbUtils.unmarshallBoolean(aInfo.team));
 			info.setGlobal(JaxbUtils.unmarshallBoolean(aInfo.global));
@@ -364,7 +369,7 @@ public class EventTriggerMapAdapter extends XmlAdapter<EventTriggerMapAdapter.Ev
 			info.setPythonCanDoCity(JaxbUtils.unmarshallString(aInfo.pythonCanDoCity));
 			info.setPythonCanDoUnit(JaxbUtils.unmarshallString(aInfo.pythonCanDoUnit));
 			info.setPythonCallback(JaxbUtils.unmarshallString(aInfo.pythonCallback));
-			
+
 			map.put(aInfo.type, info);
 		}
 		return map;
@@ -379,7 +384,7 @@ public class EventTriggerMapAdapter extends XmlAdapter<EventTriggerMapAdapter.Ev
 
 			if (CollectionUtils.hasElements(info.getWorldNewsTexts())) {
 				aInfo.worldNewsTexts = new ArrayList<String>();
-				for (String val: info.getWorldNewsTexts()) {
+				for(String val: info.getWorldNewsTexts()) {
 					aInfo.worldNewsTexts.add(val);
 				}
 			}
@@ -393,7 +398,6 @@ public class EventTriggerMapAdapter extends XmlAdapter<EventTriggerMapAdapter.Ev
 					aInfo.triggerTexts.add(adaptor);
 				}
 			}
-			
 			aInfo.singlePlayer = JaxbUtils.marshallBoolean(info.isSinglePlayer());
 			aInfo.percentGamesActive = JaxbUtils.marshallInteger(info.getPercentGamesActive());
 			aInfo.weight = JaxbUtils.marshallInteger(info.getWeight());
@@ -412,11 +416,10 @@ public class EventTriggerMapAdapter extends XmlAdapter<EventTriggerMapAdapter.Ev
 
 			if (CollectionUtils.hasElements(info.getUnitsRequired())) {
 				aInfo.unitsRequired = new ArrayList<String>();
-				for (String val: info.getUnitsRequired()) {
+				for(String val: info.getUnitsRequired()) {
 					aInfo.unitsRequired.add(val);
 				}
 			}
-
 			aInfo.numUnits = JaxbUtils.marshallInteger(info.getNumUnits());
 			aInfo.numUnitsGlobal = JaxbUtils.marshallInteger(info.getNumUnitsGlobal());
 			aInfo.unitDamagedWeight = JaxbUtils.marshallInteger(info.getUnitDamagedWeight());
@@ -426,11 +429,10 @@ public class EventTriggerMapAdapter extends XmlAdapter<EventTriggerMapAdapter.Ev
 
 			if (CollectionUtils.hasElements(info.getBuildingsRequired())) {
 				aInfo.buildingsRequired = new ArrayList<String>();
-				for (String val: info.getBuildingsRequired()) {
+				for(String val: info.getBuildingsRequired()) {
 					aInfo.buildingsRequired.add(val);
 				}
 			}
-
 			aInfo.numBuildings = JaxbUtils.marshallInteger(info.getNumBuildings());
 			aInfo.numBuildingsGlobal = JaxbUtils.marshallInteger(info.getNumBuildingsGlobal());
 			aInfo.numPlotsRequired = JaxbUtils.marshallInteger(info.getNumPlotsRequired());
@@ -439,42 +441,42 @@ public class EventTriggerMapAdapter extends XmlAdapter<EventTriggerMapAdapter.Ev
 
 			if (CollectionUtils.hasElements(info.getFeaturesRequired())) {
 				aInfo.featuresRequired = new ArrayList<String>();
-				for (String val: info.getFeaturesRequired()) {
+				for(String val: info.getFeaturesRequired()) {
 					aInfo.featuresRequired.add(val);
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getTerrainsRequired())) {
 				aInfo.terrainsRequired = new ArrayList<String>();
-				for (String val: info.getTerrainsRequired()) {
+				for(String val: info.getTerrainsRequired()) {
 					aInfo.terrainsRequired.add(val);
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getImprovementsRequired())) {
 				aInfo.improvementsRequired = new ArrayList<String>();
-				for (String val: info.getImprovementsRequired()) {
+				for(String val: info.getImprovementsRequired()) {
 					aInfo.improvementsRequired.add(val);
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getBonusesRequired())) {
 				aInfo.bonusesRequired = new ArrayList<String>();
-				for (String val: info.getBonusesRequired()) {
+				for(String val: info.getBonusesRequired()) {
 					aInfo.bonusesRequired.add(val);
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getRoutesRequired())) {
 				aInfo.routesRequired = new ArrayList<String>();
-				for (String val: info.getRoutesRequired()) {
+				for(String val: info.getRoutesRequired()) {
 					aInfo.routesRequired.add(val);
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getReligionsRequired())) {
 				aInfo.religionsRequired = new ArrayList<String>();
-				for (String val: info.getReligionsRequired()) {
+				for(String val: info.getReligionsRequired()) {
 					aInfo.religionsRequired.add(val);
 				}
 			}
@@ -482,12 +484,11 @@ public class EventTriggerMapAdapter extends XmlAdapter<EventTriggerMapAdapter.Ev
 
 			if (CollectionUtils.hasElements(info.getCorporationsRequired())) {
 				aInfo.corporationsRequired = new ArrayList<String>();
-				for (String val: info.getCorporationsRequired()) {
+				for(String val: info.getCorporationsRequired()) {
 					aInfo.corporationsRequired.add(val);
 				}
 			}
 			aInfo.numCorporations = JaxbUtils.marshallInteger(info.getNumCorporations());
-
 			aInfo.pickReligion = JaxbUtils.marshallBoolean(info.isPickReligion());
 			aInfo.stateReligion = JaxbUtils.marshallBoolean(info.isStateReligion());
 			aInfo.holyCity = JaxbUtils.marshallBoolean(info.isHolyCity());
@@ -496,14 +497,14 @@ public class EventTriggerMapAdapter extends XmlAdapter<EventTriggerMapAdapter.Ev
 
 			if (CollectionUtils.hasElements(info.getEvents())) {
 				aInfo.events = new ArrayList<String>();
-				for (String val: info.getEvents()) {
+				for(String val: info.getEvents()) {
 					aInfo.events.add(val);
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getPrereqEvents())) {
 				aInfo.prereqEvents = new ArrayList<String>();
-				for (String val: info.getPrereqEvents()) {
+				for(String val: info.getPrereqEvents()) {
 					aInfo.prereqEvents.add(val);
 				}
 			}
@@ -511,25 +512,24 @@ public class EventTriggerMapAdapter extends XmlAdapter<EventTriggerMapAdapter.Ev
 
 			if (CollectionUtils.hasElements(info.getOrPreReqs())) {
 				aInfo.orPreReqs = new ArrayList<String>();
-				for (String val: info.getOrPreReqs()) {
+				for(String val: info.getOrPreReqs()) {
 					aInfo.orPreReqs.add(val);
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getAndPreReqs())) {
 				aInfo.andPreReqs = new ArrayList<String>();
-				for (String val: info.getAndPreReqs()) {
+				for(String val: info.getAndPreReqs()) {
 					aInfo.andPreReqs.add(val);
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getObsoleteTechs())) {
 				aInfo.obsoleteTechs = new ArrayList<String>();
-				for (String val: info.getObsoleteTechs()) {
+				for(String val: info.getObsoleteTechs()) {
 					aInfo.obsoleteTechs.add(val);
 				}
 			}
-			
 			aInfo.recurring = JaxbUtils.marshallBoolean(info.isRecurring());
 			aInfo.team = JaxbUtils.marshallBoolean(info.isTeam());
 			aInfo.global = JaxbUtils.marshallBoolean(info.isGlobal());
@@ -548,11 +548,9 @@ public class EventTriggerMapAdapter extends XmlAdapter<EventTriggerMapAdapter.Ev
 			aInfo.pythonCanDoCity = JaxbUtils.marshallString(info.getPythonCanDoCity());
 			aInfo.pythonCanDoUnit = JaxbUtils.marshallString(info.getPythonCanDoUnit());
 			aInfo.pythonCallback = JaxbUtils.marshallString(info.getPythonCallback());
-			
+
 			map.entries.add(aInfo);
 		}
-		
 		return map;
 	}
-	
 }
