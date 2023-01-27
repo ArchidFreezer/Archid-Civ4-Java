@@ -6,6 +6,7 @@ import org.archid.civ4.info.bonusclass.BonusClassExporter;
 import org.archid.civ4.info.building.BuildingExporter;
 import org.archid.civ4.info.buildingclass.BuildingClassExporter;
 import org.archid.civ4.info.era.EraExporter;
+import org.archid.civ4.info.event.EventExporter;
 import org.archid.civ4.info.eventtrigger.EventTriggerExporter;
 import org.archid.civ4.info.tech.TechExporter;
 import org.archid.civ4.info.unit.UnitExporter;
@@ -32,6 +33,9 @@ public class ExporterFactory {
 			break;
 		case ERA:
 			exporter = new EraExporter(infoType);
+			break;
+		case EVENT:
+			exporter = new EventExporter(infoType);
 			break;
 		case EVENT_TRIGGER:
 			exporter = new EventTriggerExporter(infoType);

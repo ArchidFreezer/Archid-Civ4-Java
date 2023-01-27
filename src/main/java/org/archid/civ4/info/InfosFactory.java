@@ -13,6 +13,7 @@ import org.archid.civ4.info.bonusclass.BonusClassInfos;
 import org.archid.civ4.info.building.BuildingInfos;
 import org.archid.civ4.info.buildingclass.BuildingClassInfos;
 import org.archid.civ4.info.era.EraInfos;
+import org.archid.civ4.info.event.EventInfos;
 import org.archid.civ4.info.eventtrigger.EventTriggerInfos;
 import org.archid.civ4.info.tech.TechInfos;
 import org.archid.civ4.info.unit.UnitInfos;
@@ -40,6 +41,9 @@ public class InfosFactory {
 			break;
 		case ERA:
 			infos = (T) new EraInfos();
+			break;
+		case EVENT:
+			infos = (T) new EventInfos();
 			break;
 		case EVENT_TRIGGER:
 			infos = (T) new EventTriggerInfos();
@@ -74,6 +78,9 @@ public class InfosFactory {
 			break;
 		case ERA:
 			jaxbContext = JAXBContext.newInstance(EraInfos.class);
+			break;
+		case EVENT:
+			jaxbContext = JAXBContext.newInstance(EventInfos.class);
 			break;
 		case EVENT_TRIGGER:
 			jaxbContext = JAXBContext.newInstance(EventTriggerInfos.class);
