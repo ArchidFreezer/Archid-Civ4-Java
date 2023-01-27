@@ -91,7 +91,7 @@ public class EventTriggerExporter extends AbstractExporter<IInfos<IEventTriggerI
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqEvents(), maxHeight);
 		addSingleCell(row.createCell(colNum++), info.isPrereqEventPlot());
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getOrPreReqs(), maxHeight);
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getAndPrereqs(), maxHeight);
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getAndPreReqs(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getObsoleteTechs(), maxHeight);
 		addSingleCell(row.createCell(colNum++), info.isRecurring());
 		addSingleCell(row.createCell(colNum++), info.isTeam());

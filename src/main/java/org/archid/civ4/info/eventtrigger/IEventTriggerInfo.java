@@ -215,9 +215,9 @@ public interface IEventTriggerInfo extends IInfo {
 
 	void setWeight(int weight);
 
-	List<String> getAndPrereqs();
+	List<String> getAndPreReqs();
 
-	void addAndPrereq(String andPrereq);
+	void addAndPreReq(String andPrereq);
 
 	List<String> getBonusesRequired();
 

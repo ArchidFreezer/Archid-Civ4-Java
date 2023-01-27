@@ -78,7 +78,7 @@ public class EventTriggerImporter extends AbstractImporter<IInfos<IEventTriggerI
 		parseListCell(row.getCell(colNum++), String.class, info::addPrereqEvent);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setPrereqEventPlot);
 		parseListCell(row.getCell(colNum++), String.class, info::addOrPreReq);
-		parseListCell(row.getCell(colNum++), String.class, info::addAndPrereq);
+		parseListCell(row.getCell(colNum++), String.class, info::addAndPreReq);
 		parseListCell(row.getCell(colNum++), String.class, info::addObsoleteTech);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setRecurring);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setTeam);

@@ -335,7 +335,7 @@ public class EventTriggerMapAdapter extends XmlAdapter<EventTriggerMapAdapter.Ev
 			if (CollectionUtils.hasElements(aInfo.andPreReqs)) {
 				for (String val: aInfo.andPreReqs) {
 					if (StringUtils.hasCharacters(val))
-						info.addAndPrereq(val);
+						info.addAndPreReq(val);
 				}
 			}
 			
@@ -516,9 +516,9 @@ public class EventTriggerMapAdapter extends XmlAdapter<EventTriggerMapAdapter.Ev
 				}
 			}
 
-			if (CollectionUtils.hasElements(info.getAndPrereqs())) {
+			if (CollectionUtils.hasElements(info.getAndPreReqs())) {
 				aInfo.andPreReqs = new ArrayList<String>();
-				for (String val: info.getAndPrereqs()) {
+				for (String val: info.getAndPreReqs()) {
 					aInfo.andPreReqs.add(val);
 				}
 			}

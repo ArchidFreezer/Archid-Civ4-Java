@@ -644,12 +644,12 @@ public class EventTriggerInfos extends AbstractInfos<IEventTriggerInfo> {
 		}
 
 		@Override
-		public List<String> getAndPrereqs() {
+		public List<String> getAndPreReqs() {
 			return andPrereqs;
 		}
 
 		@Override
-		public void addAndPrereq(String andPrereq) {
+		public void addAndPreReq(String andPrereq) {
 			andPrereqs.add(andPrereq);
 		}
 
