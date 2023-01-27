@@ -19,10 +19,12 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.archid.utils.IPair;
 import org.archid.utils.IPropertyHandler;
+import org.archid.utils.ITriple;
 import org.archid.utils.Pair;
 import org.archid.utils.PropertyHandler;
 import org.archid.utils.PropertyKeys;
 import org.archid.utils.StringUtils;
+import org.archid.utils.Triple;
 import org.archid.utils.civ4.Civ4FileUtils;
 
 /**
@@ -145,6 +147,43 @@ public abstract class AbstractImporter<T extends IInfos<S>, S extends IInfo> imp
 						func.accept(new Pair<U, V>(key, val));
 					}
 					first = !first;
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Reads the content of a workbook {@link Cell} containing a list of value triples delimited by {@link IInfoWorkbook.CELL_NEWLINE} and
+	 * calls the {@link Consumer} function provided with the value of the cell parsed into an {@link ITriple} keyed by the {@code keyClass} parameter
+	 * and with a value of {@code valClass} and data of {@code dataClass} 
+	 * <p>
+	 * An example for a cell containing a list of String/String/Integer triples that are added to the info using its {@code addTripleValMethodName} method would be: <br>
+	 * {@code parseCellTriples(cell, String.class, String.class, Integer.class, info::addTripleValMethodName)}
+
+	 * @param cell the workbook cell containing the data to parse
+	 * @param keyClass {@link Class} of the triple key
+	 * @param valClass {@link Class} of the triple value
+	 * @param dataClass {@link Class} of the triple data
+	 * @param func the {@link Consumer} function called with a single {@code IPair} as a parameter
+	 */
+	protected <U, V, W> void parseTriplesCell(Cell cell, Class<U> keyClass, Class<V> valClass, Class<W> dataClass, Consumer<ITriple<U, V, W>> func) {
+		String[] arr = cell.getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE);
+		if (arr.length > 2) {
+			int count = 0;
+			U key = null;
+			V val = null;
+			W data = null;
+			for (String str: arr) {
+				if (StringUtils.hasCharacters(str)) {
+					if (count++ == 0) {
+						key = getVal(str, keyClass);
+					} else if (count++ == 1){
+						val = getVal(str, valClass);
+					} else if (count == 2){
+						data = getVal(str, dataClass);
+						func.accept(new Triple<U, V, W>(key, val, data));
+						count = 0;
+					}
 				}
 			}
 		}

@@ -57,8 +57,162 @@ public class JavaCodeGenerator {
 		createInfoClass();
 		createInfoWorkbookInterface();
 		createInfoMapAdapter();
+		createInfoExporter();
+		createInfoImporter();
 	}
 	
+	private void createInfoImporter() {
+		Set<String> imports = new HashSet<String>();
+		imports.add("import org.apache.log4j.Logger;");
+		imports.add("import org.apache.poi.ss.usermodel.Row;");
+		imports.add("import org.archid.civ4.info.AbstractImporter;");
+		imports.add("import org.archid.civ4.info.DefaultXmlFormatter;");
+		imports.add("import org.archid.civ4.info.EInfo;");
+		imports.add("import org.archid.civ4.info.IInfos;");
+
+		StringBuilder file = new StringBuilder();
+		file.append(packageDef);
+		file.append(NEWLINE);
+		// Sort the imports
+		List<String> sortedImports = new ArrayList<String>(imports);
+		Collections.sort(sortedImports);
+		for (String imp: sortedImports) {
+			file.append(NEWLINE + imp);
+		}
+		file.append(NEWLINE);
+		file.append(NEWLINE + "public class " + infoNameRoot + "Importer extends AbstractImporter<IInfos<I" + infoName + ">, I" + infoName + "> {");
+		file.append(NEWLINE);
+		file.append(NEWLINET + "/** Logging facility */");
+		file.append(NEWLINET + "static Logger log = Logger.getLogger(" + infoNameRoot + "Importer.class.getName());");
+		file.append(NEWLINE);
+		file.append(NEWLINET + "public " + infoNameRoot + "Importer(EInfo infoEnum) {");
+		file.append(NEWLINETT + "super(infoEnum, new DefaultXmlFormatter(\"" + infoNameRoot + "\"));");
+		file.append(NEWLINET + "}");
+		file.append(NEWLINE);
+		file.append(NEWLINET + "@Override");
+		file.append(NEWLINET + "public String getListSheetName() {");
+		file.append(NEWLINETT + "return I" + infoNameRoot + "Workbook.SHEETNAME_LIST;");
+		file.append(NEWLINET + "}");
+		file.append(NEWLINE);
+		file.append(NEWLINET + "@Override");
+		file.append(NEWLINET + "protected I" + infoName + " parseRow(Row row) {");
+		file.append(NEWLINETT + "int colNum = 0;");
+		file.append(NEWLINETT + "String type = row.getCell(colNum++).getStringCellValue();");
+		file.append(NEWLINETT + "// Handle cells that have been moved");
+		file.append(NEWLINETT + "if (type.isEmpty())");
+		file.append(NEWLINETTT + "return null;");
+		file.append(NEWLINE + "");
+		file.append(NEWLINETT + "I" + infoName + " info = " + infoName + "s.createInfo(type);");
+
+		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
+			if (mainChild.getTagName().equals("Type"))
+					continue;
+			
+			Tag tag = infoTagData.get(mainChild.getTagName());
+			if (tag.requiresArray()) {
+				if (tag.leaves.size() == 1) {
+					if (tag.requiresArray()) {
+						file.append(NEWLINETT + "parseListCell(row.getCell(colNum++), " + tag.singularDataType + ".class, info::" + tag.setterName + ");");
+					} else {
+						file.append(NEWLINETT + "parseCell(row.getCell(colNum++), " + tag.dataType + ".class, info::" + tag.setterName + ");");
+					}
+				} else if (tag.leaves.size() == 2) { 
+					file.append(NEWLINETT + "parsePairsCell(row.getCell(colNum++), " + tag.leaves.get(0).type + ".class, " + tag.leaves.get(1).type + ".class, info::" + tag.setterName + ");");
+				} else if (tag.leaves.size() == 3) {
+					file.append(NEWLINETT + "parseTriplesCell(row.getCell(colNum++), " + tag.leaves.get(0).type + ".class, " + tag.leaves.get(1).type + ".class, " + tag.leaves.get(2).type + ".class, info::" + tag.setterName + ");");
+				}
+			} else {
+				file.append(NEWLINETT + "parseCell(row.getCell(colNum++), " + tag.dataType + ".class, info::" + tag.setterName + ");");					
+			}
+		}
+		
+		file.append(NEWLINE);
+		file.append(NEWLINETT + "return info;");
+		file.append(NEWLINET + "}");
+		file.append(NEWLINE + "}");
+
+		writeFile(infoNameRoot + "Importer.java", file.toString());
+		
+}
+
+	private void createInfoExporter() {
+		Set<String> imports = new HashSet<String>();
+		imports.add("import java.util.ArrayList;");
+		imports.add("import java.util.List;");
+		imports.add("import org.apache.log4j.Logger;");
+		imports.add("import org.apache.poi.ss.usermodel.Row;");
+		imports.add("import org.archid.civ4.info.AbstractExporter;");
+		imports.add("import org.archid.civ4.info.EInfo;");
+		imports.add("import org.archid.civ4.info.IInfos;");
+		imports.add("import org.archid.civ4.info." + namespaceFolder + ".I" + infoNameRoot + "Workbook.SheetHeaders;");
+
+		StringBuilder file = new StringBuilder();
+		file.append(packageDef);
+		file.append(NEWLINE);
+		// Sort the imports
+		List<String> sortedImports = new ArrayList<String>(imports);
+		Collections.sort(sortedImports);
+		for (String imp: sortedImports) {
+			file.append(NEWLINE + imp);
+		}
+		file.append(NEWLINE);
+		file.append(NEWLINE + "public class " + infoNameRoot + "Exporter extends AbstractExporter<IInfos<I" + infoName + ">, I" + infoName + "> {");
+		file.append(NEWLINE);
+		file.append(NEWLINET + "/** Logging facility */");
+		file.append(NEWLINET + "static Logger log = Logger.getLogger(" + infoNameRoot + "Exporter.class.getName());");
+		file.append(NEWLINE);
+		file.append(NEWLINET + "public " + infoNameRoot + "Exporter(EInfo infoEnum) {");
+		file.append(NEWLINETT + "super(infoEnum);");
+		file.append(NEWLINET + "}");
+		file.append(NEWLINE);
+		file.append(NEWLINET + "@Override");
+		file.append(NEWLINET + "public List<String> getHeaders() {");
+		file.append(NEWLINETT + "List<String> headers = new ArrayList<String>();");
+		file.append(NEWLINETT + "for (SheetHeaders header: SheetHeaders.values()) {");
+		file.append(NEWLINETTT + "headers.add(header.toString());");
+		file.append(NEWLINETT + "}");
+		file.append(NEWLINETT + "return headers;");
+		file.append(NEWLINET + "}");
+		file.append(NEWLINE);
+		file.append(NEWLINET + "@Override");
+		file.append(NEWLINET + "protected int getNumCols() {");
+		file.append(NEWLINETT + "return I" + infoNameRoot + "Workbook.SheetHeaders.values().length;");
+		file.append(NEWLINET + "}");
+		file.append(NEWLINE);
+		file.append(NEWLINET + "@Override");
+		file.append(NEWLINET + "protected String getInfoListSheetName() {");
+		file.append(NEWLINETT + "return I" + infoNameRoot + "Workbook.SHEETNAME_LIST;");
+		file.append(NEWLINET + "}");
+		file.append(NEWLINE);
+		file.append(NEWLINET + "@Override");
+		file.append(NEWLINET + "protected void populateRow(Row row, I" + infoName + " info) {");
+		file.append(NEWLINETT + "int maxHeight = 1;");
+		file.append(NEWLINETT + "int colNum = 0;");
+		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
+			Tag tag = infoTagData.get(mainChild.getTagName());
+			if (tag.requiresArray()) {
+				if (tag.leaves.size() == 1) {
+					file.append(NEWLINETT + "maxHeight = addRepeatingCell(row.createCell(colNum++), info." + tag.getterName + "(), maxHeight);");					
+				} else if (tag.leaves.size() == 2) { 
+					file.append(NEWLINETT + "maxHeight = addRepeatingPairCell(row.createCell(colNum++), info." + tag.getterName + "(), maxHeight);");					
+				} else if (tag.leaves.size() == 3) {
+					file.append(NEWLINETT + "maxHeight = addRepeatingTripleCell(row.createCell(colNum++), info." + tag.getterName + "(), maxHeight);");					
+				}
+			} else {
+				file.append(NEWLINETT + "addSingleCell(row.createCell(colNum++), info." + tag.getterName + "());");					
+			}
+		}
+		
+		file.append(NEWLINE);
+		file.append(NEWLINETT + "row.setHeightInPoints(maxHeight * row.getSheet().getDefaultRowHeightInPoints());");
+		file.append(NEWLINET + "}");
+		file.append(NEWLINE + "}");
+
+		writeFile(infoNameRoot + "Exporter.java", file.toString());
+		
+		
+	}
+
 	private void createInfoMapAdapter() {
 		Set<String> imports = new HashSet<String>(dynamicImports);
 		imports.add("import java.util.ArrayList;");
@@ -104,15 +258,15 @@ public class JavaCodeGenerator {
 				XmlTagDefinition innerTagXmlDef = parser.getTagDefinition(tag.tagDefinition.getChildren().get(0).getTagName());
 				adaptedClass.append(NEWLINETT + "@XmlElementWrapper(name=\"" + mainChild.getTagName() + "\")");
 				adaptedClass.append(NEWLINETT + "@XmlElement(name=\"" + innerTagXmlDef.getTagName() + "\")");
-				adaptedClass.append(NEWLINETT + "private List<Adapted" + mainChild.getTagName() + "> " + tag.varName);				
+				adaptedClass.append(NEWLINETT + "private List<Adapted" + mainChild.getTagName() + "> " + tag.varName + ";");				
 			} else if (tag.requiresArray()) {
 				XmlTagDefinition innerTagXmlDef = parser.getTagDefinition(tag.tagDefinition.getChildren().get(0).getTagName());
 				adaptedClass.append(NEWLINETT + "@XmlElementWrapper(name=\"" + mainChild.getTagName() + "\")");
 				adaptedClass.append(NEWLINETT + "@XmlElement(name=\"" + innerTagXmlDef.getTagName() + "\")");
-				adaptedClass.append(NEWLINETT + "private " + tag.leaves.get(0).type + " " + tag.varName);				
+				adaptedClass.append(NEWLINETT + "private " + getXmlDataType(tag.leaves.get(0).type) + " " + tag.varName + ";");				
 			} else {
 				adaptedClass.append(NEWLINETT + "@XmlElement(name=\"" + mainChild.getTagName() + "\")");
-				adaptedClass.append(NEWLINETT + "private " + tag.leaves.get(0).type + " " + tag.varName);				
+				adaptedClass.append(NEWLINETT + "private " + getXmlDataType(tag.leaves.get(0).type) + " " + tag.varName + ";");				
 			}
 			
 			// Process any custom adapters
@@ -121,7 +275,7 @@ public class JavaCodeGenerator {
 				customAdapters.append(NEWLINET + "private static class Adapted" + mainChild.getTagName() + " {");
 				for (LeafData leaf: tag.leaves) {
 					customAdapters.append(NEWLINETT + "@XmlElement(name=\"" + leaf.name + "\")");
-					customAdapters.append(NEWLINETT + "private " + leaf.type + " " + leaf.varName);
+					customAdapters.append(NEWLINETT + "private " + getXmlDataType(leaf.type) + " " + leaf.varName + ";");
 				}
 				customAdapters.append(NEWLINET + "}");
 			}
@@ -166,12 +320,12 @@ public class JavaCodeGenerator {
 					marshalClass.append(NEWLINETTTT + "aInfo." + tag.varName + " = new ArrayList<Adapted" + mainChild.getTagName() + ">();");
 					if (tag.leaves.size() == 2) {
 						marshalClass.append(NEWLINETTTT + "for (IPair<" + tag.leaves.get(0).type + ", " + tag.leaves.get(1).type + "> pair: info." + tag.getterName + "()) {");
-						marshalClass.append(NEWLINETTTTT + "Adapted" + mainChild.getTagName() + " adaptor: new Adapted" + mainChild.getTagName() + "();");
+						marshalClass.append(NEWLINETTTTT + "Adapted" + mainChild.getTagName() + " adaptor = new Adapted" + mainChild.getTagName() + "();");
 						marshalClass.append(NEWLINETTTTT + "adaptor." + tag.leaves.get(0).varName + " = pair.getKey();");
 						marshalClass.append(NEWLINETTTTT + "adaptor." + tag.leaves.get(1).varName + " = pair.getValue();");
 					} else if (tag.leaves.size() == 3) {
 						marshalClass.append(NEWLINETTTT + "for (ITriple<" + tag.leaves.get(0).type + ", " + tag.leaves.get(1).type + ", " + tag.leaves.get(2).type + "> triple: info." + tag.getterName + "()) {");
-						marshalClass.append(NEWLINETTTTT + "Adapted" + mainChild.getTagName() + " adaptor: new Adapted" + mainChild.getTagName() + "();");
+						marshalClass.append(NEWLINETTTTT + "Adapted" + mainChild.getTagName() + " adaptor = new Adapted" + mainChild.getTagName() + "();");
 						marshalClass.append(NEWLINETTTTT + "adaptor." + tag.leaves.get(0).varName + " = triple.getKey();");
 						marshalClass.append(NEWLINETTTTT + "adaptor." + tag.leaves.get(1).varName + " = triple.getValue();");
 						marshalClass.append(NEWLINETTTTT + "adaptor." + tag.leaves.get(2).varName + " = triple.getData();");
@@ -449,6 +603,15 @@ public class JavaCodeGenerator {
 
 	}
 	
+	private String getXmlDataType(String javaType) {
+		if (javaType.equals("Boolean"))
+			return "Integer";
+		else if (javaType.equals("Float"))
+			return "String";
+		else
+			return javaType;
+	}
+	
 	private class Tag {
 		
 		private XmlTagDefinition tagDefinition = null; // iSomeTag
@@ -476,10 +639,11 @@ public class JavaCodeGenerator {
 		
 		private void populateSingularMap() {
 			singularMap.put("Bonuses", "Bonus");
-			singularMap.put("Buildgings", "Building");
+			singularMap.put("Buildings", "Building");
 			singularMap.put("Classes", "Class");
 			singularMap.put("Corporations", "Corporation");
 			singularMap.put("Events", "Event");
+			singularMap.put("Features", "Feature");
 			singularMap.put("Improvements", "Improvement");
 			singularMap.put("Prereqs", "Prereq");
 			singularMap.put("Religions", "Religion");

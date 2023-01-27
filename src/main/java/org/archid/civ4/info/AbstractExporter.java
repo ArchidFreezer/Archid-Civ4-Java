@@ -27,6 +27,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.archid.utils.IPair;
 import org.archid.utils.IPropertyHandler;
+import org.archid.utils.ITriple;
 import org.archid.utils.PropertyHandler;
 import org.archid.utils.PropertyKeys;
 import org.archid.utils.StringUtils;
@@ -170,6 +171,26 @@ public abstract class AbstractExporter<T extends IInfos<S>, S extends IInfo> imp
 			cellvalue.append(pair.getKey() + "\n");
 			cellvalue.append(pair.getValue());
 			currHeight += 2;
+		}
+		cell.setCellValue(cellvalue.toString());
+		if (currHeight > maxHeight) maxHeight = currHeight;
+		
+		return maxHeight;
+		
+	}
+
+	protected <U, V, W> int addRepeatingTripleCell(Cell cell, List<ITriple<U, V, W>> list, int maxHeight) {
+		
+		int currHeight = 0;
+		
+		cell.setCellStyle(csWrap);
+		StringBuilder cellvalue = new StringBuilder();
+		for (ITriple<U, V, W> triple: list) {
+			if (currHeight > 0) cellvalue.append("\n");
+			cellvalue.append(triple.getKey() + "\n");
+			cellvalue.append(triple.getValue() + "\n");
+			cellvalue.append(triple.getData());
+			currHeight += 3;
 		}
 		cell.setCellValue(cellvalue.toString());
 		if (currHeight > maxHeight) maxHeight = currHeight;
