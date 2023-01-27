@@ -175,15 +175,16 @@ public abstract class AbstractImporter<T extends IInfos<S>, S extends IInfo> imp
 			W data = null;
 			for (String str: arr) {
 				if (StringUtils.hasCharacters(str)) {
-					if (count++ == 0) {
+					if (count == 0) {
 						key = getVal(str, keyClass);
-					} else if (count++ == 1){
+					} else if (count == 1){
 						val = getVal(str, valClass);
 					} else if (count == 2){
 						data = getVal(str, dataClass);
 						func.accept(new Triple<U, V, W>(key, val, data));
-						count = 0;
+						count = -1;
 					}
+					count++;
 				}
 			}
 		}
