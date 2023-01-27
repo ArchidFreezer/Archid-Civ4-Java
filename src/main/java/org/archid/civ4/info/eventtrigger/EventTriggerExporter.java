@@ -8,13 +8,12 @@ import org.apache.poi.ss.usermodel.Row;
 import org.archid.civ4.info.AbstractExporter;
 import org.archid.civ4.info.EInfo;
 import org.archid.civ4.info.IInfos;
-import org.archid.civ4.info.building.BuildingExporter;
 import org.archid.civ4.info.eventtrigger.IEventTriggerWorkbook.SheetHeaders;
 
 public class EventTriggerExporter extends AbstractExporter<IInfos<IEventTriggerInfo>, IEventTriggerInfo> {
 
 	/** Logging facility */
-	static Logger log = Logger.getLogger(BuildingExporter.class.getName());
+	static Logger log = Logger.getLogger(EventTriggerExporter.class.getName());
 	
 	public EventTriggerExporter(EInfo infoEnum) {
 		super(infoEnum);
