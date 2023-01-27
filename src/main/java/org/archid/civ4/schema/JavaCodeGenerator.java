@@ -486,13 +486,11 @@ public class JavaCodeGenerator {
 		methods.append(NEWLINETT + "}");
 		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
 			Tag tag = infoTagData.get(mainChild.getTagName());
-			if (tag.requiresArray()) imports.add("import java.util.ArrayList;");
-			vars.append(NEWLINETT + "private " + tag.dataType + " " + tag.varName);
-			if (tag.varName.equals("type")) continue; // We have already dealt with this tags method
+			vars.append(NEWLINETT + "private " + tag.dataType + " " + tag.varName + ";");
 			methods.append(NEWLINE);
 			methods.append(NEWLINETT + "@Override");
 			methods.append(NEWLINETT + "public " + tag.dataType + " " + tag.getterName + "() {");
-			methods.append(NEWLINETTT + "return " + tag.varName);
+			methods.append(NEWLINETTT + "return " + tag.varName + ";");
 			methods.append(NEWLINETT + "}");
 			methods.append(NEWLINE);
 			methods.append(NEWLINETT + "@Override");
