@@ -1,6 +1,5 @@
 package org.archid.civ4.info.eventtrigger;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.archid.civ4.info.IInfo;
 import org.archid.utils.IPair;
