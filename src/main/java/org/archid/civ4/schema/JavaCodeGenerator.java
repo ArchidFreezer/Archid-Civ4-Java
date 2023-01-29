@@ -24,6 +24,9 @@ public class JavaCodeGenerator {
 	/** Logging facility */
 	static Logger log = Logger.getLogger(JavaCodeGenerator.class.getName());
 	
+	static final String MANUAL_INTERVENTION = "ManualInterventionRequired";
+	private int intervention = 0;
+	
 	private final String NEWLINE = System.getProperty("line.separator");
 	private final String NEWLINET = NEWLINE + "\t";
 	private final String NEWLINETT = NEWLINE + "\t\t";
@@ -271,19 +274,35 @@ public class JavaCodeGenerator {
 			
 			// Process any custom adapters
 			if (tag.requiresAdapter()) {
-				customAdapters.append(NEWLINE);
-				customAdapters.append(NEWLINET + "private static class Adapted" + mainChild.getTagName() + " {");
-				for (LeafData leaf: tag.leaves) {
-					customAdapters.append(NEWLINETT + "@XmlElement(name=\"" + leaf.name + "\")");
-					customAdapters.append(NEWLINETT + "private " + getXmlDataType(leaf.type) + " " + leaf.varName + ";");
+				if (tag.manual) {
+					log.warn("Unable to create adapter for " + tag.rootName + ": " + tag.dataType);
+					customAdapters.append(NEWLINE);
+					customAdapters.append(NEWLINET + "private static class Adapted" + mainChild.getTagName() + " {");
+					customAdapters.append(NEWLINETT + "@XmlElement(name=\"" + tag.dataType + "\")");
+					customAdapters.append(NEWLINETT + "private " + tag.dataType + " VAR_NAME;");
+					customAdapters.append(NEWLINET + "}");
+				} else {
+					customAdapters.append(NEWLINE);
+					customAdapters.append(NEWLINET + "private static class Adapted" + mainChild.getTagName() + " {");
+					for (LeafData leaf: tag.leaves) {
+						customAdapters.append(NEWLINETT + "@XmlElement(name=\"" + leaf.name + "\")");
+						customAdapters.append(NEWLINETT + "private " + getXmlDataType(leaf.type) + " " + leaf.varName + ";");
+					}
+					customAdapters.append(NEWLINET + "}");
 				}
-				customAdapters.append(NEWLINET + "}");
 			}
 			
 			// Process the unmarshall class
 			// The type is set when we instantiated the info class above and has no mutator
 			if (!tag.rootName.equals("Type")) {
-				if (tag.requiresAdapter()) {
+				if (tag.manual) {
+					unmarshalClass.append(NEWLINE);
+					unmarshalClass.append(NEWLINETTT + "if (CollectionUtils.hasElements(aInfo." + tag.varName + ")) {");
+					unmarshalClass.append(NEWLINETTTT + "for (Adapted" + mainChild.getTagName() + " adaptor: aInfo." + tag.varName + ") {");
+					unmarshalClass.append(NEWLINETTTTT + tag.dataType);
+					unmarshalClass.append(NEWLINETTTT + "}");
+					unmarshalClass.append(NEWLINETTT + "}");
+				} else if (tag.requiresAdapter()) {
 					unmarshalClass.append(NEWLINE);
 					unmarshalClass.append(NEWLINETTT + "if (CollectionUtils.hasElements(aInfo." + tag.varName + ")) {");
 					unmarshalClass.append(NEWLINETTTT + "for (Adapted" + mainChild.getTagName() + " adaptor: aInfo." + tag.varName + ") {");
@@ -314,7 +333,14 @@ public class JavaCodeGenerator {
 			
 			// Process the marshall class
 			if (!tag.rootName.equals("Type")) {
-				if (tag.requiresAdapter()) {
+				if (tag.manual) {
+					marshalClass.append(NEWLINE);
+					marshalClass.append(NEWLINETTT + "if (CollectionUtils.hasElements(info." + tag.getterName + "())) {");
+					marshalClass.append(NEWLINETTTT + "aInfo." + tag.varName + " = new ArrayList<Adapted" + mainChild.getTagName() + ">();");
+					marshalClass.append(NEWLINETTTTT + tag.dataType);
+					marshalClass.append(NEWLINETTTT + "}");
+					marshalClass.append(NEWLINETTT + "}");
+				} else if (tag.requiresAdapter()) {
 					marshalClass.append(NEWLINE);
 					marshalClass.append(NEWLINETTT + "if (CollectionUtils.hasElements(info." + tag.getterName + "())) {");
 					marshalClass.append(NEWLINETTTT + "aInfo." + tag.varName + " = new ArrayList<Adapted" + mainChild.getTagName() + ">();");
@@ -631,6 +657,7 @@ public class JavaCodeGenerator {
 		private String dataType = null;
 		private String singularDataType = null;
 		private Integer numLevels = null;
+		private boolean manual = false;
 		private List<LeafData> leaves = new ArrayList<LeafData>(); 
 		private Map<String, String> singularMap = new HashMap<String, String>();
 		
@@ -713,7 +740,8 @@ public class JavaCodeGenerator {
 				dataType = "List<" + singularDataType + ">";
 				
 			} else {
-				dataType = "*** Unable to determine DataType ***";
+				manual = true;
+				dataType = MANUAL_INTERVENTION + "_" + String.valueOf(intervention++);
 				singularDataType = dataType;
 			}
 		}
