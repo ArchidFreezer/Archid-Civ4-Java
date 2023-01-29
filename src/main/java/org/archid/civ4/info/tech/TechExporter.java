@@ -119,7 +119,7 @@ public class TechExporter extends AbstractExporter<IInfos<ITechInfo>, ITechInfo>
 
 	private void createTechTreeSheet() {
 		
-		Sheet sheet = wb.createSheet(ITechWorkbook.SHEETNAME_TREE);
+		Sheet sheet = getSheet(ITechWorkbook.SHEETNAME_TREE);
 		
 		// Add the tech data
 		Row row;
@@ -162,6 +162,8 @@ public class TechExporter extends AbstractExporter<IInfos<ITechInfo>, ITechInfo>
 		for (int i = 0; i < iNumCols; i++) {
 			sheet.autoSizeColumn(i);
 		}
+		log.info("Wrote " +  infos.getInfos().size() + " tech tree infos to " + ITechWorkbook.SHEETNAME_TREE + " sheet.");
+
 	}
 
 	private int getCellCol(int gridX) {

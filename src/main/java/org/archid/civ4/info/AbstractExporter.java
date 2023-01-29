@@ -82,14 +82,22 @@ public abstract class AbstractExporter<T extends IInfos<S>, S extends IInfo> imp
 		
 	}
 	
+	protected Sheet getSheet(String name) {
+		Sheet sheet = wb.getSheet(name);
+		if (sheet != null) {
+			wb.removeSheetAt(wb.getSheetIndex(sheet));
+		}
+		return wb.createSheet(name);
+	}
+
 	
 	protected void createSheets() {
 		createInfoListSheet();
 	}
 	
 	protected void createInfoListSheet() {
-		Sheet sheet = wb.createSheet(getInfoListSheetName());
 		
+		Sheet sheet = getSheet(getInfoListSheetName());
 		int rowNum = 0;
 		
 		// Create the header row
