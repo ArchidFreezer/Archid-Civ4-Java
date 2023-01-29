@@ -17,7 +17,6 @@ public class EraExporter extends AbstractExporter<IInfos<IEraInfo>, IEraInfo> {
 	
 	public EraExporter(EInfo infoEnum) {
 		super(infoEnum);
-		log.info("*** Remember to sort the EraList sheet by the Advanced Start Points column before importing");
 	}
 
 	@Override
