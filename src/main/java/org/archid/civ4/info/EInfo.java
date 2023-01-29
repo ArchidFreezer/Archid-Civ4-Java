@@ -1,27 +1,33 @@
 package org.archid.civ4.info;
 
 public enum EInfo {
-	BONUS("CIV4BonusInfos.xml"),
-	BONUS_CLASS("CIV4BonusClassInfos.xml"),
-	BUILDING("CIV4BuildingInfos.xml"), 
-	BUILDING_CLASS("CIV4BuildingClassInfos.xml"),
-	CIVIC("CIV4CivicInfos.xml"),
-	ERA("CIV4EraInfos.xml"),
-	EVENT("CIV4EventInfos.xml"),
-	EVENT_TRIGGER("CIV4EventTriggerInfos.xml"),
-	TECH("CIV4TechInfos.xml"),
-	UNIT("CIV4UnitInfos.xml"),
-	UNKNOWN("UnknownInfo");
+	BONUS("Terrain", "CIV4BonusInfos.xml"),
+	BONUS_CLASS("Terrain", "CIV4BonusClassInfos.xml"),
+	BUILDING("Buildings", "CIV4BuildingInfos.xml"), 
+	BUILDING_CLASS("Buildings", "CIV4BuildingClassInfos.xml"),
+	CIVIC("GameInfo", "CIV4CivicInfos.xml"),
+	ERA("GameInfo", "CIV4EraInfos.xml"),
+	EVENT("Events", "CIV4EventInfos.xml"),
+	EVENT_TRIGGER("Events", "CIV4EventTriggerInfos.xml"),
+	TECH("Technologies", "CIV4TechInfos.xml"),
+	UNIT("Units", "CIV4UnitInfos.xml"),
+	UNKNOWN("unknown", "UnknownInfo");
 	
 	private final String file;
+	private final String folder;
 	
-	EInfo(String file) {
+	EInfo(String folder, String file) {
+		this.folder = folder;
 		this.file = file;
 	}
 	
 	@Override
 	public String toString() {
 		return file;
+	}
+	
+	public String getFolder() {
+		return folder;
 	}
 	
 	public static boolean containsFile(String v) {

@@ -121,7 +121,7 @@ public class InfoUtils {
 					throw new ParseException("Path contained in 'f' argument must be a folder when processing all types");
 				else if (Files.isDirectory(path) && infoType != null)
 					// If this is a folder then append the OOB filename for the info type
-					pathVal = Paths.get(pathVal, infoType.toString()).toString();
+					pathVal = Paths.get(pathVal, infoType.getFolder(), infoType.toString()).toString();
 				props.setAppProperty(PropertyKeys.PROPERTY_KEY_FILE_INFOS, pathVal);
 			}
 			if (cmd.hasOption("x")) {
@@ -157,7 +157,7 @@ public class InfoUtils {
 					} else {
 						for (EInfo info: EInfo.values()) {
 							if (info != EInfo.UNKNOWN) {
-								props.setAppProperty(PropertyKeys.PROPERTY_KEY_FILE_INFOS, Paths.get(path.toString(), info.toString()).toString());
+								props.setAppProperty(PropertyKeys.PROPERTY_KEY_FILE_INFOS, Paths.get(path.toString(), info.getFolder(), info.toString()).toString());
 								ImporterFactory.getImporter(info).importXLSX();
 							}
 						}
