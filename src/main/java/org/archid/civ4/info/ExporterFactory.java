@@ -5,6 +5,7 @@ import org.archid.civ4.info.bonus.BonusExporter;
 import org.archid.civ4.info.bonusclass.BonusClassExporter;
 import org.archid.civ4.info.building.BuildingExporter;
 import org.archid.civ4.info.buildingclass.BuildingClassExporter;
+import org.archid.civ4.info.civic.CivicExporter;
 import org.archid.civ4.info.era.EraExporter;
 import org.archid.civ4.info.event.EventExporter;
 import org.archid.civ4.info.eventtrigger.EventTriggerExporter;
@@ -30,6 +31,9 @@ public class ExporterFactory {
 			break;
 		case BUILDING_CLASS:
 			exporter = new BuildingClassExporter(infoType);
+			break;
+		case CIVIC:
+			exporter = new CivicExporter(infoType);
 			break;
 		case ERA:
 			exporter = new EraExporter(infoType);

@@ -5,6 +5,7 @@ import org.archid.civ4.info.bonus.BonusImporter;
 import org.archid.civ4.info.bonusclass.BonusClassImporter;
 import org.archid.civ4.info.building.BuildingImporter;
 import org.archid.civ4.info.buildingclass.BuildingClassImporter;
+import org.archid.civ4.info.civic.CivicImporter;
 import org.archid.civ4.info.era.EraImporter;
 import org.archid.civ4.info.event.EventImporter;
 import org.archid.civ4.info.eventtrigger.EventTriggerImporter;
@@ -30,6 +31,9 @@ public class ImporterFactory {
 			break;
 		case BUILDING_CLASS:
 			importer = new BuildingClassImporter(infoType);
+			break;
+		case CIVIC:
+			importer = new CivicImporter(infoType);
 			break;
 		case ERA:
 			importer = new EraImporter(infoType);

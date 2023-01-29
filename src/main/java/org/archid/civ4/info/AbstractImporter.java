@@ -242,7 +242,7 @@ public abstract class AbstractImporter<T extends IInfos<S>, S extends IInfo> imp
 	 * @return {@code str} cast to the class defined by {@code valClass}
 	 */
 	@SuppressWarnings({ "unchecked" })
-	private <U> U getVal(String str, Class<U> valClass) {
+	protected <U> U getVal(String str, Class<U> valClass) {
 		U val = null;
 		if (valClass == String.class)
 			val = (U) str;

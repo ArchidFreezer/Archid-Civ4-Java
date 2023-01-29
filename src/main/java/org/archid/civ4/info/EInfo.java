@@ -5,6 +5,7 @@ public enum EInfo {
 	BONUS_CLASS("CIV4BonusClassInfos.xml"),
 	BUILDING("CIV4BuildingInfos.xml"), 
 	BUILDING_CLASS("CIV4BuildingClassInfos.xml"),
+	CIVIC("CIV4CivicInfos.xml"),
 	ERA("CIV4EraInfos.xml"),
 	EVENT("CIV4EventInfos.xml"),
 	EVENT_TRIGGER("CIV4EventTriggerInfos.xml"),

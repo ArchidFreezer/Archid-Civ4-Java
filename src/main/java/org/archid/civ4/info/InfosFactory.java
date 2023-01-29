@@ -12,6 +12,7 @@ import org.archid.civ4.info.bonus.BonusInfos;
 import org.archid.civ4.info.bonusclass.BonusClassInfos;
 import org.archid.civ4.info.building.BuildingInfos;
 import org.archid.civ4.info.buildingclass.BuildingClassInfos;
+import org.archid.civ4.info.civic.CivicInfos;
 import org.archid.civ4.info.era.EraInfos;
 import org.archid.civ4.info.event.EventInfos;
 import org.archid.civ4.info.eventtrigger.EventTriggerInfos;
@@ -38,6 +39,9 @@ public class InfosFactory {
 			break;
 		case BUILDING_CLASS:
 			infos = (T) new BuildingClassInfos();
+			break;
+		case CIVIC:
+			infos = (T) new CivicInfos();
 			break;
 		case ERA:
 			infos = (T) new EraInfos();
@@ -75,6 +79,9 @@ public class InfosFactory {
 			break;
 		case BUILDING_CLASS:
 			jaxbContext = JAXBContext.newInstance(BuildingClassInfos.class);
+			break;
+		case CIVIC:
+			jaxbContext = JAXBContext.newInstance(CivicInfos.class);
 			break;
 		case ERA:
 			jaxbContext = JAXBContext.newInstance(EraInfos.class);

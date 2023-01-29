@@ -96,6 +96,8 @@ public class InfoUtils {
 					infoType = EInfo.BUILDING;
 				else if (cmd.getOptionValue("t").equalsIgnoreCase("buildingclass"))
 					infoType = EInfo.BUILDING_CLASS;
+				else if (cmd.getOptionValue("t").equalsIgnoreCase("civic"))
+					infoType = EInfo.CIVIC;
 				else if (cmd.getOptionValue("t").equalsIgnoreCase("era"))
 					infoType = EInfo.ERA;
 				else if (cmd.getOptionValue("t").equalsIgnoreCase("event"))
