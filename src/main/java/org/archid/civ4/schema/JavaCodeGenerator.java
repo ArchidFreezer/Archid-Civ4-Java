@@ -327,7 +327,10 @@ public class JavaCodeGenerator {
 					unmarshalClass.append(NEWLINETTTT + "}");
 					unmarshalClass.append(NEWLINETTT + "}");
 				} else {
-					unmarshalClass.append(NEWLINETTT + "info." + tag.setterName + "(JaxbUtils.unmarshall" + tag.dataType + "(aInfo." + tag.varName + "));");
+					if (tag.isMandatory())
+						unmarshalClass.append(NEWLINETTT + "info." + tag.setterName + "(aInfo." + tag.varName + ");");
+					else
+						unmarshalClass.append(NEWLINETTT + "info." + tag.setterName + "(JaxbUtils.unmarshall" + tag.dataType + "(aInfo." + tag.varName + "));");
 				}
 			}
 			
@@ -368,7 +371,10 @@ public class JavaCodeGenerator {
 					marshalClass.append(NEWLINETTTT + "}");
 					marshalClass.append(NEWLINETTT + "}");
 				} else {
-					marshalClass.append(NEWLINETTT + "aInfo." + tag.varName + " = JaxbUtils.marshall" + tag.dataType + "(info." + tag.getterName + "());");
+					if (tag.isMandatory())
+						marshalClass.append(NEWLINETTT + "aInfo." + tag.varName + " = info."+ tag.getterName + "();");
+					else
+						marshalClass.append(NEWLINETTT + "aInfo." + tag.varName + " = JaxbUtils.marshall" + tag.dataType + "(info." + tag.getterName + "());");
 				}
 			}
 			
@@ -608,7 +614,7 @@ public class JavaCodeGenerator {
 
 	private void parseInfo(XmlTagDefinition info) {
 		for (XmlTagInstance tag: info.getChildren()) {
-			Tag tagData = new Tag(parser.getTagDefinition(tag.getTagName()));
+			Tag tagData = new Tag(parser.getTagDefinition(tag.getTagName()), tag.mandatory);
 			if (tagData.requiresArray()) {
 				dynamicImports.add("import java.util.List;");
 				dynamicImports.add("import java.util.ArrayList;");
@@ -657,13 +663,15 @@ public class JavaCodeGenerator {
 		private String dataType = null;
 		private String singularDataType = null;
 		private Integer numLevels = null;
+		private boolean mandatory = false;
 		private boolean manual = false;
 		private List<LeafData> leaves = new ArrayList<LeafData>(); 
 		private Map<String, String> singularMap = new HashMap<String, String>();
 		
 		
-		private Tag(XmlTagDefinition tag) {
+		private Tag(XmlTagDefinition tag, boolean mandatory) {
 			this.tagDefinition = tag;
+			this.mandatory = mandatory;
 			populateSingularMap();
 			numLevels = getNumLevels(tag, 0);
 			rootName = getTagRootName(tagDefinition.getTagName());
@@ -844,6 +852,10 @@ public class JavaCodeGenerator {
 		
 		public Boolean requiresAdapter() {
 			return numLevels > 1;
+		}
+		
+		public Boolean isMandatory() {
+			return mandatory;
 		}
 		
 	}
