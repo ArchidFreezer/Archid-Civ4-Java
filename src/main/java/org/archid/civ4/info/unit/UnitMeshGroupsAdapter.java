@@ -42,18 +42,18 @@ public class UnitMeshGroupsAdapter extends XmlAdapter<UnitMeshGroupsAdapter.Adap
 	@Override
 	public UnitMeshGroups unmarshal(AdaptedUnitMeshGroups v) throws Exception {
 		UnitMeshGroups group = new UnitMeshGroups();
-		group.setGroupSize(JaxbUtils.unmarshallInteger(v.groupSize));
-		group.setMaxSpeed(JaxbUtils.unmarshallFloat(v.maxSpeed));
-		group.setPadTime(JaxbUtils.unmarshallFloat(v.padTime));
-		group.setMeleeWaveSize(JaxbUtils.unmarshallInteger(v.meleeWaveSize));
-		group.setRangedWaveSize(JaxbUtils.unmarshallInteger(v.rangedWaveSize));
+		group.setGroupSize(v.groupSize);
+		group.setMaxSpeed(v.maxSpeed);
+		group.setPadTime(v.padTime);
+		group.setMeleeWaveSize(v.meleeWaveSize);
+		group.setRangedWaveSize(v.rangedWaveSize);
 		if (CollectionUtils.hasElements(v.meshGroups)) {
 			for (AdaptedUnitMeshGroup meshGroup: v.meshGroups) {
 				UnitMeshGroup mesh = new UnitMeshGroup();
-				mesh.setRequired(JaxbUtils.unmarshallInteger(meshGroup.required));
-				mesh.setEarlyArtDefineTag(JaxbUtils.unmarshallString(meshGroup.earlyArtDefineTag));
-				mesh.setMiddleArtDefineTag(JaxbUtils.unmarshallString(meshGroup.middleArtDefineTag));
-				mesh.setLateArtDefineTag(JaxbUtils.unmarshallString(meshGroup.lateArtDefineTag));
+				mesh.setRequired(meshGroup.required);
+				mesh.setEarlyArtDefineTag(meshGroup.earlyArtDefineTag);
+				mesh.setMiddleArtDefineTag(meshGroup.middleArtDefineTag);
+				mesh.setLateArtDefineTag(meshGroup.lateArtDefineTag);
 				group.getUnitMeshGroupList().add(mesh);
 			}
 		}
@@ -63,19 +63,19 @@ public class UnitMeshGroupsAdapter extends XmlAdapter<UnitMeshGroupsAdapter.Adap
 	@Override
 	public AdaptedUnitMeshGroups marshal(UnitMeshGroups v) throws Exception {
 		AdaptedUnitMeshGroups group = new AdaptedUnitMeshGroups();
-		group.groupSize = JaxbUtils.marshallInteger(v.getGroupSize());
-		group.maxSpeed = JaxbUtils.marshallFloat(v.getMaxSpeed());
-		group.padTime = JaxbUtils.marshallFloat(v.getPadTime());
-		group.meleeWaveSize = JaxbUtils.marshallInteger(v.getMeleeWaveSize());
-		group.rangedWaveSize = JaxbUtils.marshallInteger(v.getRangedWaveSize());
+		group.groupSize = v.getGroupSize();
+		group.maxSpeed = v.getMaxSpeed();
+		group.padTime = v.getPadTime();
+		group.meleeWaveSize = v.getMeleeWaveSize();
+		group.rangedWaveSize = v.getRangedWaveSize();
 		if (CollectionUtils.hasElements(v.getUnitMeshGroupList())) {
 			group.meshGroups = new ArrayList<AdaptedUnitMeshGroup>();
 			for (UnitMeshGroup meshGroup: v.getUnitMeshGroupList()) {
 				AdaptedUnitMeshGroup mesh = new AdaptedUnitMeshGroup();
-				mesh.required = JaxbUtils.marshallInteger(meshGroup.getRequired());
-				mesh.earlyArtDefineTag = JaxbUtils.marshallString(meshGroup.getEarlyArtDefineTag());
-				mesh.middleArtDefineTag = JaxbUtils.marshallString(meshGroup.getMiddleArtDefineTag());
-				mesh.lateArtDefineTag = JaxbUtils.marshallString(meshGroup.getLateArtDefineTag());
+				mesh.required = meshGroup.getRequired();
+				mesh.earlyArtDefineTag = meshGroup.getEarlyArtDefineTag();
+				mesh.middleArtDefineTag = meshGroup.getMiddleArtDefineTag();
+				mesh.lateArtDefineTag = meshGroup.getLateArtDefineTag();
 				group.meshGroups.add(mesh);
 			}
 		}
