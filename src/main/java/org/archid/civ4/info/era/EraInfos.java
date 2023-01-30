@@ -75,6 +75,7 @@ public class EraInfos extends AbstractInfos<IEraInfo > {
 		private boolean unitTerritoryUnbound;
 		private boolean firstSoundtrackFirst;
 		private List<String> eraInfoSoundtracks = new ArrayList<String>();
+		private List<Integer> naturalYieldLimits = new ArrayList<Integer>();
 		private List<IPair<String, String>> citySoundscapes = new ArrayList<IPair<String, String>>();
 		
 		private EraInfo(String type) {
@@ -687,6 +688,16 @@ public class EraInfos extends AbstractInfos<IEraInfo > {
 		@Override
 		public void setDescription(String description) {
 			this.description = description;
+		}
+
+		@Override
+		public List<Integer> getNaturalYieldLimits() {
+			return naturalYieldLimits;
+		}
+
+		@Override
+		public void addNaturalYieldLimit(Integer naturalYieldLimit) {
+			naturalYieldLimits.add(naturalYieldLimit);			
 		}
 	}
 

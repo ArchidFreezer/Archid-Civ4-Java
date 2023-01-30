@@ -159,4 +159,7 @@ public interface IEraInfo extends IInfo {
 
 	void addCitySoundscape(IPair<String, String> citySoundscape);
 
+	List<Integer> getNaturalYieldLimits();
+	void addNaturalYieldLimit(Integer naturalYieldLimit);
+
 }

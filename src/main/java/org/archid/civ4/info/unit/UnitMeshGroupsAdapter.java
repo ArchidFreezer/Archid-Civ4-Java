@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import org.archid.civ4.info.unit.UnitInfos.UnitMeshGroup;
 import org.archid.civ4.info.unit.UnitInfos.UnitMeshGroups;
 import org.archid.utils.CollectionUtils;
-import org.archid.utils.JaxbUtils;
 
 public class UnitMeshGroupsAdapter extends XmlAdapter<UnitMeshGroupsAdapter.AdaptedUnitMeshGroups, UnitMeshGroups>{
 	

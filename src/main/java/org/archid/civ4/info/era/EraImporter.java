@@ -59,6 +59,7 @@ public class EraImporter extends AbstractImporter<IInfos<IEraInfo>, IEraInfo> im
 		parseCell(row.getCell(colNum++), Integer.class, info::setUnitRangeModifier);
 		parseCell(row.getCell(colNum++), Integer.class, info::setSoundtrackSpace);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setFirstSoundtrackFirst);
+		parseListCell(row.getCell(colNum++), Integer.class, info::addNaturalYieldLimit);
 		parseListCell(row.getCell(colNum++), String.class, info::addEraInfoSoundtrack);
 		parsePairsCell(row.getCell(colNum++), String.class, String.class, info::addCitySoundscape);
 		parseCell(row.getCell(colNum++), String.class, info::setAudioUnitVictoryScript);
