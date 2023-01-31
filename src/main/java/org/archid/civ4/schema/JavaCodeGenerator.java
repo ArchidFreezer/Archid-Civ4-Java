@@ -327,10 +327,7 @@ public class JavaCodeGenerator {
 					unmarshalClass.append(NEWLINETTTT + "}");
 					unmarshalClass.append(NEWLINETTT + "}");
 				} else {
-					if (tag.isMandatory())
-						unmarshalClass.append(NEWLINETTT + "info." + tag.setterName + "(aInfo." + tag.varName + ");");
-					else
-						unmarshalClass.append(NEWLINETTT + "info." + tag.setterName + "(JaxbUtils.unmarshall" + tag.dataType + "(aInfo." + tag.varName + "));");
+					unmarshalClass.append(NEWLINETTT + "info." + tag.setterName + "(JaxbUtils.unmarshall" + tag.dataType + "(aInfo." + tag.varName + "));");
 				}
 			}
 			
@@ -372,7 +369,7 @@ public class JavaCodeGenerator {
 					marshalClass.append(NEWLINETTT + "}");
 				} else {
 					if (tag.isMandatory())
-						marshalClass.append(NEWLINETTT + "aInfo." + tag.varName + " = info."+ tag.getterName + "();");
+						marshalClass.append(NEWLINETTT + "aInfo." + tag.varName + " = JaxbUtils.marshallMandatory" + tag.dataType + "(info." + tag.getterName + "());");
 					else
 						marshalClass.append(NEWLINETTT + "aInfo." + tag.varName + " = JaxbUtils.marshall" + tag.dataType + "(info." + tag.getterName + "());");
 				}

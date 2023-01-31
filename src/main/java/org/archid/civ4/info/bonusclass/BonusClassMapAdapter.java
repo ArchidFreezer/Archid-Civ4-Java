@@ -8,6 +8,8 @@ import java.util.TreeMap;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
+import org.archid.utils.JaxbUtils;
+
 public class BonusClassMapAdapter extends XmlAdapter<BonusClassMapAdapter.BonusClassMap, Map<String, IBonusClassInfo>>{
 	
 	public static class BonusClassMap {
@@ -28,7 +30,7 @@ public class BonusClassMapAdapter extends XmlAdapter<BonusClassMapAdapter.BonusC
 		Map<String, IBonusClassInfo> map = new TreeMap<String, IBonusClassInfo>();
 		for (AdaptedBonusClass aInfo: v.entries) {
 			IBonusClassInfo info = BonusClassInfos.createInfos(aInfo.type);
-			info.setUnique(aInfo.unique);
+			info.setUnique(JaxbUtils.unmarshallInteger(aInfo.unique));
 			
 			map.put(aInfo.type, info);
 		}
@@ -40,8 +42,8 @@ public class BonusClassMapAdapter extends XmlAdapter<BonusClassMapAdapter.BonusC
 		BonusClassMap map = new BonusClassMap();
 		for (IBonusClassInfo info: v.values()) {
 			AdaptedBonusClass aInfo = new AdaptedBonusClass();
-			aInfo.type = info.getType();
-			aInfo.unique = info.getUnique();
+			aInfo.type = JaxbUtils.marshallString(info.getType());
+			aInfo.unique = JaxbUtils.marshallMandatoryInteger(info.getUnique());
 			
 			map.entries.add(aInfo);
 		}
