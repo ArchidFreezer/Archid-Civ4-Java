@@ -22,6 +22,9 @@ public interface ICivicInfo extends IInfo {
 
 	String getButton();
 	void setButton(String button);
+	
+	Integer getIndex();
+	void setIndex(Integer iIndex);
 
 	String getTechPrereq();
 	void setTechPrereq(String techPrereq);

@@ -49,6 +49,7 @@ public class CivicExporter extends AbstractExporter<IInfos<ICivicInfo>, ICivicIn
 		addSingleCell(row.createCell(colNum++), info.getStrategy());
 		addSingleCell(row.createCell(colNum++), info.getHelp());
 		addSingleCell(row.createCell(colNum++), info.getButton());
+		addSingleCell(row.createCell(colNum++), info.getIndex());
 		addSingleCell(row.createCell(colNum++), info.getTechPrereq());
 		addSingleCell(row.createCell(colNum++), info.isCreateBarbarians());
 		addSingleCell(row.createCell(colNum++), info.isEnableStarSigns());

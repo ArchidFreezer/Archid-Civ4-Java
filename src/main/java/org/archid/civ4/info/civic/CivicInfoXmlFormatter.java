@@ -22,7 +22,9 @@ public class CivicInfoXmlFormatter extends AbstractXmlFormatter {
 	static Logger log = Logger.getLogger(CivicInfoXmlFormatter.class.getName());
 	
 	private static final String TAG_OPTION_TYPE = "CivicOptionType";
+	private static final String TAG_INDEX = "iIndex";
 	private final List<String> groups = new  ArrayList<String>(Arrays.asList(TAG_OPTION_TYPE));
+	private final List<String> stores = new  ArrayList<String>(Arrays.asList(TAG_INDEX));
 
 	private StringBuilder out = null;
 	private int totalInfoCount = 0;
@@ -31,7 +33,7 @@ public class CivicInfoXmlFormatter extends AbstractXmlFormatter {
 	public void format(String path) {
 		
 		XmlInfoList infoList = new XmlInfoList(path);
-		infoList.parse(groups);
+		infoList.parse(groups, stores);
 
 		out = new StringBuilder(infoList.getHeader());
 		// The civics are processed by CivicOptionType first
@@ -41,10 +43,11 @@ public class CivicInfoXmlFormatter extends AbstractXmlFormatter {
 		for (String civicOptionType: optionMap.keySet()) {
 			out.append(groupHeader.replaceAll("xxxGROUPxxx",	getCommentText(civicOptionType)));
 			// Now sort the civics in this civic option group
-			Map<String, IXmlInfo> sortedInfos = new TreeMap<String, IXmlInfo>();
+			Map<Integer, IXmlInfo> sortedInfos = new TreeMap<Integer, IXmlInfo>();
 			for (IXmlInfo info: optionMap.get(civicOptionType)) {
 				info.setStartTag(info.getStartTag() + ' ' + typeHeader.replaceAll("xxxTYPExxx", getCommentText(info.getType())));
-				sortedInfos.put(info.getType(), info);
+				Integer index = Integer.parseInt(info.getTagValue(TAG_INDEX));
+				sortedInfos.put(index, info);
 			}
 			int groupCount = 0;
 			for (IXmlInfo info: sortedInfos.values()) {

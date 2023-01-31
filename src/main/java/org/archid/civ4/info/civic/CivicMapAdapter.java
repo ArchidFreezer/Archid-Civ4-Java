@@ -38,6 +38,8 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 		private String help;
 		@XmlElement(name="Button")
 		private String button;
+		@XmlElement(name="iIndex")
+		private Integer index;
 		@XmlElement(name="TechPrereq")
 		private String techPrereq;
 		@XmlElement(name="bCreateBarbarians")
@@ -220,6 +222,7 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 			info.setStrategy(JaxbUtils.unmarshallString(aInfo.strategy));
 			info.setHelp(JaxbUtils.unmarshallString(aInfo.help));
 			info.setButton(JaxbUtils.unmarshallString(aInfo.button));
+			info.setIndex(JaxbUtils.unmarshallInteger(aInfo.index));
 			info.setTechPrereq(JaxbUtils.unmarshallString(aInfo.techPrereq));
 			info.setCreateBarbarians(JaxbUtils.unmarshallBoolean(aInfo.createBarbarians));
 			info.setEnableStarSigns(JaxbUtils.unmarshallBoolean(aInfo.enableStarSigns));
@@ -389,6 +392,7 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 			aInfo.strategy = JaxbUtils.marshallString(info.getStrategy());
 			aInfo.help = JaxbUtils.marshallString(info.getHelp());
 			aInfo.button = JaxbUtils.marshallString(info.getButton());
+			aInfo.index = JaxbUtils.marshallMandatoryInteger(info.getIndex());
 			aInfo.techPrereq = JaxbUtils.marshallString(info.getTechPrereq());
 			aInfo.createBarbarians = JaxbUtils.marshallBoolean(info.isCreateBarbarians());
 			aInfo.enableStarSigns = JaxbUtils.marshallBoolean(info.isEnableStarSigns());

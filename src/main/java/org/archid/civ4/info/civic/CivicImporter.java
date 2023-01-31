@@ -42,6 +42,7 @@ public class CivicImporter extends AbstractImporter<IInfos<ICivicInfo>, ICivicIn
 		parseCell(row.getCell(colNum++), String.class, info::setStrategy);
 		parseCell(row.getCell(colNum++), String.class, info::setHelp);
 		parseCell(row.getCell(colNum++), String.class, info::setButton);
+		parseCell(row.getCell(colNum++), Integer.class, info::setIndex);
 		parseCell(row.getCell(colNum++), String.class, info::setTechPrereq);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setCreateBarbarians);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setEnableStarSigns);

@@ -44,6 +44,7 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 		private String strategy;
 		private String help;
 		private String button;
+		private Integer index;
 		private String techPrereq;
 		private Boolean createBarbarians;
 		private Boolean enableStarSigns;
@@ -187,6 +188,16 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 			this.button = button;
 		}
 
+		@Override
+		public Integer getIndex() {
+			return index;
+		}
+		
+		@Override
+		public void setIndex(Integer index) {
+			this.index = index;
+		}
+		
 		@Override
 		public String getTechPrereq() {
 			return techPrereq;
