@@ -92,6 +92,7 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 		parseCell(row.getCell(colNum++), Boolean.class, info::setAlwaysHostile);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setWorkerTrade);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setMilitaryTrade);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setBarbarianLeader);
 		parseListCell(row.getCell(colNum++), String.class, info::addUnitClassUpgrade);
 		parseListCell(row.getCell(colNum++), String.class, info::addUnitClassTarget);
 		parseListCell(row.getCell(colNum++), String.class, info::addUnitCombatTarget);

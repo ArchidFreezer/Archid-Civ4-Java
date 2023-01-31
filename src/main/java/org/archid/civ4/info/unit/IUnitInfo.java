@@ -355,6 +355,9 @@ public interface IUnitInfo  extends IInfo {
 	boolean isAnimal();
 
 	void setAnimal(boolean animal);
+	
+	boolean isBarbarianLeader();
+	void setBarbarianLeader(boolean barbarianLeader);
 
 	boolean isCanMoveAllTerrain();
 

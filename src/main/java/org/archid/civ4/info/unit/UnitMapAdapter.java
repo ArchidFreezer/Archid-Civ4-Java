@@ -148,6 +148,8 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 		private Integer workerTrade;
 		@XmlElement(name="bMilitaryTrade")
 		private Integer militaryTrade;
+		@XmlElement(name="bBarbarianLeader")
+		private Integer barbarianLeader;
 		@XmlElementWrapper(name="UnitClassUpgrades")
 		@XmlElement(name="UnitClassType")
 		private List<String> unitClassUpgrades;
@@ -652,6 +654,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			aInfo.alwaysHostile = JaxbUtils.marshallBoolean(info.isAlwaysHostile());
 			aInfo.workerTrade = JaxbUtils.marshallBoolean(info.isWorkerTrade());
 			aInfo.militaryTrade = JaxbUtils.marshallBoolean(info.isMilitaryTrade());
+			aInfo.barbarianLeader = JaxbUtils.marshallBoolean(info.isBarbarianLeader());
 
 			if (CollectionUtils.hasElements(info.getUnitClassUpgrades())) {
 				aInfo.unitClassUpgrades = new ArrayList<String>();
@@ -1214,6 +1217,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			info.setAlwaysHostile(JaxbUtils.unmarshallBoolean(aInfo.alwaysHostile));
 			info.setWorkerTrade(JaxbUtils.unmarshallBoolean(aInfo.workerTrade));
 			info.setMilitaryTrade(JaxbUtils.unmarshallBoolean(aInfo.militaryTrade));
+			info.setBarbarianLeader(JaxbUtils.unmarshallBoolean(aInfo.barbarianLeader));
 			
 			if (CollectionUtils.hasElements(aInfo.unitClassUpgrades)) {
 				for (String val: aInfo.unitClassUpgrades) {

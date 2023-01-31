@@ -39,6 +39,7 @@ public class UnitInfoXmlFormatter extends AbstractXmlFormatter {
 	private static final String GROUP_EXEC_TAG = "CorporationType";
 	private static final String GROUP_GP_LABEL = "Great People";
 	private static final String GROUP_GP_TAG = "GreatPeopleType";
+	private static final String GROUP_BL_TAG = "bBarbarianLeader";
 	private static final String GROUP_MISSILE_LABEL = "Missiles";
 	private static final String GROUP_MISSILE_TAG1 = "bMechanized";
 	private static final String GROUP_MISSILE_TAG2 = "bSuicide";
@@ -54,7 +55,7 @@ public class UnitInfoXmlFormatter extends AbstractXmlFormatter {
 	private static final String TAG_DOMAIN = "Domain";
 	private static final String TAG_UNIT_CLASS = "Class";
 	private final List<String> groups = new  ArrayList<String>(Arrays.asList(TAG_COMBAT_TYPE, TAG_DOMAIN));
-	private final List<String> stores = new  ArrayList<String>(Arrays.asList(TAG_UNIT_CLASS, TAG_COMBAT, GROUP_SETTLER_TAG, GROUP_GP_TAG, GROUP_EXEC_TAG, GROUP_MISSIONARY_TAG, GROUP_MISSILE_TAG1, GROUP_MISSILE_TAG2));
+	private final List<String> stores = new  ArrayList<String>(Arrays.asList(TAG_UNIT_CLASS, TAG_COMBAT, GROUP_SETTLER_TAG, GROUP_GP_TAG, GROUP_BL_TAG, GROUP_EXEC_TAG, GROUP_MISSIONARY_TAG, GROUP_MISSILE_TAG1, GROUP_MISSILE_TAG2));
 	private final String groupMissingTagValue = "No Combat";
 	
 	private Map<String, String> combatTypeMappings;
@@ -333,6 +334,10 @@ public class UnitInfoXmlFormatter extends AbstractXmlFormatter {
 				if (!infoGroups.containsKey(GROUP_SETTLER_LABEL)) infoGroups.put(GROUP_SETTLER_LABEL, new TreeSet<IXmlInfo>());
 				info.setStartTag(info.getStartTag() + ' ' + typeHeader.replaceAll("xxxTYPExxx", getCommentText(info.getType())));
 				infoGroups.get(GROUP_SETTLER_LABEL).add(info);
+			} else if (info.getTagValue(GROUP_BL_TAG) != null) {
+				if (!infoGroups.containsKey(GROUP_GP_LABEL)) infoGroups.put(GROUP_GP_LABEL, new TreeSet<IXmlInfo>());
+				info.setStartTag(info.getStartTag() + ' ' + typeHeader.replaceAll("xxxTYPExxx", getCommentText(info.getType())));
+				infoGroups.get(GROUP_GP_LABEL).add(ensureGPLabel(info));
 			} else if (info.getTagValue(GROUP_GP_TAG) != null) {
 				if (!infoGroups.containsKey(GROUP_GP_LABEL)) infoGroups.put(GROUP_GP_LABEL, new TreeSet<IXmlInfo>());
 				info.setStartTag(info.getStartTag() + ' ' + typeHeader.replaceAll("xxxTYPExxx", getCommentText(info.getType())));

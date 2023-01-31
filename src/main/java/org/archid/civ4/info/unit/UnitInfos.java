@@ -126,6 +126,7 @@ public class UnitInfos extends AbstractInfos<IUnitInfo> {
 		private boolean altDown;
 		private boolean alwaysHostile;
 		private boolean animal;
+		private boolean barbarianLeader;
 		private boolean canMoveAllTerrain;
 		private boolean canMoveImpassable;
 		private boolean counterSpy;
@@ -3169,6 +3170,16 @@ public class UnitInfos extends AbstractInfos<IUnitInfo> {
 		@Override
 		public void setUnitMeshGroups(UnitMeshGroups unitMeshGroups) {
 			this.unitMeshGroups = unitMeshGroups;
+		}
+
+		@Override
+		public boolean isBarbarianLeader() {
+			return barbarianLeader;
+		}
+
+		@Override
+		public void setBarbarianLeader(boolean barbarianLeader) {
+			this.barbarianLeader = barbarianLeader;
 		}
 	}
 	

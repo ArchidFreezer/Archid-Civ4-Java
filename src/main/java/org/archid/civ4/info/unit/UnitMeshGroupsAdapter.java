@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import org.archid.civ4.info.unit.UnitInfos.UnitMeshGroup;
 import org.archid.civ4.info.unit.UnitInfos.UnitMeshGroups;
 import org.archid.utils.CollectionUtils;
+import org.archid.utils.JaxbUtils;
 
 public class UnitMeshGroupsAdapter extends XmlAdapter<UnitMeshGroupsAdapter.AdaptedUnitMeshGroups, UnitMeshGroups>{
 	
@@ -50,9 +51,9 @@ public class UnitMeshGroupsAdapter extends XmlAdapter<UnitMeshGroupsAdapter.Adap
 			for (AdaptedUnitMeshGroup meshGroup: v.meshGroups) {
 				UnitMeshGroup mesh = new UnitMeshGroup();
 				mesh.setRequired(meshGroup.required);
-				mesh.setEarlyArtDefineTag(meshGroup.earlyArtDefineTag);
-				mesh.setMiddleArtDefineTag(meshGroup.middleArtDefineTag);
-				mesh.setLateArtDefineTag(meshGroup.lateArtDefineTag);
+				mesh.setEarlyArtDefineTag(JaxbUtils.unmarshallString(meshGroup.earlyArtDefineTag));
+				mesh.setMiddleArtDefineTag(JaxbUtils.unmarshallString(meshGroup.middleArtDefineTag));
+				mesh.setLateArtDefineTag(JaxbUtils.unmarshallString(meshGroup.lateArtDefineTag));
 				group.getUnitMeshGroupList().add(mesh);
 			}
 		}
@@ -72,9 +73,9 @@ public class UnitMeshGroupsAdapter extends XmlAdapter<UnitMeshGroupsAdapter.Adap
 			for (UnitMeshGroup meshGroup: v.getUnitMeshGroupList()) {
 				AdaptedUnitMeshGroup mesh = new AdaptedUnitMeshGroup();
 				mesh.required = meshGroup.getRequired();
-				mesh.earlyArtDefineTag = meshGroup.getEarlyArtDefineTag();
-				mesh.middleArtDefineTag = meshGroup.getMiddleArtDefineTag();
-				mesh.lateArtDefineTag = meshGroup.getLateArtDefineTag();
+				mesh.earlyArtDefineTag = JaxbUtils.marshallString(meshGroup.getEarlyArtDefineTag());
+				mesh.middleArtDefineTag = JaxbUtils.marshallString(meshGroup.getMiddleArtDefineTag());
+				mesh.lateArtDefineTag = JaxbUtils.marshallString(meshGroup.getLateArtDefineTag());
 				group.meshGroups.add(mesh);
 			}
 		}
