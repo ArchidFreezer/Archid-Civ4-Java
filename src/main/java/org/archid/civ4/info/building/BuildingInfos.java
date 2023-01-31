@@ -87,6 +87,7 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo>{
 		private boolean isForceTeamVoteEligible;
 		private boolean isGoldenAge;
 		private boolean isGovernmentCenter;
+		private boolean isGraphicalOnly;
 		private boolean isMapCentering;
 		private boolean isNeverCapture;
 		private boolean isNoUnhappiness;
@@ -3175,6 +3176,16 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo>{
 		@Override
 		public void setObsoleteDefence(int defence) {
 			this.obsoleteDefence = defence;
+		}
+
+		@Override
+		public boolean isGraphicalOnly() {
+			return isGraphicalOnly;
+		}
+
+		@Override
+		public void setGraphicalOnly(boolean isGraphicalOnly) {
+			this.isGraphicalOnly = isGraphicalOnly;
 		}
 	}
 

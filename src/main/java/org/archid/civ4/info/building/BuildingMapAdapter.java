@@ -443,6 +443,8 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		private Integer hotKeyPriority;
 		@XmlElement(name="iOrderPriority")
 		private Integer orderPriority;
+		@XmlElement(name="bGraphicalOnly")
+		private Integer graphicalOnly;
 
 	}
 	
@@ -1039,6 +1041,7 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 			info.setCtrlDown(JaxbUtils.unmarshallBoolean(aInfo.ctrlDown));
 			info.setHotKeyPriority(JaxbUtils.unmarshallInteger(aInfo.hotKeyPriority));
 			info.setOrderPriority(JaxbUtils.unmarshallInteger(aInfo.orderPriority));
+			info.setGraphicalOnly(JaxbUtils.unmarshallBoolean(aInfo.graphicalOnly));
 
 			map.put(aInfo.type, info);
 		}
@@ -1589,12 +1592,13 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 				}
 			}
 			
-			info.setHotKey(JaxbUtils.unmarshallString(aInfo.hotKey));
-			info.setAltDown(JaxbUtils.unmarshallBoolean(aInfo.altDown));
-			info.setShiftDown(JaxbUtils.unmarshallBoolean(aInfo.shiftDown));
-			info.setCtrlDown(JaxbUtils.unmarshallBoolean(aInfo.ctrlDown));
-			info.setHotKeyPriority(JaxbUtils.unmarshallInteger(aInfo.hotKeyPriority));
-			info.setOrderPriority(JaxbUtils.unmarshallInteger(aInfo.orderPriority));
+			aInfo.hotKey = JaxbUtils.marshallString(info.getHotKey());
+			aInfo.altDown = JaxbUtils.marshallBoolean(info.isAltDown());
+			aInfo.shiftDown = JaxbUtils.marshallBoolean(info.isShiftDown());
+			aInfo.ctrlDown = JaxbUtils.marshallBoolean(info.isCtrlDown());
+			aInfo.hotKeyPriority = JaxbUtils.marshallInteger(info.getHotKeyPriority());
+			aInfo.orderPriority = JaxbUtils.marshallInteger(info.getOrderPriority());
+			aInfo.graphicalOnly = JaxbUtils.marshallBoolean(info.isGraphicalOnly());
 			
 			map.entries.add(aInfo);
 		}

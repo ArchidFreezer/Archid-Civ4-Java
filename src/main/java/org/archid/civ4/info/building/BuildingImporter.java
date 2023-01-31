@@ -210,6 +210,7 @@ public class BuildingImporter extends AbstractImporter<IInfos<IBuildingInfo>, IB
 		parseCell(row.getCell(colNum++), Boolean.class, info::setCtrlDown);
 		parseCell(row.getCell(colNum++), Integer.class, info::setHotKeyPriority);
 		parseCell(row.getCell(colNum++), Integer.class, info::setOrderPriority);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setGraphicalOnly);
 
 		return info;
 	}

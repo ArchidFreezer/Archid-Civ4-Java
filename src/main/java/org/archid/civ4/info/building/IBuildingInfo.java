@@ -251,6 +251,9 @@ public interface IBuildingInfo extends IInfo {
 	boolean isWater();
 
 	void setWater(boolean isWater);
+	
+	boolean isGraphicalOnly();
+	void setGraphicalOnly(boolean isGraphicalOnly);
 
 	float getVisibilityPriority();
 

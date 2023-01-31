@@ -217,6 +217,7 @@ public class BuildingExporter extends AbstractExporter<IInfos<IBuildingInfo>, IB
 		addSingleCell(row.createCell(colNum++), info.isCtrlDown());
 		addSingleCell(row.createCell(colNum++), info.getHotKeyPriority());
 		addSingleCell(row.createCell(colNum++), info.getOrderPriority());
+		addSingleCell(row.createCell(colNum++), info.isGraphicalOnly());
 
 		row.setHeightInPoints(maxHeight * row.getSheet().getDefaultRowHeightInPoints());
 		
