@@ -114,6 +114,10 @@ public abstract class AbstractImporter<T extends IInfos<S>, S extends IInfo> imp
 			} else if (valClass == Float.class) {
 				func.accept(getVal(String.valueOf(cell.getNumericCellValue()), valClass));
 			}
+		} else if (xsfCell.getCellTypeEnum() == CellType.BOOLEAN) {
+			if (valClass == Boolean.class) {
+				func.accept(getVal(cell.getBooleanCellValue() ? "true" : "false", valClass));
+			}
 		} else {
 			func.accept(getVal(cell.getStringCellValue(), valClass));
 		}
