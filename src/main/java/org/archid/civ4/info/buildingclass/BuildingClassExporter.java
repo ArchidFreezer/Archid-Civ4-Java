@@ -34,6 +34,7 @@ public class BuildingClassExporter extends AbstractExporter<IInfos<IBuildingClas
 		int colNum = 0;
 		addSingleCell(row.createCell(colNum++), info.getType());
 		addSingleCell(row.createCell(colNum++), info.getDescription());
+		addSingleCell(row.createCell(colNum++), info.getCategory());
 		addSingleCell(row.createCell(colNum++), info.getMaxGlobalInstances());
 		addSingleCell(row.createCell(colNum++), info.getMaxTeamInstances());
 		addSingleCell(row.createCell(colNum++), info.getMaxPlayerInstances());

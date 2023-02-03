@@ -27,6 +27,8 @@ public class BuildingClassMapAdapter extends XmlAdapter<BuildingClassMapAdapter.
 		private String type;
 		@XmlElement(name="Description")
 		private String description;
+		@XmlElement(name="iCategory")
+		private Integer category;
 		@XmlElement(name="iMaxGlobalInstances")
 		private Integer maxGlobalInstances;
 		@XmlElement(name="iMaxTeamInstances")
@@ -60,6 +62,7 @@ public class BuildingClassMapAdapter extends XmlAdapter<BuildingClassMapAdapter.
 		for (AdaptedBuildingClass aInfo: v.entries) {
 			IBuildingClassInfo info = BuildingClassInfos.createInfo(aInfo.type);
 			info.setDescription(JaxbUtils.unmarshallString(aInfo.description));
+			info.setCategory(JaxbUtils.unmarshallInteger(aInfo.category));
 			info.setMaxGlobalInstances(JaxbUtils.unmarshallInteger(aInfo.maxGlobalInstances));
 			info.setMaxTeamInstances(JaxbUtils.unmarshallInteger(aInfo.maxTeamInstances));
 			info.setMaxPlayerInstances(JaxbUtils.unmarshallInteger(aInfo.maxPlayerInstances));
@@ -89,6 +92,7 @@ public class BuildingClassMapAdapter extends XmlAdapter<BuildingClassMapAdapter.
 			AdaptedBuildingClass aInfo = new AdaptedBuildingClass();
 			aInfo.type = info.getType();
 			aInfo.description = JaxbUtils.marshallString(info.getDescription());
+			aInfo.category = JaxbUtils.marshallInteger(info.getCategory());
 			aInfo.maxGlobalInstances = JaxbUtils.marshallInteger(info.getMaxGlobalInstances());
 			aInfo.maxTeamInstances = JaxbUtils.marshallInteger(info.getMaxTeamInstances());
 			aInfo.maxPlayerInstances = JaxbUtils.marshallInteger(info.getMaxPlayerInstances());

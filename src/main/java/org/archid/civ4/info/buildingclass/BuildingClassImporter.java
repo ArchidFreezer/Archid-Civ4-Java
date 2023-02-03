@@ -3,7 +3,6 @@ package org.archid.civ4.info.buildingclass;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import org.archid.civ4.info.AbstractImporter;
-import org.archid.civ4.info.DefaultXmlFormatter;
 import org.archid.civ4.info.EInfo;
 import org.archid.civ4.info.IInfos;
 
@@ -13,7 +12,7 @@ public class BuildingClassImporter extends AbstractImporter<IInfos<IBuildingClas
 	static Logger log = Logger.getLogger(BuildingClassImporter.class.getName());
 	
 	public BuildingClassImporter(EInfo infoEnum) {
-		super(infoEnum, new DefaultXmlFormatter("BuildingClass"));
+		super(infoEnum, new BuildingClassInfoXmlFormatter());
 	}
 
 	@Override
@@ -32,6 +31,7 @@ public class BuildingClassImporter extends AbstractImporter<IInfos<IBuildingClas
 		
 		IBuildingClassInfo info = BuildingClassInfos.createInfo(type);
 		parseCell(row.getCell(colNum++), String.class, info::setDescription);
+		parseCell(row.getCell(colNum++), Integer.class, info::setCategory);
 		parseCell(row.getCell(colNum++), Integer.class, info::setMaxGlobalInstances);
 		parseCell(row.getCell(colNum++), Integer.class, info::setMaxTeamInstances);
 		parseCell(row.getCell(colNum++), Integer.class, info::setMaxPlayerInstances);

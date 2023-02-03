@@ -42,6 +42,7 @@ public class BuildingClassInfos extends AbstractInfos<IBuildingClassInfo>{
 		private String description;
 		private String defaultBuilding;
 		private String type;
+		private int category;
 		private int extraPlayerInstances;
 		private int maxGlobalInstances;
 		private int maxPlayerInstances;
@@ -212,6 +213,16 @@ public class BuildingClassInfos extends AbstractInfos<IBuildingClassInfo>{
 		@Override
 		public void addVictoryThreshold(IPair<String, Integer> victoryThreshold) {
 			this.victoryThresholds.add(victoryThreshold);
+		}
+
+		@Override
+		public void setCategory(Integer category) {
+			this.category = category;
+		}
+
+		@Override
+		public Integer getCategory() {
+			return category;
 		}
 		
 		

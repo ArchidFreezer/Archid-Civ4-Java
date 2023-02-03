@@ -12,6 +12,9 @@ public interface IBuildingClassInfo extends IInfo {
 	void setType(String type);
 
 	String getDescription();
+	
+	void setCategory(Integer category);
+	Integer getCategory();
 
 	void setDescription(String description);
 
