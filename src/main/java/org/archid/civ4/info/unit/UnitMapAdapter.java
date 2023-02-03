@@ -45,7 +45,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 		private String domain;
 		@XmlElement(name="DefaultUnitAI")
 		private String defaultUnitAI;
-		@XmlElement(name="FixedAI")
+		@XmlElement(name="bFixedAI")
 		private Integer fixedAI;
 		@XmlElement(name="iMaxWeaponTypeTier")
 		private Integer maxWeaponTypeTier;
