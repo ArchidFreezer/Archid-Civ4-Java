@@ -57,8 +57,10 @@ public class BuildingInfoXmlFormatter extends AbstractXmlFormatter {
 		 */ 
 		Map<String, IXmlInfo> features = new TreeMap<String, IXmlInfo>();
 		Map<String, Set<IXmlInfo>> autoBuildGroup = infoList.getIndexMap(GROUP_AUTO_BUILD_TAG);
-		for (IXmlInfo xml: autoBuildGroup.get("1")) {
-			features.put(xml.getType(), xml);
+		if (autoBuildGroup.containsKey("1")) {
+			for (IXmlInfo xml: autoBuildGroup.get("1")) {
+				features.put(xml.getType(), xml);
+			}
 		}
 		
 		Map<String, IXmlInfo> noConstruct = new TreeMap<String, IXmlInfo>();
