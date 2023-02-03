@@ -29,12 +29,15 @@ public class BuildingClassInfoXmlFormatter extends AbstractXmlFormatter {
 
 	private static final String GROUP_CATEGORY_TAG = "iCategory";
 	private static final String GROUP_STANDARD_LABEL = "General";
+	
+	private final Integer subCategoryPadLength = 65;
 
 	private final List<String> groups = new ArrayList<String>(Arrays.asList(GROUP_CATEGORY_TAG));
 	
 	private Map<Integer, String> labels = new HashMap<Integer, String>();
 	
 	private StringBuilder out;
+	private StringBuilder comment = new StringBuilder();
 	
 	public BuildingClassInfoXmlFormatter() {
 		labels.put(2, "World Wonders");
@@ -82,6 +85,7 @@ public class BuildingClassInfoXmlFormatter extends AbstractXmlFormatter {
 	public void format(String path) {
 		XmlInfoList infoList = new XmlInfoList(path);
 		infoList.setMissingTagVal(MISSING_TAG_VAL);
+		infoList.setComment(comment.toString());
 		infoList.parse(groups);
 
 		// First output the file header
@@ -162,7 +166,8 @@ public class BuildingClassInfoXmlFormatter extends AbstractXmlFormatter {
 				StringBuilder startTag = new StringBuilder();
 				if (first) {
 					startTag.append(newline + info.getStartTag() + ' ' + typeHeader.replaceAll("xxxTYPExxx", type));
-					startTag.append(' ' + typeHeader.replaceAll("xxxTYPExxx", labels.get(subCategory)));
+					startTag.append(getSubCategoryPad(startTag.length()));
+					startTag.append(typeHeader.replaceAll("xxxTYPExxx", labels.get(subCategory)));
 					first = false;
 				} else {
 					startTag.append(info.getStartTag() + ' ' + typeHeader.replaceAll("xxxTYPExxx", type));
@@ -271,4 +276,13 @@ public class BuildingClassInfoXmlFormatter extends AbstractXmlFormatter {
 		}
 	}
 
+	private String getSubCategoryPad(Integer commentLength) {
+		StringBuilder pad = new StringBuilder();
+		Integer padRequired = subCategoryPadLength - commentLength;
+		while (padRequired > 0) {
+			pad.append(' ');
+			padRequired -= 1;
+		}
+		return pad.toString();
+	}
 }
