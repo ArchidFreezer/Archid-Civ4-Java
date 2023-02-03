@@ -159,9 +159,15 @@ public class BuildingClassInfoXmlFormatter extends AbstractXmlFormatter {
 		// Loop through the sub categories
 		int groupCount = 0;
 		for (Integer subCategory: general.keySet()) {
-			boolean first = true;
+			// First sort the category infos
 			sortedGroup =  new TreeMap<String, IXmlInfo>();
 			for (IXmlInfo info: general.get(subCategory)) {
+				sortedGroup.put(info.getType(), info);
+			}
+			// Now we have the sorted list we can add them to the output
+			groupCount = 0;
+			boolean first = true;
+			for (IXmlInfo info: sortedGroup.values()) {
 				String type = getCommentText(info.getType());
 				StringBuilder startTag = new StringBuilder();
 				if (first) {
@@ -174,10 +180,6 @@ public class BuildingClassInfoXmlFormatter extends AbstractXmlFormatter {
 					
 				}
 				info.setStartTag(startTag.toString());
-				sortedGroup.put(type, info);
-			}
-			groupCount = 0;
-			for (IXmlInfo info: sortedGroup.values()) {
 				out.append(info.getXml());
 				groupCount++;
 			}
@@ -259,7 +261,7 @@ public class BuildingClassInfoXmlFormatter extends AbstractXmlFormatter {
 		}
 		totalInfoCount += groupCount;
 		log.info("Processed " + groupCount + " " + labels.get(4) + " building classes");
-		log.info("Wrote " + totalInfoCount + " total buildings");
+		log.info("Wrote " + totalInfoCount + " total building classes");
 
 		// Output the file footer
 		out.append(infoList.getFooter());
