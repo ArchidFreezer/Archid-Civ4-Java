@@ -33,6 +33,7 @@ public class XmlInfoList {
 
 	private StringBuilder header = new StringBuilder();
 	private StringBuilder footer = new StringBuilder();
+	private String comment = null;
 
 	/** {@link Map} keyed on {@code <Type>} tag values */ 
 	private Map<String, IXmlInfo> typeMap;
@@ -105,8 +106,15 @@ public class XmlInfoList {
 			Matcher matcher;
 			BufferedReader reader = new BufferedReader(new FileReader(xmlFile));
 			String line = "";
+			Boolean first = true;
 			while ((line = reader.readLine()) != null) {
 				if (padLen > 0) line = line.replaceAll(replace.toString(), "\t");
+				if (first) {
+					first = false;
+					if (StringUtils.hasCharacters(comment)) {
+						line = line + newline + comment;
+					}
+				}
 
 				matcher = patternInfoStart.matcher(line);
 				if (matcher.matches()) {
@@ -256,6 +264,10 @@ public class XmlInfoList {
 	 */
 	public void setSorted(boolean sorted) {
 		this.sorted = sorted;
+	}
+	
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 	
 	private class XmlInfo implements IXmlInfo {
