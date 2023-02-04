@@ -212,7 +212,7 @@ public class HtmlGenerator {
 		html.append(NEWLINE + "\t\t<div class=\"collapse-data\">"
 				+ NEWLINE + "\t\t\t<pre class=\"code\">"
 				+ "&lt;" + tagName + "&gt;");
-		html.append(printTagExample(tag, 0, mandatoryOnly));
+		html.append(printTagExample(tag, 0, mandatoryOnly, false));
 		html.append(NEWLINE + "&lt;/" + tagName + "&gt;"
 				+ "</pre>"
 				+ NEWLINE + "\t\t</div>"
@@ -262,7 +262,7 @@ public class HtmlGenerator {
 		return NEWLINE + "</body>" + NEWLINE + "</html>";
 	}
 	
-	protected String printTagExample(XmlTagDefinition tag, int indentCount, boolean mandatoryOnly) {
+	protected String printTagExample(XmlTagDefinition tag, int indentCount, boolean mandatoryOnly, boolean getBts) {
 		StringBuilder html = new StringBuilder();
 		StringBuilder indent = new StringBuilder();
 		
@@ -274,7 +274,15 @@ public class HtmlGenerator {
 		
 		for (XmlTagInstance child: tag.getChildren()) {
 			if (!mandatoryOnly || child.isMandatory()) {
-				XmlTagDefinition childTag = parser.getTagDefinition(child.getTagName());
+				XmlTagDefinition childTag = null;
+				if (getBts)
+						childTag = parser.getBtsTagDefinition(child.getTagName());
+				else
+					childTag = parser.getTagDefinition(child.getTagName());
+					
+				if (childTag == null) {
+					break;
+				}
 				html.append(NEWLINE + "  " + indent + "&lt;" + child.getTagName() + "&gt;");
 				// Put in the default value
 				if (child.getDefaultVal() != null)
@@ -282,7 +290,7 @@ public class HtmlGenerator {
 				else
 					html.append(childTag.getDataType().getDefaultVal());
 				if (!childTag.getChildren().isEmpty())
-					html.append(printTagExample(childTag, iChildIndentCount, mandatoryOnly) + NEWLINE + "  " + indent);
+					html.append(printTagExample(childTag, iChildIndentCount, mandatoryOnly, getBts) + NEWLINE + "  " + indent);
 				html.append("&lt;/" + child.getTagName() + "&gt;");
 			}
 		}
@@ -294,6 +302,7 @@ public class HtmlGenerator {
 		StringBuilder html = new StringBuilder();
 		StringBuilder indent = new StringBuilder();
 		List<XmlTagInstance> tags = new ArrayList<XmlTagInstance>();
+		XmlTagDefinition btsTag = parser.getBtsTagDefinition(tag.getTagName());
 		
 		for (int i = 0; i < indentCount; i++)
 		{
@@ -320,8 +329,20 @@ public class HtmlGenerator {
 			else
 				html.append("tagoptional\">");
 
-			XmlTagDefinition btsTag = parser.getBtsTagDefinition(child.getTagName());
-			boolean changedFromBts = (btsTag == null || !btsTag.equals(childTag));
+			boolean changedFromBts = true;
+			if (btsTag != null) {
+				for (XmlTagInstance btsChild: btsTag.getChildren()) {
+					if (btsChild.getTagName().equals(child.getTagName())) {
+						// We have the top level tag, but there may be children that have changed so we need to check those as well
+						XmlTagDefinition btsChildTag = parser.getBtsTagDefinition(btsChild.getTagName());
+						// This is a bit crude, but it works
+						if (btsChildTag != null && printTagExample(childTag, 0, false, false).equals(printTagExample(parser.getBtsTagDefinition(btsChild.getTagName()), 0, false, true))) {
+							changedFromBts = false;
+							break;
+						}
+					}
+				}
+			}
 			if (changedFromBts)
 				html.append("<b>");
 			html.append(child.getTagName());
@@ -346,7 +367,7 @@ public class HtmlGenerator {
 			if (dataType == DataType.MULTI) {
 				// Append the example children
 				html.append("<br><pre class=\"code\">");
-				html.append(printTagExample(childTag, 0, false));
+				html.append(printTagExample(childTag, 0, false, false));
 				html.append("</pre>");
 			}
 			
