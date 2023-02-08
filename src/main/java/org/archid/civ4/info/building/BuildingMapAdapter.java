@@ -97,6 +97,8 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		@XmlElementWrapper(name="PrereqVicinityOrBonus")
 		@XmlElement(name="BonusType")
 		private List<String> prereqVicinityOrBonus;
+		@XmlElement(name="bRequirePrereqVicinityBonusConnected")
+		private Integer requirePrereqVicinityBonusConnected;
 		@XmlElementWrapper(name="PrereqVicinityImprovements")
 		@XmlElement(name="ImprovementType")
 		private List<String> prereqVicinityImprovements;
@@ -649,7 +651,9 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 						info.addPrereqVicinityOrBonus(val);
 				}
 			}
-			
+
+			info.setRequirePrereqVicinityBonusConnected(JaxbUtils.unmarshallBoolean(aInfo.requirePrereqVicinityBonusConnected, true));
+
 			if (CollectionUtils.hasElements(aInfo.prereqVicinityImprovements)) {
 				for (String val: aInfo.prereqVicinityImprovements) {
 					if (StringUtils.hasCharacters(val))
@@ -1039,7 +1043,7 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 			if (CollectionUtils.hasElements(aInfo.vicinityBonusYieldChanges)) {
 				for (AdaptedBonusYieldChange adaptor: aInfo.vicinityBonusYieldChanges) {
 					if (StringUtils.hasCharacters(adaptor.bonus)) {
-						info.addSpecialistYieldChange(adaptor.bonus, new ArrayList<Integer>(adaptor.yields));
+						info.addVicinityBonusYieldChange(adaptor.bonus, new ArrayList<Integer>(adaptor.yields));
 					}
 				}
 			}
@@ -1161,6 +1165,8 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 				}
 			}
 		
+			aInfo.requirePrereqVicinityBonusConnected = JaxbUtils.marshallBoolean(info.isRequirePrereqVicinityBonusConnected(), true);
+
 			if (CollectionUtils.hasElements(info.getPrereqVicinityImprovements())) {
 				aInfo.prereqVicinityImprovements = new ArrayList<String>();
 				for (String val: info.getPrereqVicinityImprovements()) {

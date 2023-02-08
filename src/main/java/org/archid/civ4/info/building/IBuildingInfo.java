@@ -759,5 +759,8 @@ public interface IBuildingInfo extends IInfo {
 	
 	Integer getBarbarianConversionCostModifier();
 	void setBarbarianConversionCostModifier(Integer barbarianConversionCostModifier);
+	
+	Boolean isRequirePrereqVicinityBonusConnected();
+	void setRequirePrereqVicinityBonusConnected(Boolean requirePrereqVicinityBonusConnected);
 
 }

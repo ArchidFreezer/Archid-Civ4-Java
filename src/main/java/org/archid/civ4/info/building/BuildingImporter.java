@@ -58,6 +58,7 @@ public class BuildingImporter extends AbstractImporter<IInfos<IBuildingInfo>, IB
 		parseListCell(row.getCell(colNum++), String.class, info::addPrereqOrTerrain);
 		parseListCell(row.getCell(colNum++), String.class, info::addPrereqVicinityAndBonus);
 		parseListCell(row.getCell(colNum++), String.class, info::addPrereqVicinityOrBonus);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setRequirePrereqVicinityBonusConnected);
 		parseListCell(row.getCell(colNum++), String.class, info::addPrereqVicinityImprovement);
 		parseListCell(row.getCell(colNum++), String.class, info::addPrereqVicinityFeature);
 		parseListCell(row.getCell(colNum++), String.class, info::addPrereqWorldView);

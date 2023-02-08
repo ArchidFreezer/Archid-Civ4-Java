@@ -89,6 +89,19 @@ public class JaxbUtils {
 	}
 	
 	/**
+	 * Used when a {@code Integer} is used to populate a {@code boolean}
+	 * 
+	 * @param val {@code Integer} value to check
+	 * @param defaultVal {@code Boolean} default value to use if val is null
+	 * @return {@code true} if {@code val} is 1; otherwise {@code defaultVal}
+	 * 
+	 * @see #marshallBoolean(boolean)
+	 */
+	public static boolean unmarshallBoolean(Integer val, Boolean defaultVal) {
+		return val == null ? defaultVal : val == 1;
+	}
+	
+	/**
 	 * Used when populating an {@code Integer} for marshalling where the value of 1 should be output for {@code true}
 	 * and no tag when the value is {@code false} 
 	 * 
@@ -99,6 +112,19 @@ public class JaxbUtils {
 	 */
 	public static Integer marshallBoolean(boolean val) {
 		return val ? 1 : null;
+	}
+	
+	/**
+	 * Used when populating an {@code Integer} for marshalling where the value of 1 should be output for {@code true}
+	 * and no tag when the value is {@code false} 
+	 * 
+	 * @param val {@code boolean} to parse
+	 * @return {@code 1} if {@code val} is true; otherwise null
+	 * 
+	 * @see #unmarshallBoolean(Boolean)
+	 */
+	public static Integer marshallBoolean(boolean val, boolean defaultVal) {
+		return val == defaultVal ? null : (val ? 1 : 0);
 	}
 	
 	/**

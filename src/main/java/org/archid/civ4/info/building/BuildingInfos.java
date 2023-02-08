@@ -95,6 +95,7 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo>{
 		private boolean isPower;
 		private boolean isPrereqPower;
 		private boolean isPrereqReligion;
+		private boolean isRequirePrereqVicinityBonusConnected;
 		private boolean isRiver;
 		private boolean isShiftDown;
 		private boolean isSlaveMarket;
@@ -3219,6 +3220,16 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo>{
 		@Override
 		public void setBarbarianConversionCostModifier(Integer barbarianConversionCostModifier) {
 			this.barbarianConversionCostModifier = barbarianConversionCostModifier;
+		}
+
+		@Override
+		public Boolean isRequirePrereqVicinityBonusConnected() {
+			return isRequirePrereqVicinityBonusConnected;
+		}
+
+		@Override
+		public void setRequirePrereqVicinityBonusConnected(Boolean requirePrereqVicinityBonusConnected) {
+			isRequirePrereqVicinityBonusConnected = requirePrereqVicinityBonusConnected;
 		}
 	}
 
