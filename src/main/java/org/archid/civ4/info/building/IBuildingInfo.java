@@ -753,5 +753,11 @@ public interface IBuildingInfo extends IInfo {
 
 	Map<String, List<Integer>> getVicinityBonusYieldChanges();
 	void addVicinityBonusYieldChange(String bonus, List<Integer> yieldChanges);
+	
+	Integer getExtraBarbarianCostChange();
+	void setExtraBarbarianCostChange(Integer extraBarbarianCostChange);
+	
+	Integer getBarbarianConversionCostModifier();
+	void setBarbarianConversionCostModifier(Integer barbarianConversionCostModifier);
 
 }

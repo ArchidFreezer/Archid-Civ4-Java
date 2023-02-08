@@ -204,6 +204,10 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		private Integer advancedStartCost;
 		@XmlElement(name="iAdvancedStartCostIncrease")
 		private Integer advancedStartCostIncrease;
+		@XmlElement(name="iExtraBarbarianCostChange")
+		private Integer extraBarbarianCostChange;
+		@XmlElement(name="iBarbarianConversionCostModifier")
+		private Integer barbarianConversionCostModifier;
 		@XmlElement(name="iMinAreaSize")
 		private Integer minAreaSize;
 		@XmlElement(name="iConquestProb")
@@ -730,6 +734,8 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 			info.setHurryCostModifier(JaxbUtils.unmarshallInteger(aInfo.hurryCostModifier));
 			info.setAdvancedStartCost(JaxbUtils.unmarshallInteger(aInfo.advancedStartCost));
 			info.setAdvancedStartCostIncrease(JaxbUtils.unmarshallInteger(aInfo.advancedStartCostIncrease));
+			info.setExtraBarbarianCostChange(JaxbUtils.unmarshallInteger(aInfo.extraBarbarianCostChange));
+			info.setBarbarianConversionCostModifier(JaxbUtils.unmarshallInteger(aInfo.barbarianConversionCostModifier));
 			info.setMinAreaSize(JaxbUtils.unmarshallInteger(aInfo.minAreaSize));
 			info.setConquestProb(JaxbUtils.unmarshallInteger(aInfo.conquestProb));
 			info.setCitiesPrereq(JaxbUtils.unmarshallInteger(aInfo.citiesPrereq));
@@ -1243,6 +1249,8 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 			aInfo.hurryCostModifier = JaxbUtils.marshallInteger(info.getHurryCostModifier());
 			aInfo.advancedStartCost = JaxbUtils.marshallInteger(info.getAdvancedStartCost());
 			aInfo.advancedStartCostIncrease = JaxbUtils.marshallInteger(info.getAdvancedStartCostIncrease());
+			aInfo.extraBarbarianCostChange = JaxbUtils.marshallInteger(info.getExtraBarbarianCostChange());
+			aInfo.barbarianConversionCostModifier = JaxbUtils.marshallInteger(info.getBarbarianConversionCostModifier());
 			aInfo.minAreaSize = JaxbUtils.marshallInteger(info.getMinAreaSize());
 			aInfo.conquestProb = JaxbUtils.marshallInteger(info.getConquestProb());
 			aInfo.citiesPrereq = JaxbUtils.marshallInteger(info.getCitiesPrereq());

@@ -115,6 +115,7 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo>{
 		private int areaHappiness;
 		private int areaHealth;
 		private int asset;
+		private int barbarianConversionCostModifier;
 		private int bombardDefense;
 		private int citiesPrereq;
 		private int coastalTradeRoutes;
@@ -125,6 +126,7 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo>{
 		private int enemyWarWearinessModifier;
 		private int espionageDefense;
 		private int experience;
+		private int extraBarbarianCostChange;
 		private int foodKept;
 		private int foreignTradeRouteModifier;
 		private int freeSpecialist;
@@ -3197,6 +3199,26 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo>{
 		@Override
 		public void addVicinityBonusYieldChange(String bonus, List<Integer> yieldChanges) {
 			vicinityBonusYieldChanges.put(bonus, yieldChanges);
+		}
+
+		@Override
+		public Integer getExtraBarbarianCostChange() {
+			return extraBarbarianCostChange;
+		}
+
+		@Override
+		public void setExtraBarbarianCostChange(Integer extraBarbarianCostChange) {
+			this.extraBarbarianCostChange = extraBarbarianCostChange;
+		}
+
+		@Override
+		public Integer getBarbarianConversionCostModifier() {
+			return barbarianConversionCostModifier;
+		}
+
+		@Override
+		public void setBarbarianConversionCostModifier(Integer barbarianConversionCostModifier) {
+			this.barbarianConversionCostModifier = barbarianConversionCostModifier;
 		}
 	}
 

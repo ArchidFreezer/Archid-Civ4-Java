@@ -116,6 +116,8 @@ public class BuildingExporter extends AbstractExporter<IInfos<IBuildingInfo>, IB
 		addSingleCell(row.createCell(colNum++), info.getHurryCostModifier());
 		addSingleCell(row.createCell(colNum++), info.getAdvancedStartCost());
 		addSingleCell(row.createCell(colNum++), info.getAdvancedStartCostIncrease());
+		addSingleCell(row.createCell(colNum++), info.getExtraBarbarianCostChange());
+		addSingleCell(row.createCell(colNum++), info.getBarbarianConversionCostModifier());
 		addSingleCell(row.createCell(colNum++), info.getMinAreaSize());
 		addSingleCell(row.createCell(colNum++), info.getConquestProb());
 		addSingleCell(row.createCell(colNum++), info.getCitiesPrereq());

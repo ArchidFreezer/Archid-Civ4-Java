@@ -109,6 +109,8 @@ public class BuildingImporter extends AbstractImporter<IInfos<IBuildingInfo>, IB
 		parseCell(row.getCell(colNum++), Integer.class, info::setHurryCostModifier);
 		parseCell(row.getCell(colNum++), Integer.class, info::setAdvancedStartCost);
 		parseCell(row.getCell(colNum++), Integer.class, info::setAdvancedStartCostIncrease);
+		parseCell(row.getCell(colNum++), Integer.class, info::setExtraBarbarianCostChange);
+		parseCell(row.getCell(colNum++), Integer.class, info::setBarbarianConversionCostModifier);
 		parseCell(row.getCell(colNum++), Integer.class, info::setMinAreaSize);
 		parseCell(row.getCell(colNum++), Integer.class, info::setConquestProb);
 		parseCell(row.getCell(colNum++), Integer.class, info::setCitiesPrereq);
