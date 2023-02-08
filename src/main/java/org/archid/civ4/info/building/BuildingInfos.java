@@ -225,6 +225,7 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo>{
 		private List<IPair<String, Integer>> unitCombatFreeExperiences = new ArrayList<IPair<String, Integer>>();
 		private Map<String, List<Integer>> bonusYieldModifiers = new TreeMap<String, List<Integer>>();
 		private Map<String, List<Integer>> specialistYieldChanges = new TreeMap<String, List<Integer>>();
+		private Map<String, List<Integer>> vicinityBonusYieldChanges = new TreeMap<String, List<Integer>>();
 		
 		private BuildingInfo(String type) {
 			this.type = type;
@@ -3186,6 +3187,16 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo>{
 		@Override
 		public void setGraphicalOnly(boolean isGraphicalOnly) {
 			this.isGraphicalOnly = isGraphicalOnly;
+		}
+
+		@Override
+		public Map<String, List<Integer>> getVicinityBonusYieldChanges() {
+			return vicinityBonusYieldChanges;
+		}
+
+		@Override
+		public void addVicinityBonusYieldChange(String bonus, List<Integer> yieldChanges) {
+			vicinityBonusYieldChanges.put(bonus, yieldChanges);
 		}
 	}
 

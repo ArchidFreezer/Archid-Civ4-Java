@@ -428,6 +428,9 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		@XmlElementWrapper(name="ImprovementFreeSpecialists")
 		@XmlElement(name="ImprovementFreeSpecialist")
 		private List<AdaptedImprovementCount> improvementFreeSpecialists;
+		@XmlElementWrapper(name="VicinityBonusYieldChanges")
+		@XmlElement(name="BonusYieldChange")
+		private List<AdaptedBonusYieldChange> vicinityBonusYieldChanges;
 		@XmlElementWrapper(name="Flavors")
 		@XmlElement(name="Flavor")
 		private List<AdaptedFlavor> flavors;
@@ -473,6 +476,14 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 	private static class AdaptedSpecialistYieldChange {
 		@XmlElement(name="SpecialistType")
 		private String specialist;
+		@XmlElementWrapper(name="YieldChanges")
+		@XmlElement(name="iYield")
+		private List<Integer> yields = new ArrayList<Integer>();
+	}
+
+	private static class AdaptedBonusYieldChange {
+		@XmlElement(name="BonusType")
+		private String bonus;
 		@XmlElementWrapper(name="YieldChanges")
 		@XmlElement(name="iYield")
 		private List<Integer> yields = new ArrayList<Integer>();
@@ -1015,6 +1026,14 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 				for (AdaptedBonusYieldModifier adaptor: aInfo.bonusYieldModifiers) {
 					if (StringUtils.hasCharacters(adaptor.bonus)) {
 						info.addBonusYieldModifier(adaptor.bonus, new ArrayList<Integer>(adaptor.yields));
+					}
+				}
+			}
+			
+			if (CollectionUtils.hasElements(aInfo.vicinityBonusYieldChanges)) {
+				for (AdaptedBonusYieldChange adaptor: aInfo.vicinityBonusYieldChanges) {
+					if (StringUtils.hasCharacters(adaptor.bonus)) {
+						info.addSpecialistYieldChange(adaptor.bonus, new ArrayList<Integer>(adaptor.yields));
 					}
 				}
 			}
@@ -1569,6 +1588,18 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 						adaptor.yields.add(yield);
 					}
 					aInfo.bonusYieldModifiers.add(adaptor);
+				}
+			}
+			
+			if (CollectionUtils.hasElements(info.getVicinityBonusYieldChanges().keySet())) {
+				aInfo.vicinityBonusYieldChanges = new ArrayList<AdaptedBonusYieldChange>();
+				for (String bonus: info.getVicinityBonusYieldChanges().keySet()) {
+					AdaptedBonusYieldChange adaptor = new AdaptedBonusYieldChange();
+					adaptor.bonus = bonus;
+					for (Integer yield: info.getVicinityBonusYieldChanges().get(bonus)) {
+						adaptor.yields.add(yield);
+					}
+					aInfo.vicinityBonusYieldChanges.add(adaptor);
 				}
 			}
 			

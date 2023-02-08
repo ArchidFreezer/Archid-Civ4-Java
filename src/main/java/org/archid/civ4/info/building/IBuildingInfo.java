@@ -751,4 +751,7 @@ public interface IBuildingInfo extends IInfo {
 
 	void addSpecialistYieldChange(String specialist, List<Integer> yieldChanges);
 
+	Map<String, List<Integer>> getVicinityBonusYieldChanges();
+	void addVicinityBonusYieldChange(String bonus, List<Integer> yieldChanges);
+
 }
