@@ -426,7 +426,7 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		@XmlElement(name="BuildingClass")
 		private List<String> prereqNotBuildingClasses;
 		@XmlElementWrapper(name="ReplacedByBuildingClasses")
-		@XmlElement(name="BuildingClass")
+		@XmlElement(name="BuildingClassType")
 		private List<String> replacedByBuildingClasses;
 		@XmlElementWrapper(name="SpecialistYieldChanges")
 		@XmlElement(name="SpecialistYieldChange")
@@ -437,6 +437,9 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		@XmlElementWrapper(name="ImprovementFreeSpecialists")
 		@XmlElement(name="ImprovementFreeSpecialist")
 		private List<AdaptedImprovementCount> improvementFreeSpecialists;
+		@XmlElementWrapper(name="BonusYieldChanges")
+		@XmlElement(name="BonusYieldChange")
+		private List<AdaptedBonusYieldChange> bonusYieldChanges;
 		@XmlElementWrapper(name="VicinityBonusYieldChanges")
 		@XmlElement(name="BonusYieldChange")
 		private List<AdaptedBonusYieldChange> vicinityBonusYieldChanges;
@@ -1058,6 +1061,14 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 				}
 			}
 			
+			if (CollectionUtils.hasElements(aInfo.bonusYieldChanges)) {
+				for (AdaptedBonusYieldChange adaptor: aInfo.bonusYieldChanges) {
+					if (StringUtils.hasCharacters(adaptor.bonus)) {
+						info.addBonusYieldChange(adaptor.bonus, new ArrayList<Integer>(adaptor.yields));
+					}
+				}
+			}
+			
 			if (CollectionUtils.hasElements(aInfo.vicinityBonusYieldChanges)) {
 				for (AdaptedBonusYieldChange adaptor: aInfo.vicinityBonusYieldChanges) {
 					if (StringUtils.hasCharacters(adaptor.bonus)) {
@@ -1630,6 +1641,18 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 						adaptor.yields.add(yield);
 					}
 					aInfo.bonusYieldModifiers.add(adaptor);
+				}
+			}
+			
+			if (CollectionUtils.hasElements(info.getBonusYieldChanges().keySet())) {
+				aInfo.bonusYieldChanges = new ArrayList<AdaptedBonusYieldChange>();
+				for (String bonus: info.getBonusYieldChanges().keySet()) {
+					AdaptedBonusYieldChange adaptor = new AdaptedBonusYieldChange();
+					adaptor.bonus = bonus;
+					for (Integer yield: info.getBonusYieldChanges().get(bonus)) {
+						adaptor.yields.add(yield);
+					}
+					aInfo.bonusYieldChanges.add(adaptor);
 				}
 			}
 			

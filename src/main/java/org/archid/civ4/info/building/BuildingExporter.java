@@ -213,6 +213,7 @@ public class BuildingExporter extends AbstractExporter<IInfos<IBuildingInfo>, IB
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getReplacedByBuildingClasses(), maxHeight);
 		maxHeight = addMapListCell(row.createCell(colNum++), info.getSpecialistYieldChanges(), maxHeight);
 		maxHeight = addMapListCell(row.createCell(colNum++), info.getBonusYieldModifiers(), maxHeight);
+		maxHeight = addMapListCell(row.createCell(colNum++), info.getBonusYieldChanges(), maxHeight);
 		maxHeight = addMapListCell(row.createCell(colNum++), info.getVicinityBonusYieldChanges(), maxHeight);
 		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getImprovementFreeSpecialists(), maxHeight);
 		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getFlavors(), maxHeight);

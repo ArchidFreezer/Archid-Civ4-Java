@@ -230,6 +230,7 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo>{
 		private Map<String, List<Integer>> bonusYieldModifiers = new TreeMap<String, List<Integer>>();
 		private Map<String, List<Integer>> specialistYieldChanges = new TreeMap<String, List<Integer>>();
 		private Map<String, List<Integer>> vicinityBonusYieldChanges = new TreeMap<String, List<Integer>>();
+		private Map<String, List<Integer>> bonusYieldChanges = new TreeMap<String, List<Integer>>();
 		
 		private BuildingInfo(String type) {
 			this.type = type;
@@ -3241,6 +3242,16 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo>{
 		@Override
 		public void addBuildingClassProductionModifier(IPair<String, Integer> buildingClassProductionModifier) {
 			buildingClassProductionModifiers.add(buildingClassProductionModifier);
+		}
+
+		@Override
+		public Map<String, List<Integer>> getBonusYieldChanges() {
+			return bonusYieldChanges;
+		}
+
+		@Override
+		public void addBonusYieldChange(String bonus, List<Integer> yieldChanges) {
+			bonusYieldChanges.put(bonus, yieldChanges);
 		}
 	}
 
