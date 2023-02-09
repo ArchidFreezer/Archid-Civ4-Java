@@ -197,6 +197,7 @@ public class BuildingImporter extends AbstractImporter<IInfos<IBuildingInfo>, IB
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addUnitCombatFreeExperience);
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addDomainFreeExperience);
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addDomainProductionModifier);
+		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addBuildingClassProductionModifier);
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addBuildingHappinessChange);
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addPrereqNumOfBuildingClass);
 		parseListCell(row.getCell(colNum++), String.class, info::addPrereqAndBuildingClass);

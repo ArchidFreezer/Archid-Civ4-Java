@@ -407,6 +407,9 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		@XmlElementWrapper(name="DomainProductionModifiers")
 		@XmlElement(name="DomainProductionModifier")
 		private List<AdaptedDomainModifier> domainProductionModifiers;
+		@XmlElementWrapper(name="BuildingClassProductionModifiers")
+		@XmlElement(name="BuildingClassProductionModifier")
+		private List<AdaptedBuildingClassProductionModifier> buildingClassProductionModifiers;
 		@XmlElementWrapper(name="BuildingHappinessChanges")
 		@XmlElement(name="BuildingHappinessChange")
 		private List<AdaptedBuildingChange> buildingHappinessChanges;
@@ -512,6 +515,13 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 	private static class AdaptedDomainModifier {
 		@XmlElement(name="DomainType")
 		private String domainType;
+		@XmlElement(name="iModifier")
+		private Integer modifier;
+	}
+
+	private static class AdaptedBuildingClassProductionModifier {
+		@XmlElement(name="BuildingClassType")
+		private String buildingClassType;
 		@XmlElement(name="iModifier")
 		private Integer modifier;
 	}
@@ -976,6 +986,14 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 				for (AdaptedDomainModifier adaptor: aInfo.domainProductionModifiers) {
 					if (StringUtils.hasCharacters(adaptor.domainType)) {
 						info.addDomainProductionModifier(new Pair<String, Integer>(adaptor.domainType, adaptor.modifier));
+					}
+				}
+			}
+			
+			if (CollectionUtils.hasElements(aInfo.buildingClassProductionModifiers)) {
+				for (AdaptedBuildingClassProductionModifier adaptor: aInfo.buildingClassProductionModifiers) {
+					if (StringUtils.hasCharacters(adaptor.buildingClassType)) {
+						info.addBuildingClassProductionModifier(new Pair<String, Integer>(adaptor.buildingClassType, adaptor.modifier));
 					}
 				}
 			}
@@ -1530,6 +1548,16 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 					adaptor.domainType = pair.getKey();
 					adaptor.modifier = pair.getValue();
 					aInfo.domainProductionModifiers.add(adaptor);
+				}
+			}
+			
+			if (CollectionUtils.hasElements(info.getBuildingClassProductionModifiers())) {
+				aInfo.buildingClassProductionModifiers = new ArrayList<AdaptedBuildingClassProductionModifier>();
+				for (IPair<String, Integer> pair: info.getBuildingClassProductionModifiers()) {
+					AdaptedBuildingClassProductionModifier adaptor = new AdaptedBuildingClassProductionModifier();
+					adaptor.buildingClassType = pair.getKey();
+					adaptor.modifier = pair.getValue();
+					aInfo.buildingClassProductionModifiers.add(adaptor);
 				}
 			}
 			

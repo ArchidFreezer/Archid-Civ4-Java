@@ -763,4 +763,7 @@ public interface IBuildingInfo extends IInfo {
 	Boolean isRequirePrereqVicinityBonusConnected();
 	void setRequirePrereqVicinityBonusConnected(Boolean requirePrereqVicinityBonusConnected);
 
+	List<IPair<String, Integer>> getBuildingClassProductionModifiers();
+	void addBuildingClassProductionModifier(IPair<String, Integer> buildingClassProductionModifier);
+
 }

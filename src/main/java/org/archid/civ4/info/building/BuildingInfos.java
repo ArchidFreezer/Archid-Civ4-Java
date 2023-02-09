@@ -214,6 +214,7 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo>{
 		private List<IPair<String, Integer>> bonusHappinessChanges = new ArrayList<IPair<String, Integer>>();
 		private List<IPair<String, Integer>> bonusHealthChanges = new ArrayList<IPair<String, Integer>>();
 		private List<IPair<String, Integer>> bonusProductionModifiers = new ArrayList<IPair<String, Integer>>();
+		private List<IPair<String, Integer>> buildingClassProductionModifiers = new ArrayList<IPair<String, Integer>>();
 		private List<IPair<String, Integer>> buildingHappinessChanges = new ArrayList<IPair<String, Integer>>();
 		private List<IPair<String, Integer>> domainFreeExperiences = new ArrayList<IPair<String, Integer>>();
 		private List<IPair<String, Integer>> domainProductionModifiers = new ArrayList<IPair<String, Integer>>();
@@ -3230,6 +3231,16 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo>{
 		@Override
 		public void setRequirePrereqVicinityBonusConnected(Boolean requirePrereqVicinityBonusConnected) {
 			isRequirePrereqVicinityBonusConnected = requirePrereqVicinityBonusConnected;
+		}
+
+		@Override
+		public List<IPair<String, Integer>> getBuildingClassProductionModifiers() {
+			return buildingClassProductionModifiers;
+		}
+
+		@Override
+		public void addBuildingClassProductionModifier(IPair<String, Integer> buildingClassProductionModifier) {
+			buildingClassProductionModifiers.add(buildingClassProductionModifier);
 		}
 	}
 
