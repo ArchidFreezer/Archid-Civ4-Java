@@ -231,6 +231,7 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo>{
 		private Map<String, List<Integer>> specialistYieldChanges = new TreeMap<String, List<Integer>>();
 		private Map<String, List<Integer>> vicinityBonusYieldChanges = new TreeMap<String, List<Integer>>();
 		private Map<String, List<Integer>> bonusYieldChanges = new TreeMap<String, List<Integer>>();
+		private Map<String, List<Integer>> techCommerceChanges = new TreeMap<String, List<Integer>>();
 		
 		private BuildingInfo(String type) {
 			this.type = type;
@@ -3252,6 +3253,16 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo>{
 		@Override
 		public void addBonusYieldChange(String bonus, List<Integer> yieldChanges) {
 			bonusYieldChanges.put(bonus, yieldChanges);
+		}
+
+		@Override
+		public Map<String, List<Integer>> getTechCommerceChanges() {
+			return techCommerceChanges;
+		}
+
+		@Override
+		public void addTechCommerceChange(String tech, List<Integer> commerceChanges) {
+			techCommerceChanges.put(tech, commerceChanges);
 		}
 	}
 

@@ -769,4 +769,7 @@ public interface IBuildingInfo extends IInfo {
 	List<IPair<String, Integer>> getBuildingClassProductionModifiers();
 	void addBuildingClassProductionModifier(IPair<String, Integer> buildingClassProductionModifier);
 
+	Map<String, List<Integer>> getTechCommerceChanges();
+	void addTechCommerceChange(String tech, List<Integer> commerceChanges);
+	
 }

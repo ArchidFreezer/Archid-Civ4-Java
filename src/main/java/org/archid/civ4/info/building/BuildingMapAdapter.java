@@ -443,6 +443,9 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		@XmlElementWrapper(name="VicinityBonusYieldChanges")
 		@XmlElement(name="BonusYieldChange")
 		private List<AdaptedBonusYieldChange> vicinityBonusYieldChanges;
+		@XmlElementWrapper(name="TechCommerceChanges")
+		@XmlElement(name="TechCommerceChange")
+		private List<AdaptedTechCommerceChange> techCommerceChanges;
 		@XmlElementWrapper(name="Flavors")
 		@XmlElement(name="Flavor")
 		private List<AdaptedFlavor> flavors;
@@ -499,6 +502,14 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		@XmlElementWrapper(name="YieldChanges")
 		@XmlElement(name="iYield")
 		private List<Integer> yields = new ArrayList<Integer>();
+	}
+
+	private static class AdaptedTechCommerceChange {
+		@XmlElement(name="TechType")
+		private String tech;
+		@XmlElementWrapper(name="CommerceChanges")
+		@XmlElement(name="iCommerce")
+		private List<Integer> commerces = new ArrayList<Integer>();
 	}
 
 	private static class AdaptedBuildingChange {
@@ -1073,6 +1084,14 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 				for (AdaptedBonusYieldChange adaptor: aInfo.vicinityBonusYieldChanges) {
 					if (StringUtils.hasCharacters(adaptor.bonus)) {
 						info.addVicinityBonusYieldChange(adaptor.bonus, new ArrayList<Integer>(adaptor.yields));
+					}
+				}
+			}
+			
+			if (CollectionUtils.hasElements(aInfo.techCommerceChanges)) {
+				for (AdaptedTechCommerceChange adaptor: aInfo.techCommerceChanges) {
+					if (StringUtils.hasCharacters(adaptor.tech)) {
+						info.addTechCommerceChange(adaptor.tech, new ArrayList<Integer>(adaptor.commerces));
 					}
 				}
 			}
@@ -1665,6 +1684,18 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 						adaptor.yields.add(yield);
 					}
 					aInfo.vicinityBonusYieldChanges.add(adaptor);
+				}
+			}
+			
+			if (CollectionUtils.hasElements(info.getTechCommerceChanges().keySet())) {
+				aInfo.techCommerceChanges = new ArrayList<AdaptedTechCommerceChange>();
+				for (String tech: info.getTechCommerceChanges().keySet()) {
+					AdaptedTechCommerceChange adaptor = new AdaptedTechCommerceChange();
+					adaptor.tech = tech;
+					for (Integer commerce: info.getTechCommerceChanges().get(tech)) {
+						adaptor.commerces.add(commerce);
+					}
+					aInfo.techCommerceChanges.add(adaptor);
 				}
 			}
 			
