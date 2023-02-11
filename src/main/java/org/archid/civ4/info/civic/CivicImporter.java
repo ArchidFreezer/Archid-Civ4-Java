@@ -79,6 +79,7 @@ public class CivicImporter extends AbstractImporter<IInfos<ICivicInfo>, ICivicIn
 		parseCell(row.getCell(colNum++), Integer.class, info::setExpInBorderModifier);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setBuildingOnlyHealthy);
 		parseCell(row.getCell(colNum++), Integer.class, info::setLargestCityHappiness);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setNoCapitalUnhappiness);
 		parseCell(row.getCell(colNum++), Integer.class, info::setWarWearinessModifier);
 		parseCell(row.getCell(colNum++), Integer.class, info::setFreeSpecialist);
 		parseCell(row.getCell(colNum++), Integer.class, info::setTradeRoutes);

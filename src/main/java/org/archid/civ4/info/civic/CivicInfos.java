@@ -81,6 +81,7 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 		private Integer expInBorderModifier;
 		private Boolean buildingOnlyHealthy;
 		private Integer largestCityHappiness;
+		private Boolean noCapitalUnhappiness;
 		private Integer warWearinessModifier;
 		private Integer freeSpecialist;
 		private Integer tradeRoutes;
@@ -887,6 +888,16 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 		@Override
 		public void setForeignTradeRouteModifier(Integer foreignTradeRouteModifier) {
 			this.foreignTradeRouteModifier = foreignTradeRouteModifier;
+		}
+
+		@Override
+		public Boolean isNoCapitalUnhappiness() {
+			return noCapitalUnhappiness;
+		}
+
+		@Override
+		public void setNoCapitalUnhappiness(Boolean noCapitalUnhappiness) {
+			this.noCapitalUnhappiness = noCapitalUnhappiness;
 		}
 	}
 	

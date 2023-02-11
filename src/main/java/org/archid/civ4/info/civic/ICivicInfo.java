@@ -233,4 +233,7 @@ public interface ICivicInfo extends IInfo {
 	Integer getForeignTradeRouteModifier();
 	void setForeignTradeRouteModifier(Integer foreignTradeRouteModifier);
 
+	Boolean isNoCapitalUnhappiness();
+	void setNoCapitalUnhappiness(Boolean noCapitalUnhappiness);
+
 }

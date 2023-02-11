@@ -86,6 +86,7 @@ public class CivicExporter extends AbstractExporter<IInfos<ICivicInfo>, ICivicIn
 		addSingleCell(row.createCell(colNum++), info.getExpInBorderModifier());
 		addSingleCell(row.createCell(colNum++), info.isBuildingOnlyHealthy());
 		addSingleCell(row.createCell(colNum++), info.getLargestCityHappiness());
+		addSingleCell(row.createCell(colNum++), info.isNoCapitalUnhappiness());
 		addSingleCell(row.createCell(colNum++), info.getWarWearinessModifier());
 		addSingleCell(row.createCell(colNum++), info.getFreeSpecialist());
 		addSingleCell(row.createCell(colNum++), info.getTradeRoutes());

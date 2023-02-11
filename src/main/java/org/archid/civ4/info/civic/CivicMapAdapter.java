@@ -112,6 +112,8 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 		private Integer buildingOnlyHealthy;
 		@XmlElement(name="iLargestCityHappiness")
 		private Integer largestCityHappiness;
+		@XmlElement(name="bNoCapitalUnhappiness")
+		private Integer noCapitalUnhappiness;
 		@XmlElement(name="iWarWearinessModifier")
 		private Integer warWearinessModifier;
 		@XmlElement(name="iFreeSpecialist")
@@ -261,6 +263,7 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 			info.setExpInBorderModifier(JaxbUtils.unmarshallInteger(aInfo.expInBorderModifier));
 			info.setBuildingOnlyHealthy(JaxbUtils.unmarshallBoolean(aInfo.buildingOnlyHealthy));
 			info.setLargestCityHappiness(JaxbUtils.unmarshallInteger(aInfo.largestCityHappiness));
+			info.setNoCapitalUnhappiness(JaxbUtils.unmarshallBoolean(aInfo.noCapitalUnhappiness));
 			info.setWarWearinessModifier(JaxbUtils.unmarshallInteger(aInfo.warWearinessModifier));
 			info.setFreeSpecialist(JaxbUtils.unmarshallInteger(aInfo.freeSpecialist));
 			info.setTradeRoutes(JaxbUtils.unmarshallInteger(aInfo.tradeRoutes));
@@ -432,6 +435,7 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 			aInfo.expInBorderModifier = JaxbUtils.marshallInteger(info.getExpInBorderModifier());
 			aInfo.buildingOnlyHealthy = JaxbUtils.marshallBoolean(info.isBuildingOnlyHealthy());
 			aInfo.largestCityHappiness = JaxbUtils.marshallInteger(info.getLargestCityHappiness());
+			aInfo.noCapitalUnhappiness = JaxbUtils.marshallBoolean(info.isNoCapitalUnhappiness());
 			aInfo.warWearinessModifier = JaxbUtils.marshallInteger(info.getWarWearinessModifier());
 			aInfo.freeSpecialist = JaxbUtils.marshallInteger(info.getFreeSpecialist());
 			aInfo.tradeRoutes = JaxbUtils.marshallInteger(info.getTradeRoutes());
