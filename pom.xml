@@ -87,6 +87,27 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+          	<id>copy-properties</id>
+            <phase>install</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+              	<copy todir="E:\Projects\Civ4\github\Archid-Civ4\Support\Tools\data" overwrite="true">
+              		<fileset dir="${basedir}\data" includes="*.properties" />
+              	</copy>
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
   	</plugins>
   </build>
 </project>
