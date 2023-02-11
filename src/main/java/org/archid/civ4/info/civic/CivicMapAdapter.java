@@ -70,6 +70,8 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 		private Integer numCitiesMaintenanceModifier;
 		@XmlElement(name="iCorporationMaintenanceModifier")
 		private Integer corporationMaintenanceModifier;
+		@XmlElement(name="iForeignTradeRouteModifier")
+		private Integer foreignTradeRouteModifier;
 		@XmlElement(name="iExtraHealth")
 		private Integer extraHealth;
 		@XmlElement(name="iExtraHappiness")
@@ -238,6 +240,7 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 			info.setDistanceMaintenanceModifier(JaxbUtils.unmarshallInteger(aInfo.distanceMaintenanceModifier));
 			info.setNumCitiesMaintenanceModifier(JaxbUtils.unmarshallInteger(aInfo.numCitiesMaintenanceModifier));
 			info.setCorporationMaintenanceModifier(JaxbUtils.unmarshallInteger(aInfo.corporationMaintenanceModifier));
+			info.setForeignTradeRouteModifier(JaxbUtils.unmarshallInteger(aInfo.foreignTradeRouteModifier));
 			info.setExtraHealth(JaxbUtils.unmarshallInteger(aInfo.extraHealth));
 			info.setExtraHappiness(JaxbUtils.unmarshallInteger(aInfo.extraHappiness));
 			info.setFreeExperience(JaxbUtils.unmarshallInteger(aInfo.freeExperience));
@@ -408,6 +411,7 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 			aInfo.distanceMaintenanceModifier = JaxbUtils.marshallInteger(info.getDistanceMaintenanceModifier());
 			aInfo.numCitiesMaintenanceModifier = JaxbUtils.marshallInteger(info.getNumCitiesMaintenanceModifier());
 			aInfo.corporationMaintenanceModifier = JaxbUtils.marshallInteger(info.getCorporationMaintenanceModifier());
+			aInfo.foreignTradeRouteModifier = JaxbUtils.marshallInteger(info.getForeignTradeRouteModifier());
 			aInfo.extraHealth = JaxbUtils.marshallInteger(info.getExtraHealth());
 			aInfo.extraHappiness = JaxbUtils.marshallInteger(info.getExtraHappiness());
 			aInfo.freeExperience = JaxbUtils.marshallInteger(info.getFreeExperience());

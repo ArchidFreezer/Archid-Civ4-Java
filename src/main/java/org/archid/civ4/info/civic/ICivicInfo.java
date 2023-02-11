@@ -230,4 +230,7 @@ public interface ICivicInfo extends IInfo {
 	String getWeLoveTheKing();
 	void setWeLoveTheKing(String weLoveTheKing);
 
+	Integer getForeignTradeRouteModifier();
+	void setForeignTradeRouteModifier(Integer foreignTradeRouteModifier);
+
 }

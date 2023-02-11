@@ -60,6 +60,7 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 		private Integer distanceMaintenanceModifier;
 		private Integer numCitiesMaintenanceModifier;
 		private Integer corporationMaintenanceModifier;
+		private Integer foreignTradeRouteModifier;
 		private Integer extraHealth;
 		private Integer extraHappiness;
 		private Integer freeExperience;
@@ -876,6 +877,16 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 		@Override
 		public void setWeLoveTheKing(String weLoveTheKing) {
 			this.weLoveTheKing = weLoveTheKing;
+		}
+
+		@Override
+		public Integer getForeignTradeRouteModifier() {
+			return foreignTradeRouteModifier;
+		}
+
+		@Override
+		public void setForeignTradeRouteModifier(Integer foreignTradeRouteModifier) {
+			this.foreignTradeRouteModifier = foreignTradeRouteModifier;
 		}
 	}
 	
