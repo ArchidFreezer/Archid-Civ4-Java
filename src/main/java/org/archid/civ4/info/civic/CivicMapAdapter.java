@@ -114,6 +114,10 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 		private Integer largestCityHappiness;
 		@XmlElement(name="bNoCapitalUnhappiness")
 		private Integer noCapitalUnhappiness;
+		@XmlElement(name="iTaxRateAngerModifier")
+		private Integer taxRateAngerModifier;
+		@XmlElement(name="iDistantUnitSupplyCostModifier")
+		private Integer distantUnitSupplyCostModifier;
 		@XmlElement(name="iWarWearinessModifier")
 		private Integer warWearinessModifier;
 		@XmlElement(name="iFreeSpecialist")
@@ -152,6 +156,8 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 		private Integer unitRangeModifier;
 		@XmlElement(name="iCultureDefenceChange")
 		private Integer cultureDefenceChange;
+		@XmlElement(name="iPopulationGrowthRateModifier")
+		private Integer populationGrowthRateModifier;
 		@XmlElementWrapper(name="YieldModifiers")
 		@XmlElement(name="iYield")
 		private List<Integer> yieldModifiers;
@@ -190,6 +196,8 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 		private List<AdaptedFeatureHappinessChanges> featureHappinessChanges;
 		@XmlElement(name="ImprovementYieldChanges")
 		private ImprovementYieldChangeList improvementYieldChanges;
+		@XmlElement(name="bUpgradeAnywhere")
+		private Integer upgradeAnywhere;
 		@XmlElement(name="WeLoveTheKing")
 		private String weLoveTheKing;
 	}
@@ -264,6 +272,8 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 			info.setBuildingOnlyHealthy(JaxbUtils.unmarshallBoolean(aInfo.buildingOnlyHealthy));
 			info.setLargestCityHappiness(JaxbUtils.unmarshallInteger(aInfo.largestCityHappiness));
 			info.setNoCapitalUnhappiness(JaxbUtils.unmarshallBoolean(aInfo.noCapitalUnhappiness));
+			info.setTaxRateAngerModifier(JaxbUtils.unmarshallInteger(aInfo.taxRateAngerModifier));
+			info.setDistantUnitSupplyCostModifier(JaxbUtils.unmarshallInteger(aInfo.distantUnitSupplyCostModifier));
 			info.setWarWearinessModifier(JaxbUtils.unmarshallInteger(aInfo.warWearinessModifier));
 			info.setFreeSpecialist(JaxbUtils.unmarshallInteger(aInfo.freeSpecialist));
 			info.setTradeRoutes(JaxbUtils.unmarshallInteger(aInfo.tradeRoutes));
@@ -283,6 +293,7 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 			info.setUnitRangeChange(JaxbUtils.unmarshallInteger(aInfo.unitRangeChange));
 			info.setUnitRangeModifier(JaxbUtils.unmarshallInteger(aInfo.unitRangeModifier));
 			info.setCultureDefenceChange(JaxbUtils.unmarshallInteger(aInfo.cultureDefenceChange));
+			info.setPopulationGrowthRateModifier(JaxbUtils.unmarshallInteger(aInfo.populationGrowthRateModifier));
 
 			if (CollectionUtils.hasElements(aInfo.yieldModifiers)) {
 				for (Integer val: aInfo.yieldModifiers) {
@@ -379,6 +390,7 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 				}
 			}
 
+			info.setUpgradeAnywhere(JaxbUtils.unmarshallBoolean(aInfo.upgradeAnywhere));
 			info.setWeLoveTheKing(JaxbUtils.unmarshallString(aInfo.weLoveTheKing));
 
 			map.put(aInfo.type, info);
@@ -436,6 +448,8 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 			aInfo.buildingOnlyHealthy = JaxbUtils.marshallBoolean(info.isBuildingOnlyHealthy());
 			aInfo.largestCityHappiness = JaxbUtils.marshallInteger(info.getLargestCityHappiness());
 			aInfo.noCapitalUnhappiness = JaxbUtils.marshallBoolean(info.isNoCapitalUnhappiness());
+			aInfo.taxRateAngerModifier = JaxbUtils.marshallInteger(info.getTaxRateAngerModifier());
+			aInfo.distantUnitSupplyCostModifier= JaxbUtils.marshallInteger(info.getDistantUnitSupplyCostModifier());
 			aInfo.warWearinessModifier = JaxbUtils.marshallInteger(info.getWarWearinessModifier());
 			aInfo.freeSpecialist = JaxbUtils.marshallInteger(info.getFreeSpecialist());
 			aInfo.tradeRoutes = JaxbUtils.marshallInteger(info.getTradeRoutes());
@@ -455,6 +469,7 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 			aInfo.unitRangeChange = JaxbUtils.marshallInteger(info.getUnitRangeChange());
 			aInfo.unitRangeModifier = JaxbUtils.marshallInteger(info.getUnitRangeModifier());
 			aInfo.cultureDefenceChange = JaxbUtils.marshallInteger(info.getCultureDefenceChange());
+			aInfo.populationGrowthRateModifier = JaxbUtils.marshallInteger(info.getPopulationGrowthRateModifier());
 
 			if (CollectionUtils.hasElements(info.getYieldModifiers())) {
 				aInfo.yieldModifiers = new ArrayList<Integer>();
@@ -558,6 +573,7 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 				}
 			}
 
+			aInfo.upgradeAnywhere = JaxbUtils.marshallBoolean(info.isUpgradeAnywhere());
 			aInfo.weLoveTheKing = JaxbUtils.marshallString(info.getWeLoveTheKing());
 
 			map.entries.add(aInfo);

@@ -236,4 +236,16 @@ public interface ICivicInfo extends IInfo {
 	Boolean isNoCapitalUnhappiness();
 	void setNoCapitalUnhappiness(Boolean noCapitalUnhappiness);
 
+	Integer getPopulationGrowthRateModifier();
+	void setPopulationGrowthRateModifier(Integer taxRateModifier);
+
+	Integer getTaxRateAngerModifier();
+	void setTaxRateAngerModifier(Integer taxRateAngerModifier);
+	
+	Integer getDistantUnitSupplyCostModifier();
+	void setDistantUnitSupplyCostModifier (Integer distantUnitSupplyCostModifier);
+	
+	Boolean isUpgradeAnywhere();
+	void setUpgradeAnywhere(Boolean upgradeAnywhere);
+
 }

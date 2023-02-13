@@ -82,6 +82,8 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 		private Boolean buildingOnlyHealthy;
 		private Integer largestCityHappiness;
 		private Boolean noCapitalUnhappiness;
+		private Integer taxRateAngerModifier;
+		private Integer distantUnitSupplyCostModifier;
 		private Integer warWearinessModifier;
 		private Integer freeSpecialist;
 		private Integer tradeRoutes;
@@ -101,6 +103,7 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 		private Integer unitRangeChange;
 		private Integer unitRangeModifier;
 		private Integer cultureDefenceChange;
+		private Integer populationGrowthRateModifier;
 		private List<Integer> yieldModifiers = new ArrayList<Integer>();
 		private List<Integer> capitalYieldModifiers = new ArrayList<Integer>();
 		private List<Integer> tradeYieldModifiers = new ArrayList<Integer>();
@@ -114,6 +117,7 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 		private List<IPair<String, Integer>> buildingHealthChanges = new ArrayList<IPair<String, Integer>>();
 		private List<IPair<String, Integer>> featureHappinessChanges = new ArrayList<IPair<String, Integer>>();
 		private List<IImprovementYieldChange> improvementYieldChanges = new ArrayList<IImprovementYieldChange>();
+		private Boolean upgradeAnywhere;
 		private String weLoveTheKing;
 
 		private CivicInfo(String type) {
@@ -898,6 +902,46 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 		@Override
 		public void setNoCapitalUnhappiness(Boolean noCapitalUnhappiness) {
 			this.noCapitalUnhappiness = noCapitalUnhappiness;
+		}
+
+		@Override
+		public Integer getPopulationGrowthRateModifier() {
+			return populationGrowthRateModifier;
+		}
+
+		@Override
+		public void setPopulationGrowthRateModifier(Integer populationGrowthRateModifier) {
+			this.populationGrowthRateModifier = populationGrowthRateModifier;
+		}
+
+		@Override
+		public Integer getTaxRateAngerModifier() {
+			return taxRateAngerModifier;
+		}
+
+		@Override
+		public void setTaxRateAngerModifier(Integer taxRateAngerModifier) {
+			this.taxRateAngerModifier = taxRateAngerModifier;
+		}
+
+		@Override
+		public Integer getDistantUnitSupplyCostModifier() {
+			return distantUnitSupplyCostModifier;
+		}
+
+		@Override
+		public void setDistantUnitSupplyCostModifier(Integer distantUnitSupplyCostModifier) {
+			this.distantUnitSupplyCostModifier = distantUnitSupplyCostModifier;
+		}
+
+		@Override
+		public Boolean isUpgradeAnywhere() {
+			return upgradeAnywhere;
+		}
+
+		@Override
+		public void setUpgradeAnywhere(Boolean upgradeAnywhere) {
+			this.upgradeAnywhere = upgradeAnywhere;
 		}
 	}
 	

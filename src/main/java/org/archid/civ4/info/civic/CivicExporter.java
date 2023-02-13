@@ -87,6 +87,8 @@ public class CivicExporter extends AbstractExporter<IInfos<ICivicInfo>, ICivicIn
 		addSingleCell(row.createCell(colNum++), info.isBuildingOnlyHealthy());
 		addSingleCell(row.createCell(colNum++), info.getLargestCityHappiness());
 		addSingleCell(row.createCell(colNum++), info.isNoCapitalUnhappiness());
+		addSingleCell(row.createCell(colNum++), info.getTaxRateAngerModifier());
+		addSingleCell(row.createCell(colNum++), info.getDistantUnitSupplyCostModifier());
 		addSingleCell(row.createCell(colNum++), info.getWarWearinessModifier());
 		addSingleCell(row.createCell(colNum++), info.getFreeSpecialist());
 		addSingleCell(row.createCell(colNum++), info.getTradeRoutes());
@@ -106,6 +108,7 @@ public class CivicExporter extends AbstractExporter<IInfos<ICivicInfo>, ICivicIn
 		addSingleCell(row.createCell(colNum++), info.getUnitRangeChange());
 		addSingleCell(row.createCell(colNum++), info.getUnitRangeModifier());
 		addSingleCell(row.createCell(colNum++), info.getCultureDefenceChange());
+		addSingleCell(row.createCell(colNum++), info.getPopulationGrowthRateModifier());
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getYieldModifiers(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getCapitalYieldModifiers(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getTradeYieldModifiers(), maxHeight);
@@ -119,6 +122,7 @@ public class CivicExporter extends AbstractExporter<IInfos<ICivicInfo>, ICivicIn
 		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getBuildingHealthChanges(), maxHeight);
 		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getFeatureHappinessChanges(), maxHeight);
 		maxHeight = addImprovementYieldChangeCell(row.createCell(colNum++), info.getImprovementYieldChanges(), maxHeight);
+		addSingleCell(row.createCell(colNum++), info.isUpgradeAnywhere());
 		addSingleCell(row.createCell(colNum++), info.getWeLoveTheKing());
 
 		row.setHeightInPoints(maxHeight * row.getSheet().getDefaultRowHeightInPoints());

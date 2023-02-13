@@ -80,6 +80,8 @@ public class CivicImporter extends AbstractImporter<IInfos<ICivicInfo>, ICivicIn
 		parseCell(row.getCell(colNum++), Boolean.class, info::setBuildingOnlyHealthy);
 		parseCell(row.getCell(colNum++), Integer.class, info::setLargestCityHappiness);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setNoCapitalUnhappiness);
+		parseCell(row.getCell(colNum++), Integer.class, info::setTaxRateAngerModifier);
+		parseCell(row.getCell(colNum++), Integer.class, info::setDistantUnitSupplyCostModifier);
 		parseCell(row.getCell(colNum++), Integer.class, info::setWarWearinessModifier);
 		parseCell(row.getCell(colNum++), Integer.class, info::setFreeSpecialist);
 		parseCell(row.getCell(colNum++), Integer.class, info::setTradeRoutes);
@@ -99,6 +101,7 @@ public class CivicImporter extends AbstractImporter<IInfos<ICivicInfo>, ICivicIn
 		parseCell(row.getCell(colNum++), Integer.class, info::setUnitRangeChange);
 		parseCell(row.getCell(colNum++), Integer.class, info::setUnitRangeModifier);
 		parseCell(row.getCell(colNum++), Integer.class, info::setCultureDefenceChange);
+		parseCell(row.getCell(colNum++), Integer.class, info::setPopulationGrowthRateModifier);
 		parseListCell(row.getCell(colNum++), Integer.class, info::addYieldModifier);
 		parseListCell(row.getCell(colNum++), Integer.class, info::addCapitalYieldModifier);
 		parseListCell(row.getCell(colNum++), Integer.class, info::addTradeYieldModifier);
@@ -112,6 +115,7 @@ public class CivicImporter extends AbstractImporter<IInfos<ICivicInfo>, ICivicIn
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addBuildingHealthChange);
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addFeatureHappinessChange);
 		parseImprovementYieldChangeCell(row.getCell(colNum++), info);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setUpgradeAnywhere);
 		parseCell(row.getCell(colNum++), String.class, info::setWeLoveTheKing);
 
 		return info;
