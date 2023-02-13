@@ -27,6 +27,7 @@ public class SchemaParser {
 	/** Logging facility */
 	static Logger log = Logger.getLogger(SchemaParser.class.getName());
 	private String schemaName = null;
+	private String schemaFolder = null;
 
 	/** Map of tags in schema */
 	static protected Map<String, XmlTagDefinition> allUserTags = new HashMap<String, XmlTagDefinition>();
@@ -41,19 +42,23 @@ public class SchemaParser {
 	private Pattern endPattern = Pattern.compile("\\s*</\\s*ElementType\\s*>.*");
 
 	public XmlTagDefinition getTagDefinition(String tagName) {
-		return allUserTags.get(tagName);
+		return allUserTags.get(schemaFolder + "." + tagName);
 	}
 	
 	public XmlTagDefinition getUserTagDefinition(String tagName) {
-		return userTags.get(tagName);
+		return userTags.get(schemaFolder + "." + tagName);
 	}
 	
 	public XmlTagDefinition getBtsTagDefinition(String tagName) {
-		return allBtsTags.get(tagName);
+		return allBtsTags.get(schemaFolder + "." + tagName);
 	}
 	
 	public XmlTagDefinition getCurrentBtsTagDefinition(String tagName) {
-		return btsTags.get(tagName);
+		return btsTags.get(schemaFolder + "." + tagName);
+	}
+	
+	public void setSchemaFolder(String folder) {
+		schemaFolder = folder;
 	}
 	
 	/**
@@ -78,8 +83,8 @@ public class SchemaParser {
 				tag = parseTag(line, tag, userTags);
 				if (null != tag && tag.isCompleted()) {
 					log.debug("Adding tag " + tag.getTagName().toLowerCase() + " from " + modSchema);
-					userTags.put(tag.getTagName(), tag);
-					allUserTags.put(tag.getTagName(), tag);
+					userTags.put(schemaFolder + "." + tag.getTagName(), tag);
+					allUserTags.put(schemaFolder + "." + tag.getTagName(), tag);
 					tag = null;
 				}
 				line = userIn.readLine();
@@ -128,8 +133,8 @@ public class SchemaParser {
 				tag = parseTag(line, tag, btsTags);
 				if (null != tag && tag.isCompleted()) {
 					log.debug("Adding tag " + tag.getTagName().toLowerCase() + " from " + refSchema);
-					btsTags.put(tag.getTagName(), tag);
-					allBtsTags.put(tag.getTagName(), tag);
+					btsTags.put(schemaFolder + "." + tag.getTagName(), tag);
+					allBtsTags.put(schemaFolder + "." + tag.getTagName(), tag);
 					tag = null;
 				}
 				line = btsIn.readLine();
@@ -142,8 +147,8 @@ public class SchemaParser {
 				tag = parseTag(line, tag, userTags);
 				if (null != tag && tag.isCompleted()) {
 					log.debug("Adding tag " + tag.getTagName().toLowerCase() + " from " + modSchema);
-					userTags.put(tag.getTagName(), tag);
-					allUserTags.put(tag.getTagName(), tag);
+					userTags.put(schemaFolder + "." + tag.getTagName(), tag);
+					allUserTags.put(schemaFolder + "." + tag.getTagName(), tag);
 					tag = null;
 				}
 				line = userIn.readLine();
@@ -195,8 +200,8 @@ public class SchemaParser {
 				// It is a valid scenario for the tag to exist an be incomplete
 				// if it is referenced before being defined
 				String tagName = parentMatcher.group(1);
-				if (tags.containsKey(tagName)) {
-					tag = tags.get(tagName);
+				if (tags.containsKey(schemaFolder + "." + tagName)) {
+					tag = tags.get(schemaFolder + "." + tagName);
 					if (tag.isCompleted())
 						log.warn("Duplicate definition of " + tagName + " tag.");
 				} else {
@@ -233,12 +238,12 @@ public class SchemaParser {
 
 				// Find the childs tag definition and set it to be non top level
 				String childName = childMatcher1.group(1);
-				XmlTagDefinition childTag = tags.get(childName);
+				XmlTagDefinition childTag = tags.get(schemaFolder + "." + childName);
 				if (childTag == null) {
 					childTag = new XmlTagDefinition(childName);
 				}
 				childTag.setTopLevel(false);
-				tags.put(childName, childTag);
+				tags.put(schemaFolder + "." + childName, childTag);
 
 				XmlTagInstance child = new XmlTagInstance(childMatcher1.group(1));
 				if (childMatcher1.group(2) != null)
@@ -268,12 +273,12 @@ public class SchemaParser {
 
 				// Find the childs tag definition and set if to be non top level
 				String childName = childMatcher2.group(1);
-				XmlTagDefinition childTag = tags.get(childName);
+				XmlTagDefinition childTag = tags.get(schemaFolder + "." + childName);
 				if (childTag == null) {
 					childTag = new XmlTagDefinition(childName);
 				}
 				childTag.setTopLevel(false);
-				tags.put(childName, childTag);
+				tags.put(schemaFolder + "." + childName, childTag);
 
 				XmlTagInstance child = new XmlTagInstance(childMatcher2.group(1));
 				if (childMatcher2.group(2) != null)

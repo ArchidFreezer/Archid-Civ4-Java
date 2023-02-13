@@ -37,6 +37,7 @@ public class HtmlGenerator {
 		// Loop through the schema folder names and process the printable tags in each
 		for (String folderName: printableTags.keySet())
 		{
+			parser.setSchemaFolder(folderName);
 			Set<XmlTagDefinition> tags = printableTags.get(folderName);
 			for (XmlTagDefinition tag : tags) {
 				for (XmlTagInstance mainChild : tag.getChildren()) {

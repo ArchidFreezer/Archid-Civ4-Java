@@ -134,6 +134,7 @@ public class HelpGenerator {
 			Files.walkFileTree(refSchemaPath, refVisitor);
 			Map<String, Path> refSchemaFiles = refVisitor.getSchemaFiles();
 			for (String schemaName: modSchemaFiles.keySet()) {
+				parser.setSchemaFolder(modSchemaFiles.get(schemaName).getParent().getFileName().toString());
 				parser.parse(modSchemaFiles.get(schemaName).toString(), refSchemaFiles.get(schemaName).toString());
 				if (printableTags.containsKey(modSchemaFiles.get(schemaName).getParent().getFileName().toString()))
 					printableTags.get(modSchemaFiles.get(schemaName).getParent().getFileName().toString()).addAll(parser.getPrintableTags());
