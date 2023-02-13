@@ -200,6 +200,8 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 		private Integer upgradeAnywhere;
 		@XmlElement(name="WeLoveTheKing")
 		private String weLoveTheKing;
+		@XmlElement(name="iCityDefenceModifier")
+		private Integer cityDefenceModifier;
 	}
 
 	private static class AdaptedBuildingHappinessChanges {
@@ -392,6 +394,7 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 
 			info.setUpgradeAnywhere(JaxbUtils.unmarshallBoolean(aInfo.upgradeAnywhere));
 			info.setWeLoveTheKing(JaxbUtils.unmarshallString(aInfo.weLoveTheKing));
+			info.setCityDefenceModifier(JaxbUtils.unmarshallInteger(aInfo.cityDefenceModifier));
 
 			map.put(aInfo.type, info);
 		}
@@ -575,6 +578,7 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 
 			aInfo.upgradeAnywhere = JaxbUtils.marshallBoolean(info.isUpgradeAnywhere());
 			aInfo.weLoveTheKing = JaxbUtils.marshallString(info.getWeLoveTheKing());
+			aInfo.cityDefenceModifier = JaxbUtils.marshallInteger(info.getCityDefenceModifier());
 
 			map.entries.add(aInfo);
 		}

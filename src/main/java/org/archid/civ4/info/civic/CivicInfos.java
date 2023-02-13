@@ -119,6 +119,7 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 		private List<IImprovementYieldChange> improvementYieldChanges = new ArrayList<IImprovementYieldChange>();
 		private Boolean upgradeAnywhere;
 		private String weLoveTheKing;
+		private Integer cityDefenceModifier;
 
 		private CivicInfo(String type) {
 			this.type = type;
@@ -942,6 +943,16 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 		@Override
 		public void setUpgradeAnywhere(Boolean upgradeAnywhere) {
 			this.upgradeAnywhere = upgradeAnywhere;
+		}
+
+		@Override
+		public Integer getCityDefenceModifier() {
+			return cityDefenceModifier;
+		}
+
+		@Override
+		public void setCityDefenceModifier(Integer cityDefenceModifier) {
+			this.cityDefenceModifier = cityDefenceModifier;
 		}
 	}
 	

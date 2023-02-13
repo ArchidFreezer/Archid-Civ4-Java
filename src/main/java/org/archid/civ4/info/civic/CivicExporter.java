@@ -124,6 +124,7 @@ public class CivicExporter extends AbstractExporter<IInfos<ICivicInfo>, ICivicIn
 		maxHeight = addImprovementYieldChangeCell(row.createCell(colNum++), info.getImprovementYieldChanges(), maxHeight);
 		addSingleCell(row.createCell(colNum++), info.isUpgradeAnywhere());
 		addSingleCell(row.createCell(colNum++), info.getWeLoveTheKing());
+		addSingleCell(row.createCell(colNum++), info.getCityDefenceModifier());
 
 		row.setHeightInPoints(maxHeight * row.getSheet().getDefaultRowHeightInPoints());
 	}

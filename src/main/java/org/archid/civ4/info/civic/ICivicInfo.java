@@ -248,4 +248,7 @@ public interface ICivicInfo extends IInfo {
 	Boolean isUpgradeAnywhere();
 	void setUpgradeAnywhere(Boolean upgradeAnywhere);
 
+	Integer getCityDefenceModifier();
+	void setCityDefenceModifier(Integer cityDefenceModifier);
+	
 }

@@ -117,6 +117,7 @@ public class CivicImporter extends AbstractImporter<IInfos<ICivicInfo>, ICivicIn
 		parseImprovementYieldChangeCell(row.getCell(colNum++), info);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setUpgradeAnywhere);
 		parseCell(row.getCell(colNum++), String.class, info::setWeLoveTheKing);
+		parseCell(row.getCell(colNum++), Integer.class, info::setCityDefenceModifier);
 
 		return info;
 	}
