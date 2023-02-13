@@ -251,4 +251,7 @@ public interface ICivicInfo extends IInfo {
 	Integer getCityDefenceModifier();
 	void setCityDefenceModifier(Integer cityDefenceModifier);
 	
+	List<IPair<String, Integer>> getFreeSpecialistCounts();
+	void addFreeSpecialistCount(IPair<String, Integer> freeSpecialistCount);
+
 }

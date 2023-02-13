@@ -118,6 +118,7 @@ public class CivicExporter extends AbstractExporter<IInfos<ICivicInfo>, ICivicIn
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getHurrys(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getSpecialBuildingNotRequireds(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getSpecialistValids(), maxHeight);
+		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getFreeSpecialistCounts(), maxHeight);
 		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getBuildingHappinessChanges(), maxHeight);
 		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getBuildingHealthChanges(), maxHeight);
 		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getFeatureHappinessChanges(), maxHeight);

@@ -113,6 +113,7 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 		private List<String> hurrys = new ArrayList<String>();
 		private List<String> specialBuildingNotRequireds = new ArrayList<String>();
 		private List<String> specialistValids = new ArrayList<String>();
+		private List<IPair<String, Integer>> freeSpecialistCounts = new ArrayList<IPair<String, Integer>>();
 		private List<IPair<String, Integer>> buildingHappinessChanges = new ArrayList<IPair<String, Integer>>();
 		private List<IPair<String, Integer>> buildingHealthChanges = new ArrayList<IPair<String, Integer>>();
 		private List<IPair<String, Integer>> featureHappinessChanges = new ArrayList<IPair<String, Integer>>();
@@ -953,6 +954,16 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 		@Override
 		public void setCityDefenceModifier(Integer cityDefenceModifier) {
 			this.cityDefenceModifier = cityDefenceModifier;
+		}
+
+		@Override
+		public List<IPair<String, Integer>> getFreeSpecialistCounts() {
+			return freeSpecialistCounts;
+		}
+
+		@Override
+		public void addFreeSpecialistCount(IPair<String, Integer> freeSpecialistCount) {
+			freeSpecialistCounts.add(freeSpecialistCount);
 		}
 	}
 	

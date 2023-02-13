@@ -185,6 +185,9 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 		@XmlElementWrapper(name="SpecialistValids")
 		@XmlElement(name="SpecialistType")
 		private List<String> specialistValids;
+		@XmlElementWrapper(name="FreeSpecialistCounts")
+		@XmlElement(name="FreeSpecialistCount")
+		private List<AdaptedSpecialistCount> freeSpecialistCounts;
 		@XmlElementWrapper(name="BuildingHappinessChanges")
 		@XmlElement(name="BuildingHappinessChange")
 		private List<AdaptedBuildingHappinessChanges> buildingHappinessChanges;
@@ -202,6 +205,13 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 		private String weLoveTheKing;
 		@XmlElement(name="iCityDefenceModifier")
 		private Integer cityDefenceModifier;
+	}
+
+	private static class AdaptedSpecialistCount {
+		@XmlElement(name="SpecialistType")
+		private String specialistType;
+		@XmlElement(name="iCount")
+		private Integer count;
 	}
 
 	private static class AdaptedBuildingHappinessChanges {
@@ -353,6 +363,14 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 				for (String val: aInfo.specialistValids) {
 					if (StringUtils.hasCharacters(val)) {
 						info.addSpecialistValid(val);
+					}
+				}
+			}
+
+			if (CollectionUtils.hasElements(aInfo.freeSpecialistCounts)) {
+				for (AdaptedSpecialistCount adaptor: aInfo.freeSpecialistCounts) {
+					if (StringUtils.hasCharacters(adaptor.specialistType)) {
+						info.addFreeSpecialistCount(new Pair<String, Integer>(adaptor.specialistType, adaptor.count));
 					}
 				}
 			}
@@ -544,6 +562,16 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 					adaptor.buildingType = pair.getKey();
 					adaptor.iHappinessChange = pair.getValue();
 					aInfo.buildingHappinessChanges.add(adaptor);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getFreeSpecialistCounts())) {
+				aInfo.freeSpecialistCounts = new ArrayList<AdaptedSpecialistCount>();
+				for (IPair<String, Integer> pair: info.getFreeSpecialistCounts()) {
+					AdaptedSpecialistCount adaptor = new AdaptedSpecialistCount();
+					adaptor.specialistType = pair.getKey();
+					adaptor.count = pair.getValue();
+					aInfo.freeSpecialistCounts.add(adaptor);
 				}
 			}
 
