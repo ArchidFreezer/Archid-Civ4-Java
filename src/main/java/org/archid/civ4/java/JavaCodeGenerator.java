@@ -324,9 +324,13 @@ public class JavaCodeGenerator {
 					unmarshalClass.append(NEWLINE);
 					unmarshalClass.append(NEWLINETTT + "if (CollectionUtils.hasElements(aInfo." + tag.varName + ")) {");
 					unmarshalClass.append(NEWLINETTTT + "for (" + tag.singularDataType + " val: aInfo." + tag.varName + ") {");
-					unmarshalClass.append(NEWLINETTTTT + "if (StringUtils.hasCharacters(val)) {");
-					unmarshalClass.append(NEWLINETTTTTT + "info." + tag.setterName + "(val);");
-					unmarshalClass.append(NEWLINETTTTT + "}");
+					if (tag.singularDataType.equals("String")) {
+						unmarshalClass.append(NEWLINETTTTT + "if (StringUtils.hasCharacters(val)) {");
+						unmarshalClass.append(NEWLINETTTTTT + "info." + tag.setterName + "(val);");
+						unmarshalClass.append(NEWLINETTTTT + "}");
+					} else {
+						unmarshalClass.append(NEWLINETTTTT + "info." + tag.setterName + "(val);");
+					}
 					unmarshalClass.append(NEWLINETTTT + "}");
 					unmarshalClass.append(NEWLINETTT + "}");
 				} else {
