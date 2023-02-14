@@ -4,6 +4,12 @@ public class CivicInfoTagProcessor extends DefaultInfoTagProcessor {
 
 	public void init(String packageName) {
 		this.packageName = packageName;
+		exportImports.add("import org.apache.poi.ss.usermodel.Cell;");
+		importImports.add("import java.util.ArrayList;");
+		importImports.add("import java.util.List;");
+		importImports.add("import org.apache.poi.ss.usermodel.Cell;");
+		importImports.add("import org.archid.civ4.info.IInfoWorkbook;");
+		importImports.add("import org.archid.utils.StringUtils;");
 		addTagProcessor(createImprovementYieldChanges());
 	}
 	
@@ -26,12 +32,6 @@ public class CivicInfoTagProcessor extends DefaultInfoTagProcessor {
 
 		public ImprovementYieldChangesProcesser(String tagName, String packageName) {
 			super(tagName, packageName);
-			exportImports.add("import org.apache.poi.ss.usermodel.Cell;");
-			importImports.add("import java.util.ArrayList;");
-			importImports.add("import java.util.List;");
-			importImports.add("import org.apache.poi.ss.usermodel.Cell;");
-			importImports.add("import org.archid.civ4.info.IInfoWorkbook;");
-			importImports.add("import org.archid.utils.StringUtils;");
 		}
 
 		@Override

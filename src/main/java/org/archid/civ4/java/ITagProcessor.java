@@ -23,10 +23,6 @@ public interface ITagProcessor {
 
 	List<String> getAdapterImports();
 
-	List<String> getExportImports();
-
-	List<String> getImportImports();
-
 	String getAdapterElement();
 
 	String getUnmarshallString();

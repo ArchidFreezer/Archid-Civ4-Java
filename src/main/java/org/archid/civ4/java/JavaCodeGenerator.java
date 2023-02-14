@@ -123,7 +123,6 @@ public class JavaCodeGenerator {
 				processor = customTags.getTagProcessor(mainChild.getTagName());
 				tag.setDataType(processor.getDataType());
 				tag.setSingularDataType(processor.getInterfaceName());
-				imports.addAll(processor.getImportImports());
 			}
 			if (processor != null) {
 				mainClass.append(processor.getImporterRow());
@@ -153,6 +152,7 @@ public class JavaCodeGenerator {
 		mainClass.append(NEWLINE + "}");
 
 		// Sort the imports
+		if (customTags != null) imports.addAll(customTags.getImportImports());
 		List<String> sortedImports = new ArrayList<String>(imports);
 		Collections.sort(sortedImports);
 		for (String imp: sortedImports) {
@@ -220,7 +220,6 @@ public class JavaCodeGenerator {
 				processor = customTags.getTagProcessor(mainChild.getTagName());
 				tag.setDataType(processor.getDataType());
 				tag.setSingularDataType(processor.getInterfaceName());
-				imports.addAll(processor.getExportImports());
 			}
 			if (processor != null) {
 				mainClass.append(processor.getExporterRow());
@@ -245,6 +244,7 @@ public class JavaCodeGenerator {
 		mainClass.append(NEWLINE + "}");
 
 		// Sort the imports
+		if (customTags != null) imports.addAll(customTags.getExportImports());
 		List<String> sortedImports = new ArrayList<String>(imports);
 		Collections.sort(sortedImports);
 		for (String imp: sortedImports) {

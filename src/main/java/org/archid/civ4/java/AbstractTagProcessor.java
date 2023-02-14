@@ -11,8 +11,6 @@ public abstract class AbstractTagProcessor implements ITagProcessor {
 	protected final String tagName;
 	private Boolean list;
 	protected List<String> adapterImports = new ArrayList<String>();
-	protected List<String> exportImports = new ArrayList<String>();
-	protected List<String> importImports = new ArrayList<String>();
 	
 	public AbstractTagProcessor (String tagName, String packageName) {
 		this(tagName, packageName, true);
@@ -75,16 +73,6 @@ public abstract class AbstractTagProcessor implements ITagProcessor {
 		sb.append(NEWLINETT + "@XmlElement(name=\"" + tagName + "\")");
 		sb.append(NEWLINETT + "private " + getSingularTagName() + "List " + getVarName() + ";");
 		return sb.toString();
-	}
-	
-	@Override
-	public List<String> getExportImports() {
-		return exportImports;
-	}
-	
-	@Override
-	public List<String> getImportImports() {
-		return importImports;
 	}
 	
 	protected String getVarName() {
