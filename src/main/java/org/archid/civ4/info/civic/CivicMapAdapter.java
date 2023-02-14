@@ -187,7 +187,7 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 		private List<String> specialistValids;
 		@XmlElementWrapper(name="FreeSpecialistCounts")
 		@XmlElement(name="FreeSpecialistCount")
-		private List<AdaptedSpecialistCount> freeSpecialistCounts;
+		private List<AdaptedFreeSpecialistCounts> freeSpecialistCounts;
 		@XmlElementWrapper(name="BuildingHappinessChanges")
 		@XmlElement(name="BuildingHappinessChange")
 		private List<AdaptedBuildingHappinessChanges> buildingHappinessChanges;
@@ -207,11 +207,11 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 		private Integer cityDefenceModifier;
 	}
 
-	private static class AdaptedSpecialistCount {
+	private static class AdaptedFreeSpecialistCounts {
 		@XmlElement(name="SpecialistType")
 		private String specialistType;
 		@XmlElement(name="iCount")
-		private Integer count;
+		private Integer iCount;
 	}
 
 	private static class AdaptedBuildingHappinessChanges {
@@ -368,9 +368,9 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 			}
 
 			if (CollectionUtils.hasElements(aInfo.freeSpecialistCounts)) {
-				for (AdaptedSpecialistCount adaptor: aInfo.freeSpecialistCounts) {
+				for (AdaptedFreeSpecialistCounts adaptor: aInfo.freeSpecialistCounts) {
 					if (StringUtils.hasCharacters(adaptor.specialistType)) {
-						info.addFreeSpecialistCount(new Pair<String, Integer>(adaptor.specialistType, adaptor.count));
+						info.addFreeSpecialistCount(new Pair<String, Integer>(adaptor.specialistType, adaptor.iCount));
 					}
 				}
 			}
@@ -425,12 +425,12 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 		for (ICivicInfo info: v.values()) {
 			AdaptedCivic aInfo = new AdaptedCivic();
 			aInfo.type = info.getType();
-			aInfo.civicOptionType = JaxbUtils.marshallString(info.getCivicOptionType());
-			aInfo.description = JaxbUtils.marshallString(info.getDescription());
-			aInfo.civilopedia = JaxbUtils.marshallString(info.getCivilopedia());
-			aInfo.strategy = JaxbUtils.marshallString(info.getStrategy());
+			aInfo.civicOptionType = JaxbUtils.marshallMandatoryString(info.getCivicOptionType());
+			aInfo.description = JaxbUtils.marshallMandatoryString(info.getDescription());
+			aInfo.civilopedia = JaxbUtils.marshallMandatoryString(info.getCivilopedia());
+			aInfo.strategy = JaxbUtils.marshallMandatoryString(info.getStrategy());
 			aInfo.help = JaxbUtils.marshallString(info.getHelp());
-			aInfo.button = JaxbUtils.marshallString(info.getButton());
+			aInfo.button = JaxbUtils.marshallMandatoryString(info.getButton());
 			aInfo.index = JaxbUtils.marshallMandatoryInteger(info.getIndex());
 			aInfo.techPrereq = JaxbUtils.marshallString(info.getTechPrereq());
 			aInfo.createBarbarians = JaxbUtils.marshallBoolean(info.isCreateBarbarians());
@@ -470,7 +470,7 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 			aInfo.largestCityHappiness = JaxbUtils.marshallInteger(info.getLargestCityHappiness());
 			aInfo.noCapitalUnhappiness = JaxbUtils.marshallBoolean(info.isNoCapitalUnhappiness());
 			aInfo.taxRateAngerModifier = JaxbUtils.marshallInteger(info.getTaxRateAngerModifier());
-			aInfo.distantUnitSupplyCostModifier= JaxbUtils.marshallInteger(info.getDistantUnitSupplyCostModifier());
+			aInfo.distantUnitSupplyCostModifier = JaxbUtils.marshallInteger(info.getDistantUnitSupplyCostModifier());
 			aInfo.warWearinessModifier = JaxbUtils.marshallInteger(info.getWarWearinessModifier());
 			aInfo.freeSpecialist = JaxbUtils.marshallInteger(info.getFreeSpecialist());
 			aInfo.tradeRoutes = JaxbUtils.marshallInteger(info.getTradeRoutes());
@@ -555,6 +555,16 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 				}
 			}
 
+			if (CollectionUtils.hasElements(info.getFreeSpecialistCounts())) {
+				aInfo.freeSpecialistCounts = new ArrayList<AdaptedFreeSpecialistCounts>();
+				for (IPair<String, Integer> pair: info.getFreeSpecialistCounts()) {
+					AdaptedFreeSpecialistCounts adaptor = new AdaptedFreeSpecialistCounts();
+					adaptor.specialistType = pair.getKey();
+					adaptor.iCount = pair.getValue();
+					aInfo.freeSpecialistCounts.add(adaptor);
+				}
+			}
+
 			if (CollectionUtils.hasElements(info.getBuildingHappinessChanges())) {
 				aInfo.buildingHappinessChanges = new ArrayList<AdaptedBuildingHappinessChanges>();
 				for (IPair<String, Integer> pair: info.getBuildingHappinessChanges()) {
@@ -562,16 +572,6 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 					adaptor.buildingType = pair.getKey();
 					adaptor.iHappinessChange = pair.getValue();
 					aInfo.buildingHappinessChanges.add(adaptor);
-				}
-			}
-
-			if (CollectionUtils.hasElements(info.getFreeSpecialistCounts())) {
-				aInfo.freeSpecialistCounts = new ArrayList<AdaptedSpecialistCount>();
-				for (IPair<String, Integer> pair: info.getFreeSpecialistCounts()) {
-					AdaptedSpecialistCount adaptor = new AdaptedSpecialistCount();
-					adaptor.specialistType = pair.getKey();
-					adaptor.count = pair.getValue();
-					aInfo.freeSpecialistCounts.add(adaptor);
 				}
 			}
 

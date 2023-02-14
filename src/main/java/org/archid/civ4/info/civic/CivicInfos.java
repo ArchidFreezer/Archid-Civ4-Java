@@ -200,12 +200,12 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 		public Integer getIndex() {
 			return index;
 		}
-		
+
 		@Override
 		public void setIndex(Integer index) {
 			this.index = index;
 		}
-		
+
 		@Override
 		public String getTechPrereq() {
 			return techPrereq;
@@ -354,6 +354,16 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 		@Override
 		public void setCorporationMaintenanceModifier(Integer corporationMaintenanceModifier) {
 			this.corporationMaintenanceModifier = corporationMaintenanceModifier;
+		}
+
+		@Override
+		public Integer getForeignTradeRouteModifier() {
+			return foreignTradeRouteModifier;
+		}
+
+		@Override
+		public void setForeignTradeRouteModifier(Integer foreignTradeRouteModifier) {
+			this.foreignTradeRouteModifier = foreignTradeRouteModifier;
 		}
 
 		@Override
@@ -557,6 +567,36 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 		}
 
 		@Override
+		public Boolean isNoCapitalUnhappiness() {
+			return noCapitalUnhappiness;
+		}
+
+		@Override
+		public void setNoCapitalUnhappiness(Boolean noCapitalUnhappiness) {
+			this.noCapitalUnhappiness = noCapitalUnhappiness;
+		}
+
+		@Override
+		public Integer getTaxRateAngerModifier() {
+			return taxRateAngerModifier;
+		}
+
+		@Override
+		public void setTaxRateAngerModifier(Integer taxRateAngerModifier) {
+			this.taxRateAngerModifier = taxRateAngerModifier;
+		}
+
+		@Override
+		public Integer getDistantUnitSupplyCostModifier() {
+			return distantUnitSupplyCostModifier;
+		}
+
+		@Override
+		public void setDistantUnitSupplyCostModifier(Integer distantUnitSupplyCostModifier) {
+			this.distantUnitSupplyCostModifier = distantUnitSupplyCostModifier;
+		}
+
+		@Override
 		public Integer getWarWearinessModifier() {
 			return warWearinessModifier;
 		}
@@ -747,6 +787,16 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 		}
 
 		@Override
+		public Integer getPopulationGrowthRateModifier() {
+			return populationGrowthRateModifier;
+		}
+
+		@Override
+		public void setPopulationGrowthRateModifier(Integer populationGrowthRateModifier) {
+			this.populationGrowthRateModifier = populationGrowthRateModifier;
+		}
+
+		@Override
 		public List<Integer> getYieldModifiers() {
 			return yieldModifiers;
 		}
@@ -837,6 +887,16 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 		}
 
 		@Override
+		public List<IPair<String, Integer>> getFreeSpecialistCounts() {
+			return freeSpecialistCounts;
+		}
+
+		@Override
+		public void addFreeSpecialistCount(IPair<String, Integer> freeSpecialistCount) {
+			freeSpecialistCounts.add(freeSpecialistCount);
+		}
+
+		@Override
 		public List<IPair<String, Integer>> getBuildingHappinessChanges() {
 			return buildingHappinessChanges;
 		}
@@ -877,66 +937,6 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 		}
 
 		@Override
-		public String getWeLoveTheKing() {
-			return weLoveTheKing;
-		}
-
-		@Override
-		public void setWeLoveTheKing(String weLoveTheKing) {
-			this.weLoveTheKing = weLoveTheKing;
-		}
-
-		@Override
-		public Integer getForeignTradeRouteModifier() {
-			return foreignTradeRouteModifier;
-		}
-
-		@Override
-		public void setForeignTradeRouteModifier(Integer foreignTradeRouteModifier) {
-			this.foreignTradeRouteModifier = foreignTradeRouteModifier;
-		}
-
-		@Override
-		public Boolean isNoCapitalUnhappiness() {
-			return noCapitalUnhappiness;
-		}
-
-		@Override
-		public void setNoCapitalUnhappiness(Boolean noCapitalUnhappiness) {
-			this.noCapitalUnhappiness = noCapitalUnhappiness;
-		}
-
-		@Override
-		public Integer getPopulationGrowthRateModifier() {
-			return populationGrowthRateModifier;
-		}
-
-		@Override
-		public void setPopulationGrowthRateModifier(Integer populationGrowthRateModifier) {
-			this.populationGrowthRateModifier = populationGrowthRateModifier;
-		}
-
-		@Override
-		public Integer getTaxRateAngerModifier() {
-			return taxRateAngerModifier;
-		}
-
-		@Override
-		public void setTaxRateAngerModifier(Integer taxRateAngerModifier) {
-			this.taxRateAngerModifier = taxRateAngerModifier;
-		}
-
-		@Override
-		public Integer getDistantUnitSupplyCostModifier() {
-			return distantUnitSupplyCostModifier;
-		}
-
-		@Override
-		public void setDistantUnitSupplyCostModifier(Integer distantUnitSupplyCostModifier) {
-			this.distantUnitSupplyCostModifier = distantUnitSupplyCostModifier;
-		}
-
-		@Override
 		public Boolean isUpgradeAnywhere() {
 			return upgradeAnywhere;
 		}
@@ -944,6 +944,16 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 		@Override
 		public void setUpgradeAnywhere(Boolean upgradeAnywhere) {
 			this.upgradeAnywhere = upgradeAnywhere;
+		}
+
+		@Override
+		public String getWeLoveTheKing() {
+			return weLoveTheKing;
+		}
+
+		@Override
+		public void setWeLoveTheKing(String weLoveTheKing) {
+			this.weLoveTheKing = weLoveTheKing;
 		}
 
 		@Override
@@ -955,16 +965,5 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 		public void setCityDefenceModifier(Integer cityDefenceModifier) {
 			this.cityDefenceModifier = cityDefenceModifier;
 		}
-
-		@Override
-		public List<IPair<String, Integer>> getFreeSpecialistCounts() {
-			return freeSpecialistCounts;
-		}
-
-		@Override
-		public void addFreeSpecialistCount(IPair<String, Integer> freeSpecialistCount) {
-			freeSpecialistCounts.add(freeSpecialistCount);
-		}
 	}
-	
 }

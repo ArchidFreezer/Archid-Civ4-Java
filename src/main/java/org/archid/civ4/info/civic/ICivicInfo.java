@@ -1,5 +1,6 @@
 package org.archid.civ4.info.civic;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.archid.civ4.info.IInfo;
 import org.archid.utils.IPair;
@@ -22,9 +23,9 @@ public interface ICivicInfo extends IInfo {
 
 	String getButton();
 	void setButton(String button);
-	
+
 	Integer getIndex();
-	void setIndex(Integer iIndex);
+	void setIndex(Integer index);
 
 	String getTechPrereq();
 	void setTechPrereq(String techPrereq);
@@ -70,6 +71,9 @@ public interface ICivicInfo extends IInfo {
 
 	Integer getCorporationMaintenanceModifier();
 	void setCorporationMaintenanceModifier(Integer corporationMaintenanceModifier);
+
+	Integer getForeignTradeRouteModifier();
+	void setForeignTradeRouteModifier(Integer foreignTradeRouteModifier);
 
 	Integer getExtraHealth();
 	void setExtraHealth(Integer extraHealth);
@@ -131,6 +135,15 @@ public interface ICivicInfo extends IInfo {
 	Integer getLargestCityHappiness();
 	void setLargestCityHappiness(Integer largestCityHappiness);
 
+	Boolean isNoCapitalUnhappiness();
+	void setNoCapitalUnhappiness(Boolean noCapitalUnhappiness);
+
+	Integer getTaxRateAngerModifier();
+	void setTaxRateAngerModifier(Integer taxRateAngerModifier);
+
+	Integer getDistantUnitSupplyCostModifier();
+	void setDistantUnitSupplyCostModifier(Integer distantUnitSupplyCostModifier);
+
 	Integer getWarWearinessModifier();
 	void setWarWearinessModifier(Integer warWearinessModifier);
 
@@ -188,6 +201,9 @@ public interface ICivicInfo extends IInfo {
 	Integer getCultureDefenceChange();
 	void setCultureDefenceChange(Integer cultureDefenceChange);
 
+	Integer getPopulationGrowthRateModifier();
+	void setPopulationGrowthRateModifier(Integer populationGrowthRateModifier);
+
 	List<Integer> getYieldModifiers();
 	void addYieldModifier(Integer yieldModifier);
 
@@ -215,6 +231,9 @@ public interface ICivicInfo extends IInfo {
 	List<String> getSpecialistValids();
 	void addSpecialistValid(String specialistValid);
 
+	List<IPair<String, Integer>> getFreeSpecialistCounts();
+	void addFreeSpecialistCount(IPair<String, Integer> freeSpecialistCount);
+
 	List<IPair<String, Integer>> getBuildingHappinessChanges();
 	void addBuildingHappinessChange(IPair<String, Integer> buildingHappinessChange);
 
@@ -227,31 +246,13 @@ public interface ICivicInfo extends IInfo {
 	List<IImprovementYieldChange> getImprovementYieldChanges();
 	void addImprovementYieldChange(IImprovementYieldChange improvementYieldChange);
 
-	String getWeLoveTheKing();
-	void setWeLoveTheKing(String weLoveTheKing);
-
-	Integer getForeignTradeRouteModifier();
-	void setForeignTradeRouteModifier(Integer foreignTradeRouteModifier);
-
-	Boolean isNoCapitalUnhappiness();
-	void setNoCapitalUnhappiness(Boolean noCapitalUnhappiness);
-
-	Integer getPopulationGrowthRateModifier();
-	void setPopulationGrowthRateModifier(Integer taxRateModifier);
-
-	Integer getTaxRateAngerModifier();
-	void setTaxRateAngerModifier(Integer taxRateAngerModifier);
-	
-	Integer getDistantUnitSupplyCostModifier();
-	void setDistantUnitSupplyCostModifier (Integer distantUnitSupplyCostModifier);
-	
 	Boolean isUpgradeAnywhere();
 	void setUpgradeAnywhere(Boolean upgradeAnywhere);
 
+	String getWeLoveTheKing();
+	void setWeLoveTheKing(String weLoveTheKing);
+
 	Integer getCityDefenceModifier();
 	void setCityDefenceModifier(Integer cityDefenceModifier);
-	
-	List<IPair<String, Integer>> getFreeSpecialistCounts();
-	void addFreeSpecialistCount(IPair<String, Integer> freeSpecialistCount);
 
 }

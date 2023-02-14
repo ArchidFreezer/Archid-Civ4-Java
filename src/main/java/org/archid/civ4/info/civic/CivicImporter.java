@@ -122,7 +122,7 @@ public class CivicImporter extends AbstractImporter<IInfos<ICivicInfo>, ICivicIn
 
 		return info;
 	}
-	
+
 	private void parseImprovementYieldChangeCell(Cell cell, ICivicInfo info) {
 		String[] arr = cell.getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE);
 		if (arr.length > 1) {
