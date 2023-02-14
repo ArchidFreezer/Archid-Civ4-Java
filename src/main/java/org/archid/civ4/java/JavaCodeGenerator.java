@@ -119,7 +119,7 @@ public class JavaCodeGenerator {
 			
 			Tag tag = infoTagData.get(mainChild.getTagName());
 			ITagProcessor processor = null;
-			if (customTags.hasTagProcessor(mainChild.getTagName())) {
+			if (customTags != null && customTags.hasTagProcessor(mainChild.getTagName())) {
 				processor = customTags.getTagProcessor(mainChild.getTagName());
 				tag.setDataType(processor.getDataType());
 				tag.setSingularDataType(processor.getInterfaceName());
@@ -216,7 +216,7 @@ public class JavaCodeGenerator {
 		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
 			Tag tag = infoTagData.get(mainChild.getTagName());
 			ITagProcessor processor = null;
-			if (customTags.hasTagProcessor(mainChild.getTagName())) {
+			if (customTags != null && customTags.hasTagProcessor(mainChild.getTagName())) {
 				processor = customTags.getTagProcessor(mainChild.getTagName());
 				tag.setDataType(processor.getDataType());
 				tag.setSingularDataType(processor.getInterfaceName());
@@ -297,7 +297,7 @@ public class JavaCodeGenerator {
 		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
 			ITagProcessor processor = null;
 			Tag tag = infoTagData.get(mainChild.getTagName());
-			if (customTags.hasTagProcessor(mainChild.getTagName())) {
+			if (customTags != null && customTags.hasTagProcessor(mainChild.getTagName())) {
 				processor = customTags.getTagProcessor(mainChild.getTagName());
 				tag.setDataType(processor.getDataType());
 				tag.setSingularDataType(processor.getInterfaceName());
@@ -572,7 +572,7 @@ public class JavaCodeGenerator {
 		methods.append(NEWLINETT + "}");
 		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
 			Tag tag = infoTagData.get(mainChild.getTagName());
-			if (customTags.hasTagProcessor(mainChild.getTagName())) {
+			if (customTags != null && customTags.hasTagProcessor(mainChild.getTagName())) {
 				ITagProcessor processor = customTags.getTagProcessor(mainChild.getTagName());
 				tag.setDataType(processor.getDataType());
 				tag.setSingularDataType(processor.getInterfaceName());
@@ -638,7 +638,7 @@ public class JavaCodeGenerator {
 				continue;
 				
 			Tag tag = infoTagData.get(mainChild.getTagName());
-			if (customTags.hasTagProcessor(mainChild.getTagName())) {
+			if (customTags != null && customTags.hasTagProcessor(mainChild.getTagName())) {
 				ITagProcessor processor = customTags.getTagProcessor(mainChild.getTagName());
 				tag.setDataType(processor.getDataType());
 				tag.setSingularDataType(processor.getInterfaceName());
@@ -674,7 +674,7 @@ public class JavaCodeGenerator {
 		packageDef = "package org.archid.civ4.info." + namespaceFolder + ";";
 		topLevelTagDefinition = parser.getTagDefinition(infoName);
 		customTags = TagFactory.getProcessor(infoName);
-		customTags.init(namespaceFolder);
+		if (customTags != null) customTags.init(namespaceFolder);
 		parseInfo(topLevelTagDefinition);
 	}
 
