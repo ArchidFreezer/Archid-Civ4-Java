@@ -11,7 +11,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import org.archid.civ4.schema.JavaCodeGenerator;
+import org.archid.civ4.java.JavaCodeGenerator;
 import org.archid.civ4.schema.SchemaParser;
 import org.archid.utils.IPropertyHandler;
 import org.archid.utils.PropertyHandler;

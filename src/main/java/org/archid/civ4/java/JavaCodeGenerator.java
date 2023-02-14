@@ -1,4 +1,4 @@
-package org.archid.civ4.schema;
+package org.archid.civ4.java;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -12,6 +12,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.archid.civ4.schema.SchemaParser;
+import org.archid.civ4.schema.XmlTagDefinition;
+import org.archid.civ4.schema.XmlTagInstance;
 import org.archid.civ4.schema.XmlTagDefinition.DataType;
 import org.archid.utils.FileUtils;
 import org.archid.utils.IPropertyHandler;
@@ -611,7 +614,7 @@ public class JavaCodeGenerator {
 
 	private void parseInfo(XmlTagDefinition info) {
 		for (XmlTagInstance tag: info.getChildren()) {
-			Tag tagData = new Tag(parser.getTagDefinition(tag.getTagName()), tag.mandatory);
+			Tag tagData = new Tag(parser.getTagDefinition(tag.getTagName()), tag.isMandatory());
 			if (tagData.requiresArray()) {
 				dynamicImports.add("import java.util.List;");
 				dynamicImports.add("import java.util.ArrayList;");
