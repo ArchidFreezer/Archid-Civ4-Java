@@ -7,7 +7,6 @@ import java.util.TreeMap;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-
 import org.archid.civ4.info.civic.ImprovementYieldChangeAdapter.AdaptedImprovementYieldChange;
 import org.archid.civ4.info.civic.ImprovementYieldChangeAdapter.ImprovementYieldChangeList;
 import org.archid.utils.CollectionUtils;
@@ -398,7 +397,7 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 					}
 				}
 			}
-			
+
 			if (aInfo.improvementYieldChanges != null && CollectionUtils.hasElements(aInfo.improvementYieldChanges.entries)) {
 				for (ImprovementYieldChangeAdapter.AdaptedImprovementYieldChange adapter: aInfo.improvementYieldChanges.entries ) {
 					IImprovementYieldChange improvementYieldChange = ImprovementYieldChanges.createImprovementYieldChange();
@@ -409,7 +408,6 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 					info.addImprovementYieldChange(improvementYieldChange);
 				}
 			}
-
 			info.setUpgradeAnywhere(JaxbUtils.unmarshallBoolean(aInfo.upgradeAnywhere));
 			info.setWeLoveTheKing(JaxbUtils.unmarshallString(aInfo.weLoveTheKing));
 			info.setCityDefenceModifier(JaxbUtils.unmarshallInteger(aInfo.cityDefenceModifier));
@@ -594,7 +592,7 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 					aInfo.featureHappinessChanges.add(adaptor);
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(info.getImprovementYieldChanges())) {
 				for (IImprovementYieldChange change: info.getImprovementYieldChanges()) {
 					AdaptedImprovementYieldChange adapter = new AdaptedImprovementYieldChange();
@@ -603,7 +601,6 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 					aInfo.improvementYieldChanges.entries.add(adapter);
 				}
 			}
-
 			aInfo.upgradeAnywhere = JaxbUtils.marshallBoolean(info.isUpgradeAnywhere());
 			aInfo.weLoveTheKing = JaxbUtils.marshallString(info.getWeLoveTheKing());
 			aInfo.cityDefenceModifier = JaxbUtils.marshallInteger(info.getCityDefenceModifier());

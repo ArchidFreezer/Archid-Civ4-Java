@@ -2,7 +2,6 @@ package org.archid.civ4.info.civic;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -147,6 +146,6 @@ public class CivicImporter extends AbstractImporter<IInfos<ICivicInfo>, ICivicIn
 					}
 				}
 			}
-		}		
+		}
 	}
 }

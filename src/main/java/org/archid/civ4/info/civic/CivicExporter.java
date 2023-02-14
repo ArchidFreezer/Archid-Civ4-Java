@@ -131,9 +131,7 @@ public class CivicExporter extends AbstractExporter<IInfos<ICivicInfo>, ICivicIn
 	}
 
 	private int addImprovementYieldChangeCell(Cell cell, List<IImprovementYieldChange> list, int maxHeight) {
-		
 		int currHeight = 0;
-		
 		cell.setCellStyle(csWrap);
 		StringBuilder cellvalue = new StringBuilder();
 		for (IImprovementYieldChange change: list) {
@@ -148,9 +146,7 @@ public class CivicExporter extends AbstractExporter<IInfos<ICivicInfo>, ICivicIn
 		}
 		cell.setCellValue(cellvalue.toString());
 		if (currHeight > maxHeight) maxHeight = currHeight;
-		
 		return maxHeight;
-		
 	}
 
 }
