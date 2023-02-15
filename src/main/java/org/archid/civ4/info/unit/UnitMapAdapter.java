@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-
 import org.archid.utils.CollectionUtils;
 import org.archid.utils.IPair;
 import org.archid.utils.JaxbUtils;
@@ -16,13 +14,12 @@ import org.archid.utils.Pair;
 import org.archid.utils.StringUtils;
 
 public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<String, IUnitInfo>> {
-	
+
 	public static class UnitMap {
 		@XmlElement(name = "UnitInfo")
 		List<AdaptedUnit> entries = new ArrayList<AdaptedUnit>();
-		
 	}
-	
+
 	private static class AdaptedUnit {
 		@XmlElement(name="Class")
 		private String clazz;
@@ -36,7 +33,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 		@XmlElement(name="Capture")
 		private String capture;
 		@XmlElement(name="Combat")
-		private String combatType;
+		private String combat;
 		@XmlElementWrapper(name="SubCombatTypes")
 		@XmlElement(name="UnitCombatType")
 		private List<String> subCombatTypes;
@@ -51,10 +48,10 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 		@XmlElement(name="iMaxAmmoTypeTier")
 		private Integer maxAmmoTypeTier;
 		@XmlElement(name="Invisible")
-		private String invisibleType;
+		private String invisible;
 		@XmlElementWrapper(name="SeeInvisibles")
 		@XmlElement(name="InvisibleType")
-		private List<String> seeInvisbles;
+		private List<String> seeInvisibles;
 		@XmlElement(name="Description")
 		private String description;
 		@XmlElement(name="Civilopedia")
@@ -102,9 +99,9 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 		@XmlElement(name="bFound")
 		private Integer found;
 		@XmlElement(name="bGoldenAge")
-		private Integer bGoldenAge;
+		private Integer goldenAge;
 		@XmlElement(name="bInvisible")
-		private Integer invisible;
+		private Integer invisibleBool;
 		@XmlElement(name="bFirstStrikeImmune")
 		private Integer firstStrikeImmune;
 		@XmlElement(name="bNoDefensiveBonus")
@@ -124,7 +121,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 		@XmlElement(name="bPrereqBonuses")
 		private Integer prereqBonuses;
 		@XmlElement(name="bPrereqReligion")
-		private Integer prereqReligion;
+		private Integer prereqReligionBool;
 		@XmlElement(name="bMechanized")
 		private Integer mechanized;
 		@XmlElement(name="bRenderBelowWater")
@@ -166,7 +163,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 		private List<String> unitCombatDefenders;
 		@XmlElementWrapper(name="FlankingStrikes")
 		@XmlElement(name="FlankingStrike")
-		private List<AdaptedFlankingStrike> flankingStrikes;
+		private List<AdaptedFlankingStrikes> flankingStrikes;
 		@XmlElementWrapper(name="UnitAIs")
 		@XmlElement(name="UnitAIType")
 		private List<String> unitAIs;
@@ -178,10 +175,10 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 		private List<String> builds;
 		@XmlElementWrapper(name="ReligionSpreads")
 		@XmlElement(name="ReligionSpread")
-		private List<AdaptedReligionSpread> religionSpreads;
+		private List<AdaptedReligionSpreads> religionSpreads;
 		@XmlElementWrapper(name="CorporationSpreads")
 		@XmlElement(name="CorporationSpread")
-		private List<AdaptedCorporationSpread> corporationSpreads;
+		private List<AdaptedCorporationSpreads> corporationSpreads;
 		@XmlElementWrapper(name="GreatPeoples")
 		@XmlElement(name="GreatPeopleType")
 		private List<String> greatPeoples;
@@ -200,7 +197,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 		@XmlElement(name="StateReligion")
 		private String stateReligion;
 		@XmlElement(name="PrereqReligion")
-		private String prereqReligionType;
+		private String prereqReligion;
 		@XmlElement(name="PrereqCorporation")
 		private String prereqCorporation;
 		@XmlElement(name="PrereqBuilding")
@@ -228,17 +225,17 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 		@XmlElement(name="TerrainType")
 		private List<String> prereqOrTerrains;
 		@XmlElementWrapper(name="PrereqOrBuildingClasses")
-		@XmlElement(name="BuildingClass")
+		@XmlElement(name="BuildingClassType")
 		private List<String> prereqOrBuildingClasses;
 		@XmlElementWrapper(name="PrereqNotBuildingClasses")
-		@XmlElement(name="BuildingClass")
+		@XmlElement(name="BuildingClassType")
 		private List<String> prereqNotBuildingClasses;
 		@XmlElementWrapper(name="PrereqVicinityAndBonus")
 		@XmlElement(name="BonusType")
-		private List<String> prereqVicinityAndBonuses;
+		private List<String> prereqVicinityAndBonus;
 		@XmlElementWrapper(name="PrereqVicinityOrBonus")
 		@XmlElement(name="BonusType")
-		private List<String> prereqVicinityOrBonuses;
+		private List<String> prereqVicinityOrBonus;
 		@XmlElementWrapper(name="PrereqVicinityImprovements")
 		@XmlElement(name="ImprovementType")
 		private List<String> prereqVicinityImprovements;
@@ -256,12 +253,12 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 		private Integer prereqPower;
 		@XmlElementWrapper(name="ProductionTraits")
 		@XmlElement(name="ProductionTrait")
-		private List<AdaptedProductionTrait> productionTraits;
+		private List<AdaptedProductionTraits> productionTraits;
 		@XmlElementWrapper(name="Flavors")
 		@XmlElement(name="Flavor")
-		private List<AdaptedFlavour> flavours;
+		private List<AdaptedFlavors> flavors;
 		@XmlElement(name="iAIWeight")
-		private Integer aiWeight;
+		private Integer aIWeight;
 		@XmlElement(name="iCost")
 		private Integer cost;
 		@XmlElement(name="iHurryCostModifier")
@@ -304,12 +301,6 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 		private Integer greatWorkCulture;
 		@XmlElement(name="iEspionagePoints")
 		private Integer espionagePoints;
-		@XmlElement(name="iSpyEscapeChance")
-		private Integer spyEscapeChance;
-		@XmlElement(name="iSpyEvasionChance")
-		private Integer spyEvasionChance;
-		@XmlElement(name="iSpyInterceptChance")
-		private Integer spyInterceptChance;
 		@XmlElementWrapper(name="TerrainImpassables")
 		@XmlElement(name="TerrainType")
 		private List<String> terrainImpassables;
@@ -318,12 +309,12 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 		private List<String> featureImpassables;
 		@XmlElementWrapper(name="TerrainPassableTechs")
 		@XmlElement(name="TerrainPassableTech")
-		private List<AdaptedTerrainPassableTech> terrainPassableTechs;
+		private List<AdaptedTerrainPassableTechs> terrainPassableTechs;
 		@XmlElementWrapper(name="FeaturePassableTechs")
 		@XmlElement(name="FeaturePassableTech")
-		private List<AdaptedFeaturePassableTech> featurePassableTechs;
+		private List<AdaptedFeaturePassableTechs> featurePassableTechs;
 		@XmlElement(name="iCombat")
-		private Integer combat;
+		private Integer combatInt;
 		@XmlElement(name="iCombatLimit")
 		private Integer combatLimit;
 		@XmlElement(name="iAirCombat")
@@ -331,9 +322,9 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 		@XmlElement(name="iAirCombatLimit")
 		private Integer airCombatLimit;
 		@XmlElement(name="iXPValueAttack")
-		private Integer xpValueAttack;
+		private Integer xPValueAttack;
 		@XmlElement(name="iXPValueDefense")
-		private Integer xpValueDefense;
+		private Integer xPValueDefense;
 		@XmlElement(name="iFirstStrikes")
 		private Integer firstStrikes;
 		@XmlElement(name="iChanceFirstStrikes")
@@ -368,34 +359,34 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 		private List<String> featureNatives;
 		@XmlElementWrapper(name="TerrainAttacks")
 		@XmlElement(name="TerrainAttack")
-		private List<AdaptedTerrainAttack> terrainAttacks;
+		private List<AdaptedTerrainAttacks> terrainAttacks;
 		@XmlElementWrapper(name="TerrainDefenses")
 		@XmlElement(name="TerrainDefense")
-		private List<AdaptedTerrainDefense> terrainDefenses;
+		private List<AdaptedTerrainDefenses> terrainDefenses;
 		@XmlElementWrapper(name="FeatureAttacks")
 		@XmlElement(name="FeatureAttack")
-		private List<AdaptedFeatureAttack> featureAttacks;
+		private List<AdaptedFeatureAttacks> featureAttacks;
 		@XmlElementWrapper(name="FeatureDefenses")
 		@XmlElement(name="FeatureDefense")
-		private List<AdaptedFeatureDefense> featureDefenses;
+		private List<AdaptedFeatureDefenses> featureDefenses;
 		@XmlElementWrapper(name="UnitClassAttackMods")
 		@XmlElement(name="UnitClassAttackMod")
-		private List<AdaptedUnitClassAttackMod> unitClassAttackMods;
+		private List<AdaptedUnitClassAttackMods> unitClassAttackMods;
 		@XmlElementWrapper(name="UnitClassDefenseMods")
 		@XmlElement(name="UnitClassDefenseMod")
-		private List<AdaptedUnitClassDefenseMod> unitClassDefenseMods;
+		private List<AdaptedUnitClassDefenseMods> unitClassDefenseMods;
 		@XmlElementWrapper(name="UnitCombatMods")
 		@XmlElement(name="UnitCombatMod")
-		private List<AdaptedUnitCombatMod> unitCombatMods;
+		private List<AdaptedUnitCombatMods> unitCombatMods;
 		@XmlElementWrapper(name="UnitCombatCollateralImmunes")
 		@XmlElement(name="UnitCombatCollateralImmune")
-		private List<AdaptedUnitCombatCollateralImmune> unitCombatCollateralImmunes;
+		private List<AdaptedUnitCombatCollateralImmunes> unitCombatCollateralImmunes;
 		@XmlElementWrapper(name="DomainMods")
 		@XmlElement(name="DomainMod")
-		private List<AdaptedDomainMod> domainMods;
+		private List<AdaptedDomainMods> domainMods;
 		@XmlElementWrapper(name="BonusProductionModifiers")
 		@XmlElement(name="BonusProductionModifier")
-		private List<AdaptedBonusProductionModifier> bonusProductionModifiers;
+		private List<AdaptedBonusProductionModifiers> bonusProductionModifiers;
 		@XmlElementWrapper(name="YieldsFromKill")
 		@XmlElement(name="iYield")
 		private List<Integer> yieldsFromKill;
@@ -445,690 +436,125 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 		private Integer leaderExperience;
 		@XmlElement(name="iOrderPriority")
 		private Integer orderPriority;
-		
-	}
-	
-	private static class AdaptedBonusProductionModifier {
-		@XmlElement(name="BonusType")
-		private String bonus;
-		@XmlElement(name="iProductonModifier")
-		private Integer value;
 	}
 
-	private static class AdaptedDomainMod {
-		@XmlElement(name="DomainType")
-		private String domain;
-		@XmlElement(name="iDomainMod")
-		private Integer value;
-	}
-
-	private static class AdaptedUnitCombatCollateralImmune {
-		@XmlElement(name="UnitCombatType")
-		private String unitcombat;
-		@XmlElement(name="iUnitCombatCollateralImmune")
-		private Integer value;
-	}
-
-	private static class AdaptedUnitCombatMod {
-		@XmlElement(name="UnitCombatType")
-		private String unitcombat;
-		@XmlElement(name="iUnitCombatMod")
-		private Integer value;
-	}
-
-	private static class AdaptedUnitClassAttackMod {
-		@XmlElement(name="UnitClassType")
-		private String unitclass;
-		@XmlElement(name="iUnitClassMod")
-		private Integer value;
-	}
-
-	private static class AdaptedUnitClassDefenseMod {
-		@XmlElement(name="UnitClassType")
-		private String unitclass;
-		@XmlElement(name="iUnitClassMod")
-		private Integer value;
-	}
-
-	private static class AdaptedTerrainPassableTech {
-		@XmlElement(name="TerrainType")
-		private String terrain;
-		@XmlElement(name="PassableTech")
-		private String tech;
-	}
-
-	private static class AdaptedFeaturePassableTech {
-		@XmlElement(name="FeatureType")
-		private String feature;
-		@XmlElement(name="PassableTech")
-		private String tech;
-	}
-
-	private static class AdaptedTerrainAttack {
-		@XmlElement(name="TerrainType")
-		private String terrain;
-		@XmlElement(name="iTerrainAttack")
-		private Integer value;
-	}
-
-	private static class AdaptedTerrainDefense {
-		@XmlElement(name="TerrainType")
-		private String terrain;
-		@XmlElement(name="iTerrainDefense")
-		private Integer value;
-	}
-
-	private static class AdaptedFeatureAttack {
-		@XmlElement(name="FeatureType")
-		private String feature;
-		@XmlElement(name="iFeatureAttack")
-		private Integer value;
-	}
-
-	private static class AdaptedFeatureDefense {
-		@XmlElement(name="FeatureType")
-		private String feature;
-		@XmlElement(name="iFeatureDefense")
-		private Integer value;
-	}
-
-	private static class AdaptedFlavour {
-		@XmlElement(name="FlavorType")
-		private String flavour;
-		@XmlElement(name="iFlavor")
-		private Integer value;
-	}
-
-	private static class AdaptedProductionTrait {
-		@XmlElement(name="ProductionTraitType")
-		private String trait;
-		@XmlElement(name="iProductionTrait")
-		private Integer value;
-	}
-
-	private static class AdaptedFlankingStrike {
+	private static class AdaptedFlankingStrikes {
 		@XmlElement(name="FlankingStrikeUnitClass")
-		private String unitclass;
+		private String flankingStrikeUnitClass;
 		@XmlElement(name="iFlankingStrength")
-		private Integer strength;
+		private Integer iFlankingStrength;
 	}
 
-	private static class AdaptedReligionSpread {
+	private static class AdaptedReligionSpreads {
 		@XmlElement(name="ReligionType")
-		private String religion;
+		private String religionType;
 		@XmlElement(name="iReligionSpread")
-		private Integer spread;
+		private Integer iReligionSpread;
 	}
 
-	private static class AdaptedCorporationSpread {
+	private static class AdaptedCorporationSpreads {
 		@XmlElement(name="CorporationType")
-		private String corporation;
+		private String corporationType;
 		@XmlElement(name="iCorporationSpread")
-		private Integer spread;
+		private Integer iCorporationSpread;
 	}
 
-	@Override
-	public UnitMap marshal(Map<String, IUnitInfo> v) throws Exception {
-		UnitMap map = new UnitMap();
-		for (IUnitInfo info: v.values()) {
-			AdaptedUnit aInfo = new AdaptedUnit();
-			aInfo.clazz = JaxbUtils.marshallString(info.getUnitClass());
-			aInfo.type = info.getType();
-			
-			if (CollectionUtils.hasElements(info.getUniqueNames())) {
-				aInfo.uniqueNames = new ArrayList<String>();
-				for (String val: info.getUniqueNames()) {
-					aInfo.uniqueNames.add(val);
-				}
-			}
-			
-			aInfo.special = JaxbUtils.marshallString(info.getSpecial());
-			aInfo.capture = JaxbUtils.marshallString(info.getCapture());
-			aInfo.combatType = JaxbUtils.marshallString(info.getCombatType());
+	private static class AdaptedProductionTraits {
+		@XmlElement(name="ProductionTraitType")
+		private String productionTraitType;
+		@XmlElement(name="iProductionTrait")
+		private Integer iProductionTrait;
+	}
 
-			if (CollectionUtils.hasElements(info.getSubCombatTypes())) {
-				aInfo.subCombatTypes = new ArrayList<String>();
-				for (String val: info.getSubCombatTypes()) {
-					aInfo.subCombatTypes.add(val);
-				}
-			}
-			
-			aInfo.domain = JaxbUtils.marshallString(info.getDomain());
-			aInfo.defaultUnitAI = JaxbUtils.marshallString(info.getDefaultUnitAI());
-			aInfo.fixedAI = JaxbUtils.marshallBoolean(info.isFixedAI());
-			aInfo.maxWeaponTypeTier = JaxbUtils.marshallInteger(info.getMaxWeaponTypeTier());
-			aInfo.maxAmmoTypeTier = JaxbUtils.marshallInteger(info.getMaxAmmoTypeTier());
-			aInfo.invisibleType = JaxbUtils.marshallString(info.getInvisibleType());
-			
-			if (CollectionUtils.hasElements(info.getSeeInvisbles())) {
-				aInfo.seeInvisbles = new ArrayList<String>();
-				for (String val: info.getSeeInvisbles()) {
-					aInfo.seeInvisbles.add(val);
-				}
-			}
-		
-			aInfo.description = JaxbUtils.marshallString(info.getDescription());
-			aInfo.civilopedia = JaxbUtils.marshallString(info.getCivilopedia());
-			aInfo.strategy = JaxbUtils.marshallString(info.getStrategy());
-			aInfo.help = JaxbUtils.marshallString(info.getHelp());
-			aInfo.advisor = JaxbUtils.marshallString(info.getAdvisor());
-			aInfo.animal = JaxbUtils.marshallBoolean(info.isAnimal());
-			aInfo.food = JaxbUtils.marshallBoolean(info.isFood());
-			aInfo.noBadGoodies = JaxbUtils.marshallBoolean(info.isNoBadGoodies());
-			aInfo.onlyDefensive = JaxbUtils.marshallBoolean(info.isOnlyDefensive());
-			aInfo.noCapture = JaxbUtils.marshallBoolean(info.isNoCapture());
-			aInfo.quickCombat = JaxbUtils.marshallBoolean(info.isQuickCombat());
-			aInfo.rivalTerritory = JaxbUtils.marshallBoolean(info.isRivalTerritory());
-			aInfo.militaryHappiness = JaxbUtils.marshallBoolean(info.isMilitaryHappiness());
-			aInfo.militarySupport = JaxbUtils.marshallBoolean(info.isMilitarySupport());
-			aInfo.militaryProduction = JaxbUtils.marshallBoolean(info.isMilitaryProduction());
-			aInfo.pillage = JaxbUtils.marshallBoolean(info.isPillage());
-			aInfo.spy = JaxbUtils.marshallBoolean(info.isSpy());
-			aInfo.sabotage = JaxbUtils.marshallBoolean(info.isSabotage());
-			aInfo.destroy = JaxbUtils.marshallBoolean(info.isDestroy());
-			aInfo.stealPlans = JaxbUtils.marshallBoolean(info.isStealPlans());
-			aInfo.investigate = JaxbUtils.marshallBoolean(info.isInvestigate());
-			aInfo.counterSpy = JaxbUtils.marshallBoolean(info.isCounterSpy());
-			aInfo.found = JaxbUtils.marshallBoolean(info.isFound());
-			aInfo.bGoldenAge = JaxbUtils.marshallBoolean(info.isGoldenAge());
-			aInfo.invisible = JaxbUtils.marshallBoolean(info.isInvisible());
-			aInfo.firstStrikeImmune = JaxbUtils.marshallBoolean(info.isFirstStrikeImmune());
-			aInfo.noDefensiveBonus = JaxbUtils.marshallBoolean(info.isNoDefensiveBonus());
-			aInfo.ignoreBuildingDefense = JaxbUtils.marshallBoolean(info.isIgnoreBuildingDefense());
-			aInfo.canMoveImpassable = JaxbUtils.marshallBoolean(info.isCanMoveImpassable());
-			aInfo.canMoveAllTerrain = JaxbUtils.marshallBoolean(info.isCanMoveAllTerrain());
-			aInfo.flatMovementCost = JaxbUtils.marshallBoolean(info.isFlatMovementCost());
-			aInfo.ignoreTerrainCost = JaxbUtils.marshallBoolean(info.isIgnoreTerrainCost());
-			aInfo.nukeImmune = JaxbUtils.marshallBoolean(info.isNukeImmune());
-			aInfo.prereqBonuses = JaxbUtils.marshallBoolean(info.isPrereqBonuses());
-			aInfo.prereqReligion = JaxbUtils.marshallBoolean(info.isPrereqReligion());
-			aInfo.mechanized = JaxbUtils.marshallBoolean(info.isMechanized());
-			aInfo.renderBelowWater = JaxbUtils.marshallBoolean(info.isRenderBelowWater());
-			aInfo.renderAlways = JaxbUtils.marshallBoolean(info.isRenderAlways());
-			aInfo.suicide = JaxbUtils.marshallBoolean(info.isSuicide());
-			aInfo.singleBuild = JaxbUtils.marshallBoolean(info.isSingleBuild());
-			aInfo.slave = JaxbUtils.marshallBoolean(info.isSlave());
-			aInfo.lineOfSight = JaxbUtils.marshallBoolean(info.isLineOfSight());
-			aInfo.hiddenNationality = JaxbUtils.marshallBoolean(info.isHiddenNationality());
-			aInfo.alwaysHostile = JaxbUtils.marshallBoolean(info.isAlwaysHostile());
-			aInfo.workerTrade = JaxbUtils.marshallBoolean(info.isWorkerTrade());
-			aInfo.militaryTrade = JaxbUtils.marshallBoolean(info.isMilitaryTrade());
-			aInfo.barbarianLeader = JaxbUtils.marshallBoolean(info.isBarbarianLeader());
+	private static class AdaptedFlavors {
+		@XmlElement(name="FlavorType")
+		private String flavorType;
+		@XmlElement(name="iFlavor")
+		private Integer iFlavor;
+	}
 
-			if (CollectionUtils.hasElements(info.getUnitClassUpgrades())) {
-				aInfo.unitClassUpgrades = new ArrayList<String>();
-				for (String val: info.getUnitClassUpgrades()) {
-					aInfo.unitClassUpgrades.add(val);
-				}
-			}
-		
-			if (CollectionUtils.hasElements(info.getUnitClassTargets())) {
-				aInfo.unitClassTargets = new ArrayList<String>();
-				for (String val: info.getUnitClassTargets()) {
-					aInfo.unitClassTargets.add(val);
-				}
-			}
-		
-			if (CollectionUtils.hasElements(info.getUnitCombatTargets())) {
-				aInfo.unitCombatTargets = new ArrayList<String>();
-				for (String val: info.getUnitCombatTargets()) {
-					aInfo.unitCombatTargets.add(val);
-				}
-			}
-		
-			if (CollectionUtils.hasElements(info.getUnitClassDefenders())) {
-				aInfo.unitClassDefenders = new ArrayList<String>();
-				for (String val: info.getUnitClassDefenders()) {
-					aInfo.unitClassDefenders.add(val);
-				}
-			}
-		
-			if (CollectionUtils.hasElements(info.getUnitCombatDefenders())) {
-				aInfo.unitCombatDefenders = new ArrayList<String>();
-				for (String val: info.getUnitCombatDefenders()) {
-					aInfo.unitCombatDefenders.add(val);
-				}
-			}
-		
-			if (CollectionUtils.hasElements(info.getFlankingStrikes())) {
-				aInfo.flankingStrikes = new ArrayList<AdaptedFlankingStrike>();
-				for (IPair<String, Integer> pair: info.getFlankingStrikes()) {
-					AdaptedFlankingStrike adaptor = new AdaptedFlankingStrike();
-					adaptor.unitclass = pair.getKey();
-					adaptor.strength = pair.getValue();
-					aInfo.flankingStrikes.add(adaptor);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(info.getUnitAIs())) {
-				aInfo.unitAIs = new ArrayList<String>();
-				for (String val: info.getUnitAIs()) {
-					aInfo.unitAIs.add(val);
-				}
-			}
-		
-			if (CollectionUtils.hasElements(info.getNotUnitAIs())) {
-				aInfo.notUnitAIs = new ArrayList<String>();
-				for (String val: info.getNotUnitAIs()) {
-					aInfo.notUnitAIs.add(val);
-				}
-			}
-		
-			if (CollectionUtils.hasElements(info.getBuilds())) {
-				aInfo.builds = new ArrayList<String>();
-				for (String val: info.getBuilds()) {
-					aInfo.builds.add(val);
-				}
-			}
-		
-			if (CollectionUtils.hasElements(info.getReligionSpreads())) {
-				aInfo.religionSpreads = new ArrayList<AdaptedReligionSpread>();
-				for (IPair<String, Integer> pair: info.getReligionSpreads()) {
-					AdaptedReligionSpread adaptor = new AdaptedReligionSpread();
-					adaptor.religion = pair.getKey();
-					adaptor.spread = pair.getValue();
-					aInfo.religionSpreads.add(adaptor);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(info.getCorporationSpreads())) {
-				aInfo.corporationSpreads = new ArrayList<AdaptedCorporationSpread>();
-				for (IPair<String, Integer> pair: info.getCorporationSpreads()) {
-					AdaptedCorporationSpread adaptor = new AdaptedCorporationSpread();
-					adaptor.corporation = pair.getKey();
-					adaptor.spread = pair.getValue();
-					aInfo.corporationSpreads.add(adaptor);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(info.getGreatPeoples())) {
-				aInfo.greatPeoples = new ArrayList<String>();
-				for (String val: info.getGreatPeoples()) {
-					aInfo.greatPeoples.add(val);
-				}
-			}
-		
-			aInfo.slaveSpecialistType = JaxbUtils.marshallString(info.getSlaveSpecialistType());
+	private static class AdaptedTerrainPassableTechs {
+		@XmlElement(name="TerrainType")
+		private String terrainType;
+		@XmlElement(name="PassableTech")
+		private String passableTech;
+	}
 
-			if (CollectionUtils.hasElements(info.getBuildings())) {
-				aInfo.buildings = new ArrayList<String>();
-				for (String val: info.getBuildings()) {
-					aInfo.buildings.add(val);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(info.getForceBuildings())) {
-				aInfo.forceBuildings = new ArrayList<String>();
-				for (String val: info.getForceBuildings()) {
-					aInfo.forceBuildings.add(val);
-				}
-			}
-		
-			aInfo.holyCity = JaxbUtils.marshallString(info.getHolyCity());
-			aInfo.religionType = JaxbUtils.marshallString(info.getReligionType());
-			aInfo.stateReligion = JaxbUtils.marshallString(info.getStateReligion());
-			aInfo.prereqReligionType = JaxbUtils.marshallString(info.getPrereqReligionType());
-			aInfo.prereqCorporation = JaxbUtils.marshallString(info.getPrereqCorporation());
-			aInfo.prereqBuilding = JaxbUtils.marshallString(info.getPrereqBuilding());
+	private static class AdaptedFeaturePassableTechs {
+		@XmlElement(name="FeatureType")
+		private String featureType;
+		@XmlElement(name="PassableTech")
+		private String passableTech;
+	}
 
-			if (CollectionUtils.hasElements(info.getPrereqTechs())) {
-				aInfo.prereqTechs = new ArrayList<String>();
-				for (String val: info.getPrereqTechs()) {
-					aInfo.prereqTechs.add(val);
-				}
-			}
-		
-			aInfo.obsoleteTech = JaxbUtils.marshallString(info.getObsoleteTech());
-			aInfo.bonusType = JaxbUtils.marshallString(info.getBonusType());
+	private static class AdaptedTerrainAttacks {
+		@XmlElement(name="TerrainType")
+		private String terrainType;
+		@XmlElement(name="iTerrainAttack")
+		private Integer iTerrainAttack;
+	}
 
-			if (CollectionUtils.hasElements(info.getPrereqOrBonuses())) {
-				aInfo.prereqOrBonuses = new ArrayList<String>();
-				for (String val: info.getPrereqOrBonuses()) {
-					aInfo.prereqOrBonuses.add(val);
-				}
-			}
-		
-			if (CollectionUtils.hasElements(info.getPrereqAndCivics())) {
-				aInfo.prereqAndCivics = new ArrayList<String>();
-				for (String val: info.getPrereqAndCivics()) {
-					aInfo.prereqAndCivics.add(val);
-				}
-			}
-		
-			if (CollectionUtils.hasElements(info.getPrereqOrCivics())) {
-				aInfo.prereqOrCivics = new ArrayList<String>();
-				for (String val: info.getPrereqOrCivics()) {
-					aInfo.prereqOrCivics.add(val);
-				}
-			}
-		
-			if (CollectionUtils.hasElements(info.getPrereqAndTerrains())) {
-				aInfo.prereqAndTerrains = new ArrayList<String>();
-				for (String val: info.getPrereqAndTerrains()) {
-					aInfo.prereqAndTerrains.add(val);
-				}
-			}
-		
-			if (CollectionUtils.hasElements(info.getPrereqOrTerrains())) {
-				aInfo.prereqOrTerrains = new ArrayList<String>();
-				for (String val: info.getPrereqOrTerrains()) {
-					aInfo.prereqOrTerrains.add(val);
-				}
-			}
-		
-			if (CollectionUtils.hasElements(info.getPrereqOrBuildingClasses())) {
-				aInfo.prereqOrBuildingClasses = new ArrayList<String>();
-				for (String val: info.getPrereqOrBuildingClasses()) {
-					aInfo.prereqOrBuildingClasses.add(val);
-				}
-			}
-		
-			if (CollectionUtils.hasElements(info.getPrereqNotBuildingClasses())) {
-				aInfo.prereqNotBuildingClasses = new ArrayList<String>();
-				for (String val: info.getPrereqNotBuildingClasses()) {
-					aInfo.prereqNotBuildingClasses.add(val);
-				}
-			}
-		
-			if (CollectionUtils.hasElements(info.getPrereqVicinityAndBonuses())) {
-				aInfo.prereqVicinityAndBonuses = new ArrayList<String>();
-				for (String val: info.getPrereqVicinityAndBonuses()) {
-					aInfo.prereqVicinityAndBonuses.add(val);
-				}
-			}
-		
-			if (CollectionUtils.hasElements(info.getPrereqVicinityOrBonuses())) {
-				aInfo.prereqVicinityOrBonuses = new ArrayList<String>();
-				for (String val: info.getPrereqVicinityOrBonuses()) {
-					aInfo.prereqVicinityOrBonuses.add(val);
-				}
-			}
-		
-			if (CollectionUtils.hasElements(info.getPrereqVicinityImprovements())) {
-				aInfo.prereqVicinityImprovements = new ArrayList<String>();
-				for (String val: info.getPrereqVicinityImprovements()) {
-					aInfo.prereqVicinityImprovements.add(val);
-				}
-			}
-		
-			if (CollectionUtils.hasElements(info.getPrereqVicinityFeatures())) {
-				aInfo.prereqVicinityFeatures = new ArrayList<String>();
-				for (String val: info.getPrereqVicinityFeatures()) {
-					aInfo.prereqVicinityFeatures.add(val);
-				}
-			}
-		
-			if (CollectionUtils.hasElements(info.getPrereqWorldViews())) {
-				aInfo.prereqWorldViews = new ArrayList<String>();
-				for (String val: info.getPrereqWorldViews()) {
-					aInfo.prereqWorldViews.add(val);
-				}
-			}
-		
-			aInfo.minPopulation = JaxbUtils.marshallInteger(info.getMinPopulation());
-			aInfo.minCultureLevel = JaxbUtils.marshallString(info.getMinCultureLevel());
-			aInfo.prereqPower = JaxbUtils.marshallBoolean(info.isPrereqPower());
+	private static class AdaptedTerrainDefenses {
+		@XmlElement(name="TerrainType")
+		private String terrainType;
+		@XmlElement(name="iTerrainDefense")
+		private Integer iTerrainDefense;
+	}
 
-			if (CollectionUtils.hasElements(info.getProductionTraits())) {
-				aInfo.productionTraits = new ArrayList<AdaptedProductionTrait>();
-				for (IPair<String, Integer> pair: info.getProductionTraits()) {
-					AdaptedProductionTrait adaptor = new AdaptedProductionTrait();
-					adaptor.trait = pair.getKey();
-					adaptor.value = pair.getValue();
-					aInfo.productionTraits.add(adaptor);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(info.getFlavours())) {
-				aInfo.flavours = new ArrayList<AdaptedFlavour>();
-				for (IPair<String, Integer> pair: info.getFlavours()) {
-					AdaptedFlavour adaptor = new AdaptedFlavour();
-					adaptor.flavour = pair.getKey();
-					adaptor.value = pair.getValue();
-					aInfo.flavours.add(adaptor);
-				}
-			}
-			
-			aInfo.aiWeight = JaxbUtils.marshallInteger(info.getAiWeight());
-			aInfo.cost = JaxbUtils.marshallInteger(info.getCost());
-			aInfo.hurryCostModifier = JaxbUtils.marshallInteger(info.getHurryCostModifier());
-			aInfo.advancedStartCost = JaxbUtils.marshallInteger(info.getAdvancedStartCost());
-			aInfo.advancedStartCostIncrease = JaxbUtils.marshallInteger(info.getAdvancedStartCostIncrease());
-			aInfo.minAreaSize = JaxbUtils.marshallInteger(info.getMinAreaSize());
-			aInfo.moves = JaxbUtils.marshallInteger(info.getMoves());
-			aInfo.unitRangeType = JaxbUtils.marshallString(info.getUnitRangeType());
-			aInfo.noRevealMap = JaxbUtils.marshallBoolean(info.isNoRevealMap());
-			aInfo.airRange = JaxbUtils.marshallInteger(info.getAirRange());
-			aInfo.airUnitCap = JaxbUtils.marshallInteger(info.getAirUnitCap());
-			aInfo.dropRange = JaxbUtils.marshallInteger(info.getDropRange());
-			aInfo.nukeRange = JaxbUtils.marshallInteger(info.getNukeRange());
-			aInfo.workRate = JaxbUtils.marshallInteger(info.getWorkRate());
-			aInfo.baseDiscover = JaxbUtils.marshallInteger(info.getBaseDiscover());
-			aInfo.discoverMultiplier = JaxbUtils.marshallInteger(info.getDiscoverMultiplier());
-			aInfo.baseHurry = JaxbUtils.marshallInteger(info.getBaseHurry());
-			aInfo.hurryMultiplier = JaxbUtils.marshallInteger(info.getHurryMultiplier());
-			aInfo.baseTrade = JaxbUtils.marshallInteger(info.getBaseTrade());
-			aInfo.tradeMultiplier = JaxbUtils.marshallInteger(info.getTradeMultiplier());
-			aInfo.greatWorkCulture = JaxbUtils.marshallInteger(info.getGreatWorkCulture());
-			aInfo.espionagePoints = JaxbUtils.marshallInteger(info.getEspionagePoints());
-			aInfo.spyEscapeChance = JaxbUtils.marshallInteger(info.getSpyEscapeChance());
-			aInfo.spyEvasionChance = JaxbUtils.marshallInteger(info.getSpyEvasionChance());
-			aInfo.spyInterceptChance = JaxbUtils.marshallInteger(info.getSpyInterceptChance());
-			
-			if (CollectionUtils.hasElements(info.getTerrainImpassables())) {
-				aInfo.terrainImpassables = new ArrayList<String>();
-				for (String val: info.getTerrainImpassables()) {
-					aInfo.terrainImpassables.add(val);
-				}
-			}
-		
-			if (CollectionUtils.hasElements(info.getFeatureImpassables())) {
-				aInfo.featureImpassables = new ArrayList<String>();
-				for (String val: info.getFeatureImpassables()) {
-					aInfo.featureImpassables.add(val);
-				}
-			}
-		
-			if (CollectionUtils.hasElements(info.getTerrainPassableTechs())) {
-				aInfo.terrainPassableTechs = new ArrayList<AdaptedTerrainPassableTech>();
-				for (IPair<String, String> pair: info.getTerrainPassableTechs()) {
-					AdaptedTerrainPassableTech adaptor = new AdaptedTerrainPassableTech();
-					adaptor.terrain = pair.getKey();
-					adaptor.tech = pair.getValue();
-					aInfo.terrainPassableTechs.add(adaptor);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(info.getFeaturePassableTechs())) {
-				aInfo.featurePassableTechs = new ArrayList<AdaptedFeaturePassableTech>();
-				for (IPair<String, String> pair: info.getFeaturePassableTechs()) {
-					AdaptedFeaturePassableTech adaptor = new AdaptedFeaturePassableTech();
-					adaptor.feature = pair.getKey();
-					adaptor.tech = pair.getValue();
-					aInfo.featurePassableTechs.add(adaptor);
-				}
-			}
-			
-			aInfo.combat = JaxbUtils.marshallInteger(info.getCombat());
-			aInfo.combatLimit = JaxbUtils.marshallInteger(info.getCombatLimit());
-			aInfo.airCombat = JaxbUtils.marshallInteger(info.getAirCombat());
-			aInfo.airCombatLimit = JaxbUtils.marshallInteger(info.getAirCombatLimit());
-			aInfo.xpValueAttack = JaxbUtils.marshallInteger(info.getXpValueAttack());
-			aInfo.xpValueDefense = JaxbUtils.marshallInteger(info.getXpValueDefense());
-			aInfo.firstStrikes = JaxbUtils.marshallInteger(info.getFirstStrikes());
-			aInfo.chanceFirstStrikes = JaxbUtils.marshallInteger(info.getChanceFirstStrikes());
-			aInfo.interceptionProbability = JaxbUtils.marshallInteger(info.getInterceptionProbability());
-			aInfo.evasionProbability = JaxbUtils.marshallInteger(info.getEvasionProbability());
-			aInfo.withdrawalProb = JaxbUtils.marshallInteger(info.getWithdrawalProb());
-			aInfo.collateralDamage = JaxbUtils.marshallInteger(info.getCollateralDamage());
-			aInfo.collateralDamageLimit = JaxbUtils.marshallInteger(info.getCollateralDamageLimit());
-			aInfo.collateralDamageMaxUnits = JaxbUtils.marshallInteger(info.getCollateralDamageMaxUnits());
-			aInfo.cityAttack = JaxbUtils.marshallInteger(info.getCityAttack());
-			aInfo.cityDefense = JaxbUtils.marshallInteger(info.getCityDefense());
-			aInfo.animalCombat = JaxbUtils.marshallInteger(info.getAnimalCombat());
-			aInfo.hillsAttack = JaxbUtils.marshallInteger(info.getHillsAttack());
-			aInfo.hillsDefense = JaxbUtils.marshallInteger(info.getHillsDefense());
-			
-			if (CollectionUtils.hasElements(info.getTerrainNatives())) {
-				aInfo.terrainNatives = new ArrayList<String>();
-				for (String val: info.getTerrainNatives()) {
-					aInfo.terrainNatives.add(val);
-				}
-			}
-		
-			if (CollectionUtils.hasElements(info.getFeatureNatives())) {
-				aInfo.featureNatives = new ArrayList<String>();
-				for (String val: info.getFeatureNatives()) {
-					aInfo.featureNatives.add(val);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(info.getTerrainAttacks())) {
-				aInfo.terrainAttacks = new ArrayList<AdaptedTerrainAttack>();
-				for (IPair<String, Integer> pair: info.getTerrainAttacks()) {
-					AdaptedTerrainAttack adaptor = new AdaptedTerrainAttack();
-					adaptor.terrain = pair.getKey();
-					adaptor.value = pair.getValue();
-					aInfo.terrainAttacks.add(adaptor);
-				}
-			}
-	
-			if (CollectionUtils.hasElements(info.getTerrainDefenses())) {
-				aInfo.terrainDefenses = new ArrayList<AdaptedTerrainDefense>();
-				for (IPair<String, Integer> pair: info.getTerrainDefenses()) {
-					AdaptedTerrainDefense adaptor = new AdaptedTerrainDefense();
-					adaptor.terrain = pair.getKey();
-					adaptor.value = pair.getValue();
-					aInfo.terrainDefenses.add(adaptor);
-				}
-			}
-	
-			if (CollectionUtils.hasElements(info.getFeatureAttacks())) {
-				aInfo.featureAttacks = new ArrayList<AdaptedFeatureAttack>();
-				for (IPair<String, Integer> pair: info.getFeatureAttacks()) {
-					AdaptedFeatureAttack adaptor = new AdaptedFeatureAttack();
-					adaptor.feature = pair.getKey();
-					adaptor.value = pair.getValue();
-					aInfo.featureAttacks.add(adaptor);
-				}
-			}
-	
-			if (CollectionUtils.hasElements(info.getFeatureDefenses())) {
-				aInfo.featureDefenses = new ArrayList<AdaptedFeatureDefense>();
-				for (IPair<String, Integer> pair: info.getFeatureDefenses()) {
-					AdaptedFeatureDefense adaptor = new AdaptedFeatureDefense();
-					adaptor.feature = pair.getKey();
-					adaptor.value = pair.getValue();
-					aInfo.featureDefenses.add(adaptor);
-				}
-			}
-	
-			if (CollectionUtils.hasElements(info.getUnitClassAttackMods())) {
-				aInfo.unitClassAttackMods = new ArrayList<AdaptedUnitClassAttackMod>();
-				for (IPair<String, Integer> pair: info.getUnitClassAttackMods()) {
-					AdaptedUnitClassAttackMod adaptor = new AdaptedUnitClassAttackMod();
-					adaptor.unitclass = pair.getKey();
-					adaptor.value = pair.getValue();
-					aInfo.unitClassAttackMods.add(adaptor);
-				}
-			}
-	
-			if (CollectionUtils.hasElements(info.getUnitClassDefenseMods())) {
-				aInfo.unitClassDefenseMods = new ArrayList<AdaptedUnitClassDefenseMod>();
-				for (IPair<String, Integer> pair: info.getUnitClassDefenseMods()) {
-					AdaptedUnitClassDefenseMod adaptor = new AdaptedUnitClassDefenseMod();
-					adaptor.unitclass = pair.getKey();
-					adaptor.value = pair.getValue();
-					aInfo.unitClassDefenseMods.add(adaptor);
-				}
-			}
-	
-			if (CollectionUtils.hasElements(info.getUnitCombatMods())) {
-				aInfo.unitCombatMods = new ArrayList<AdaptedUnitCombatMod>();
-				for (IPair<String, Integer> pair: info.getUnitCombatMods()) {
-					AdaptedUnitCombatMod adaptor = new AdaptedUnitCombatMod();
-					adaptor.unitcombat = pair.getKey();
-					adaptor.value = pair.getValue();
-					aInfo.unitCombatMods.add(adaptor);
-				}
-			}
-	
-			if (CollectionUtils.hasElements(info.getUnitCombatCollateralImmunes())) {
-				aInfo.unitCombatCollateralImmunes = new ArrayList<AdaptedUnitCombatCollateralImmune>();
-				for (IPair<String, Integer> pair: info.getUnitCombatCollateralImmunes()) {
-					AdaptedUnitCombatCollateralImmune adaptor = new AdaptedUnitCombatCollateralImmune();
-					adaptor.unitcombat = pair.getKey();
-					adaptor.value = pair.getValue();
-					aInfo.unitCombatCollateralImmunes.add(adaptor);
-				}
-			}
-	
-			if (CollectionUtils.hasElements(info.getDomainMods())) {
-				aInfo.domainMods = new ArrayList<AdaptedDomainMod>();
-				for (IPair<String, Integer> pair: info.getDomainMods()) {
-					AdaptedDomainMod adaptor = new AdaptedDomainMod();
-					adaptor.domain = pair.getKey();
-					adaptor.value = pair.getValue();
-					aInfo.domainMods.add(adaptor);
-				}
-			}
-	
-			if (CollectionUtils.hasElements(info.getBonusProductionModifiers())) {
-				aInfo.bonusProductionModifiers = new ArrayList<AdaptedBonusProductionModifier>();
-				for (IPair<String, Integer> pair: info.getBonusProductionModifiers()) {
-					AdaptedBonusProductionModifier adaptor = new AdaptedBonusProductionModifier();
-					adaptor.bonus = pair.getKey();
-					adaptor.value = pair.getValue();
-					aInfo.bonusProductionModifiers.add(adaptor);
-				}
-			}
-	
-			if (CollectionUtils.hasElements(info.getYieldsFromKill())) {
-				aInfo.yieldsFromKill = new ArrayList<Integer>();
-				for (Integer val: info.getYieldsFromKill()) {
-					aInfo.yieldsFromKill.add(val);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(info.getCommercesFromKill())) {
-				aInfo.commercesFromKill = new ArrayList<Integer>();
-				for (Integer val: info.getCommercesFromKill()) {
-					aInfo.commercesFromKill.add(val);
-				}
-			}
-			
-			aInfo.bombRate = JaxbUtils.marshallInteger(info.getBombRate());
-			aInfo.bombardRate = JaxbUtils.marshallInteger(info.getBombardRate());
-			aInfo.specialCargo = JaxbUtils.marshallString(info.getSpecialCargo());
-			aInfo.domainCargo = JaxbUtils.marshallString(info.getDomainCargo());
-			aInfo.cargo = JaxbUtils.marshallInteger(info.getCargo());
-			aInfo.conscription = JaxbUtils.marshallInteger(info.getConscription());
-			aInfo.cultureGarrison = JaxbUtils.marshallInteger(info.getCultureGarrison());
-			aInfo.extraCost = JaxbUtils.marshallInteger(info.getExtraCost());
-			aInfo.asset = JaxbUtils.marshallInteger(info.getAsset());
-			aInfo.power = JaxbUtils.marshallInteger(info.getPower());
-			aInfo.unitMeshGroups = info.getUnitMeshGroups();
-			aInfo.formationType = JaxbUtils.marshallString(info.getFormationType());
-			aInfo.hotKey = JaxbUtils.marshallString(info.getHotKey());
-			aInfo.altDown = JaxbUtils.marshallBoolean(info.isAltDown());
-			aInfo.shiftDown = JaxbUtils.marshallBoolean(info.isShiftDown());
-			aInfo.ctrlDown = JaxbUtils.marshallBoolean(info.isCtrlDown());
-			aInfo.hotKeyPriority = JaxbUtils.marshallInteger(info.getHotKeyPriority());
+	private static class AdaptedFeatureAttacks {
+		@XmlElement(name="FeatureType")
+		private String featureType;
+		@XmlElement(name="iFeatureAttack")
+		private Integer iFeatureAttack;
+	}
 
-			if (CollectionUtils.hasElements(info.getFreePromotions())) {
-				aInfo.freePromotions = new ArrayList<String>();
-				for (String val: info.getFreePromotions()) {
-					aInfo.freePromotions.add(val);
-				}
-			}
-			
-			aInfo.leaderPromotion = JaxbUtils.marshallString(info.getLeaderPromotion());
-			aInfo.leaderExperience = JaxbUtils.marshallInteger(info.getLeaderExperience());
-			aInfo.orderPriority = JaxbUtils.marshallInteger(info.getOrderPriority());
-			
-			map.entries.add(aInfo);
-		}
-		return map;
+	private static class AdaptedFeatureDefenses {
+		@XmlElement(name="FeatureType")
+		private String featureType;
+		@XmlElement(name="iFeatureDefense")
+		private Integer iFeatureDefense;
+	}
+
+	private static class AdaptedUnitClassAttackMods {
+		@XmlElement(name="UnitClassType")
+		private String unitClassType;
+		@XmlElement(name="iUnitClassMod")
+		private Integer iUnitClassMod;
+	}
+
+	private static class AdaptedUnitClassDefenseMods {
+		@XmlElement(name="UnitClassType")
+		private String unitClassType;
+		@XmlElement(name="iUnitClassMod")
+		private Integer iUnitClassMod;
+	}
+
+	private static class AdaptedUnitCombatMods {
+		@XmlElement(name="UnitCombatType")
+		private String unitCombatType;
+		@XmlElement(name="iUnitCombatMod")
+		private Integer iUnitCombatMod;
+	}
+
+	private static class AdaptedUnitCombatCollateralImmunes {
+		@XmlElement(name="UnitCombatType")
+		private String unitCombatType;
+		@XmlElement(name="iUnitCombatCollateralImmune")
+		private Integer iUnitCombatCollateralImmune;
+	}
+
+	private static class AdaptedDomainMods {
+		@XmlElement(name="DomainType")
+		private String domainType;
+		@XmlElement(name="iDomainMod")
+		private Integer iDomainMod;
+	}
+
+	private static class AdaptedBonusProductionModifiers {
+		@XmlElement(name="BonusType")
+		private String bonusType;
+		@XmlElement(name="iProductonModifier")
+		private Integer iProductonModifier;
 	}
 
 	@Override
@@ -1136,40 +562,40 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 		Map<String, IUnitInfo> map = new TreeMap<String, IUnitInfo>();
 		for (AdaptedUnit aInfo: v.entries) {
 			IUnitInfo info = UnitInfos.createInfo(aInfo.type);
-			info.setUnitClass(JaxbUtils.unmarshallString(aInfo.clazz));
-			
+			info.setClazz(JaxbUtils.unmarshallString(aInfo.clazz));
+
 			if (CollectionUtils.hasElements(aInfo.uniqueNames)) {
 				for (String val: aInfo.uniqueNames) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addUniqueName(val);
+					}
 				}
 			}
-			
 			info.setSpecial(JaxbUtils.unmarshallString(aInfo.special));
 			info.setCapture(JaxbUtils.unmarshallString(aInfo.capture));
-			info.setCombatType(JaxbUtils.unmarshallString(aInfo.combatType));
+			info.setCombat(JaxbUtils.unmarshallString(aInfo.combat));
 
 			if (CollectionUtils.hasElements(aInfo.subCombatTypes)) {
 				for (String val: aInfo.subCombatTypes) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addSubCombatType(val);
+					}
 				}
 			}
-			
 			info.setDomain(JaxbUtils.unmarshallString(aInfo.domain));
 			info.setDefaultUnitAI(JaxbUtils.unmarshallString(aInfo.defaultUnitAI));
 			info.setFixedAI(JaxbUtils.unmarshallBoolean(aInfo.fixedAI));
 			info.setMaxWeaponTypeTier(JaxbUtils.unmarshallInteger(aInfo.maxWeaponTypeTier));
 			info.setMaxAmmoTypeTier(JaxbUtils.unmarshallInteger(aInfo.maxAmmoTypeTier));
-			info.setInvisibleType(JaxbUtils.unmarshallString(aInfo.invisibleType));
-			
-			if (CollectionUtils.hasElements(aInfo.seeInvisbles)) {
-				for (String val: aInfo.seeInvisbles) {
-					if (StringUtils.hasCharacters(val))
-						info.addSeeInvisble(val);
+			info.setInvisible(JaxbUtils.unmarshallString(aInfo.invisible));
+
+			if (CollectionUtils.hasElements(aInfo.seeInvisibles)) {
+				for (String val: aInfo.seeInvisibles) {
+					if (StringUtils.hasCharacters(val)) {
+						info.addSeeInvisible(val);
+					}
 				}
 			}
-			
 			info.setDescription(JaxbUtils.unmarshallString(aInfo.description));
 			info.setCivilopedia(JaxbUtils.unmarshallString(aInfo.civilopedia));
 			info.setStrategy(JaxbUtils.unmarshallString(aInfo.strategy));
@@ -1193,8 +619,8 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			info.setInvestigate(JaxbUtils.unmarshallBoolean(aInfo.investigate));
 			info.setCounterSpy(JaxbUtils.unmarshallBoolean(aInfo.counterSpy));
 			info.setFound(JaxbUtils.unmarshallBoolean(aInfo.found));
-			info.setGoldenAge(JaxbUtils.unmarshallBoolean(aInfo.bGoldenAge));
-			info.setInvisible(JaxbUtils.unmarshallBoolean(aInfo.invisible));
+			info.setGoldenAge(JaxbUtils.unmarshallBoolean(aInfo.goldenAge));
+			info.setInvisibleBool(JaxbUtils.unmarshallBoolean(aInfo.invisibleBool));
 			info.setFirstStrikeImmune(JaxbUtils.unmarshallBoolean(aInfo.firstStrikeImmune));
 			info.setNoDefensiveBonus(JaxbUtils.unmarshallBoolean(aInfo.noDefensiveBonus));
 			info.setIgnoreBuildingDefense(JaxbUtils.unmarshallBoolean(aInfo.ignoreBuildingDefense));
@@ -1204,7 +630,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			info.setIgnoreTerrainCost(JaxbUtils.unmarshallBoolean(aInfo.ignoreTerrainCost));
 			info.setNukeImmune(JaxbUtils.unmarshallBoolean(aInfo.nukeImmune));
 			info.setPrereqBonuses(JaxbUtils.unmarshallBoolean(aInfo.prereqBonuses));
-			info.setPrereqReligion(JaxbUtils.unmarshallBoolean(aInfo.prereqReligion));
+			info.setPrereqReligionBool(JaxbUtils.unmarshallBoolean(aInfo.prereqReligionBool));
 			info.setMechanized(JaxbUtils.unmarshallBoolean(aInfo.mechanized));
 			info.setRenderBelowWater(JaxbUtils.unmarshallBoolean(aInfo.renderBelowWater));
 			info.setRenderAlways(JaxbUtils.unmarshallBoolean(aInfo.renderAlways));
@@ -1217,95 +643,102 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			info.setWorkerTrade(JaxbUtils.unmarshallBoolean(aInfo.workerTrade));
 			info.setMilitaryTrade(JaxbUtils.unmarshallBoolean(aInfo.militaryTrade));
 			info.setBarbarianLeader(JaxbUtils.unmarshallBoolean(aInfo.barbarianLeader));
-			
+
 			if (CollectionUtils.hasElements(aInfo.unitClassUpgrades)) {
 				for (String val: aInfo.unitClassUpgrades) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addUnitClassUpgrade(val);
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.unitClassTargets)) {
 				for (String val: aInfo.unitClassTargets) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addUnitClassTarget(val);
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.unitCombatTargets)) {
 				for (String val: aInfo.unitCombatTargets) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addUnitCombatTarget(val);
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.unitClassDefenders)) {
 				for (String val: aInfo.unitClassDefenders) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addUnitClassDefender(val);
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.unitCombatDefenders)) {
 				for (String val: aInfo.unitCombatDefenders) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addUnitCombatDefender(val);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(aInfo.flankingStrikes)) {
-				for (AdaptedFlankingStrike adaptor: aInfo.flankingStrikes) {
-					if (StringUtils.hasCharacters(adaptor.unitclass)) {
-						info.addFlankingStrike(new Pair<String, Integer>(adaptor.unitclass, adaptor.strength));
 					}
 				}
 			}
-			
+
+			if (CollectionUtils.hasElements(aInfo.flankingStrikes)) {
+				for (AdaptedFlankingStrikes adaptor: aInfo.flankingStrikes) {
+					if (StringUtils.hasCharacters(adaptor.flankingStrikeUnitClass)) {
+						info.addFlankingStrike(new Pair<String, Integer>(adaptor.flankingStrikeUnitClass, adaptor.iFlankingStrength));
+					}
+				}
+			}
+
 			if (CollectionUtils.hasElements(aInfo.unitAIs)) {
 				for (String val: aInfo.unitAIs) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addUnitAI(val);
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.notUnitAIs)) {
 				for (String val: aInfo.notUnitAIs) {
-					if (StringUtils.hasCharacters(val))
-						info.addNotUnitAIs(val);
+					if (StringUtils.hasCharacters(val)) {
+						info.addNotUnitAI(val);
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.builds)) {
 				for (String val: aInfo.builds) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addBuild(val);
+					}
 				}
 			}
-			
 
 			if (CollectionUtils.hasElements(aInfo.religionSpreads)) {
-				for (AdaptedReligionSpread adaptor: aInfo.religionSpreads) {
-					if (StringUtils.hasCharacters(adaptor.religion)) {
-						info.addReligionSpread(new Pair<String, Integer>(adaptor.religion, adaptor.spread));
+				for (AdaptedReligionSpreads adaptor: aInfo.religionSpreads) {
+					if (StringUtils.hasCharacters(adaptor.religionType)) {
+						info.addReligionSpread(new Pair<String, Integer>(adaptor.religionType, adaptor.iReligionSpread));
 					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.corporationSpreads)) {
-				for (AdaptedCorporationSpread adaptor: aInfo.corporationSpreads) {
-					if (StringUtils.hasCharacters(adaptor.corporation)) {
-						info.addCorporationSpread(new Pair<String, Integer>(adaptor.corporation, adaptor.spread));
+				for (AdaptedCorporationSpreads adaptor: aInfo.corporationSpreads) {
+					if (StringUtils.hasCharacters(adaptor.corporationType)) {
+						info.addCorporationSpread(new Pair<String, Integer>(adaptor.corporationType, adaptor.iCorporationSpread));
 					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.greatPeoples)) {
 				for (String val: aInfo.greatPeoples) {
-					if (StringUtils.hasCharacters(val))
-						info.addGreatPerson(val);
+					if (StringUtils.hasCharacters(val)) {
+						info.addGreatPeople(val);
+					}
 				}
 			}
-			
 			info.setSlaveSpecialistType(JaxbUtils.unmarshallString(aInfo.slaveSpecialistType));
 
 			if (CollectionUtils.hasElements(aInfo.buildings)) {
@@ -1315,136 +748,146 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.forceBuildings)) {
 				for (String val: aInfo.forceBuildings) {
-					if (StringUtils.hasCharacters(val))
-						info.addForceBuildings(val);
+					if (StringUtils.hasCharacters(val)) {
+						info.addForceBuilding(val);
+					}
 				}
 			}
-			
 			info.setHolyCity(JaxbUtils.unmarshallString(aInfo.holyCity));
 			info.setReligionType(JaxbUtils.unmarshallString(aInfo.religionType));
 			info.setStateReligion(JaxbUtils.unmarshallString(aInfo.stateReligion));
-			info.setPrereqReligionType(JaxbUtils.unmarshallString(aInfo.prereqReligionType));
+			info.setPrereqReligion(JaxbUtils.unmarshallString(aInfo.prereqReligion));
 			info.setPrereqCorporation(JaxbUtils.unmarshallString(aInfo.prereqCorporation));
 			info.setPrereqBuilding(JaxbUtils.unmarshallString(aInfo.prereqBuilding));
-			
+
 			if (CollectionUtils.hasElements(aInfo.prereqTechs)) {
 				for (String val: aInfo.prereqTechs) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addPrereqTech(val);
+					}
 				}
 			}
-			
 			info.setObsoleteTech(JaxbUtils.unmarshallString(aInfo.obsoleteTech));
 			info.setBonusType(JaxbUtils.unmarshallString(aInfo.bonusType));
-			
+
 			if (CollectionUtils.hasElements(aInfo.prereqOrBonuses)) {
 				for (String val: aInfo.prereqOrBonuses) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addPrereqOrBonus(val);
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.prereqAndCivics)) {
 				for (String val: aInfo.prereqAndCivics) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addPrereqAndCivic(val);
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.prereqOrCivics)) {
 				for (String val: aInfo.prereqOrCivics) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addPrereqOrCivic(val);
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.prereqAndTerrains)) {
 				for (String val: aInfo.prereqAndTerrains) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addPrereqAndTerrain(val);
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.prereqOrTerrains)) {
 				for (String val: aInfo.prereqOrTerrains) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addPrereqOrTerrain(val);
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.prereqOrBuildingClasses)) {
 				for (String val: aInfo.prereqOrBuildingClasses) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addPrereqOrBuildingClass(val);
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.prereqNotBuildingClasses)) {
 				for (String val: aInfo.prereqNotBuildingClasses) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addPrereqNotBuildingClass(val);
+					}
 				}
 			}
-			
-			if (CollectionUtils.hasElements(aInfo.prereqVicinityAndBonuses)) {
-				for (String val: aInfo.prereqVicinityAndBonuses) {
-					if (StringUtils.hasCharacters(val))
-						info.addPrereqVicinityAndBonus(val);
+
+			if (CollectionUtils.hasElements(aInfo.prereqVicinityAndBonus)) {
+				for (String val: aInfo.prereqVicinityAndBonus) {
+					if (StringUtils.hasCharacters(val)) {
+						info.addPrereqVicinityAndBonu(val);
+					}
 				}
 			}
-			
-			if (CollectionUtils.hasElements(aInfo.prereqVicinityOrBonuses)) {
-				for (String val: aInfo.prereqVicinityOrBonuses) {
-					if (StringUtils.hasCharacters(val))
-						info.addPrereqVicinityOrBonus(val);
+
+			if (CollectionUtils.hasElements(aInfo.prereqVicinityOrBonus)) {
+				for (String val: aInfo.prereqVicinityOrBonus) {
+					if (StringUtils.hasCharacters(val)) {
+						info.addPrereqVicinityOrBonu(val);
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.prereqVicinityImprovements)) {
 				for (String val: aInfo.prereqVicinityImprovements) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addPrereqVicinityImprovement(val);
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.prereqVicinityFeatures)) {
 				for (String val: aInfo.prereqVicinityFeatures) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addPrereqVicinityFeature(val);
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.prereqWorldViews)) {
 				for (String val: aInfo.prereqWorldViews) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addPrereqWorldView(val);
+					}
 				}
 			}
-			
 			info.setMinPopulation(JaxbUtils.unmarshallInteger(aInfo.minPopulation));
 			info.setMinCultureLevel(JaxbUtils.unmarshallString(aInfo.minCultureLevel));
 			info.setPrereqPower(JaxbUtils.unmarshallBoolean(aInfo.prereqPower));
 
 			if (CollectionUtils.hasElements(aInfo.productionTraits)) {
-				for (AdaptedProductionTrait adaptor: aInfo.productionTraits) {
-					if (StringUtils.hasCharacters(adaptor.trait)) {
-						info.addProductionTrait(new Pair<String, Integer>(adaptor.trait, adaptor.value));
+				for (AdaptedProductionTraits adaptor: aInfo.productionTraits) {
+					if (StringUtils.hasCharacters(adaptor.productionTraitType)) {
+						info.addProductionTrait(new Pair<String, Integer>(adaptor.productionTraitType, adaptor.iProductionTrait));
 					}
 				}
 			}
-			
-			if (CollectionUtils.hasElements(aInfo.flavours)) {
-				for (AdaptedFlavour adaptor: aInfo.flavours) {
-					if (StringUtils.hasCharacters(adaptor.flavour)) {
-						info.addFlavour(new Pair<String, Integer>(adaptor.flavour, adaptor.value));
+
+			if (CollectionUtils.hasElements(aInfo.flavors)) {
+				for (AdaptedFlavors adaptor: aInfo.flavors) {
+					if (StringUtils.hasCharacters(adaptor.flavorType)) {
+						info.addFlavor(new Pair<String, Integer>(adaptor.flavorType, adaptor.iFlavor));
 					}
 				}
 			}
-			
-			info.setAiWeight(JaxbUtils.unmarshallInteger(aInfo.aiWeight));
+			info.setAIWeight(JaxbUtils.unmarshallInteger(aInfo.aIWeight));
 			info.setCost(JaxbUtils.unmarshallInteger(aInfo.cost));
 			info.setHurryCostModifier(JaxbUtils.unmarshallInteger(aInfo.hurryCostModifier));
 			info.setAdvancedStartCost(JaxbUtils.unmarshallInteger(aInfo.advancedStartCost));
@@ -1466,46 +909,44 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			info.setTradeMultiplier(JaxbUtils.unmarshallInteger(aInfo.tradeMultiplier));
 			info.setGreatWorkCulture(JaxbUtils.unmarshallInteger(aInfo.greatWorkCulture));
 			info.setEspionagePoints(JaxbUtils.unmarshallInteger(aInfo.espionagePoints));
-			info.setSpyEscapeChance(JaxbUtils.unmarshallInteger(aInfo.spyEscapeChance));
-			info.setSpyEvasionChance(JaxbUtils.unmarshallInteger(aInfo.spyEvasionChance));
-			info.setSpyInterceptChance(JaxbUtils.unmarshallInteger(aInfo.spyInterceptChance));
-			
+
 			if (CollectionUtils.hasElements(aInfo.terrainImpassables)) {
 				for (String val: aInfo.terrainImpassables) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addTerrainImpassable(val);
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.featureImpassables)) {
 				for (String val: aInfo.featureImpassables) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addFeatureImpassable(val);
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.terrainPassableTechs)) {
-				for (AdaptedTerrainPassableTech adaptor: aInfo.terrainPassableTechs) {
-					if (StringUtils.hasCharacters(adaptor.terrain) && StringUtils.hasCharacters(adaptor.tech)) {
-						info.addTerrainPassableTech(new Pair<String, String>(adaptor.terrain, adaptor.tech));
+				for (AdaptedTerrainPassableTechs adaptor: aInfo.terrainPassableTechs) {
+					if (StringUtils.hasCharacters(adaptor.terrainType)) {
+						info.addTerrainPassableTech(new Pair<String, String>(adaptor.terrainType, adaptor.passableTech));
 					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.featurePassableTechs)) {
-				for (AdaptedFeaturePassableTech adaptor: aInfo.featurePassableTechs) {
-					if (StringUtils.hasCharacters(adaptor.feature) && StringUtils.hasCharacters(adaptor.tech)) {
-						info.addFeaturePassableTech(new Pair<String, String>(adaptor.feature, adaptor.tech));
+				for (AdaptedFeaturePassableTechs adaptor: aInfo.featurePassableTechs) {
+					if (StringUtils.hasCharacters(adaptor.featureType)) {
+						info.addFeaturePassableTech(new Pair<String, String>(adaptor.featureType, adaptor.passableTech));
 					}
 				}
 			}
-			
-			info.setCombat(JaxbUtils.unmarshallInteger(aInfo.combat));
+			info.setCombatInt(JaxbUtils.unmarshallInteger(aInfo.combatInt));
 			info.setCombatLimit(JaxbUtils.unmarshallInteger(aInfo.combatLimit));
 			info.setAirCombat(JaxbUtils.unmarshallInteger(aInfo.airCombat));
 			info.setAirCombatLimit(JaxbUtils.unmarshallInteger(aInfo.airCombatLimit));
-			info.setXpValueAttack(JaxbUtils.unmarshallInteger(aInfo.xpValueAttack));
-			info.setXpValueDefense(JaxbUtils.unmarshallInteger(aInfo.xpValueDefense));
+			info.setXPValueAttack(JaxbUtils.unmarshallInteger(aInfo.xPValueAttack));
+			info.setXPValueDefense(JaxbUtils.unmarshallInteger(aInfo.xPValueDefense));
 			info.setFirstStrikes(JaxbUtils.unmarshallInteger(aInfo.firstStrikes));
 			info.setChanceFirstStrikes(JaxbUtils.unmarshallInteger(aInfo.chanceFirstStrikes));
 			info.setInterceptionProbability(JaxbUtils.unmarshallInteger(aInfo.interceptionProbability));
@@ -1519,113 +960,114 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			info.setAnimalCombat(JaxbUtils.unmarshallInteger(aInfo.animalCombat));
 			info.setHillsAttack(JaxbUtils.unmarshallInteger(aInfo.hillsAttack));
 			info.setHillsDefense(JaxbUtils.unmarshallInteger(aInfo.hillsDefense));
-			
+
 			if (CollectionUtils.hasElements(aInfo.terrainNatives)) {
 				for (String val: aInfo.terrainNatives) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addTerrainNative(val);
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.featureNatives)) {
 				for (String val: aInfo.featureNatives) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addFeatureNative(val);
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.terrainAttacks)) {
-				for (AdaptedTerrainAttack adaptor: aInfo.terrainAttacks) {
-					if (StringUtils.hasCharacters(adaptor.terrain)) {
-						info.addTerrainAttack(new Pair<String, Integer>(adaptor.terrain, adaptor.value));
+				for (AdaptedTerrainAttacks adaptor: aInfo.terrainAttacks) {
+					if (StringUtils.hasCharacters(adaptor.terrainType)) {
+						info.addTerrainAttack(new Pair<String, Integer>(adaptor.terrainType, adaptor.iTerrainAttack));
 					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.terrainDefenses)) {
-				for (AdaptedTerrainDefense adaptor: aInfo.terrainDefenses) {
-					if (StringUtils.hasCharacters(adaptor.terrain)) {
-						info.addTerrainDefense(new Pair<String, Integer>(adaptor.terrain, adaptor.value));
+				for (AdaptedTerrainDefenses adaptor: aInfo.terrainDefenses) {
+					if (StringUtils.hasCharacters(adaptor.terrainType)) {
+						info.addTerrainDefense(new Pair<String, Integer>(adaptor.terrainType, adaptor.iTerrainDefense));
 					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.featureAttacks)) {
-				for (AdaptedFeatureAttack adaptor: aInfo.featureAttacks) {
-					if (StringUtils.hasCharacters(adaptor.feature)) {
-						info.addFeatureAttacks(new Pair<String, Integer>(adaptor.feature, adaptor.value));
+				for (AdaptedFeatureAttacks adaptor: aInfo.featureAttacks) {
+					if (StringUtils.hasCharacters(adaptor.featureType)) {
+						info.addFeatureAttack(new Pair<String, Integer>(adaptor.featureType, adaptor.iFeatureAttack));
 					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.featureDefenses)) {
-				for (AdaptedFeatureDefense adaptor: aInfo.featureDefenses) {
-					if (StringUtils.hasCharacters(adaptor.feature)) {
-						info.addFeatureDefense(new Pair<String, Integer>(adaptor.feature, adaptor.value));
+				for (AdaptedFeatureDefenses adaptor: aInfo.featureDefenses) {
+					if (StringUtils.hasCharacters(adaptor.featureType)) {
+						info.addFeatureDefense(new Pair<String, Integer>(adaptor.featureType, adaptor.iFeatureDefense));
 					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.unitClassAttackMods)) {
-				for (AdaptedUnitClassAttackMod adaptor: aInfo.unitClassAttackMods) {
-					if (StringUtils.hasCharacters(adaptor.unitclass)) {
-						info.addUnitClassAttackMod(new Pair<String, Integer>(adaptor.unitclass, adaptor.value));
+				for (AdaptedUnitClassAttackMods adaptor: aInfo.unitClassAttackMods) {
+					if (StringUtils.hasCharacters(adaptor.unitClassType)) {
+						info.addUnitClassAttackMod(new Pair<String, Integer>(adaptor.unitClassType, adaptor.iUnitClassMod));
 					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.unitClassDefenseMods)) {
-				for (AdaptedUnitClassDefenseMod adaptor: aInfo.unitClassDefenseMods) {
-					if (StringUtils.hasCharacters(adaptor.unitclass)) {
-						info.addUnitClassDefenseMod(new Pair<String, Integer>(adaptor.unitclass, adaptor.value));
+				for (AdaptedUnitClassDefenseMods adaptor: aInfo.unitClassDefenseMods) {
+					if (StringUtils.hasCharacters(adaptor.unitClassType)) {
+						info.addUnitClassDefenseMod(new Pair<String, Integer>(adaptor.unitClassType, adaptor.iUnitClassMod));
 					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.unitCombatMods)) {
-				for (AdaptedUnitCombatMod adaptor: aInfo.unitCombatMods) {
-					if (StringUtils.hasCharacters(adaptor.unitcombat)) {
-						info.addUnitCombatMod(new Pair<String, Integer>(adaptor.unitcombat, adaptor.value));
+				for (AdaptedUnitCombatMods adaptor: aInfo.unitCombatMods) {
+					if (StringUtils.hasCharacters(adaptor.unitCombatType)) {
+						info.addUnitCombatMod(new Pair<String, Integer>(adaptor.unitCombatType, adaptor.iUnitCombatMod));
 					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.unitCombatCollateralImmunes)) {
-				for (AdaptedUnitCombatCollateralImmune adaptor: aInfo.unitCombatCollateralImmunes) {
-					if (StringUtils.hasCharacters(adaptor.unitcombat)) {
-						info.addUnitCombatCollateralImmune(new Pair<String, Integer>(adaptor.unitcombat, adaptor.value));
+				for (AdaptedUnitCombatCollateralImmunes adaptor: aInfo.unitCombatCollateralImmunes) {
+					if (StringUtils.hasCharacters(adaptor.unitCombatType)) {
+						info.addUnitCombatCollateralImmune(new Pair<String, Integer>(adaptor.unitCombatType, adaptor.iUnitCombatCollateralImmune));
 					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.domainMods)) {
-				for (AdaptedDomainMod adaptor: aInfo.domainMods) {
-					if (StringUtils.hasCharacters(adaptor.domain)) {
-						info.addDomainMod(new Pair<String, Integer>(adaptor.domain, adaptor.value));
+				for (AdaptedDomainMods adaptor: aInfo.domainMods) {
+					if (StringUtils.hasCharacters(adaptor.domainType)) {
+						info.addDomainMod(new Pair<String, Integer>(adaptor.domainType, adaptor.iDomainMod));
 					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.bonusProductionModifiers)) {
-				for (AdaptedBonusProductionModifier adaptor: aInfo.bonusProductionModifiers) {
-					if (StringUtils.hasCharacters(adaptor.bonus)) {
-						info.addBonusProductionModifier(new Pair<String, Integer>(adaptor.bonus, adaptor.value));
+				for (AdaptedBonusProductionModifiers adaptor: aInfo.bonusProductionModifiers) {
+					if (StringUtils.hasCharacters(adaptor.bonusType)) {
+						info.addBonusProductionModifier(new Pair<String, Integer>(adaptor.bonusType, adaptor.iProductonModifier));
 					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.yieldsFromKill)) {
 				for (Integer val: aInfo.yieldsFromKill) {
-					info.addYieldFromKill(val);
+					info.addYieldsFromKill(val);
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.commercesFromKill)) {
 				for (Integer val: aInfo.commercesFromKill) {
-					info.addCommerceFromKill(val);
+					info.addCommercesFromKill(val);
 				}
 			}
-			
 			info.setBombRate(JaxbUtils.unmarshallInteger(aInfo.bombRate));
 			info.setBombardRate(JaxbUtils.unmarshallInteger(aInfo.bombardRate));
 			info.setSpecialCargo(JaxbUtils.unmarshallString(aInfo.specialCargo));
@@ -1643,22 +1085,570 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			info.setShiftDown(JaxbUtils.unmarshallBoolean(aInfo.shiftDown));
 			info.setCtrlDown(JaxbUtils.unmarshallBoolean(aInfo.ctrlDown));
 			info.setHotKeyPriority(JaxbUtils.unmarshallInteger(aInfo.hotKeyPriority));
-			
+
 			if (CollectionUtils.hasElements(aInfo.freePromotions)) {
 				for (String val: aInfo.freePromotions) {
-					if (StringUtils.hasCharacters(val))
+					if (StringUtils.hasCharacters(val)) {
 						info.addFreePromotion(val);
+					}
 				}
 			}
-			
 			info.setLeaderPromotion(JaxbUtils.unmarshallString(aInfo.leaderPromotion));
 			info.setLeaderExperience(JaxbUtils.unmarshallInteger(aInfo.leaderExperience));
 			info.setOrderPriority(JaxbUtils.unmarshallInteger(aInfo.orderPriority));
-			
+
 			map.put(aInfo.type, info);
 		}
-		
 		return map;
 	}
 
+	@Override
+	public UnitMap marshal(Map<String, IUnitInfo> v) throws Exception {
+		UnitMap map = new UnitMap();
+		for (IUnitInfo info: v.values()) {
+			AdaptedUnit aInfo = new AdaptedUnit();
+			aInfo.type = info.getType();
+			aInfo.clazz = JaxbUtils.marshallMandatoryString(info.getClazz());
+
+			if (CollectionUtils.hasElements(info.getUniqueNames())) {
+				aInfo.uniqueNames = new ArrayList<String>();
+				for(String val: info.getUniqueNames()) {
+					aInfo.uniqueNames.add(val);
+				}
+			}
+			aInfo.special = JaxbUtils.marshallString(info.getSpecial());
+			aInfo.capture = JaxbUtils.marshallString(info.getCapture());
+			aInfo.combat = JaxbUtils.marshallString(info.getCombat());
+
+			if (CollectionUtils.hasElements(info.getSubCombatTypes())) {
+				aInfo.subCombatTypes = new ArrayList<String>();
+				for(String val: info.getSubCombatTypes()) {
+					aInfo.subCombatTypes.add(val);
+				}
+			}
+			aInfo.domain = JaxbUtils.marshallMandatoryString(info.getDomain());
+			aInfo.defaultUnitAI = JaxbUtils.marshallMandatoryString(info.getDefaultUnitAI());
+			aInfo.fixedAI = JaxbUtils.marshallBoolean(info.isFixedAI());
+			aInfo.maxWeaponTypeTier = JaxbUtils.marshallInteger(info.getMaxWeaponTypeTier());
+			aInfo.maxAmmoTypeTier = JaxbUtils.marshallInteger(info.getMaxAmmoTypeTier());
+			aInfo.invisible = JaxbUtils.marshallString(info.getInvisible());
+
+			if (CollectionUtils.hasElements(info.getSeeInvisibles())) {
+				aInfo.seeInvisibles = new ArrayList<String>();
+				for(String val: info.getSeeInvisibles()) {
+					aInfo.seeInvisibles.add(val);
+				}
+			}
+			aInfo.description = JaxbUtils.marshallString(info.getDescription());
+			aInfo.civilopedia = JaxbUtils.marshallString(info.getCivilopedia());
+			aInfo.strategy = JaxbUtils.marshallString(info.getStrategy());
+			aInfo.help = JaxbUtils.marshallString(info.getHelp());
+			aInfo.advisor = JaxbUtils.marshallString(info.getAdvisor());
+			aInfo.animal = JaxbUtils.marshallBoolean(info.isAnimal());
+			aInfo.food = JaxbUtils.marshallBoolean(info.isFood());
+			aInfo.noBadGoodies = JaxbUtils.marshallBoolean(info.isNoBadGoodies());
+			aInfo.onlyDefensive = JaxbUtils.marshallBoolean(info.isOnlyDefensive());
+			aInfo.noCapture = JaxbUtils.marshallBoolean(info.isNoCapture());
+			aInfo.quickCombat = JaxbUtils.marshallBoolean(info.isQuickCombat());
+			aInfo.rivalTerritory = JaxbUtils.marshallBoolean(info.isRivalTerritory());
+			aInfo.militaryHappiness = JaxbUtils.marshallBoolean(info.isMilitaryHappiness());
+			aInfo.militarySupport = JaxbUtils.marshallBoolean(info.isMilitarySupport());
+			aInfo.militaryProduction = JaxbUtils.marshallBoolean(info.isMilitaryProduction());
+			aInfo.pillage = JaxbUtils.marshallBoolean(info.isPillage());
+			aInfo.spy = JaxbUtils.marshallBoolean(info.isSpy());
+			aInfo.sabotage = JaxbUtils.marshallBoolean(info.isSabotage());
+			aInfo.destroy = JaxbUtils.marshallBoolean(info.isDestroy());
+			aInfo.stealPlans = JaxbUtils.marshallBoolean(info.isStealPlans());
+			aInfo.investigate = JaxbUtils.marshallBoolean(info.isInvestigate());
+			aInfo.counterSpy = JaxbUtils.marshallBoolean(info.isCounterSpy());
+			aInfo.found = JaxbUtils.marshallBoolean(info.isFound());
+			aInfo.goldenAge = JaxbUtils.marshallBoolean(info.isGoldenAge());
+			aInfo.invisibleBool = JaxbUtils.marshallBoolean(info.isInvisibleBool());
+			aInfo.firstStrikeImmune = JaxbUtils.marshallBoolean(info.isFirstStrikeImmune());
+			aInfo.noDefensiveBonus = JaxbUtils.marshallBoolean(info.isNoDefensiveBonus());
+			aInfo.ignoreBuildingDefense = JaxbUtils.marshallBoolean(info.isIgnoreBuildingDefense());
+			aInfo.canMoveImpassable = JaxbUtils.marshallBoolean(info.isCanMoveImpassable());
+			aInfo.canMoveAllTerrain = JaxbUtils.marshallBoolean(info.isCanMoveAllTerrain());
+			aInfo.flatMovementCost = JaxbUtils.marshallBoolean(info.isFlatMovementCost());
+			aInfo.ignoreTerrainCost = JaxbUtils.marshallBoolean(info.isIgnoreTerrainCost());
+			aInfo.nukeImmune = JaxbUtils.marshallBoolean(info.isNukeImmune());
+			aInfo.prereqBonuses = JaxbUtils.marshallBoolean(info.isPrereqBonuses());
+			aInfo.prereqReligionBool = JaxbUtils.marshallBoolean(info.isPrereqReligionBool());
+			aInfo.mechanized = JaxbUtils.marshallBoolean(info.isMechanized());
+			aInfo.renderBelowWater = JaxbUtils.marshallBoolean(info.isRenderBelowWater());
+			aInfo.renderAlways = JaxbUtils.marshallBoolean(info.isRenderAlways());
+			aInfo.suicide = JaxbUtils.marshallBoolean(info.isSuicide());
+			aInfo.singleBuild = JaxbUtils.marshallBoolean(info.isSingleBuild());
+			aInfo.slave = JaxbUtils.marshallBoolean(info.isSlave());
+			aInfo.lineOfSight = JaxbUtils.marshallBoolean(info.isLineOfSight());
+			aInfo.hiddenNationality = JaxbUtils.marshallBoolean(info.isHiddenNationality());
+			aInfo.alwaysHostile = JaxbUtils.marshallBoolean(info.isAlwaysHostile());
+			aInfo.workerTrade = JaxbUtils.marshallBoolean(info.isWorkerTrade());
+			aInfo.militaryTrade = JaxbUtils.marshallBoolean(info.isMilitaryTrade());
+			aInfo.barbarianLeader = JaxbUtils.marshallBoolean(info.isBarbarianLeader());
+
+			if (CollectionUtils.hasElements(info.getUnitClassUpgrades())) {
+				aInfo.unitClassUpgrades = new ArrayList<String>();
+				for(String val: info.getUnitClassUpgrades()) {
+					aInfo.unitClassUpgrades.add(val);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getUnitClassTargets())) {
+				aInfo.unitClassTargets = new ArrayList<String>();
+				for(String val: info.getUnitClassTargets()) {
+					aInfo.unitClassTargets.add(val);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getUnitCombatTargets())) {
+				aInfo.unitCombatTargets = new ArrayList<String>();
+				for(String val: info.getUnitCombatTargets()) {
+					aInfo.unitCombatTargets.add(val);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getUnitClassDefenders())) {
+				aInfo.unitClassDefenders = new ArrayList<String>();
+				for(String val: info.getUnitClassDefenders()) {
+					aInfo.unitClassDefenders.add(val);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getUnitCombatDefenders())) {
+				aInfo.unitCombatDefenders = new ArrayList<String>();
+				for(String val: info.getUnitCombatDefenders()) {
+					aInfo.unitCombatDefenders.add(val);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getFlankingStrikes())) {
+				aInfo.flankingStrikes = new ArrayList<AdaptedFlankingStrikes>();
+				for (IPair<String, Integer> pair: info.getFlankingStrikes()) {
+					AdaptedFlankingStrikes adaptor = new AdaptedFlankingStrikes();
+					adaptor.flankingStrikeUnitClass = pair.getKey();
+					adaptor.iFlankingStrength = pair.getValue();
+					aInfo.flankingStrikes.add(adaptor);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getUnitAIs())) {
+				aInfo.unitAIs = new ArrayList<String>();
+				for(String val: info.getUnitAIs()) {
+					aInfo.unitAIs.add(val);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getNotUnitAIs())) {
+				aInfo.notUnitAIs = new ArrayList<String>();
+				for(String val: info.getNotUnitAIs()) {
+					aInfo.notUnitAIs.add(val);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getBuilds())) {
+				aInfo.builds = new ArrayList<String>();
+				for(String val: info.getBuilds()) {
+					aInfo.builds.add(val);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getReligionSpreads())) {
+				aInfo.religionSpreads = new ArrayList<AdaptedReligionSpreads>();
+				for (IPair<String, Integer> pair: info.getReligionSpreads()) {
+					AdaptedReligionSpreads adaptor = new AdaptedReligionSpreads();
+					adaptor.religionType = pair.getKey();
+					adaptor.iReligionSpread = pair.getValue();
+					aInfo.religionSpreads.add(adaptor);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getCorporationSpreads())) {
+				aInfo.corporationSpreads = new ArrayList<AdaptedCorporationSpreads>();
+				for (IPair<String, Integer> pair: info.getCorporationSpreads()) {
+					AdaptedCorporationSpreads adaptor = new AdaptedCorporationSpreads();
+					adaptor.corporationType = pair.getKey();
+					adaptor.iCorporationSpread = pair.getValue();
+					aInfo.corporationSpreads.add(adaptor);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getGreatPeoples())) {
+				aInfo.greatPeoples = new ArrayList<String>();
+				for(String val: info.getGreatPeoples()) {
+					aInfo.greatPeoples.add(val);
+				}
+			}
+			aInfo.slaveSpecialistType = JaxbUtils.marshallString(info.getSlaveSpecialistType());
+
+			if (CollectionUtils.hasElements(info.getBuildings())) {
+				aInfo.buildings = new ArrayList<String>();
+				for(String val: info.getBuildings()) {
+					aInfo.buildings.add(val);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getForceBuildings())) {
+				aInfo.forceBuildings = new ArrayList<String>();
+				for(String val: info.getForceBuildings()) {
+					aInfo.forceBuildings.add(val);
+				}
+			}
+			aInfo.holyCity = JaxbUtils.marshallString(info.getHolyCity());
+			aInfo.religionType = JaxbUtils.marshallString(info.getReligionType());
+			aInfo.stateReligion = JaxbUtils.marshallString(info.getStateReligion());
+			aInfo.prereqReligion = JaxbUtils.marshallString(info.getPrereqReligion());
+			aInfo.prereqCorporation = JaxbUtils.marshallString(info.getPrereqCorporation());
+			aInfo.prereqBuilding = JaxbUtils.marshallString(info.getPrereqBuilding());
+
+			if (CollectionUtils.hasElements(info.getPrereqTechs())) {
+				aInfo.prereqTechs = new ArrayList<String>();
+				for(String val: info.getPrereqTechs()) {
+					aInfo.prereqTechs.add(val);
+				}
+			}
+			aInfo.obsoleteTech = JaxbUtils.marshallString(info.getObsoleteTech());
+			aInfo.bonusType = JaxbUtils.marshallString(info.getBonusType());
+
+			if (CollectionUtils.hasElements(info.getPrereqOrBonuses())) {
+				aInfo.prereqOrBonuses = new ArrayList<String>();
+				for(String val: info.getPrereqOrBonuses()) {
+					aInfo.prereqOrBonuses.add(val);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getPrereqAndCivics())) {
+				aInfo.prereqAndCivics = new ArrayList<String>();
+				for(String val: info.getPrereqAndCivics()) {
+					aInfo.prereqAndCivics.add(val);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getPrereqOrCivics())) {
+				aInfo.prereqOrCivics = new ArrayList<String>();
+				for(String val: info.getPrereqOrCivics()) {
+					aInfo.prereqOrCivics.add(val);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getPrereqAndTerrains())) {
+				aInfo.prereqAndTerrains = new ArrayList<String>();
+				for(String val: info.getPrereqAndTerrains()) {
+					aInfo.prereqAndTerrains.add(val);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getPrereqOrTerrains())) {
+				aInfo.prereqOrTerrains = new ArrayList<String>();
+				for(String val: info.getPrereqOrTerrains()) {
+					aInfo.prereqOrTerrains.add(val);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getPrereqOrBuildingClasses())) {
+				aInfo.prereqOrBuildingClasses = new ArrayList<String>();
+				for(String val: info.getPrereqOrBuildingClasses()) {
+					aInfo.prereqOrBuildingClasses.add(val);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getPrereqNotBuildingClasses())) {
+				aInfo.prereqNotBuildingClasses = new ArrayList<String>();
+				for(String val: info.getPrereqNotBuildingClasses()) {
+					aInfo.prereqNotBuildingClasses.add(val);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getPrereqVicinityAndBonus())) {
+				aInfo.prereqVicinityAndBonus = new ArrayList<String>();
+				for(String val: info.getPrereqVicinityAndBonus()) {
+					aInfo.prereqVicinityAndBonus.add(val);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getPrereqVicinityOrBonus())) {
+				aInfo.prereqVicinityOrBonus = new ArrayList<String>();
+				for(String val: info.getPrereqVicinityOrBonus()) {
+					aInfo.prereqVicinityOrBonus.add(val);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getPrereqVicinityImprovements())) {
+				aInfo.prereqVicinityImprovements = new ArrayList<String>();
+				for(String val: info.getPrereqVicinityImprovements()) {
+					aInfo.prereqVicinityImprovements.add(val);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getPrereqVicinityFeatures())) {
+				aInfo.prereqVicinityFeatures = new ArrayList<String>();
+				for(String val: info.getPrereqVicinityFeatures()) {
+					aInfo.prereqVicinityFeatures.add(val);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getPrereqWorldViews())) {
+				aInfo.prereqWorldViews = new ArrayList<String>();
+				for(String val: info.getPrereqWorldViews()) {
+					aInfo.prereqWorldViews.add(val);
+				}
+			}
+			aInfo.minPopulation = JaxbUtils.marshallInteger(info.getMinPopulation());
+			aInfo.minCultureLevel = JaxbUtils.marshallString(info.getMinCultureLevel());
+			aInfo.prereqPower = JaxbUtils.marshallBoolean(info.isPrereqPower());
+
+			if (CollectionUtils.hasElements(info.getProductionTraits())) {
+				aInfo.productionTraits = new ArrayList<AdaptedProductionTraits>();
+				for (IPair<String, Integer> pair: info.getProductionTraits()) {
+					AdaptedProductionTraits adaptor = new AdaptedProductionTraits();
+					adaptor.productionTraitType = pair.getKey();
+					adaptor.iProductionTrait = pair.getValue();
+					aInfo.productionTraits.add(adaptor);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getFlavors())) {
+				aInfo.flavors = new ArrayList<AdaptedFlavors>();
+				for (IPair<String, Integer> pair: info.getFlavors()) {
+					AdaptedFlavors adaptor = new AdaptedFlavors();
+					adaptor.flavorType = pair.getKey();
+					adaptor.iFlavor = pair.getValue();
+					aInfo.flavors.add(adaptor);
+				}
+			}
+			aInfo.aIWeight = JaxbUtils.marshallInteger(info.getAIWeight());
+			aInfo.cost = JaxbUtils.marshallInteger(info.getCost());
+			aInfo.hurryCostModifier = JaxbUtils.marshallInteger(info.getHurryCostModifier());
+			aInfo.advancedStartCost = JaxbUtils.marshallInteger(info.getAdvancedStartCost());
+			aInfo.advancedStartCostIncrease = JaxbUtils.marshallInteger(info.getAdvancedStartCostIncrease());
+			aInfo.minAreaSize = JaxbUtils.marshallInteger(info.getMinAreaSize());
+			aInfo.moves = JaxbUtils.marshallInteger(info.getMoves());
+			aInfo.unitRangeType = JaxbUtils.marshallString(info.getUnitRangeType());
+			aInfo.noRevealMap = JaxbUtils.marshallBoolean(info.isNoRevealMap());
+			aInfo.airRange = JaxbUtils.marshallInteger(info.getAirRange());
+			aInfo.airUnitCap = JaxbUtils.marshallInteger(info.getAirUnitCap());
+			aInfo.dropRange = JaxbUtils.marshallInteger(info.getDropRange());
+			aInfo.nukeRange = JaxbUtils.marshallInteger(info.getNukeRange());
+			aInfo.workRate = JaxbUtils.marshallInteger(info.getWorkRate());
+			aInfo.baseDiscover = JaxbUtils.marshallInteger(info.getBaseDiscover());
+			aInfo.discoverMultiplier = JaxbUtils.marshallInteger(info.getDiscoverMultiplier());
+			aInfo.baseHurry = JaxbUtils.marshallInteger(info.getBaseHurry());
+			aInfo.hurryMultiplier = JaxbUtils.marshallInteger(info.getHurryMultiplier());
+			aInfo.baseTrade = JaxbUtils.marshallInteger(info.getBaseTrade());
+			aInfo.tradeMultiplier = JaxbUtils.marshallInteger(info.getTradeMultiplier());
+			aInfo.greatWorkCulture = JaxbUtils.marshallInteger(info.getGreatWorkCulture());
+			aInfo.espionagePoints = JaxbUtils.marshallInteger(info.getEspionagePoints());
+
+			if (CollectionUtils.hasElements(info.getTerrainImpassables())) {
+				aInfo.terrainImpassables = new ArrayList<String>();
+				for(String val: info.getTerrainImpassables()) {
+					aInfo.terrainImpassables.add(val);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getFeatureImpassables())) {
+				aInfo.featureImpassables = new ArrayList<String>();
+				for(String val: info.getFeatureImpassables()) {
+					aInfo.featureImpassables.add(val);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getTerrainPassableTechs())) {
+				aInfo.terrainPassableTechs = new ArrayList<AdaptedTerrainPassableTechs>();
+				for (IPair<String, String> pair: info.getTerrainPassableTechs()) {
+					AdaptedTerrainPassableTechs adaptor = new AdaptedTerrainPassableTechs();
+					adaptor.terrainType = pair.getKey();
+					adaptor.passableTech = pair.getValue();
+					aInfo.terrainPassableTechs.add(adaptor);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getFeaturePassableTechs())) {
+				aInfo.featurePassableTechs = new ArrayList<AdaptedFeaturePassableTechs>();
+				for (IPair<String, String> pair: info.getFeaturePassableTechs()) {
+					AdaptedFeaturePassableTechs adaptor = new AdaptedFeaturePassableTechs();
+					adaptor.featureType = pair.getKey();
+					adaptor.passableTech = pair.getValue();
+					aInfo.featurePassableTechs.add(adaptor);
+				}
+			}
+			aInfo.combatInt = JaxbUtils.marshallInteger(info.getCombatInt());
+			aInfo.combatLimit = JaxbUtils.marshallInteger(info.getCombatLimit());
+			aInfo.airCombat = JaxbUtils.marshallInteger(info.getAirCombat());
+			aInfo.airCombatLimit = JaxbUtils.marshallInteger(info.getAirCombatLimit());
+			aInfo.xPValueAttack = JaxbUtils.marshallInteger(info.getXPValueAttack());
+			aInfo.xPValueDefense = JaxbUtils.marshallInteger(info.getXPValueDefense());
+			aInfo.firstStrikes = JaxbUtils.marshallInteger(info.getFirstStrikes());
+			aInfo.chanceFirstStrikes = JaxbUtils.marshallInteger(info.getChanceFirstStrikes());
+			aInfo.interceptionProbability = JaxbUtils.marshallInteger(info.getInterceptionProbability());
+			aInfo.evasionProbability = JaxbUtils.marshallInteger(info.getEvasionProbability());
+			aInfo.withdrawalProb = JaxbUtils.marshallInteger(info.getWithdrawalProb());
+			aInfo.collateralDamage = JaxbUtils.marshallInteger(info.getCollateralDamage());
+			aInfo.collateralDamageLimit = JaxbUtils.marshallInteger(info.getCollateralDamageLimit());
+			aInfo.collateralDamageMaxUnits = JaxbUtils.marshallInteger(info.getCollateralDamageMaxUnits());
+			aInfo.cityAttack = JaxbUtils.marshallInteger(info.getCityAttack());
+			aInfo.cityDefense = JaxbUtils.marshallInteger(info.getCityDefense());
+			aInfo.animalCombat = JaxbUtils.marshallInteger(info.getAnimalCombat());
+			aInfo.hillsAttack = JaxbUtils.marshallInteger(info.getHillsAttack());
+			aInfo.hillsDefense = JaxbUtils.marshallInteger(info.getHillsDefense());
+
+			if (CollectionUtils.hasElements(info.getTerrainNatives())) {
+				aInfo.terrainNatives = new ArrayList<String>();
+				for(String val: info.getTerrainNatives()) {
+					aInfo.terrainNatives.add(val);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getFeatureNatives())) {
+				aInfo.featureNatives = new ArrayList<String>();
+				for(String val: info.getFeatureNatives()) {
+					aInfo.featureNatives.add(val);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getTerrainAttacks())) {
+				aInfo.terrainAttacks = new ArrayList<AdaptedTerrainAttacks>();
+				for (IPair<String, Integer> pair: info.getTerrainAttacks()) {
+					AdaptedTerrainAttacks adaptor = new AdaptedTerrainAttacks();
+					adaptor.terrainType = pair.getKey();
+					adaptor.iTerrainAttack = pair.getValue();
+					aInfo.terrainAttacks.add(adaptor);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getTerrainDefenses())) {
+				aInfo.terrainDefenses = new ArrayList<AdaptedTerrainDefenses>();
+				for (IPair<String, Integer> pair: info.getTerrainDefenses()) {
+					AdaptedTerrainDefenses adaptor = new AdaptedTerrainDefenses();
+					adaptor.terrainType = pair.getKey();
+					adaptor.iTerrainDefense = pair.getValue();
+					aInfo.terrainDefenses.add(adaptor);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getFeatureAttacks())) {
+				aInfo.featureAttacks = new ArrayList<AdaptedFeatureAttacks>();
+				for (IPair<String, Integer> pair: info.getFeatureAttacks()) {
+					AdaptedFeatureAttacks adaptor = new AdaptedFeatureAttacks();
+					adaptor.featureType = pair.getKey();
+					adaptor.iFeatureAttack = pair.getValue();
+					aInfo.featureAttacks.add(adaptor);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getFeatureDefenses())) {
+				aInfo.featureDefenses = new ArrayList<AdaptedFeatureDefenses>();
+				for (IPair<String, Integer> pair: info.getFeatureDefenses()) {
+					AdaptedFeatureDefenses adaptor = new AdaptedFeatureDefenses();
+					adaptor.featureType = pair.getKey();
+					adaptor.iFeatureDefense = pair.getValue();
+					aInfo.featureDefenses.add(adaptor);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getUnitClassAttackMods())) {
+				aInfo.unitClassAttackMods = new ArrayList<AdaptedUnitClassAttackMods>();
+				for (IPair<String, Integer> pair: info.getUnitClassAttackMods()) {
+					AdaptedUnitClassAttackMods adaptor = new AdaptedUnitClassAttackMods();
+					adaptor.unitClassType = pair.getKey();
+					adaptor.iUnitClassMod = pair.getValue();
+					aInfo.unitClassAttackMods.add(adaptor);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getUnitClassDefenseMods())) {
+				aInfo.unitClassDefenseMods = new ArrayList<AdaptedUnitClassDefenseMods>();
+				for (IPair<String, Integer> pair: info.getUnitClassDefenseMods()) {
+					AdaptedUnitClassDefenseMods adaptor = new AdaptedUnitClassDefenseMods();
+					adaptor.unitClassType = pair.getKey();
+					adaptor.iUnitClassMod = pair.getValue();
+					aInfo.unitClassDefenseMods.add(adaptor);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getUnitCombatMods())) {
+				aInfo.unitCombatMods = new ArrayList<AdaptedUnitCombatMods>();
+				for (IPair<String, Integer> pair: info.getUnitCombatMods()) {
+					AdaptedUnitCombatMods adaptor = new AdaptedUnitCombatMods();
+					adaptor.unitCombatType = pair.getKey();
+					adaptor.iUnitCombatMod = pair.getValue();
+					aInfo.unitCombatMods.add(adaptor);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getUnitCombatCollateralImmunes())) {
+				aInfo.unitCombatCollateralImmunes = new ArrayList<AdaptedUnitCombatCollateralImmunes>();
+				for (IPair<String, Integer> pair: info.getUnitCombatCollateralImmunes()) {
+					AdaptedUnitCombatCollateralImmunes adaptor = new AdaptedUnitCombatCollateralImmunes();
+					adaptor.unitCombatType = pair.getKey();
+					adaptor.iUnitCombatCollateralImmune = pair.getValue();
+					aInfo.unitCombatCollateralImmunes.add(adaptor);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getDomainMods())) {
+				aInfo.domainMods = new ArrayList<AdaptedDomainMods>();
+				for (IPair<String, Integer> pair: info.getDomainMods()) {
+					AdaptedDomainMods adaptor = new AdaptedDomainMods();
+					adaptor.domainType = pair.getKey();
+					adaptor.iDomainMod = pair.getValue();
+					aInfo.domainMods.add(adaptor);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getBonusProductionModifiers())) {
+				aInfo.bonusProductionModifiers = new ArrayList<AdaptedBonusProductionModifiers>();
+				for (IPair<String, Integer> pair: info.getBonusProductionModifiers()) {
+					AdaptedBonusProductionModifiers adaptor = new AdaptedBonusProductionModifiers();
+					adaptor.bonusType = pair.getKey();
+					adaptor.iProductonModifier = pair.getValue();
+					aInfo.bonusProductionModifiers.add(adaptor);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getYieldsFromKill())) {
+				aInfo.yieldsFromKill = new ArrayList<Integer>();
+				for(Integer val: info.getYieldsFromKill()) {
+					aInfo.yieldsFromKill.add(val);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getCommercesFromKill())) {
+				aInfo.commercesFromKill = new ArrayList<Integer>();
+				for(Integer val: info.getCommercesFromKill()) {
+					aInfo.commercesFromKill.add(val);
+				}
+			}
+			aInfo.bombRate = JaxbUtils.marshallInteger(info.getBombRate());
+			aInfo.bombardRate = JaxbUtils.marshallInteger(info.getBombardRate());
+			aInfo.specialCargo = JaxbUtils.marshallString(info.getSpecialCargo());
+			aInfo.domainCargo = JaxbUtils.marshallString(info.getDomainCargo());
+			aInfo.cargo = JaxbUtils.marshallInteger(info.getCargo());
+			aInfo.conscription = JaxbUtils.marshallInteger(info.getConscription());
+			aInfo.cultureGarrison = JaxbUtils.marshallInteger(info.getCultureGarrison());
+			aInfo.extraCost = JaxbUtils.marshallInteger(info.getExtraCost());
+			aInfo.asset = JaxbUtils.marshallInteger(info.getAsset());
+			aInfo.power = JaxbUtils.marshallInteger(info.getPower());
+			aInfo.unitMeshGroups = info.getUnitMeshGroups();
+			aInfo.formationType = JaxbUtils.marshallMandatoryString(info.getFormationType());
+			aInfo.hotKey = JaxbUtils.marshallString(info.getHotKey());
+			aInfo.altDown = JaxbUtils.marshallBoolean(info.isAltDown());
+			aInfo.shiftDown = JaxbUtils.marshallBoolean(info.isShiftDown());
+			aInfo.ctrlDown = JaxbUtils.marshallBoolean(info.isCtrlDown());
+			aInfo.hotKeyPriority = JaxbUtils.marshallInteger(info.getHotKeyPriority());
+
+			if (CollectionUtils.hasElements(info.getFreePromotions())) {
+				aInfo.freePromotions = new ArrayList<String>();
+				for(String val: info.getFreePromotions()) {
+					aInfo.freePromotions.add(val);
+				}
+			}
+			aInfo.leaderPromotion = JaxbUtils.marshallString(info.getLeaderPromotion());
+			aInfo.leaderExperience = JaxbUtils.marshallInteger(info.getLeaderExperience());
+			aInfo.orderPriority = JaxbUtils.marshallInteger(info.getOrderPriority());
+
+			map.entries.add(aInfo);
+		}
+		return map;
+	}
 }

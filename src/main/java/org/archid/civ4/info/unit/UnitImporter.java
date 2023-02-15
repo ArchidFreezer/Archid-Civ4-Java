@@ -2,7 +2,6 @@ package org.archid.civ4.info.unit;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import org.archid.civ4.info.AbstractImporter;
@@ -12,39 +11,43 @@ import org.archid.civ4.info.IInfos;
 import org.archid.civ4.info.unit.UnitMeshGroups.UnitMeshGroup;
 import org.archid.utils.StringUtils;
 
-public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>{
+public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo> {
 
 	/** Logging facility */
 	static Logger log = Logger.getLogger(UnitImporter.class.getName());
-	
+
 	public UnitImporter(EInfo infoEnum) {
 		super(infoEnum, new UnitInfoXmlFormatter());
 	}
-	
+
+	@Override
+	public String getListSheetName() {
+		return IUnitWorkbook.SHEETNAME_LIST;
+	}
+
 	@Override
 	protected IUnitInfo parseRow(Row row) {
 		int colNum = 0;
-		String clazz = row.getCell(colNum++).getStringCellValue();
-		String type = row.getCell(colNum++).getStringCellValue();
-		
-		// Handle units that have been deleted
-		if (clazz.isEmpty() || type.isEmpty())
+		String type = row.getCell(1).getStringCellValue();
+		// Handle cells that have been moved
+		if (type.isEmpty())
 			return null;
-		
+
 		IUnitInfo info = UnitInfos.createInfo(type);
-		info.setUnitClass(clazz);
+		parseCell(row.getCell(colNum++), String.class, info::setClazz);
+		parseCell(row.getCell(colNum++), String.class, info::setType);
 		parseListCell(row.getCell(colNum++), String.class, info::addUniqueName);
 		parseCell(row.getCell(colNum++), String.class, info::setSpecial);
 		parseCell(row.getCell(colNum++), String.class, info::setCapture);
-		parseCell(row.getCell(colNum++), String.class, info::setCombatType);
+		parseCell(row.getCell(colNum++), String.class, info::setCombat);
 		parseListCell(row.getCell(colNum++), String.class, info::addSubCombatType);
 		parseCell(row.getCell(colNum++), String.class, info::setDomain);
 		parseCell(row.getCell(colNum++), String.class, info::setDefaultUnitAI);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setFixedAI);
 		parseCell(row.getCell(colNum++), Integer.class, info::setMaxWeaponTypeTier);
 		parseCell(row.getCell(colNum++), Integer.class, info::setMaxAmmoTypeTier);
-		parseCell(row.getCell(colNum++), String.class, info::setInvisibleType);
-		parseListCell(row.getCell(colNum++), String.class, info::addSeeInvisble);
+		parseCell(row.getCell(colNum++), String.class, info::setInvisible);
+		parseListCell(row.getCell(colNum++), String.class, info::addSeeInvisible);
 		parseCell(row.getCell(colNum++), String.class, info::setDescription);
 		parseCell(row.getCell(colNum++), String.class, info::setCivilopedia);
 		parseCell(row.getCell(colNum++), String.class, info::setStrategy);
@@ -69,7 +72,7 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 		parseCell(row.getCell(colNum++), Boolean.class, info::setCounterSpy);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setFound);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setGoldenAge);
-		parseCell(row.getCell(colNum++), Boolean.class, info::setInvisible);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setInvisibleBool);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setFirstStrikeImmune);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setNoDefensiveBonus);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setIgnoreBuildingDefense);
@@ -79,7 +82,7 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 		parseCell(row.getCell(colNum++), Boolean.class, info::setIgnoreTerrainCost);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setNukeImmune);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setPrereqBonuses);
-		parseCell(row.getCell(colNum++), Boolean.class, info::setPrereqReligion);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setPrereqReligionBool);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setMechanized);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setRenderBelowWater);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setRenderAlways);
@@ -99,18 +102,18 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 		parseListCell(row.getCell(colNum++), String.class, info::addUnitCombatDefender);
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addFlankingStrike);
 		parseListCell(row.getCell(colNum++), String.class, info::addUnitAI);
-		parseListCell(row.getCell(colNum++), String.class, info::addNotUnitAIs);
+		parseListCell(row.getCell(colNum++), String.class, info::addNotUnitAI);
 		parseListCell(row.getCell(colNum++), String.class, info::addBuild);
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addReligionSpread);
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addCorporationSpread);
-		parseListCell(row.getCell(colNum++), String.class, info::addGreatPerson);
+		parseListCell(row.getCell(colNum++), String.class, info::addGreatPeople);
 		parseCell(row.getCell(colNum++), String.class, info::setSlaveSpecialistType);
 		parseListCell(row.getCell(colNum++), String.class, info::addBuilding);
-		parseListCell(row.getCell(colNum++), String.class, info::addForceBuildings);
+		parseListCell(row.getCell(colNum++), String.class, info::addForceBuilding);
 		parseCell(row.getCell(colNum++), String.class, info::setHolyCity);
 		parseCell(row.getCell(colNum++), String.class, info::setReligionType);
 		parseCell(row.getCell(colNum++), String.class, info::setStateReligion);
-		parseCell(row.getCell(colNum++), String.class, info::setPrereqReligionType);
+		parseCell(row.getCell(colNum++), String.class, info::setPrereqReligion);
 		parseCell(row.getCell(colNum++), String.class, info::setPrereqCorporation);
 		parseCell(row.getCell(colNum++), String.class, info::setPrereqBuilding);
 		parseListCell(row.getCell(colNum++), String.class, info::addPrereqTech);
@@ -123,8 +126,8 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 		parseListCell(row.getCell(colNum++), String.class, info::addPrereqOrTerrain);
 		parseListCell(row.getCell(colNum++), String.class, info::addPrereqOrBuildingClass);
 		parseListCell(row.getCell(colNum++), String.class, info::addPrereqNotBuildingClass);
-		parseListCell(row.getCell(colNum++), String.class, info::addPrereqVicinityAndBonus);
-		parseListCell(row.getCell(colNum++), String.class, info::addPrereqVicinityOrBonus);
+		parseListCell(row.getCell(colNum++), String.class, info::addPrereqVicinityAndBonu);
+		parseListCell(row.getCell(colNum++), String.class, info::addPrereqVicinityOrBonu);
 		parseListCell(row.getCell(colNum++), String.class, info::addPrereqVicinityImprovement);
 		parseListCell(row.getCell(colNum++), String.class, info::addPrereqVicinityFeature);
 		parseListCell(row.getCell(colNum++), String.class, info::addPrereqWorldView);
@@ -132,8 +135,8 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 		parseCell(row.getCell(colNum++), String.class, info::setMinCultureLevel);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setPrereqPower);
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addProductionTrait);
-		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addFlavour);
-		parseCell(row.getCell(colNum++), Integer.class, info::setAiWeight);
+		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addFlavor);
+		parseCell(row.getCell(colNum++), Integer.class, info::setAIWeight);
 		parseCell(row.getCell(colNum++), Integer.class, info::setCost);
 		parseCell(row.getCell(colNum++), Integer.class, info::setHurryCostModifier);
 		parseCell(row.getCell(colNum++), Integer.class, info::setAdvancedStartCost);
@@ -155,19 +158,16 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 		parseCell(row.getCell(colNum++), Integer.class, info::setTradeMultiplier);
 		parseCell(row.getCell(colNum++), Integer.class, info::setGreatWorkCulture);
 		parseCell(row.getCell(colNum++), Integer.class, info::setEspionagePoints);
-		parseCell(row.getCell(colNum++), Integer.class, info::setSpyEscapeChance);
-		parseCell(row.getCell(colNum++), Integer.class, info::setSpyEvasionChance);
-		parseCell(row.getCell(colNum++), Integer.class, info::setSpyInterceptChance);
 		parseListCell(row.getCell(colNum++), String.class, info::addTerrainImpassable);
 		parseListCell(row.getCell(colNum++), String.class, info::addFeatureImpassable);
 		parsePairsCell(row.getCell(colNum++), String.class, String.class, info::addTerrainPassableTech);
 		parsePairsCell(row.getCell(colNum++), String.class, String.class, info::addFeaturePassableTech);
-		parseCell(row.getCell(colNum++), Integer.class, info::setCombat);
+		parseCell(row.getCell(colNum++), Integer.class, info::setCombatInt);
 		parseCell(row.getCell(colNum++), Integer.class, info::setCombatLimit);
 		parseCell(row.getCell(colNum++), Integer.class, info::setAirCombat);
 		parseCell(row.getCell(colNum++), Integer.class, info::setAirCombatLimit);
-		parseCell(row.getCell(colNum++), Integer.class, info::setXpValueAttack);
-		parseCell(row.getCell(colNum++), Integer.class, info::setXpValueDefense);
+		parseCell(row.getCell(colNum++), Integer.class, info::setXPValueAttack);
+		parseCell(row.getCell(colNum++), Integer.class, info::setXPValueDefense);
 		parseCell(row.getCell(colNum++), Integer.class, info::setFirstStrikes);
 		parseCell(row.getCell(colNum++), Integer.class, info::setChanceFirstStrikes);
 		parseCell(row.getCell(colNum++), Integer.class, info::setInterceptionProbability);
@@ -185,7 +185,7 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 		parseListCell(row.getCell(colNum++), String.class, info::addFeatureNative);
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addTerrainAttack);
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addTerrainDefense);
-		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addFeatureAttacks);
+		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addFeatureAttack);
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addFeatureDefense);
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addUnitClassAttackMod);
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addUnitClassDefenseMod);
@@ -193,8 +193,8 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addUnitCombatCollateralImmune);
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addDomainMod);
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addBonusProductionModifier);
-		parseListCell(row.getCell(colNum++), Integer.class, info::addYieldFromKill);
-		parseListCell(row.getCell(colNum++), Integer.class, info::addCommerceFromKill);
+		parseListCell(row.getCell(colNum++), Integer.class, info::addYieldsFromKill);
+		parseListCell(row.getCell(colNum++), Integer.class, info::addCommercesFromKill);
 		parseCell(row.getCell(colNum++), Integer.class, info::setBombRate);
 		parseCell(row.getCell(colNum++), Integer.class, info::setBombardRate);
 		parseCell(row.getCell(colNum++), String.class, info::setSpecialCargo);
@@ -216,10 +216,9 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 		parseCell(row.getCell(colNum++), String.class, info::setLeaderPromotion);
 		parseCell(row.getCell(colNum++), Integer.class, info::setLeaderExperience);
 		parseCell(row.getCell(colNum++), Integer.class, info::setOrderPriority);
-		
+
 		return info;
 	}
-
 	private UnitMeshGroups getUnitMeshGroups(String stringCellValue) {
 		String[] rows = stringCellValue.split(IInfoWorkbook.CELL_NEWLINE);
 		int index = 0;
@@ -244,13 +243,4 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 		}
 		return mesh;
 	}
-
-	/* (non-Javadoc)
-	 * @see org.archid.civ4.info.IImporter#getListSheetName()
-	 */
-	@Override
-	public String getListSheetName() {
-		return IUnitWorkbook.SHEETNAME_LIST;
-	}
-
 }

@@ -2,7 +2,6 @@ package org.archid.civ4.info.unit;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import org.archid.civ4.info.AbstractExporter;
@@ -12,18 +11,18 @@ import org.archid.civ4.info.IInfos;
 import org.archid.civ4.info.unit.IUnitWorkbook.SheetHeaders;
 import org.archid.civ4.info.unit.UnitMeshGroups.UnitMeshGroup;
 
-public class UnitExporter extends AbstractExporter<IInfos<IUnitInfo>, IUnitInfo>{
+public class UnitExporter extends AbstractExporter<IInfos<IUnitInfo>, IUnitInfo> {
 
 	/** Logging facility */
 	static Logger log = Logger.getLogger(UnitExporter.class.getName());
-	
+
 	public UnitExporter(EInfo infoEnum) {
 		super(infoEnum);
 	}
 
 	@Override
 	public List<String> getHeaders() {
-		List<String> headers = new ArrayList<>();
+		List<String> headers = new ArrayList<String>();
 		for (SheetHeaders header: SheetHeaders.values()) {
 			headers.add(header.toString());
 		}
@@ -31,23 +30,33 @@ public class UnitExporter extends AbstractExporter<IInfos<IUnitInfo>, IUnitInfo>
 	}
 
 	@Override
+	protected int getNumCols() {
+		return IUnitWorkbook.SheetHeaders.values().length;
+	}
+
+	@Override
+	protected String getInfoListSheetName() {
+		return IUnitWorkbook.SHEETNAME_LIST;
+	}
+
+	@Override
 	protected void populateRow(Row row, IUnitInfo info) {
 		int maxHeight = 1;
 		int colNum = 0;
-		addSingleCell(row.createCell(colNum++), info.getUnitClass());
+		addSingleCell(row.createCell(colNum++), info.getClazz());
 		addSingleCell(row.createCell(colNum++), info.getType());
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getUniqueNames(), maxHeight);			
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getUniqueNames(), maxHeight);
 		addSingleCell(row.createCell(colNum++), info.getSpecial());
 		addSingleCell(row.createCell(colNum++), info.getCapture());
-		addSingleCell(row.createCell(colNum++), info.getCombatType());
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getSubCombatTypes(), maxHeight);			
+		addSingleCell(row.createCell(colNum++), info.getCombat());
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getSubCombatTypes(), maxHeight);
 		addSingleCell(row.createCell(colNum++), info.getDomain());
 		addSingleCell(row.createCell(colNum++), info.getDefaultUnitAI());
 		addSingleCell(row.createCell(colNum++), info.isFixedAI());
 		addSingleCell(row.createCell(colNum++), info.getMaxWeaponTypeTier());
 		addSingleCell(row.createCell(colNum++), info.getMaxAmmoTypeTier());
-		addSingleCell(row.createCell(colNum++), info.getInvisibleType());
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getSeeInvisbles(), maxHeight);			
+		addSingleCell(row.createCell(colNum++), info.getInvisible());
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getSeeInvisibles(), maxHeight);
 		addSingleCell(row.createCell(colNum++), info.getDescription());
 		addSingleCell(row.createCell(colNum++), info.getCivilopedia());
 		addSingleCell(row.createCell(colNum++), info.getStrategy());
@@ -72,7 +81,7 @@ public class UnitExporter extends AbstractExporter<IInfos<IUnitInfo>, IUnitInfo>
 		addSingleCell(row.createCell(colNum++), info.isCounterSpy());
 		addSingleCell(row.createCell(colNum++), info.isFound());
 		addSingleCell(row.createCell(colNum++), info.isGoldenAge());
-		addSingleCell(row.createCell(colNum++), info.isInvisible());
+		addSingleCell(row.createCell(colNum++), info.isInvisibleBool());
 		addSingleCell(row.createCell(colNum++), info.isFirstStrikeImmune());
 		addSingleCell(row.createCell(colNum++), info.isNoDefensiveBonus());
 		addSingleCell(row.createCell(colNum++), info.isIgnoreBuildingDefense());
@@ -82,7 +91,7 @@ public class UnitExporter extends AbstractExporter<IInfos<IUnitInfo>, IUnitInfo>
 		addSingleCell(row.createCell(colNum++), info.isIgnoreTerrainCost());
 		addSingleCell(row.createCell(colNum++), info.isNukeImmune());
 		addSingleCell(row.createCell(colNum++), info.isPrereqBonuses());
-		addSingleCell(row.createCell(colNum++), info.isPrereqReligion());
+		addSingleCell(row.createCell(colNum++), info.isPrereqReligionBool());
 		addSingleCell(row.createCell(colNum++), info.isMechanized());
 		addSingleCell(row.createCell(colNum++), info.isRenderBelowWater());
 		addSingleCell(row.createCell(colNum++), info.isRenderAlways());
@@ -95,48 +104,48 @@ public class UnitExporter extends AbstractExporter<IInfos<IUnitInfo>, IUnitInfo>
 		addSingleCell(row.createCell(colNum++), info.isWorkerTrade());
 		addSingleCell(row.createCell(colNum++), info.isMilitaryTrade());
 		addSingleCell(row.createCell(colNum++), info.isBarbarianLeader());
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getUnitClassUpgrades(), maxHeight);			
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getUnitClassTargets(), maxHeight);			
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getUnitCombatTargets(), maxHeight);			
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getUnitClassDefenders(), maxHeight);			
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getUnitCombatDefenders(), maxHeight);			
-		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getFlankingStrikes(), maxHeight);			
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getUnitAIs(), maxHeight);			
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getNotUnitAIs(), maxHeight);			
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getBuilds(), maxHeight);			
-		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getReligionSpreads(), maxHeight);			
-		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getCorporationSpreads(), maxHeight);			
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getGreatPeoples(), maxHeight);			
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getUnitClassUpgrades(), maxHeight);
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getUnitClassTargets(), maxHeight);
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getUnitCombatTargets(), maxHeight);
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getUnitClassDefenders(), maxHeight);
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getUnitCombatDefenders(), maxHeight);
+		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getFlankingStrikes(), maxHeight);
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getUnitAIs(), maxHeight);
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getNotUnitAIs(), maxHeight);
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getBuilds(), maxHeight);
+		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getReligionSpreads(), maxHeight);
+		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getCorporationSpreads(), maxHeight);
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getGreatPeoples(), maxHeight);
 		addSingleCell(row.createCell(colNum++), info.getSlaveSpecialistType());
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getBuildings(), maxHeight);			
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getForceBuildings(), maxHeight);			
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getBuildings(), maxHeight);
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getForceBuildings(), maxHeight);
 		addSingleCell(row.createCell(colNum++), info.getHolyCity());
 		addSingleCell(row.createCell(colNum++), info.getReligionType());
 		addSingleCell(row.createCell(colNum++), info.getStateReligion());
-		addSingleCell(row.createCell(colNum++), info.getPrereqReligionType());
+		addSingleCell(row.createCell(colNum++), info.getPrereqReligion());
 		addSingleCell(row.createCell(colNum++), info.getPrereqCorporation());
 		addSingleCell(row.createCell(colNum++), info.getPrereqBuilding());
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqTechs(), maxHeight);			
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqTechs(), maxHeight);
 		addSingleCell(row.createCell(colNum++), info.getObsoleteTech());
 		addSingleCell(row.createCell(colNum++), info.getBonusType());
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqOrBonuses(), maxHeight);			
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqAndCivics(), maxHeight);			
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqOrCivics(), maxHeight);			
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqAndTerrains(), maxHeight);			
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqOrTerrains(), maxHeight);			
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqOrBuildingClasses(), maxHeight);			
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqNotBuildingClasses(), maxHeight);			
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqVicinityAndBonuses(), maxHeight);			
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqVicinityOrBonuses(), maxHeight);			
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqVicinityImprovements(), maxHeight);			
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqVicinityFeatures(), maxHeight);			
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqWorldViews(), maxHeight);			
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqOrBonuses(), maxHeight);
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqAndCivics(), maxHeight);
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqOrCivics(), maxHeight);
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqAndTerrains(), maxHeight);
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqOrTerrains(), maxHeight);
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqOrBuildingClasses(), maxHeight);
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqNotBuildingClasses(), maxHeight);
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqVicinityAndBonus(), maxHeight);
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqVicinityOrBonus(), maxHeight);
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqVicinityImprovements(), maxHeight);
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqVicinityFeatures(), maxHeight);
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqWorldViews(), maxHeight);
 		addSingleCell(row.createCell(colNum++), info.getMinPopulation());
 		addSingleCell(row.createCell(colNum++), info.getMinCultureLevel());
 		addSingleCell(row.createCell(colNum++), info.isPrereqPower());
-		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getProductionTraits(), maxHeight);			
-		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getFlavours(), maxHeight);
-		addSingleCell(row.createCell(colNum++), info.getAiWeight());
+		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getProductionTraits(), maxHeight);
+		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getFlavors(), maxHeight);
+		addSingleCell(row.createCell(colNum++), info.getAIWeight());
 		addSingleCell(row.createCell(colNum++), info.getCost());
 		addSingleCell(row.createCell(colNum++), info.getHurryCostModifier());
 		addSingleCell(row.createCell(colNum++), info.getAdvancedStartCost());
@@ -158,19 +167,16 @@ public class UnitExporter extends AbstractExporter<IInfos<IUnitInfo>, IUnitInfo>
 		addSingleCell(row.createCell(colNum++), info.getTradeMultiplier());
 		addSingleCell(row.createCell(colNum++), info.getGreatWorkCulture());
 		addSingleCell(row.createCell(colNum++), info.getEspionagePoints());
-		addSingleCell(row.createCell(colNum++), info.getSpyEscapeChance());
-		addSingleCell(row.createCell(colNum++), info.getSpyEvasionChance());
-		addSingleCell(row.createCell(colNum++), info.getSpyInterceptChance());
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getTerrainImpassables(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getFeatureImpassables(), maxHeight);
 		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getTerrainPassableTechs(), maxHeight);
 		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getFeaturePassableTechs(), maxHeight);
-		addSingleCell(row.createCell(colNum++), info.getCombat());
+		addSingleCell(row.createCell(colNum++), info.getCombatInt());
 		addSingleCell(row.createCell(colNum++), info.getCombatLimit());
 		addSingleCell(row.createCell(colNum++), info.getAirCombat());
 		addSingleCell(row.createCell(colNum++), info.getAirCombatLimit());
-		addSingleCell(row.createCell(colNum++), info.getXpValueAttack());
-		addSingleCell(row.createCell(colNum++), info.getXpValueDefense());
+		addSingleCell(row.createCell(colNum++), info.getXPValueAttack());
+		addSingleCell(row.createCell(colNum++), info.getXPValueDefense());
 		addSingleCell(row.createCell(colNum++), info.getFirstStrikes());
 		addSingleCell(row.createCell(colNum++), info.getChanceFirstStrikes());
 		addSingleCell(row.createCell(colNum++), info.getInterceptionProbability());
@@ -221,7 +227,6 @@ public class UnitExporter extends AbstractExporter<IInfos<IUnitInfo>, IUnitInfo>
 		addSingleCell(row.createCell(colNum++), info.getOrderPriority());
 
 		row.setHeightInPoints(maxHeight * row.getSheet().getDefaultRowHeightInPoints());
-		
 	}
 
 	private String getUnitMeshText(IUnitInfo info) {
@@ -239,18 +244,7 @@ public class UnitExporter extends AbstractExporter<IInfos<IUnitInfo>, IUnitInfo>
 			sb.append(IUnitWorkbook.CELL_GROUP_PAD + group.getLateArtDefineTag() + IInfoWorkbook.CELL_NEWLINE);
 			sb.append(IUnitWorkbook.CELL_GROUP_PAD + group.getMiddleArtDefineTag());
 		}
-		
+
 		return sb.toString();
 	}
-
-	@Override
-	protected int getNumCols() {
-		return IUnitWorkbook.SheetHeaders.values().length;
-	}
-
-	@Override
-	protected String getInfoListSheetName() {
-		return IUnitWorkbook.SHEETNAME_LIST;
-	}
-
 }

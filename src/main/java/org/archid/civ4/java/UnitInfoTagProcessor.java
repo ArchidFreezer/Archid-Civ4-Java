@@ -23,6 +23,11 @@ public class UnitInfoTagProcessor extends DefaultInfoTagProcessor {
 		public UnitMeshGroupsProcessor(String tagName) {
 			super(tagName);
 			exportImports.add("import org.archid.civ4.info.unit.UnitMeshGroups.UnitMeshGroup;");
+			exportImports.add("import org.archid.civ4.info.IInfoWorkbook;");
+			importImports.add("import java.util.ArrayList;");
+			importImports.add("import java.util.List;");
+			importImports.add("import org.archid.civ4.info.IInfoWorkbook;");
+			importImports.add("import org.archid.utils.StringUtils;");
 			importImports.add("import org.archid.civ4.info.unit.UnitMeshGroups.UnitMeshGroup;");
 		}
 

@@ -5,7 +5,8 @@ import java.util.List;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-@XmlJavaTypeAdapter(UnitMeshGroupsAdapter.class) class UnitMeshGroups {
+@XmlJavaTypeAdapter(UnitMeshGroupsAdapter.class) 
+class UnitMeshGroups {
 	private int groupSize;
 	private int meleeWaveSize;
 	private int rangedWaveSize;
