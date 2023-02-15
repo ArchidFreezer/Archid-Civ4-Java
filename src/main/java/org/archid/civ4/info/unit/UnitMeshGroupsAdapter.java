@@ -6,8 +6,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import org.archid.civ4.info.unit.UnitInfos.UnitMeshGroup;
-import org.archid.civ4.info.unit.UnitInfos.UnitMeshGroups;
+import org.archid.civ4.info.unit.UnitMeshGroups.UnitMeshGroup;
 import org.archid.utils.CollectionUtils;
 import org.archid.utils.JaxbUtils;
 

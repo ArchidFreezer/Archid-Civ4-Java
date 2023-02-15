@@ -9,8 +9,7 @@ import org.archid.civ4.info.AbstractImporter;
 import org.archid.civ4.info.EInfo;
 import org.archid.civ4.info.IInfoWorkbook;
 import org.archid.civ4.info.IInfos;
-import org.archid.civ4.info.unit.UnitInfos.UnitMeshGroup;
-import org.archid.civ4.info.unit.UnitInfos.UnitMeshGroups;
+import org.archid.civ4.info.unit.UnitMeshGroups.UnitMeshGroup;
 import org.archid.utils.StringUtils;
 
 public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>{

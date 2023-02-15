@@ -3,7 +3,6 @@ package org.archid.civ4.info.unit;
 import java.util.List;
 
 import org.archid.civ4.info.IInfo;
-import org.archid.civ4.info.unit.UnitInfos.UnitMeshGroups;
 import org.archid.utils.IPair;
 
 public interface IUnitInfo  extends IInfo {
