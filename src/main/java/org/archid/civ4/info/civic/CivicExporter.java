@@ -8,9 +8,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.archid.civ4.info.AbstractExporter;
 import org.archid.civ4.info.EInfo;
 import org.archid.civ4.info.IInfos;
-import org.archid.civ4.info.civic.CivicInfos.ImprovementYieldChange;
-import org.archid.civ4.info.civic.CivicInfos.ImprovementYieldChanges;
 import org.archid.civ4.info.civic.ICivicWorkbook.SheetHeaders;
+import org.archid.civ4.info.civic.ImprovementYieldChanges.ImprovementYieldChange;
 
 public class CivicExporter extends AbstractExporter<IInfos<ICivicInfo>, ICivicInfo> {
 

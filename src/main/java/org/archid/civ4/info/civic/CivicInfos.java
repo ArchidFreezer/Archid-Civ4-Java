@@ -967,39 +967,4 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 		}
 	}
 
-	@XmlJavaTypeAdapter(ImprovementYieldChangesAdapter.class)
-	static class ImprovementYieldChanges {
-		private List<ImprovementYieldChange> improvementYieldChangeList = new ArrayList<ImprovementYieldChange>();
-		
-		public List<ImprovementYieldChange> getImprovementYieldChangeList() {
-			return improvementYieldChangeList;
-		}
-		
-		public void setImprovementYieldChangeList(List<ImprovementYieldChange> unitYieldChangeList) {
-			this.improvementYieldChangeList = unitYieldChangeList;
-		}
-	}
-
-	static class ImprovementYieldChange {
-		
-		private String improvement;
-		private List<Integer> yields = new ArrayList<Integer>();
-		
-		public void setImprovement (String improvement) {
-			this.improvement = improvement;
-		}
-		
-		public String getImprovement() {
-			return improvement;
-		}
-		
-		public void addYield(Integer yield) {
-			yields.add(yield);
-		}
-		
-		public List<Integer> getYields() {
-			return yields;
-		}
-	}
-
 }

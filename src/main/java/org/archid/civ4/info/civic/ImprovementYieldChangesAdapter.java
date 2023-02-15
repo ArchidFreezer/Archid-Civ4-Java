@@ -7,8 +7,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import org.archid.civ4.info.civic.CivicInfos.ImprovementYieldChange;
-import org.archid.civ4.info.civic.CivicInfos.ImprovementYieldChanges;
+import org.archid.civ4.info.civic.ImprovementYieldChanges.ImprovementYieldChange;
 import org.archid.utils.CollectionUtils;
 import org.archid.utils.JaxbUtils;
 
@@ -45,6 +44,8 @@ public class ImprovementYieldChangesAdapter extends XmlAdapter<ImprovementYieldC
 
 	@Override
 	public AdaptedImprovementYieldChanges marshal(ImprovementYieldChanges v) throws Exception {
+		if (!CollectionUtils.hasElements(v.getImprovementYieldChangeList())) return null;
+		
 		AdaptedImprovementYieldChanges changes = new AdaptedImprovementYieldChanges();
 		for(ImprovementYieldChange improvementYieldChange: v.getImprovementYieldChangeList()) {
 			AdaptedImprovementYieldChange adapter = new AdaptedImprovementYieldChange();

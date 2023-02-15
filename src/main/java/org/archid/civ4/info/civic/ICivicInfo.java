@@ -3,7 +3,6 @@ package org.archid.civ4.info.civic;
 import java.util.ArrayList;
 import java.util.List;
 import org.archid.civ4.info.IInfo;
-import org.archid.civ4.info.civic.CivicInfos.ImprovementYieldChanges;
 import org.archid.utils.IPair;
 
 public interface ICivicInfo extends IInfo {

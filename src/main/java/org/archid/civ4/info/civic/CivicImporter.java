@@ -9,7 +9,7 @@ import org.archid.civ4.info.AbstractImporter;
 import org.archid.civ4.info.EInfo;
 import org.archid.civ4.info.IInfoWorkbook;
 import org.archid.civ4.info.IInfos;
-import org.archid.civ4.info.civic.CivicInfos.ImprovementYieldChange;
+import org.archid.civ4.info.civic.ImprovementYieldChanges.ImprovementYieldChange;
 import org.archid.utils.StringUtils;
 
 public class CivicImporter extends AbstractImporter<IInfos<ICivicInfo>, ICivicInfo> {
