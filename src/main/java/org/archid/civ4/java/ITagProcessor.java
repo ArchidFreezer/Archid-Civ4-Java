@@ -14,12 +14,7 @@ public interface ITagProcessor {
 	final String NEWLINETTTTTTT = NEWLINE + "\t\t\t\t\t\t\t";
 
 	String getTagName();
-
-	void setList(Boolean isList);
-
 	String getDataType();
-
-	String getInterfaceName();
 
 	List<String> getAdapterImports();
 

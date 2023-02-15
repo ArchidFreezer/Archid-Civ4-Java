@@ -7,7 +7,6 @@ import java.util.TreeMap;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-
 import org.archid.utils.CollectionUtils;
 import org.archid.utils.IPair;
 import org.archid.utils.JaxbUtils;
@@ -396,7 +395,6 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 					}
 				}
 			}
-			
 			info.setImprovementYieldChanges(aInfo.improvementYieldChanges);
 			info.setUpgradeAnywhere(JaxbUtils.unmarshallBoolean(aInfo.upgradeAnywhere));
 			info.setWeLoveTheKing(JaxbUtils.unmarshallString(aInfo.weLoveTheKing));
@@ -582,7 +580,6 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 					aInfo.featureHappinessChanges.add(adaptor);
 				}
 			}
-
 			aInfo.improvementYieldChanges = info.getImprovementYieldChanges();
 			aInfo.upgradeAnywhere = JaxbUtils.marshallBoolean(info.isUpgradeAnywhere());
 			aInfo.weLoveTheKing = JaxbUtils.marshallString(info.getWeLoveTheKing());

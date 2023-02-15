@@ -966,5 +966,4 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 			this.cityDefenceModifier = cityDefenceModifier;
 		}
 	}
-
 }

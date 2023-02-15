@@ -7,6 +7,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.archid.civ4.info.AbstractExporter;
 import org.archid.civ4.info.EInfo;
+import org.archid.civ4.info.IInfoWorkbook;
 import org.archid.civ4.info.IInfos;
 import org.archid.civ4.info.civic.ICivicWorkbook.SheetHeaders;
 import org.archid.civ4.info.civic.ImprovementYieldChanges.ImprovementYieldChange;
@@ -132,17 +133,16 @@ public class CivicExporter extends AbstractExporter<IInfos<ICivicInfo>, ICivicIn
 	}
 
 	private int addImprovementYieldChangeCell(Cell cell, ImprovementYieldChanges list, int maxHeight) {
-		if (list == null) {
-			return maxHeight;
-		}
+		if (list == null) return maxHeight;
+
 		int currHeight = 0;
 		cell.setCellStyle(csWrap);
 		StringBuilder cellvalue = new StringBuilder();
 		for (ImprovementYieldChange change: list.getImprovementYieldChangeList()) {
-			if (currHeight > 0) cellvalue.append("\n");
-			cellvalue.append(change.getImprovement() + "\n");
+			if (currHeight > 0) cellvalue.append(IInfoWorkbook.CELL_NEWLINE);
+			cellvalue.append(change.getImprovement() + IInfoWorkbook.CELL_NEWLINE);
 			for (Integer yield: change.getYields()) {
-				cellvalue.append(yield + "\n");
+				cellvalue.append(yield + IInfoWorkbook.CELL_NEWLINE);
 				currHeight ++;
 			}
 			cellvalue.append("-");

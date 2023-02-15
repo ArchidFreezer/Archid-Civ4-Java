@@ -121,7 +121,7 @@ public class JavaCodeGenerator {
 			if (customTags != null && customTags.hasTagProcessor(mainChild.getTagName())) {
 				processor = customTags.getTagProcessor(mainChild.getTagName());
 				tag.setDataType(processor.getDataType());
-				tag.setSingularDataType(processor.getInterfaceName());
+				tag.setSingularDataType(processor.getDataType());
 			}
 			if (processor != null) {
 				mainClass.append(processor.getImporterRow());
@@ -218,7 +218,7 @@ public class JavaCodeGenerator {
 			if (customTags != null && customTags.hasTagProcessor(mainChild.getTagName())) {
 				processor = customTags.getTagProcessor(mainChild.getTagName());
 				tag.setDataType(processor.getDataType());
-				tag.setSingularDataType(processor.getInterfaceName());
+				tag.setSingularDataType(processor.getDataType());
 			}
 			if (processor != null) {
 				mainClass.append(processor.getExporterRow());
@@ -299,7 +299,7 @@ public class JavaCodeGenerator {
 			if (customTags != null && customTags.hasTagProcessor(mainChild.getTagName())) {
 				processor = customTags.getTagProcessor(mainChild.getTagName());
 				tag.setDataType(processor.getDataType());
-				tag.setSingularDataType(processor.getInterfaceName());
+				tag.setSingularDataType(processor.getDataType());
 				imports.addAll(processor.getAdapterImports());
 			}
 			// Process the adapted class
@@ -574,7 +574,7 @@ public class JavaCodeGenerator {
 			if (customTags != null && customTags.hasTagProcessor(mainChild.getTagName())) {
 				ITagProcessor processor = customTags.getTagProcessor(mainChild.getTagName());
 				tag.setDataType(processor.getDataType());
-				tag.setSingularDataType(processor.getInterfaceName());
+				tag.setSingularDataType(processor.getDataType());
 			}
 			if (tag.custom) {
 				vars.append(NEWLINETT + "private " + tag.dataType + " " + tag.varName + " = new " + tag.dataType + "();");
@@ -590,7 +590,7 @@ public class JavaCodeGenerator {
 			methods.append(NEWLINE);
 			methods.append(NEWLINETT + "@Override");
 			methods.append(NEWLINETT + "public " + tag.setterSignature() + " {");
-			if (tag.requiresArray())
+			if (tag.requiresArray() && !tag.custom)
 				methods.append(NEWLINETTT + tag.varName + ".add(" + tag.setterVarName() + ");");
 			else
 				methods.append(NEWLINETTT + "this." + tag.varName + " = " + tag.setterVarName() + ";");
@@ -642,7 +642,7 @@ public class JavaCodeGenerator {
 			if (customTags != null && customTags.hasTagProcessor(mainChild.getTagName())) {
 				ITagProcessor processor = customTags.getTagProcessor(mainChild.getTagName());
 				tag.setDataType(processor.getDataType());
-				tag.setSingularDataType(processor.getInterfaceName());
+				tag.setSingularDataType(processor.getDataType());
 			}
 			file.append(NEWLINET + tag.getterSignature() + ";");
 			file.append(NEWLINET + tag.setterSignature() + ";");
@@ -844,8 +844,6 @@ public class JavaCodeGenerator {
 		private String buildJavaVariableName(String var) {
 			if (var.equals("Class")) {
 				var = "ClassName";
-			} else if (var.equals("Type")) {
-				var = "TypeName";
 			}
 			return StringUtils.lcaseFirstChar(getTagRootName(var));
 		}
