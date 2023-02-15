@@ -28,7 +28,6 @@ public class JavaCodeGenerator {
 	static Logger log = Logger.getLogger(JavaCodeGenerator.class.getName());
 	
 	static final String MANUAL_INTERVENTION = "ManualInterventionRequired";
-	private int intervention = 0;
 	
 	private final String NEWLINE = System.getProperty("line.separator");
 	private final String NEWLINET = NEWLINE + "\t";
@@ -323,7 +322,7 @@ public class JavaCodeGenerator {
 			
 			// Process any custom adapters
 			if (tag.requiresAdapter() && processor == null) {
-				if (tag.manual) {
+				if (tag.custom) {
 					log.warn("Unable to create adapter for " + tag.rootName + ": " + tag.dataType);
 					customAdapters.append(NEWLINE);
 					customAdapters.append(NEWLINET + "private static class Adapted" + mainChild.getTagName() + " {");
@@ -346,7 +345,7 @@ public class JavaCodeGenerator {
 			if (!tag.rootName.equals("Type")) {
 				if (processor != null) {
 					unmarshalClass.append(processor.getUnmarshallString());
-				} else if (tag.manual) {
+				} else if (tag.custom) {
 					unmarshalClass.append(NEWLINE);
 					unmarshalClass.append(NEWLINETTT + "if (CollectionUtils.hasElements(aInfo." + tag.varName + ")) {");
 					unmarshalClass.append(NEWLINETTTT + "for (Adapted" + mainChild.getTagName() + " adaptor: aInfo." + tag.varName + ") {");
@@ -390,7 +389,7 @@ public class JavaCodeGenerator {
 			if (!tag.rootName.equals("Type")) {
 				if (processor != null) {
 					marshalClass.append(processor.getMarshallString());
-				} else if (tag.manual) {
+				} else if (tag.custom) {
 					marshalClass.append(NEWLINE);
 					marshalClass.append(NEWLINETTT + "if (CollectionUtils.hasElements(info." + tag.getterName + "())) {");
 					marshalClass.append(NEWLINETTTT + "aInfo." + tag.varName + " = new ArrayList<Adapted" + mainChild.getTagName() + ">();");
@@ -577,7 +576,9 @@ public class JavaCodeGenerator {
 				tag.setDataType(processor.getDataType());
 				tag.setSingularDataType(processor.getInterfaceName());
 			}
-			if (tag.requiresArray())
+			if (tag.custom) {
+				vars.append(NEWLINETT + "private " + tag.dataType + " " + tag.varName + " = new " + tag.dataType + "();");
+			} else if (tag.requiresArray())
 					vars.append(NEWLINETT + "private " + tag.dataType + " " + tag.varName + " = new ArrayList<" + tag.singularDataType + ">();");
 			else 
 				vars.append(NEWLINETT + "private " + tag.dataType + " " + tag.varName + ";");
@@ -730,7 +731,7 @@ public class JavaCodeGenerator {
 		private String singularDataType = null;
 		private Integer numLevels = null;
 		private boolean mandatory = false;
-		private boolean manual = false;
+		private boolean custom = false;
 		private List<LeafData> leaves = new ArrayList<LeafData>(); 
 		private Map<String, String> singularMap = new HashMap<String, String>();
 		
@@ -799,23 +800,30 @@ public class JavaCodeGenerator {
 					sbInner.append("IPair<");
 				} else if (leaves.size() == 3) {
 					sbInner.append("ITriple<");
+				} else {
+					// give up at this point
+					leaves.clear();
+					custom = true;
+					dataType = rootName;
+					singularDataType = dataType;
 				}
-				Boolean first = true;
-				for (LeafData leaf: leaves) {
-					if (first) {
-						first = false;
-					} else {
-						sbInner.append(", ");
+				if (!custom) {
+					Boolean first = true;
+					for (LeafData leaf: leaves) {
+						if (first) {
+							first = false;
+						} else {
+							sbInner.append(", ");
+						}
+						sbInner.append(leaf.type);
 					}
-					sbInner.append(leaf.type);
+					sbInner.append(">");
+					singularDataType = sbInner.toString();
+					dataType = "List<" + singularDataType + ">";
 				}
-				sbInner.append(">");
-				singularDataType = sbInner.toString();
-				dataType = "List<" + singularDataType + ">";
-				
 			} else {
-				manual = true;
-				dataType = MANUAL_INTERVENTION + "_" + String.valueOf(intervention++);
+				custom = true;
+				dataType = rootName;
 				singularDataType = dataType;
 			}
 		}
@@ -834,7 +842,11 @@ public class JavaCodeGenerator {
 		}
 
 		private String buildJavaVariableName(String var) {
-			
+			if (var.equals("Class")) {
+				var = "ClassName";
+			} else if (var.equals("Type")) {
+				var = "TypeName";
+			}
 			return StringUtils.lcaseFirstChar(getTagRootName(var));
 		}
 
@@ -863,7 +875,7 @@ public class JavaCodeGenerator {
 		
 		private String buildSetterName() {
 			String setter = null;
-			if (numLevels > 0)
+			if (numLevels > 0 && !custom)
 				setter = "add" + singularForm(rootName);
 			else
 				setter = "set" + rootName;
@@ -906,10 +918,10 @@ public class JavaCodeGenerator {
 		}
 		
 		public String setterVarName() {
-			if (numLevels > 0)
-				return StringUtils.lcaseFirstChar(singularForm(rootName));
+			if (numLevels > 0 && !custom)
+				return singularForm(varName);
 			else
-				return StringUtils.lcaseFirstChar(rootName);
+				return varName;
 		}
 		
 		public Boolean requiresArray() {
