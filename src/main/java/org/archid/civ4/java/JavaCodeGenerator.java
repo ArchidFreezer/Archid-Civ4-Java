@@ -49,12 +49,51 @@ public class JavaCodeGenerator {
 	Set<String> dynamicImports = new HashSet<String>();
 	private Map<String, Tag> infoTagData = new HashMap<String, Tag>();
 	
+	private TagNameUtils tagNameUtils = new TagNameUtils();
+	
 	private IInfoTagProcessor customTags = null;
 
 	public JavaCodeGenerator(SchemaParser parser) {
 		this.parser = parser;
 	}
 	
+	private void init(String infoTopLevelTag) {
+		this.infoTopLevelTag = infoTopLevelTag;                             // Civ4SomeValueInfos
+		infoNamePlural = infoTopLevelTag.substring(4);                      // SomeValueInfos
+		infoName = infoNamePlural.substring(0,infoNamePlural.length() - 1); // SomeValueInfo
+		infoNameRoot = infoName.substring(0,infoName.length() - 4);         // SomeValue
+		namespaceFolder = infoNameRoot.toLowerCase();                       // somevalue
+		packageDef = "package org.archid.civ4.info." + namespaceFolder + ";";
+		topLevelTagDefinition = parser.getTagDefinition(infoName);
+		customTags = TagFactory.getProcessor(infoName);
+		if (customTags != null) customTags.init(namespaceFolder);
+		parseInfo(topLevelTagDefinition);
+	}
+
+	private void parseInfo(XmlTagDefinition info) {
+		Map<String, DataType> tagNameData = new HashMap<String, XmlTagDefinition.DataType>();
+		for (XmlTagInstance tag: info.getChildren()) {
+			XmlTagDefinition tagDef = parser.getTagDefinition(tag.getTagName()); 
+			Tag tagData = new Tag(tagDef, tag.isMandatory());
+			if (tagData.requiresArray()) {
+				dynamicImports.add("import java.util.List;");
+				dynamicImports.add("import java.util.ArrayList;");
+			}
+			if (tagData.leaves.size() == 2) dynamicImports.add("import org.archid.utils.IPair;");
+			if (tagData.leaves.size() == 3) dynamicImports.add("import org.archid.utils.ITriple;");
+			infoTagData.put(tag.getTagName(), tagData);
+			tagNameData.put(tag.getTagName(), tagDef.getDataType());
+		}
+		// Get the variable names to be used
+		tagNameUtils.buildUniqueNames(tagNameData);
+		// Set the variable names to be used
+		for (String tagName: infoTagData.keySet()) {
+			infoTagData.get(tagName).setRootName(tagNameUtils.getRootName(tagName));
+			infoTagData.get(tagName).setVarName(tagNameUtils.getVarName(tagName));
+			infoTagData.get(tagName).init();
+		}
+	}
+
 	public void createJavaCode(String infoTopLevelTag) {
 		init(infoTopLevelTag);
 		//First we need to create the output folder (package) for the java code
@@ -500,7 +539,7 @@ public class JavaCodeGenerator {
 			} else {
 				row.append(", ");
 			}
-			row.append(StringUtils.uCaseSplit(tag.rootName, '_'));
+			row.append(StringUtils.uCaseSplit(tag.varName, '_'));
 			if (row.length() >= 170) {
 				file.append(row);
 				row.setLength(0);
@@ -591,7 +630,7 @@ public class JavaCodeGenerator {
 			methods.append(NEWLINETT + "@Override");
 			methods.append(NEWLINETT + "public " + tag.setterSignature() + " {");
 			if (tag.requiresArray() && !tag.custom)
-				methods.append(NEWLINETTT + tag.varName + ".add(" + tag.setterVarName() + ");");
+				methods.append(NEWLINETTT + "this." + tag.varName + ".add(" + tag.setterVarName() + ");");
 			else
 				methods.append(NEWLINETTT + "this." + tag.varName + " = " + tag.setterVarName() + ";");
 			methods.append(NEWLINETT + "}");
@@ -665,33 +704,6 @@ public class JavaCodeGenerator {
 		FileUtils.ensureDirExists(folderPath);
 	}
 
-	private void init(String infoTopLevelTag) {
-		// The tag will be in the form: Civ4SomeValueInfos
-		this.infoTopLevelTag = infoTopLevelTag;
-		infoNamePlural = infoTopLevelTag.substring(4); // SomeValueInfos
-		infoName = infoNamePlural.substring(0,infoNamePlural.length() - 1); // SomeValueInfo
-		infoNameRoot = infoName.substring(0,infoName.length() - 4); // SomeValue
-		namespaceFolder = infoNameRoot.toLowerCase(); // somevalue
-		packageDef = "package org.archid.civ4.info." + namespaceFolder + ";";
-		topLevelTagDefinition = parser.getTagDefinition(infoName);
-		customTags = TagFactory.getProcessor(infoName);
-		if (customTags != null) customTags.init(namespaceFolder);
-		parseInfo(topLevelTagDefinition);
-	}
-
-	private void parseInfo(XmlTagDefinition info) {
-		for (XmlTagInstance tag: info.getChildren()) {
-			Tag tagData = new Tag(parser.getTagDefinition(tag.getTagName()), tag.isMandatory());
-			if (tagData.requiresArray()) {
-				dynamicImports.add("import java.util.List;");
-				dynamicImports.add("import java.util.ArrayList;");
-			}
-			if (tagData.leaves.size() == 2) dynamicImports.add("import org.archid.utils.IPair;");
-			if (tagData.leaves.size() == 3) dynamicImports.add("import org.archid.utils.ITriple;");
-			infoTagData.put(tag.getTagName(), tagData);
-		}
-	}
-
 	protected void writeFile(String fileName, String content) {
 		BufferedWriter out = null;
 		String filePath = props.getAppProperty(PropertyKeys.PROPERTY_KEY_JAVA_OUTPUT_DIR, ".") + "\\" + namespaceFolder + "\\" + fileName;
@@ -723,8 +735,8 @@ public class JavaCodeGenerator {
 	private class Tag {
 		
 		private XmlTagDefinition tagDefinition = null; // iSomeTag
-		private String rootName = null;      // SomeTag
-		private String varName = null;       // someTag
+		private String rootName = "";      // SomeTag
+		private String varName = "";       // someTag
 		private String getterName = null;
 		private String setterName = null;
 		private String dataType = null;
@@ -733,38 +745,28 @@ public class JavaCodeGenerator {
 		private boolean mandatory = false;
 		private boolean custom = false;
 		private List<LeafData> leaves = new ArrayList<LeafData>(); 
-		private Map<String, String> singularMap = new HashMap<String, String>();
 		
 		
 		private Tag(XmlTagDefinition tag, boolean mandatory) {
 			this.tagDefinition = tag;
 			this.mandatory = mandatory;
-			populateSingularMap();
-			numLevels = getNumLevels(tag, 0);
-			rootName = getTagRootName(tagDefinition.getTagName());
-			varName = buildJavaVariableName(tagDefinition.getTagName());
+			numLevels = getNumLevels(tagDefinition, 0);
 			populateLeafData();
+		}
+		
+		public void init() {
 			getterName = buildGetterName();
 			setterName = buildSetterName();
 		}
 		
-		private void populateSingularMap() {
-			singularMap.put("Bonuses", "Bonus");
-			singularMap.put("Buildings", "Building");
-			singularMap.put("Classes", "Class");
-			singularMap.put("Corporations", "Corporation");
-			singularMap.put("Events", "Event");
-			singularMap.put("Features", "Feature");
-			singularMap.put("Improvements", "Improvement");
-			singularMap.put("Prereqs", "Prereq");
-			singularMap.put("Religions", "Religion");
-			singularMap.put("Routes", "Route");
-			singularMap.put("Techs", "Tech");
-			singularMap.put("Terrains", "Terrain");
-			singularMap.put("Types", "Type");
-			singularMap.put("Units", "Unit");
+		public void setVarName(String varName) {
+			this.varName = varName;
 		}
-
+		
+		public void setRootName(String rootName) {
+			this.rootName = rootName;
+		}
+		
 		private void populateLeafData() {
 			if (numLevels == 0) {
 				LeafData leafData = new LeafData();
@@ -791,7 +793,7 @@ public class JavaCodeGenerator {
 				for (XmlTagInstance leaf: wrapper.getChildren()) {
 					LeafData leafData = new LeafData();
 					leafData.name = leaf.getTagName();
-					leafData.varName = buildJavaVariableName(leaf.getTagName());
+					leafData.varName = tagNameUtils.getVarName(leaf.getTagName());
 					leafData.type = parser.getTagDefinition(leaf.getTagName()).getDataType().getJavaType();
 					leafData.singularType = leafData.type;
 					leaves.add(leafData);
@@ -841,13 +843,6 @@ public class JavaCodeGenerator {
 			return level;
 		}
 
-		private String buildJavaVariableName(String var) {
-			if (var.equals("Class")) {
-				var = "ClassName";
-			}
-			return StringUtils.lcaseFirstChar(getTagRootName(var));
-		}
-
 		private String buildGetterName() {
 			StringBuilder sb = new StringBuilder();
 			if (tagDefinition.getDataType() == DataType.BOOLEAN)
@@ -858,53 +853,13 @@ public class JavaCodeGenerator {
 			return sb.toString();
 		}
 
-		private String getTagRootName(String tagName) {
-			// Check if we need to truncate the fist character
-			switch (tagDefinition.getDataType()) {
-			case BOOLEAN:
-			case INTEGER:
-				tagName = tagName.substring(1);
-				break;
-			default:
-				break;
-			}
-			return tagName;
-		}
-		
 		private String buildSetterName() {
 			String setter = null;
 			if (numLevels > 0 && !custom)
-				setter = "add" + singularForm(rootName);
+				setter = "add" + tagNameUtils.singularForm(rootName);
 			else
 				setter = "set" + rootName;
 			return setter;
-		}
-
-		/**
-		 * Attempt to derive a singular form of plural tags
-		 * e.g. UnitsRequired -> UnitRequired
-		 *      PrereqTechs   -> PrereqTech
-		 *      
-		 * @param plural TitleCase tag name to derive the plural from
-		 * @return String containing derived singular value
-		 */
-		private String singularForm(String plural) {
-			StringBuilder singular = new StringBuilder();
-			// First try and split the value assuming TitleCase
-			List<String> words = StringUtils.findWordsInMixedCase(plural);
-			
-			Integer numWordsLeft = words.size();
-			for (String word: words) {
-				numWordsLeft--;
-				if (singularMap.containsKey(word)) {
-					singular.append(singularMap.get(word));
-				} else if (numWordsLeft == 0 && word.endsWith("s")) {
-					singular.append(word.substring(0,word.length() -1));
-				} else {
-					singular.append(word);
-				}
-			}
-			return singular.toString(); 
 		}
 
 		public String getterSignature() {
@@ -917,7 +872,7 @@ public class JavaCodeGenerator {
 		
 		public String setterVarName() {
 			if (numLevels > 0 && !custom)
-				return singularForm(varName);
+				return tagNameUtils.singularForm(varName);
 			else
 				return varName;
 		}
