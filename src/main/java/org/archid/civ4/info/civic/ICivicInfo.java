@@ -3,6 +3,7 @@ package org.archid.civ4.info.civic;
 import java.util.ArrayList;
 import java.util.List;
 import org.archid.civ4.info.IInfo;
+import org.archid.civ4.info.civic.CivicInfos.ImprovementYieldChanges;
 import org.archid.utils.IPair;
 
 public interface ICivicInfo extends IInfo {
@@ -243,8 +244,8 @@ public interface ICivicInfo extends IInfo {
 	List<IPair<String, Integer>> getFeatureHappinessChanges();
 	void addFeatureHappinessChange(IPair<String, Integer> featureHappinessChange);
 
-	List<IImprovementYieldChange> getImprovementYieldChanges();
-	void addImprovementYieldChange(IImprovementYieldChange improvementYieldChange);
+	ImprovementYieldChanges getImprovementYieldChanges();
+	void setImprovementYieldChanges(ImprovementYieldChanges improvementYieldChanges);
 
 	Boolean isUpgradeAnywhere();
 	void setUpgradeAnywhere(Boolean upgradeAnywhere);

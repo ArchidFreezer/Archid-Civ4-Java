@@ -117,7 +117,7 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 		private List<IPair<String, Integer>> buildingHappinessChanges = new ArrayList<IPair<String, Integer>>();
 		private List<IPair<String, Integer>> buildingHealthChanges = new ArrayList<IPair<String, Integer>>();
 		private List<IPair<String, Integer>> featureHappinessChanges = new ArrayList<IPair<String, Integer>>();
-		private List<IImprovementYieldChange> improvementYieldChanges = new ArrayList<IImprovementYieldChange>();
+		private ImprovementYieldChanges improvementYieldChanges = new ImprovementYieldChanges();
 		private Boolean upgradeAnywhere;
 		private String weLoveTheKing;
 		private Integer cityDefenceModifier;
@@ -927,13 +927,13 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 		}
 
 		@Override
-		public List<IImprovementYieldChange> getImprovementYieldChanges() {
+		public ImprovementYieldChanges getImprovementYieldChanges() {
 			return improvementYieldChanges;
 		}
 
 		@Override
-		public void addImprovementYieldChange(IImprovementYieldChange improvementYieldChange) {
-			improvementYieldChanges.add(improvementYieldChange);
+		public void setImprovementYieldChanges(ImprovementYieldChanges improvementYieldChanges) {
+			this.improvementYieldChanges = improvementYieldChanges;
 		}
 
 		@Override
@@ -966,4 +966,40 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 			this.cityDefenceModifier = cityDefenceModifier;
 		}
 	}
+
+	@XmlJavaTypeAdapter(ImprovementYieldChangesAdapter.class)
+	static class ImprovementYieldChanges {
+		private List<ImprovementYieldChange> improvementYieldChangeList = new ArrayList<ImprovementYieldChange>();
+		
+		public List<ImprovementYieldChange> getImprovementYieldChangeList() {
+			return improvementYieldChangeList;
+		}
+		
+		public void setImprovementYieldChangeList(List<ImprovementYieldChange> unitYieldChangeList) {
+			this.improvementYieldChangeList = unitYieldChangeList;
+		}
+	}
+
+	static class ImprovementYieldChange {
+		
+		private String improvement;
+		private List<Integer> yields = new ArrayList<Integer>();
+		
+		public void setImprovement (String improvement) {
+			this.improvement = improvement;
+		}
+		
+		public String getImprovement() {
+			return improvement;
+		}
+		
+		public void addYield(Integer yield) {
+			yields.add(yield);
+		}
+		
+		public List<Integer> getYields() {
+			return yields;
+		}
+	}
+
 }

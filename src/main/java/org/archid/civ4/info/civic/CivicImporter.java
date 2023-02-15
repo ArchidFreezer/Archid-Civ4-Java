@@ -9,6 +9,7 @@ import org.archid.civ4.info.AbstractImporter;
 import org.archid.civ4.info.EInfo;
 import org.archid.civ4.info.IInfoWorkbook;
 import org.archid.civ4.info.IInfos;
+import org.archid.civ4.info.civic.CivicInfos.ImprovementYieldChange;
 import org.archid.utils.StringUtils;
 
 public class CivicImporter extends AbstractImporter<IInfos<ICivicInfo>, ICivicInfo> {
@@ -133,13 +134,14 @@ public class CivicImporter extends AbstractImporter<IInfos<ICivicInfo>, ICivicIn
 					if (first) {
 						yields = new ArrayList<Integer>();
 						improvement = getVal(str, String.class);
+						first = false;
 					} else if (str.equals("-")) {
-						IImprovementYieldChange improvementYieldChange = ImprovementYieldChanges.createImprovementYieldChange();
+						ImprovementYieldChange improvementYieldChange = new ImprovementYieldChange();
 						improvementYieldChange.setImprovement(improvement);
 						for (Integer yield: yields) {
 							improvementYieldChange.addYield(yield);
 						}
-						info.addImprovementYieldChange(improvementYieldChange);
+						info.getImprovementYieldChanges().getImprovementYieldChangeList().add(improvementYieldChange);
 						first = !first;
 					} else {
 						yields.add(Integer.valueOf(str));

@@ -11,26 +11,26 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement(name="ImprovementYieldChange", namespace="x-schema:CIV4GameInfoSchema.xml")
 @XmlAccessorType(XmlAccessType.NONE)
-public class ImprovementYieldChanges {
+public class ImprovementYieldChanges_orig {
 
-	private List<IImprovementYieldChange> improvementChanges = new ArrayList<IImprovementYieldChange>();
+	private List<IImprovementYieldChange_orig> improvementChanges = new ArrayList<IImprovementYieldChange_orig>();
 	
-	@XmlJavaTypeAdapter(ImprovementYieldChangeAdapter.class)
+	@XmlJavaTypeAdapter(ImprovementYieldChangeAdapter_orig.class)
 	@XmlElement(name="ImprovementYieldChanges")
-	public List<IImprovementYieldChange> getImprovementYieldChanges() {
+	public List<IImprovementYieldChange_orig> getImprovementYieldChanges() {
 		return improvementChanges;
 	}
 	
-	public static IImprovementYieldChange createImprovementYieldChange() {
-		return new ImprovementYieldChange();
+	public static IImprovementYieldChange_orig createImprovementYieldChange() {
+		return new ImprovementYieldChange_orig();
 	}
 	
-	private static class ImprovementYieldChange implements IImprovementYieldChange {
+	private static class ImprovementYieldChange_orig implements IImprovementYieldChange_orig {
 
 		private String improvement;
 		private List<Integer> yields = new ArrayList<Integer>();
 		
-		private ImprovementYieldChange() {}
+		private ImprovementYieldChange_orig() {}
 		
 		public void setImprovement (String improvement) {
 			this.improvement = improvement;

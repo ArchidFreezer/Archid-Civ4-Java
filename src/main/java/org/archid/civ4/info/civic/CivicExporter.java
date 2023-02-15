@@ -8,6 +8,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.archid.civ4.info.AbstractExporter;
 import org.archid.civ4.info.EInfo;
 import org.archid.civ4.info.IInfos;
+import org.archid.civ4.info.civic.CivicInfos.ImprovementYieldChange;
+import org.archid.civ4.info.civic.CivicInfos.ImprovementYieldChanges;
 import org.archid.civ4.info.civic.ICivicWorkbook.SheetHeaders;
 
 public class CivicExporter extends AbstractExporter<IInfos<ICivicInfo>, ICivicInfo> {
@@ -130,11 +132,14 @@ public class CivicExporter extends AbstractExporter<IInfos<ICivicInfo>, ICivicIn
 		row.setHeightInPoints(maxHeight * row.getSheet().getDefaultRowHeightInPoints());
 	}
 
-	private int addImprovementYieldChangeCell(Cell cell, List<IImprovementYieldChange> list, int maxHeight) {
+	private int addImprovementYieldChangeCell(Cell cell, ImprovementYieldChanges list, int maxHeight) {
+		if (list == null) {
+			return maxHeight;
+		}
 		int currHeight = 0;
 		cell.setCellStyle(csWrap);
 		StringBuilder cellvalue = new StringBuilder();
-		for (IImprovementYieldChange change: list) {
+		for (ImprovementYieldChange change: list.getImprovementYieldChangeList()) {
 			if (currHeight > 0) cellvalue.append("\n");
 			cellvalue.append(change.getImprovement() + "\n");
 			for (Integer yield: change.getYields()) {

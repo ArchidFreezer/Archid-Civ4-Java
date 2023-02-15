@@ -7,14 +7,16 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
+import org.archid.civ4.info.civic.CivicInfos.ImprovementYieldChange;
+import org.archid.civ4.info.civic.CivicInfos.ImprovementYieldChanges;
 import org.archid.utils.CollectionUtils;
 import org.archid.utils.JaxbUtils;
 
-public class ImprovementYieldChangeAdapter extends XmlAdapter<ImprovementYieldChangeAdapter.ImprovementYieldChangeList, List<IImprovementYieldChange>> {
+public class ImprovementYieldChangesAdapter extends XmlAdapter<ImprovementYieldChangesAdapter.AdaptedImprovementYieldChanges, ImprovementYieldChanges> {
 	
-	public static class ImprovementYieldChangeList {
+	public static class AdaptedImprovementYieldChanges {
 		@XmlElement(name = "ImprovementYieldChange")
-		List<AdaptedImprovementYieldChange> entries = new ArrayList<AdaptedImprovementYieldChange>();
+		private List<AdaptedImprovementYieldChange> entries = new ArrayList<AdaptedImprovementYieldChange>();
 	}
 	
 	static class AdaptedImprovementYieldChange {
@@ -26,34 +28,34 @@ public class ImprovementYieldChangeAdapter extends XmlAdapter<ImprovementYieldCh
 	}
 
 	@Override
-	public List<IImprovementYieldChange> unmarshal(ImprovementYieldChangeList v) throws Exception {
-		List<IImprovementYieldChange> list = new ArrayList<IImprovementYieldChange>();
+	public ImprovementYieldChanges unmarshal(AdaptedImprovementYieldChanges v) throws Exception {
+		ImprovementYieldChanges changes = new ImprovementYieldChanges();
 		for (AdaptedImprovementYieldChange adapter: v.entries) {
-			IImprovementYieldChange improvementYieldChange = ImprovementYieldChanges.createImprovementYieldChange();
+			ImprovementYieldChange improvementYieldChange = new ImprovementYieldChange();
 			improvementYieldChange.setImprovement(JaxbUtils.unmarshallString(adapter.improvementType));
 			if (CollectionUtils.hasElements(adapter.improvementYields)) {
 				for (Integer val: adapter.improvementYields) {
 					improvementYieldChange.addYield(val);
 				}
 			}
-			list.add(improvementYieldChange);
+			changes.getImprovementYieldChangeList().add(improvementYieldChange);
 		}
-		return list;
+		return changes;
 	}
 
 	@Override
-	public ImprovementYieldChangeList marshal(List<IImprovementYieldChange> v) throws Exception {
-		ImprovementYieldChangeList list = new ImprovementYieldChangeList();
-		for(IImprovementYieldChange improvementYieldChange: v) {
+	public AdaptedImprovementYieldChanges marshal(ImprovementYieldChanges v) throws Exception {
+		AdaptedImprovementYieldChanges changes = new AdaptedImprovementYieldChanges();
+		for(ImprovementYieldChange improvementYieldChange: v.getImprovementYieldChangeList()) {
 			AdaptedImprovementYieldChange adapter = new AdaptedImprovementYieldChange();
 			adapter.improvementType = improvementYieldChange.getImprovement();
 			adapter.improvementYields = new ArrayList<Integer>();
 			if (CollectionUtils.hasElements(improvementYieldChange.getYields())) {
 				adapter.improvementYields = improvementYieldChange.getYields();
 			}
-			list.entries.add(adapter);
+			changes.entries.add(adapter);
 		}
-		return list;
+		return changes;
 	}
 
 }

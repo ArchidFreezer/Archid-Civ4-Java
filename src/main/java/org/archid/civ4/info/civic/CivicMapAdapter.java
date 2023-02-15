@@ -7,8 +7,8 @@ import java.util.TreeMap;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-import org.archid.civ4.info.civic.ImprovementYieldChangeAdapter.AdaptedImprovementYieldChange;
-import org.archid.civ4.info.civic.ImprovementYieldChangeAdapter.ImprovementYieldChangeList;
+
+import org.archid.civ4.info.civic.CivicInfos.ImprovementYieldChanges;
 import org.archid.utils.CollectionUtils;
 import org.archid.utils.IPair;
 import org.archid.utils.JaxbUtils;
@@ -197,7 +197,7 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 		@XmlElement(name="FeatureHappinessChange")
 		private List<AdaptedFeatureHappinessChanges> featureHappinessChanges;
 		@XmlElement(name="ImprovementYieldChanges")
-		private ImprovementYieldChangeList improvementYieldChanges;
+		private ImprovementYieldChanges improvementYieldChanges;
 		@XmlElement(name="bUpgradeAnywhere")
 		private Integer upgradeAnywhere;
 		@XmlElement(name="WeLoveTheKing")
@@ -397,17 +397,8 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 					}
 				}
 			}
-
-			if (aInfo.improvementYieldChanges != null && CollectionUtils.hasElements(aInfo.improvementYieldChanges.entries)) {
-				for (ImprovementYieldChangeAdapter.AdaptedImprovementYieldChange adapter: aInfo.improvementYieldChanges.entries ) {
-					IImprovementYieldChange improvementYieldChange = ImprovementYieldChanges.createImprovementYieldChange();
-					improvementYieldChange.setImprovement(adapter.improvementType);
-					for (Integer yield: adapter.improvementYields ) {
-						improvementYieldChange.addYield(yield);
-					}
-					info.addImprovementYieldChange(improvementYieldChange);
-				}
-			}
+			
+			info.setImprovementYieldChanges(aInfo.improvementYieldChanges);
 			info.setUpgradeAnywhere(JaxbUtils.unmarshallBoolean(aInfo.upgradeAnywhere));
 			info.setWeLoveTheKing(JaxbUtils.unmarshallString(aInfo.weLoveTheKing));
 			info.setCityDefenceModifier(JaxbUtils.unmarshallInteger(aInfo.cityDefenceModifier));
@@ -593,14 +584,7 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 				}
 			}
 
-			if (CollectionUtils.hasElements(info.getImprovementYieldChanges())) {
-				for (IImprovementYieldChange change: info.getImprovementYieldChanges()) {
-					AdaptedImprovementYieldChange adapter = new AdaptedImprovementYieldChange();
-					adapter.improvementType = change.getImprovement();
-					adapter.improvementYields = change.getYields();
-					aInfo.improvementYieldChanges.entries.add(adapter);
-				}
-			}
+			aInfo.improvementYieldChanges = info.getImprovementYieldChanges();
 			aInfo.upgradeAnywhere = JaxbUtils.marshallBoolean(info.isUpgradeAnywhere());
 			aInfo.weLoveTheKing = JaxbUtils.marshallString(info.getWeLoveTheKing());
 			aInfo.cityDefenceModifier = JaxbUtils.marshallInteger(info.getCityDefenceModifier());
