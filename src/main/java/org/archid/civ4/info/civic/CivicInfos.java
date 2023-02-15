@@ -803,7 +803,7 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 
 		@Override
 		public void addYieldModifier(Integer yieldModifier) {
-			yieldModifiers.add(yieldModifier);
+			this.yieldModifiers.add(yieldModifier);
 		}
 
 		@Override
@@ -813,7 +813,7 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 
 		@Override
 		public void addCapitalYieldModifier(Integer capitalYieldModifier) {
-			capitalYieldModifiers.add(capitalYieldModifier);
+			this.capitalYieldModifiers.add(capitalYieldModifier);
 		}
 
 		@Override
@@ -823,7 +823,7 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 
 		@Override
 		public void addTradeYieldModifier(Integer tradeYieldModifier) {
-			tradeYieldModifiers.add(tradeYieldModifier);
+			this.tradeYieldModifiers.add(tradeYieldModifier);
 		}
 
 		@Override
@@ -833,7 +833,7 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 
 		@Override
 		public void addCommerceModifier(Integer commerceModifier) {
-			commerceModifiers.add(commerceModifier);
+			this.commerceModifiers.add(commerceModifier);
 		}
 
 		@Override
@@ -843,7 +843,7 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 
 		@Override
 		public void addCapitalCommerceModifier(Integer capitalCommerceModifier) {
-			capitalCommerceModifiers.add(capitalCommerceModifier);
+			this.capitalCommerceModifiers.add(capitalCommerceModifier);
 		}
 
 		@Override
@@ -853,7 +853,7 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 
 		@Override
 		public void addSpecialistExtraCommerce(Integer specialistExtraCommerce) {
-			specialistExtraCommerces.add(specialistExtraCommerce);
+			this.specialistExtraCommerces.add(specialistExtraCommerce);
 		}
 
 		@Override
@@ -863,7 +863,7 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 
 		@Override
 		public void addHurry(String hurry) {
-			hurrys.add(hurry);
+			this.hurrys.add(hurry);
 		}
 
 		@Override
@@ -873,7 +873,7 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 
 		@Override
 		public void addSpecialBuildingNotRequired(String specialBuildingNotRequired) {
-			specialBuildingNotRequireds.add(specialBuildingNotRequired);
+			this.specialBuildingNotRequireds.add(specialBuildingNotRequired);
 		}
 
 		@Override
@@ -883,7 +883,7 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 
 		@Override
 		public void addSpecialistValid(String specialistValid) {
-			specialistValids.add(specialistValid);
+			this.specialistValids.add(specialistValid);
 		}
 
 		@Override
@@ -893,7 +893,7 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 
 		@Override
 		public void addFreeSpecialistCount(IPair<String, Integer> freeSpecialistCount) {
-			freeSpecialistCounts.add(freeSpecialistCount);
+			this.freeSpecialistCounts.add(freeSpecialistCount);
 		}
 
 		@Override
@@ -903,7 +903,7 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 
 		@Override
 		public void addBuildingHappinessChange(IPair<String, Integer> buildingHappinessChange) {
-			buildingHappinessChanges.add(buildingHappinessChange);
+			this.buildingHappinessChanges.add(buildingHappinessChange);
 		}
 
 		@Override
@@ -913,7 +913,7 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 
 		@Override
 		public void addBuildingHealthChange(IPair<String, Integer> buildingHealthChange) {
-			buildingHealthChanges.add(buildingHealthChange);
+			this.buildingHealthChanges.add(buildingHealthChange);
 		}
 
 		@Override
@@ -923,7 +923,7 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 
 		@Override
 		public void addFeatureHappinessChange(IPair<String, Integer> featureHappinessChange) {
-			featureHappinessChanges.add(featureHappinessChange);
+			this.featureHappinessChanges.add(featureHappinessChange);
 		}
 
 		@Override
