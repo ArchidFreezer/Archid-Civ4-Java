@@ -138,9 +138,9 @@ public interface IBonusInfo extends IInfo {
 
 	void addTerrainBoolean(String terrainBoolean);
 
-	List<Integer> getRands();
+	Rands getRands();
 
-	void addRand(Integer rand);
+	void setRands(Rands rands);
 
 	List<Integer> getYieldChanges();
 

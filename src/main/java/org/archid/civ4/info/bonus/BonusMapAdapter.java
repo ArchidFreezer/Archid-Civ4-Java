@@ -61,7 +61,7 @@ public class BonusMapAdapter extends XmlAdapter<BonusMapAdapter.BonusMap, Map<St
 		@XmlElement(name="iMaxLatitude")
 		private Integer maxLatitude;
 		@XmlElement(name="Rands")
-		private AdaptedRands rands;
+		private Rands rands;
 		@XmlElement(name="iPlayer")
 		private Integer player;
 		@XmlElement(name="iTilesPer")
@@ -99,17 +99,6 @@ public class BonusMapAdapter extends XmlAdapter<BonusMapAdapter.BonusMap, Map<St
 		private Integer useLSystem;
 	}
 	
-	private static class AdaptedRands {
-		@XmlElement(name="iRandApp1")
-		private Integer randApp1;
-		@XmlElement(name="iRandApp2")
-		private Integer randApp2;
-		@XmlElement(name="iRandApp3")
-		private Integer randApp3;
-		@XmlElement(name="iRandApp4")
-		private Integer randApp4;
-	}
-
 	@Override
 	public Map<String, IBonusInfo> unmarshal(BonusMap v) throws Exception {
 		Map<String, IBonusInfo> map = new TreeMap<String, IBonusInfo>();
@@ -139,14 +128,7 @@ public class BonusMapAdapter extends XmlAdapter<BonusMapAdapter.BonusMap, Map<St
 			info.setMinAreaSize(JaxbUtils.unmarshallInteger(aInfo.minAreaSize));
 			info.setMinLatitude(JaxbUtils.unmarshallInteger(aInfo.minLatitude));
 			info.setMaxLatitude(JaxbUtils.unmarshallInteger(aInfo.maxLatitude));
-
-			if (aInfo.rands != null) {
-				if (aInfo.rands.randApp1 != null) info.addRand(aInfo.rands.randApp1);
-				if (aInfo.rands.randApp2 != null) info.addRand(aInfo.rands.randApp2);
-				if (aInfo.rands.randApp3 != null) info.addRand(aInfo.rands.randApp3);
-				if (aInfo.rands.randApp4 != null) info.addRand(aInfo.rands.randApp4);
-			}
-			
+			info.setRands(aInfo.rands);
 			info.setPlayer(JaxbUtils.unmarshallInteger(aInfo.player));
 			info.setTilesPer(JaxbUtils.unmarshallInteger(aInfo.tilesPer));
 			info.setMinLandPercent(JaxbUtils.unmarshallInteger(aInfo.minLandPercent));
@@ -220,21 +202,7 @@ public class BonusMapAdapter extends XmlAdapter<BonusMapAdapter.BonusMap, Map<St
 			aInfo.minAreaSize = JaxbUtils.marshallInteger(info.getMinAreaSize());
 			aInfo.minLatitude = JaxbUtils.marshallInteger(info.getMinLatitude());
 			aInfo.maxLatitude = JaxbUtils.marshallInteger(info.getMaxLatitude());
-			
-			// Horrible 
-			if (CollectionUtils.hasElements(info.getRands())) {
-				aInfo.rands = new AdaptedRands();
-				int count = 0;
-				int[] arr = new int[4]; // array initialised with 0 by default
-				for (Integer val: info.getRands()) {
-					arr[count++] = val;
-				}
-				aInfo.rands.randApp1 = arr[0];
-				aInfo.rands.randApp2 = arr[1];
-				aInfo.rands.randApp3 = arr[2];
-				aInfo.rands.randApp4 = arr[3];
-			}
-
+			aInfo.rands = info.getRands();
 			aInfo.player = JaxbUtils.marshallInteger(info.getPlayer());
 			aInfo.tilesPer = JaxbUtils.marshallInteger(info.getTilesPer());
 			aInfo.minLandPercent = JaxbUtils.marshallInteger(info.getMinLandPercent());

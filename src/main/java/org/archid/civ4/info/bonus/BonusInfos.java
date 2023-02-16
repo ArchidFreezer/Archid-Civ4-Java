@@ -71,7 +71,7 @@ public class BonusInfos extends AbstractInfos<IBonusInfo> {
 		private List<String> featureBooleans = new ArrayList<String>();
 		private List<String> featureTerrainBooleans = new ArrayList<String>();
 		private List<String> terrainBooleans = new ArrayList<String>();
-		private List<Integer> rands = new ArrayList<Integer>();
+		private Rands rands = new Rands();
 		private List<Integer> yieldChanges = new ArrayList<Integer>();
 		
 		private BonusInfo(String type) {
@@ -626,7 +626,7 @@ public class BonusInfos extends AbstractInfos<IBonusInfo> {
 		 * @see org.archid.civ4.info.bonus.IBonusInfo#getRands()
 		 */
 		@Override
-		public List<Integer> getRands() {
+		public Rands getRands() {
 			return rands;
 		}
 
@@ -634,8 +634,8 @@ public class BonusInfos extends AbstractInfos<IBonusInfo> {
 		 * @see org.archid.civ4.info.bonus.IBonusInfo#addRand(java.lang.Integer)
 		 */
 		@Override
-		public void addRand(Integer rand) {
-			this.rands.add(rand);
+		public void setRands(Rands rands) {
+			this.rands = rands;
 		}
 
 		/* (non-Javadoc)

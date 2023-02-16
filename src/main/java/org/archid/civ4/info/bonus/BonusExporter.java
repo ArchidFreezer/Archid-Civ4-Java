@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.archid.civ4.info.AbstractExporter;
 import org.archid.civ4.info.EInfo;
 import org.archid.civ4.info.IInfoWorkbook;
 import org.archid.civ4.info.IInfos;
 import org.archid.civ4.info.bonus.IBonusWorkbook.SheetHeaders;
-import org.archid.utils.StringUtils;
 
 public class BonusExporter extends AbstractExporter<IInfos<IBonusInfo>, IBonusInfo>{
 
@@ -53,9 +53,7 @@ public class BonusExporter extends AbstractExporter<IInfos<IBonusInfo>, IBonusIn
 		addSingleCell(row.createCell(colNum++), info.getMinAreaSize());
 		addSingleCell(row.createCell(colNum++), info.getMinLatitude());
 		addSingleCell(row.createCell(colNum++), info.getMaxLatitude());
-		String rands = getRandsText(info);
-		if (StringUtils.hasCharacters(rands) & maxHeight < 4) maxHeight = 4; 
-		addSingleCell(row.createCell(colNum++), rands);
+		maxHeight = addRandsCell(row.createCell(colNum++), info.getRands(), maxHeight);
 		addSingleCell(row.createCell(colNum++), info.getPlayer());
 		addSingleCell(row.createCell(colNum++), info.getTilesPer());
 		addSingleCell(row.createCell(colNum++), info.getMinLandPercent());
@@ -76,16 +74,17 @@ public class BonusExporter extends AbstractExporter<IInfos<IBonusInfo>, IBonusIn
 		row.setHeightInPoints(maxHeight * row.getSheet().getDefaultRowHeightInPoints());
 	
 }
-
-	private String getRandsText(IBonusInfo info) {
+	
+	private int addRandsCell(Cell cell, Rands rands, int maxHeight) {
+		if (rands == null) return maxHeight;
+		cell.setCellStyle(csWrap);
 		StringBuilder sb = new StringBuilder();
-		boolean first = true;
-		for (Integer val: info.getRands()) {
-			if (!first) sb.append(IInfoWorkbook.CELL_NEWLINE);
-			sb.append(val);
-			first = false;
-		}
-		return sb.toString();
+		sb.append(rands.getRandApp1());
+		sb.append(IInfoWorkbook.CELL_NEWLINE + rands.getRandApp2());
+		sb.append(IInfoWorkbook.CELL_NEWLINE + rands.getRandApp3());
+		sb.append(IInfoWorkbook.CELL_NEWLINE + rands.getRandApp4());
+		cell.setCellValue(sb.toString());
+		return (maxHeight > 4) ? maxHeight : 4;
 	}
 
 	@Override

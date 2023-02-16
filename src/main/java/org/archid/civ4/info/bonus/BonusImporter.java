@@ -1,9 +1,11 @@
 package org.archid.civ4.info.bonus;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.archid.civ4.info.AbstractImporter;
 import org.archid.civ4.info.EInfo;
+import org.archid.civ4.info.IInfoWorkbook;
 import org.archid.civ4.info.IInfos;
 
 public class BonusImporter extends AbstractImporter<IInfos<IBonusInfo>, IBonusInfo>{
@@ -48,7 +50,7 @@ public class BonusImporter extends AbstractImporter<IInfos<IBonusInfo>, IBonusIn
 		parseCell(row.getCell(colNum++), Integer.class, info::setMinAreaSize);
 		parseCell(row.getCell(colNum++), Integer.class, info::setMinLatitude);
 		parseCell(row.getCell(colNum++), Integer.class, info::setMaxLatitude);
-		parseListCell(row.getCell(colNum++), Integer.class, info::addRand);
+		parseRandsCell(row.getCell(colNum++), info);
 		parseCell(row.getCell(colNum++), Integer.class, info::setPlayer);
 		parseCell(row.getCell(colNum++), Integer.class, info::setTilesPer);
 		parseCell(row.getCell(colNum++), Integer.class, info::setMinLandPercent);
@@ -67,6 +69,18 @@ public class BonusImporter extends AbstractImporter<IInfos<IBonusInfo>, IBonusIn
 		parseCell(row.getCell(colNum++), Boolean.class, info::setUseLSystem);
 
 		return info;
+	}
+	
+	private void parseRandsCell(Cell cell, IBonusInfo info) {
+		String[] vals = cell.getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE);
+		if (vals.length > 1) {
+			Rands rands = new Rands();
+			rands.setRandApp1(Integer.valueOf(vals[0]));
+			rands.setRandApp2(Integer.valueOf(vals[1]));
+			rands.setRandApp3(Integer.valueOf(vals[2]));
+			rands.setRandApp4(Integer.valueOf(vals[3]));
+			info.setRands(rands);
+		}
 	}
 	
 }
