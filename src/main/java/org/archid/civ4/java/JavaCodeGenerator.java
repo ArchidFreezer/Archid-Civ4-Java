@@ -115,6 +115,7 @@ public class JavaCodeGenerator {
 		imports.add("import org.archid.civ4.info.AbstractImporter;");
 		imports.add("import org.archid.civ4.info.EInfo;");
 		imports.add("import org.archid.civ4.info.IInfos;");
+		if (customTags == null) imports.add("import org.archid.civ4.info.DefaultXmlFormatter;");
 
 		StringBuilder file = new StringBuilder();
 		StringBuilder customCellReaders = new StringBuilder();
