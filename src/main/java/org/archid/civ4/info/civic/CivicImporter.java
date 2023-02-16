@@ -127,24 +127,24 @@ public class CivicImporter extends AbstractImporter<IInfos<ICivicInfo>, ICivicIn
 		String[] arr = cell.getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE);
 		if (arr.length > 1) {
 			boolean first = true;
-			String improvement = null;
-			List<Integer> yields = null;
+			String resource = null;
+			List<Integer> list = null;
 			for (String str: arr) {
 				if (StringUtils.hasCharacters(str)) {
 					if (first) {
-						yields = new ArrayList<Integer>();
-						improvement = getVal(str, String.class);
+						list = new ArrayList<Integer>();
+						resource = getVal(str, String.class);
 						first = false;
 					} else if (str.equals("-")) {
-						ImprovementYieldChange improvementYieldChange = new ImprovementYieldChange();
-						improvementYieldChange.setImprovement(improvement);
-						for (Integer yield: yields) {
-							improvementYieldChange.addYield(yield);
+						ImprovementYieldChange wrapper = new ImprovementYieldChange();
+						wrapper.setResource(resource);
+						for (Integer element: list) {
+							wrapper.addElement(element);
 						}
-						info.getImprovementYieldChanges().getImprovementYieldChangeList().add(improvementYieldChange);
+						info.getImprovementYieldChanges().getImprovementYieldChangeList().add(wrapper);
 						first = !first;
 					} else {
-						yields.add(Integer.valueOf(str));
+						list.add(Integer.valueOf(str));
 					}
 				}
 			}

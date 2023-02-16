@@ -1,42 +1,39 @@
 package org.archid.civ4.info.civic;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlJavaTypeAdapter(ImprovementYieldChangesAdapter.class)
-class ImprovementYieldChanges {
-	private List<ImprovementYieldChange> improvementYieldChangeList = new ArrayList<ImprovementYieldChange>();
-	
+class ImprovementYieldChanges{
+	private List<ImprovementYieldChange> wrapper = new ArrayList<ImprovementYieldChange>();
+
 	public List<ImprovementYieldChange> getImprovementYieldChangeList() {
-		return improvementYieldChangeList;
+		return wrapper;
 	}
-	
-	public void setImprovementYieldChangeList(List<ImprovementYieldChange> unitYieldChangeList) {
-		this.improvementYieldChangeList = unitYieldChangeList;
+
+	public void setImprovementYieldChangeList(List<ImprovementYieldChange> wrapper){
+		this.wrapper = wrapper;
 	}
 
 	static class ImprovementYieldChange {
-		
-		private String improvement;
-		private List<Integer> yields = new ArrayList<Integer>();
-		
-		public void setImprovement (String improvement) {
-			this.improvement = improvement;
+		private String resource;
+		private List<Integer> list = new ArrayList<Integer>();
+
+		public void setResource (String resource) {
+			this.resource = resource;
 		}
-		
-		public String getImprovement() {
-			return improvement;
+
+		public String getResource() {
+			return resource;
 		}
-		
-		public void addYield(Integer yield) {
-			yields.add(yield);
+
+		public void addElement(Integer element) {
+			list.add(element);
 		}
-		
-		public List<Integer> getYields() {
-			return yields;
+
+		public List<Integer> getElements() {
+			return list;
 		}
 	}
-
 }

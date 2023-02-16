@@ -138,11 +138,11 @@ public class CivicExporter extends AbstractExporter<IInfos<ICivicInfo>, ICivicIn
 		int currHeight = 0;
 		cell.setCellStyle(csWrap);
 		StringBuilder cellvalue = new StringBuilder();
-		for (ImprovementYieldChange change: list.getImprovementYieldChangeList()) {
+		for (ImprovementYieldChange wrapper: list.getImprovementYieldChangeList()) {
 			if (currHeight > 0) cellvalue.append(IInfoWorkbook.CELL_NEWLINE);
-			cellvalue.append(change.getImprovement() + IInfoWorkbook.CELL_NEWLINE);
-			for (Integer yield: change.getYields()) {
-				cellvalue.append(yield + IInfoWorkbook.CELL_NEWLINE);
+			cellvalue.append(wrapper.getResource() + IInfoWorkbook.CELL_NEWLINE);
+			for (Integer element: wrapper.getElements()) {
+				cellvalue.append(element + IInfoWorkbook.CELL_NEWLINE);
 				currHeight ++;
 			}
 			cellvalue.append("-");

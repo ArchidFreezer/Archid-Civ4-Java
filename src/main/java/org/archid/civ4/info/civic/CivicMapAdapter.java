@@ -410,7 +410,7 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 		CivicMap map = new CivicMap();
 		for (ICivicInfo info: v.values()) {
 			AdaptedCivic aInfo = new AdaptedCivic();
-			aInfo.type = info.getType();
+			aInfo.type = JaxbUtils.marshallString(info.getType());
 			aInfo.civicOptionType = JaxbUtils.marshallMandatoryString(info.getCivicOptionType());
 			aInfo.description = JaxbUtils.marshallMandatoryString(info.getDescription());
 			aInfo.civilopedia = JaxbUtils.marshallMandatoryString(info.getCivilopedia());
