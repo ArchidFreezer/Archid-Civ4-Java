@@ -2,7 +2,6 @@ package org.archid.civ4.info.bonus;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -12,22 +11,32 @@ import org.archid.civ4.info.IInfoWorkbook;
 import org.archid.civ4.info.IInfos;
 import org.archid.civ4.info.bonus.IBonusWorkbook.SheetHeaders;
 
-public class BonusExporter extends AbstractExporter<IInfos<IBonusInfo>, IBonusInfo>{
+public class BonusExporter extends AbstractExporter<IInfos<IBonusInfo>, IBonusInfo> {
 
 	/** Logging facility */
 	static Logger log = Logger.getLogger(BonusExporter.class.getName());
-	
+
 	public BonusExporter(EInfo infoEnum) {
 		super(infoEnum);
 	}
-	
+
 	@Override
 	public List<String> getHeaders() {
-		List<String> headers = new ArrayList<>();
+		List<String> headers = new ArrayList<String>();
 		for (SheetHeaders header: SheetHeaders.values()) {
 			headers.add(header.toString());
 		}
 		return headers;
+	}
+
+	@Override
+	protected int getNumCols() {
+		return IBonusWorkbook.SheetHeaders.values().length;
+	}
+
+	@Override
+	protected String getInfoListSheetName() {
+		return IBonusWorkbook.SHEETNAME_LIST;
 	}
 
 	@Override
@@ -43,9 +52,9 @@ public class BonusExporter extends AbstractExporter<IInfos<IBonusInfo>, IBonusIn
 		addSingleCell(row.createCell(colNum++), info.getTechReveal());
 		addSingleCell(row.createCell(colNum++), info.getTechCityTrade());
 		addSingleCell(row.createCell(colNum++), info.getTechObsolete());
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getYieldChanges(), maxHeight);			
-		addSingleCell(row.createCell(colNum++), info.getAiTradeModifier());
-		addSingleCell(row.createCell(colNum++), info.getAiObjective());
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getYieldChanges(), maxHeight);
+		addSingleCell(row.createCell(colNum++), info.getAITradeModifier());
+		addSingleCell(row.createCell(colNum++), info.getAIObjective());
 		addSingleCell(row.createCell(colNum++), info.getHealth());
 		addSingleCell(row.createCell(colNum++), info.getHappiness());
 		addSingleCell(row.createCell(colNum++), info.getPlacementOrder());
@@ -66,15 +75,14 @@ public class BonusExporter extends AbstractExporter<IInfos<IBonusInfo>, IBonusIn
 		addSingleCell(row.createCell(colNum++), info.isFlatlands());
 		addSingleCell(row.createCell(colNum++), info.isNoRiverSide());
 		addSingleCell(row.createCell(colNum++), info.isNormalize());
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getTerrainBooleans(), maxHeight);			
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getFeatureBooleans(), maxHeight);			
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getFeatureTerrainBooleans(), maxHeight);			
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getTerrainBooleans(), maxHeight);
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getFeatureBooleans(), maxHeight);
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getFeatureTerrainBooleans(), maxHeight);
 		addSingleCell(row.createCell(colNum++), info.isUseLSystem());
 
 		row.setHeightInPoints(maxHeight * row.getSheet().getDefaultRowHeightInPoints());
-	
-}
-	
+	}
+
 	private int addRandsCell(Cell cell, Rands rands, int maxHeight) {
 		if (rands == null) return maxHeight;
 		cell.setCellStyle(csWrap);
@@ -86,15 +94,4 @@ public class BonusExporter extends AbstractExporter<IInfos<IBonusInfo>, IBonusIn
 		cell.setCellValue(sb.toString());
 		return (maxHeight > 4) ? maxHeight : 4;
 	}
-
-	@Override
-	protected int getNumCols() {
-		return IBonusWorkbook.SheetHeaders.values().length;
-	}
-
-	@Override
-	protected String getInfoListSheetName() {
-		return IBonusWorkbook.SHEETNAME_LIST;
-	}
-
 }

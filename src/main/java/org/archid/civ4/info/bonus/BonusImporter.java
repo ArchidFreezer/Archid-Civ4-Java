@@ -8,11 +8,11 @@ import org.archid.civ4.info.EInfo;
 import org.archid.civ4.info.IInfoWorkbook;
 import org.archid.civ4.info.IInfos;
 
-public class BonusImporter extends AbstractImporter<IInfos<IBonusInfo>, IBonusInfo>{
+public class BonusImporter extends AbstractImporter<IInfos<IBonusInfo>, IBonusInfo> {
 
 	/** Logging facility */
 	static Logger log = Logger.getLogger(BonusImporter.class.getName());
-	
+
 	public BonusImporter(EInfo infoEnum) {
 		super(infoEnum, new BonusInfoXmlFormatter());
 	}
@@ -24,14 +24,14 @@ public class BonusImporter extends AbstractImporter<IInfos<IBonusInfo>, IBonusIn
 
 	@Override
 	protected IBonusInfo parseRow(Row row) {
-		
 		int colNum = 0;
-		String type = row.getCell(colNum++).getStringCellValue();
+		String type = row.getCell(0).getStringCellValue();
 		// Handle cells that have been moved
 		if (type.isEmpty())
 			return null;
-		
+
 		IBonusInfo info = BonusInfos.createInfo(type);
+		parseCell(row.getCell(colNum++), String.class, info::setType);
 		parseCell(row.getCell(colNum++), String.class, info::setDescription);
 		parseCell(row.getCell(colNum++), String.class, info::setCivilopedia);
 		parseCell(row.getCell(colNum++), String.class, info::setHelp);
@@ -41,8 +41,8 @@ public class BonusImporter extends AbstractImporter<IInfos<IBonusInfo>, IBonusIn
 		parseCell(row.getCell(colNum++), String.class, info::setTechCityTrade);
 		parseCell(row.getCell(colNum++), String.class, info::setTechObsolete);
 		parseListCell(row.getCell(colNum++), Integer.class, info::addYieldChange);
-		parseCell(row.getCell(colNum++), Integer.class, info::setAiTradeModifier);
-		parseCell(row.getCell(colNum++), Integer.class, info::setAiObjective);
+		parseCell(row.getCell(colNum++), Integer.class, info::setAITradeModifier);
+		parseCell(row.getCell(colNum++), Integer.class, info::setAIObjective);
 		parseCell(row.getCell(colNum++), Integer.class, info::setHealth);
 		parseCell(row.getCell(colNum++), Integer.class, info::setHappiness);
 		parseCell(row.getCell(colNum++), Integer.class, info::setPlacementOrder);
@@ -70,7 +70,7 @@ public class BonusImporter extends AbstractImporter<IInfos<IBonusInfo>, IBonusIn
 
 		return info;
 	}
-	
+
 	private void parseRandsCell(Cell cell, IBonusInfo info) {
 		String[] vals = cell.getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE);
 		if (vals.length > 1) {
@@ -82,5 +82,4 @@ public class BonusImporter extends AbstractImporter<IInfos<IBonusInfo>, IBonusIn
 			info.setRands(rands);
 		}
 	}
-	
 }

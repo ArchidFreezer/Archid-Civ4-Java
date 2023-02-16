@@ -7,6 +7,8 @@ public class TagFactory {
 			return new CivicInfoTagProcessor();
 		} else if (infoName.equalsIgnoreCase("UnitInfo")) {
 			return new UnitInfoTagProcessor();
+		} else if (infoName.equalsIgnoreCase("BonusInfo")) {
+			return new BonusInfoTagProcessor();
 		} else {
 			return null;
 		}

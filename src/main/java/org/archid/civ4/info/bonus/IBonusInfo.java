@@ -1,149 +1,113 @@
 package org.archid.civ4.info.bonus;
 
+import java.util.ArrayList;
 import java.util.List;
-
 import org.archid.civ4.info.IInfo;
 
 public interface IBonusInfo extends IInfo {
-
-	String getArtDefineTag();
-
-	void setArtDefineTag(String artDefineTag);
-
-	String getBonusClassType();
-
-	void setBonusClassType(String bonusClassType);
-
-	String getCivilopedia();
-
-	void setCivilopedia(String civilopedia);
-
 	String getDescription();
-
 	void setDescription(String description);
 
-	String getHelp();
+	String getCivilopedia();
+	void setCivilopedia(String civilopedia);
 
+	String getHelp();
 	void setHelp(String help);
 
-	String getTechCityTrade();
+	String getBonusClassType();
+	void setBonusClassType(String bonusClassType);
 
+	String getArtDefineTag();
+	void setArtDefineTag(String artDefineTag);
+
+	String getTechReveal();
+	void setTechReveal(String techReveal);
+
+	String getTechCityTrade();
 	void setTechCityTrade(String techCityTrade);
 
 	String getTechObsolete();
-
 	void setTechObsolete(String techObsolete);
 
-	String getTechReveal();
+	List<Integer> getYieldChanges();
+	void addYieldChange(Integer yieldChange);
 
-	void setTechReveal(String techReveal);
+	Integer getAITradeModifier();
+	void setAITradeModifier(Integer aITradeModifier);
 
-	int getAiTradeModifier();
+	Integer getAIObjective();
+	void setAIObjective(Integer aIObjective);
 
-	void setAiTradeModifier(int aiTradeModifier);
+	Integer getHealth();
+	void setHealth(Integer health);
 
-	int getAiObjective();
+	Integer getHappiness();
+	void setHappiness(Integer happiness);
 
-	void setAiObjective(int aiObjective);
+	Integer getPlacementOrder();
+	void setPlacementOrder(Integer placementOrder);
 
-	int getConstAppearance();
+	Integer getConstAppearance();
+	void setConstAppearance(Integer constAppearance);
 
-	void setConstAppearance(int constAppearance);
+	Integer getMinAreaSize();
+	void setMinAreaSize(Integer minAreaSize);
 
-	int getGroupRand();
+	Integer getMinLatitude();
+	void setMinLatitude(Integer minLatitude);
 
-	void setGroupRand(int groupRand);
+	Integer getMaxLatitude();
+	void setMaxLatitude(Integer maxLatitude);
 
-	int getGroupRange();
+	Rands getRands();
+	void setRands(Rands rands);
 
-	void setGroupRange(int groupRange);
+	Integer getPlayer();
+	void setPlayer(Integer player);
 
-	int getHappiness();
+	Integer getTilesPer();
+	void setTilesPer(Integer tilesPer);
 
-	void setHappiness(int happiness);
+	Integer getMinLandPercent();
+	void setMinLandPercent(Integer minLandPercent);
 
-	int getHealth();
+	Integer getUnique();
+	void setUnique(Integer unique);
 
-	void setHealth(int health);
+	Integer getGroupRange();
+	void setGroupRange(Integer groupRange);
 
-	int getMaxLatitude();
+	Integer getGroupRand();
+	void setGroupRand(Integer groupRand);
 
-	void setMaxLatitude(int maxLatitude);
+	Boolean isArea();
+	void setArea(Boolean area);
 
-	int getMinAreaSize();
+	Boolean isHills();
+	void setHills(Boolean hills);
 
-	void setMinAreaSize(int minAreaSize);
+	Boolean isPeaks();
+	void setPeaks(Boolean peaks);
 
-	int getMinLandPercent();
+	Boolean isFlatlands();
+	void setFlatlands(Boolean flatlands);
 
-	void setMinLandPercent(int minLandPercent);
+	Boolean isNoRiverSide();
+	void setNoRiverSide(Boolean noRiverSide);
 
-	int getMinLatitude();
+	Boolean isNormalize();
+	void setNormalize(Boolean normalize);
 
-	void setMinLatitude(int minLatitude);
-
-	int getPlacementOrder();
-
-	void setPlacementOrder(int placementOrder);
-
-	int getPlayer();
-
-	void setPlayer(int player);
-
-	int getTilesPer();
-
-	void setTilesPer(int tilesPer);
-
-	int getUnique();
-
-	void setUnique(int unique);
-
-	boolean isArea();
-
-	void setArea(boolean area);
-
-	boolean isFlatlands();
-
-	void setFlatlands(boolean flatlands);
-
-	boolean isHills();
-
-	void setHills(boolean hills);
-
-	boolean isNoRiverSide();
-
-	void setNoRiverSide(boolean noRiverSide);
-
-	boolean isNormalize();
-
-	void setNormalize(boolean normalize);
-
-	boolean isPeaks();
-
-	void setPeaks(boolean peaks);
-
-	boolean isUseLSystem();
-
-	void setUseLSystem(boolean useLSystem);
+	List<String> getTerrainBooleans();
+	void addTerrainBoolean(String terrainBoolean);
 
 	List<String> getFeatureBooleans();
-
 	void addFeatureBoolean(String featureBoolean);
 
 	List<String> getFeatureTerrainBooleans();
-
 	void addFeatureTerrainBoolean(String featureTerrainBoolean);
 
-	List<String> getTerrainBooleans();
-
-	void addTerrainBoolean(String terrainBoolean);
-
-	Rands getRands();
-
-	void setRands(Rands rands);
-
-	List<Integer> getYieldChanges();
-
-	void addYieldChange(Integer yieldChange);
+	Boolean isUseLSystem();
+	void setUseLSystem(Boolean useLSystem);
 
 }

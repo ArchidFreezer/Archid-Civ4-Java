@@ -88,6 +88,7 @@ public class JavaCodeGenerator {
 		tagNameUtils.buildUniqueNames(tagNameData);
 		// Set the variable names to be used
 		for (String tagName: infoTagData.keySet()) {
+			if (customTags != null) infoTagData.get(tagName).setCustom(customTags.hasTagProcessor(tagName));
 			infoTagData.get(tagName).setRootName(tagNameUtils.getRootName(tagName));
 			infoTagData.get(tagName).setVarName(tagNameUtils.getVarName(tagName));
 			infoTagData.get(tagName).init();
@@ -150,9 +151,9 @@ public class JavaCodeGenerator {
 		mainClass.append(NEWLINE + "");
 		mainClass.append(NEWLINETT + "I" + infoName + " info = " + infoName + "s.createInfo(type);");
 
-		int rowIndex = 0;
+		int tagIndex = 0;
 		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
-			if (mainChild.getTagName().equals("Type") && rowIndex != typeTagIndex)
+			if (mainChild.getTagName().equals("Type") && tagIndex == typeTagIndex)
 					continue;
 			
 			Tag tag = infoTagData.get(mainChild.getTagName());
@@ -180,7 +181,7 @@ public class JavaCodeGenerator {
 			} else {
 				mainClass.append(NEWLINETT + "parseCell(row.getCell(colNum++), " + tag.dataType + ".class, info::" + tag.setterName + ");");					
 			}
-			rowIndex++;
+			tagIndex++;
 		}
 		
 		mainClass.append(NEWLINE);
@@ -751,10 +752,10 @@ public class JavaCodeGenerator {
 			this.tagDefinition = tag;
 			this.mandatory = mandatory;
 			numLevels = getNumLevels(tagDefinition, 0);
-			populateLeafData();
 		}
 		
 		public void init() {
+			populateLeafData();
 			getterName = buildGetterName();
 			setterName = buildSetterName();
 		}
@@ -767,7 +768,12 @@ public class JavaCodeGenerator {
 			this.rootName = rootName;
 		}
 		
+		public void setCustom(boolean custom) {
+			this.custom = custom;
+		}
+		
 		private void populateLeafData() {
+			if (custom) return;
 			if (numLevels == 0) {
 				LeafData leafData = new LeafData();
 				leafData.name = rootName;
