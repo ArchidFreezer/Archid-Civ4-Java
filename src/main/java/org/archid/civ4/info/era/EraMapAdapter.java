@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-
 import org.archid.utils.CollectionUtils;
 import org.archid.utils.IPair;
 import org.archid.utils.JaxbUtils;
@@ -16,12 +14,12 @@ import org.archid.utils.Pair;
 import org.archid.utils.StringUtils;
 
 public class EraMapAdapter extends XmlAdapter<EraMapAdapter.EraMap, Map<String, IEraInfo>> {
-	
+
 	public static class EraMap {
-		 @XmlElement(name = "EraInfo")
-		 List<AdaptedEra> entries = new ArrayList<AdaptedEra>();		
+		@XmlElement(name = "EraInfo")
+		List<AdaptedEra> entries = new ArrayList<AdaptedEra>();
 	}
-	
+
 	private static class AdaptedEra {
 		@XmlElement(name="Type")
 		private String type;
@@ -99,90 +97,18 @@ public class EraMapAdapter extends XmlAdapter<EraMapAdapter.EraMap, Map<String, 
 		private List<String> eraInfoSoundtracks;
 		@XmlElementWrapper(name="CitySoundscapes")
 		@XmlElement(name="CitySoundscape")
-		private List<AdaptedCitySoundscape> citySoundscapes;
+		private List<AdaptedCitySoundscapes> citySoundscapes;
 		@XmlElement(name="AudioUnitVictoryScript")
 		private String audioUnitVictoryScript;
 		@XmlElement(name="AudioUnitDefeatScript")
 		private String audioUnitDefeatScript;
 	}
-	
-	private static class AdaptedCitySoundscape {
+
+	private static class AdaptedCitySoundscapes {
 		@XmlElement(name="CitySizeType")
 		private String citySizeType;
 		@XmlElement(name="SoundscapeScript")
 		private String soundscapeScript;
-	}
-
-	@Override
-	public EraMap marshal(Map<String, IEraInfo> v) throws Exception {
-		EraMap map = new EraMap();
-		for (IEraInfo info: v.values()) {
-			AdaptedEra aInfo = new AdaptedEra();
-			aInfo.type = info.getType();
-			aInfo.description = JaxbUtils.marshallString(info.getDescription());
-			aInfo.strategy = JaxbUtils.marshallString(info.getStrategy());
-			aInfo.noGoodies = JaxbUtils.marshallBoolean(info.isNoGoodies());
-			aInfo.noAnimals = JaxbUtils.marshallBoolean(info.isNoAnimals());
-			aInfo.noBarbUnits = JaxbUtils.marshallBoolean(info.isNoBarbUnits());
-			aInfo.noBarbCities = JaxbUtils.marshallBoolean(info.isNoBarbCities());
-			aInfo.advancedStartPoints = JaxbUtils.marshallInteger(info.getAdvancedStartPoints());
-			aInfo.startingUnitMultiplier = JaxbUtils.marshallInteger(info.getStartingUnitMultiplier());
-			aInfo.startingDefenseUnits = JaxbUtils.marshallInteger(info.getStartingDefenseUnits());
-			aInfo.startingWorkerUnits = JaxbUtils.marshallInteger(info.getStartingWorkerUnits());
-			aInfo.startingExploreUnits = JaxbUtils.marshallInteger(info.getStartingExploreUnits());
-			aInfo.startingGold = JaxbUtils.marshallInteger(info.getStartingGold());
-			aInfo.maxCities = JaxbUtils.marshallInteger(info.getMaxCities());
-			aInfo.freePopulation = JaxbUtils.marshallInteger(info.getFreePopulation());
-			aInfo.startPercent = JaxbUtils.marshallInteger(info.getStartPercent());
-			aInfo.growthPercent = JaxbUtils.marshallInteger(info.getGrowthPercent());
-			aInfo.trainPercent = JaxbUtils.marshallInteger(info.getTrainPercent());
-			aInfo.constructPercent = JaxbUtils.marshallInteger(info.getConstructPercent());
-			aInfo.createPercent = JaxbUtils.marshallInteger(info.getCreatePercent());
-			aInfo.researchPercent = JaxbUtils.marshallInteger(info.getResearchPercent());
-			aInfo.techCostModifier = JaxbUtils.marshallInteger(info.getTechCostModifier());
-			aInfo.buildPercent = JaxbUtils.marshallInteger(info.getBuildPercent());
-			aInfo.improvementPercent = JaxbUtils.marshallInteger(info.getImprovementPercent());
-			aInfo.greatPeoplePercent = JaxbUtils.marshallInteger(info.getGreatPeoplePercent());
-			aInfo.culturePercent = JaxbUtils.marshallInteger(info.getCulturePercent());
-			aInfo.anarchyPercent = JaxbUtils.marshallInteger(info.getAnarchyPercent());
-			aInfo.eventChancePerTurn = JaxbUtils.marshallInteger(info.getEventChancePerTurn());
-			aInfo.unitRangeUnbound = JaxbUtils.marshallBoolean(info.isUnitRangeUnbound());
-			aInfo.unitTerritoryUnbound = JaxbUtils.marshallBoolean(info.isUnitTerritoryUnbound());
-			aInfo.unitRangeChange = JaxbUtils.marshallInteger(info.getUnitRangeChange());
-			aInfo.unitRangeModifier = JaxbUtils.marshallInteger(info.getUnitRangeModifier());
-			aInfo.soundtrackSpace = JaxbUtils.marshallInteger(info.getSoundtrackSpace());
-			aInfo.firstSoundtrackFirst = JaxbUtils.marshallBoolean(info.isFirstSoundtrackFirst());
-			
-			if (CollectionUtils.hasElements(info.getNaturalYieldLimits())) {
-				aInfo.naturalYieldLimits = new ArrayList<Integer>();
-				for (Integer yield: info.getNaturalYieldLimits()) {
-					aInfo.naturalYieldLimits.add(yield);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(info.getEraInfoSoundtracks())) {
-				aInfo.eraInfoSoundtracks = new ArrayList<String>();
-				for (String track: info.getEraInfoSoundtracks()) {
-					aInfo.eraInfoSoundtracks.add(track);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(info.getCitySoundscapes())) {
-				aInfo.citySoundscapes = new ArrayList<AdaptedCitySoundscape>();
-				for (IPair<String, String> pair: info.getCitySoundscapes()) {
-					AdaptedCitySoundscape adaptor = new AdaptedCitySoundscape();
-					adaptor.citySizeType = pair.getKey();
-					adaptor.soundscapeScript = pair.getValue();
-					aInfo.citySoundscapes.add(adaptor);
-				}
-			}
-			
-			aInfo.audioUnitVictoryScript = JaxbUtils.marshallString(info.getAudioUnitVictoryScript());
-			aInfo.audioUnitDefeatScript = JaxbUtils.marshallString(info.getAudioUnitDefeatScript());
-
-			map.entries.add(aInfo);
-		}
-		return map;
 	}
 
 	@Override
@@ -225,26 +151,26 @@ public class EraMapAdapter extends XmlAdapter<EraMapAdapter.EraMap, Map<String, 
 			info.setFirstSoundtrackFirst(JaxbUtils.unmarshallBoolean(aInfo.firstSoundtrackFirst));
 
 			if (CollectionUtils.hasElements(aInfo.naturalYieldLimits)) {
-				for (Integer yield: aInfo.naturalYieldLimits) {
-					info.addNaturalYieldLimit(yield);
+				for (Integer val: aInfo.naturalYieldLimits) {
+					info.addNaturalYieldLimit(val);
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.eraInfoSoundtracks)) {
-				for (String soundtrack: aInfo.eraInfoSoundtracks) {
-					if (StringUtils.hasCharacters(soundtrack))
-						info.addEraInfoSoundtrack(soundtrack);
+				for (String val: aInfo.eraInfoSoundtracks) {
+					if (StringUtils.hasCharacters(val)) {
+						info.addEraInfoSoundtrack(val);
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.citySoundscapes)) {
-				for (AdaptedCitySoundscape adaptor: aInfo.citySoundscapes) {
-					if (StringUtils.hasCharacters(adaptor.citySizeType) && StringUtils.hasCharacters(adaptor.soundscapeScript)) {
+				for (AdaptedCitySoundscapes adaptor: aInfo.citySoundscapes) {
+					if (StringUtils.hasCharacters(adaptor.citySizeType)) {
 						info.addCitySoundscape(new Pair<String, String>(adaptor.citySizeType, adaptor.soundscapeScript));
 					}
 				}
 			}
-			
 			info.setAudioUnitVictoryScript(JaxbUtils.unmarshallString(aInfo.audioUnitVictoryScript));
 			info.setAudioUnitDefeatScript(JaxbUtils.unmarshallString(aInfo.audioUnitDefeatScript));
 
@@ -253,4 +179,74 @@ public class EraMapAdapter extends XmlAdapter<EraMapAdapter.EraMap, Map<String, 
 		return map;
 	}
 
+	@Override
+	public EraMap marshal(Map<String, IEraInfo> v) throws Exception {
+		EraMap map = new EraMap();
+		for (IEraInfo info: v.values()) {
+			AdaptedEra aInfo = new AdaptedEra();
+			aInfo.type = JaxbUtils.marshallString(info.getType());
+			aInfo.description = JaxbUtils.marshallString(info.getDescription());
+			aInfo.strategy = JaxbUtils.marshallString(info.getStrategy());
+			aInfo.noGoodies = JaxbUtils.marshallBoolean(info.isNoGoodies());
+			aInfo.noAnimals = JaxbUtils.marshallBoolean(info.isNoAnimals());
+			aInfo.noBarbUnits = JaxbUtils.marshallBoolean(info.isNoBarbUnits());
+			aInfo.noBarbCities = JaxbUtils.marshallBoolean(info.isNoBarbCities());
+			aInfo.advancedStartPoints = JaxbUtils.marshallInteger(info.getAdvancedStartPoints());
+			aInfo.startingUnitMultiplier = JaxbUtils.marshallInteger(info.getStartingUnitMultiplier());
+			aInfo.startingDefenseUnits = JaxbUtils.marshallInteger(info.getStartingDefenseUnits());
+			aInfo.startingWorkerUnits = JaxbUtils.marshallInteger(info.getStartingWorkerUnits());
+			aInfo.startingExploreUnits = JaxbUtils.marshallInteger(info.getStartingExploreUnits());
+			aInfo.startingGold = JaxbUtils.marshallInteger(info.getStartingGold());
+			aInfo.maxCities = JaxbUtils.marshallInteger(info.getMaxCities());
+			aInfo.freePopulation = JaxbUtils.marshallInteger(info.getFreePopulation());
+			aInfo.startPercent = JaxbUtils.marshallInteger(info.getStartPercent());
+			aInfo.growthPercent = JaxbUtils.marshallInteger(info.getGrowthPercent());
+			aInfo.trainPercent = JaxbUtils.marshallInteger(info.getTrainPercent());
+			aInfo.constructPercent = JaxbUtils.marshallInteger(info.getConstructPercent());
+			aInfo.createPercent = JaxbUtils.marshallInteger(info.getCreatePercent());
+			aInfo.researchPercent = JaxbUtils.marshallInteger(info.getResearchPercent());
+			aInfo.techCostModifier = JaxbUtils.marshallInteger(info.getTechCostModifier());
+			aInfo.buildPercent = JaxbUtils.marshallInteger(info.getBuildPercent());
+			aInfo.improvementPercent = JaxbUtils.marshallInteger(info.getImprovementPercent());
+			aInfo.greatPeoplePercent = JaxbUtils.marshallInteger(info.getGreatPeoplePercent());
+			aInfo.culturePercent = JaxbUtils.marshallInteger(info.getCulturePercent());
+			aInfo.anarchyPercent = JaxbUtils.marshallInteger(info.getAnarchyPercent());
+			aInfo.eventChancePerTurn = JaxbUtils.marshallInteger(info.getEventChancePerTurn());
+			aInfo.unitRangeUnbound = JaxbUtils.marshallBoolean(info.isUnitRangeUnbound());
+			aInfo.unitTerritoryUnbound = JaxbUtils.marshallBoolean(info.isUnitTerritoryUnbound());
+			aInfo.unitRangeChange = JaxbUtils.marshallInteger(info.getUnitRangeChange());
+			aInfo.unitRangeModifier = JaxbUtils.marshallInteger(info.getUnitRangeModifier());
+			aInfo.soundtrackSpace = JaxbUtils.marshallInteger(info.getSoundtrackSpace());
+			aInfo.firstSoundtrackFirst = JaxbUtils.marshallBoolean(info.isFirstSoundtrackFirst());
+
+			if (CollectionUtils.hasElements(info.getNaturalYieldLimits())) {
+				aInfo.naturalYieldLimits = new ArrayList<Integer>();
+				for(Integer val: info.getNaturalYieldLimits()) {
+					aInfo.naturalYieldLimits.add(val);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getEraInfoSoundtracks())) {
+				aInfo.eraInfoSoundtracks = new ArrayList<String>();
+				for(String val: info.getEraInfoSoundtracks()) {
+					aInfo.eraInfoSoundtracks.add(val);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getCitySoundscapes())) {
+				aInfo.citySoundscapes = new ArrayList<AdaptedCitySoundscapes>();
+				for (IPair<String, String> pair: info.getCitySoundscapes()) {
+					AdaptedCitySoundscapes adaptor = new AdaptedCitySoundscapes();
+					adaptor.citySizeType = pair.getKey();
+					adaptor.soundscapeScript = pair.getValue();
+					aInfo.citySoundscapes.add(adaptor);
+				}
+			}
+			aInfo.audioUnitVictoryScript = JaxbUtils.marshallString(info.getAudioUnitVictoryScript());
+			aInfo.audioUnitDefeatScript = JaxbUtils.marshallString(info.getAudioUnitDefeatScript());
+
+			map.entries.add(aInfo);
+		}
+		return map;
+	}
 }

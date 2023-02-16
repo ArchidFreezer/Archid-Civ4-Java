@@ -4,28 +4,32 @@ import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import org.archid.civ4.info.AbstractImporter;
 import org.archid.civ4.info.EInfo;
-import org.archid.civ4.info.IImporter;
 import org.archid.civ4.info.IInfos;
 
-public class EraImporter extends AbstractImporter<IInfos<IEraInfo>, IEraInfo> implements IImporter {
+public class EraImporter extends AbstractImporter<IInfos<IEraInfo>, IEraInfo> {
 
 	/** Logging facility */
 	static Logger log = Logger.getLogger(EraImporter.class.getName());
-	
+
 	public EraImporter(EInfo infoEnum) {
 		super(infoEnum, new EraInfoXmlFormatter());
 	}
 
 	@Override
+	public String getListSheetName() {
+		return IEraWorkbook.SHEETNAME_LIST;
+	}
+
+	@Override
 	protected IEraInfo parseRow(Row row) {
-		
 		int colNum = 0;
-		String type = row.getCell(colNum++).getStringCellValue();
+		String type = row.getCell(0).getStringCellValue();
 		// Handle cells that have been moved
 		if (type.isEmpty())
 			return null;
-		
+
 		IEraInfo info = EraInfos.createInfo(type);
+		parseCell(row.getCell(colNum++), String.class, info::setType);
 		parseCell(row.getCell(colNum++), String.class, info::setDescription);
 		parseCell(row.getCell(colNum++), String.class, info::setStrategy);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setNoGoodies);
@@ -64,13 +68,7 @@ public class EraImporter extends AbstractImporter<IInfos<IEraInfo>, IEraInfo> im
 		parsePairsCell(row.getCell(colNum++), String.class, String.class, info::addCitySoundscape);
 		parseCell(row.getCell(colNum++), String.class, info::setAudioUnitVictoryScript);
 		parseCell(row.getCell(colNum++), String.class, info::setAudioUnitDefeatScript);
-		
+
 		return info;
 	}
-
-	@Override
-	public String getListSheetName() {
-		return IEraWorkbook.SHEETNAME_LIST;
-	}
-
 }

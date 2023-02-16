@@ -2,7 +2,6 @@ package org.archid.civ4.info.era;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import org.archid.civ4.info.AbstractExporter;
@@ -14,18 +13,28 @@ public class EraExporter extends AbstractExporter<IInfos<IEraInfo>, IEraInfo> {
 
 	/** Logging facility */
 	static Logger log = Logger.getLogger(EraExporter.class.getName());
-	
+
 	public EraExporter(EInfo infoEnum) {
 		super(infoEnum);
 	}
 
 	@Override
 	public List<String> getHeaders() {
-		List<String> headers = new ArrayList<>();
+		List<String> headers = new ArrayList<String>();
 		for (SheetHeaders header: SheetHeaders.values()) {
 			headers.add(header.toString());
 		}
 		return headers;
+	}
+
+	@Override
+	protected int getNumCols() {
+		return IEraWorkbook.SheetHeaders.values().length;
+	}
+
+	@Override
+	protected String getInfoListSheetName() {
+		return IEraWorkbook.SHEETNAME_LIST;
 	}
 
 	@Override
@@ -73,17 +82,5 @@ public class EraExporter extends AbstractExporter<IInfos<IEraInfo>, IEraInfo> {
 		addSingleCell(row.createCell(colNum++), info.getAudioUnitDefeatScript());
 
 		row.setHeightInPoints(maxHeight * row.getSheet().getDefaultRowHeightInPoints());
-
 	}
-
-	@Override
-	protected int getNumCols() {
-		return IEraWorkbook.SheetHeaders.values().length;
-	}
-
-	@Override
-	protected String getInfoListSheetName() {
-		return IEraWorkbook.SHEETNAME_LIST;
-	}
-
 }

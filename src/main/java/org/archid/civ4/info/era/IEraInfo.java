@@ -1,165 +1,123 @@
 package org.archid.civ4.info.era;
 
+import java.util.ArrayList;
 import java.util.List;
-
 import org.archid.civ4.info.IInfo;
 import org.archid.utils.IPair;
 
 public interface IEraInfo extends IInfo {
-
-	String getType();
-
-	void setType(String type);
-
 	String getDescription();
-
 	void setDescription(String description);
 
 	String getStrategy();
-
 	void setStrategy(String strategy);
 
-	String getAudioUnitVictoryScript();
+	Boolean isNoGoodies();
+	void setNoGoodies(Boolean noGoodies);
 
-	void setAudioUnitVictoryScript(String audioUnitVictoryScript);
+	Boolean isNoAnimals();
+	void setNoAnimals(Boolean noAnimals);
 
-	String getAudioUnitDefeatScript();
+	Boolean isNoBarbUnits();
+	void setNoBarbUnits(Boolean noBarbUnits);
 
-	void setAudioUnitDefeatScript(String audioUnitDefeatScript);
+	Boolean isNoBarbCities();
+	void setNoBarbCities(Boolean noBarbCities);
 
-	int getAdvancedStartPoints();
+	Integer getAdvancedStartPoints();
+	void setAdvancedStartPoints(Integer advancedStartPoints);
 
-	void setAdvancedStartPoints(int advancedStartPoints);
+	Integer getStartingUnitMultiplier();
+	void setStartingUnitMultiplier(Integer startingUnitMultiplier);
 
-	int getStartingUnitMultiplier();
+	Integer getStartingDefenseUnits();
+	void setStartingDefenseUnits(Integer startingDefenseUnits);
 
-	void setStartingUnitMultiplier(int startingUnitMultiplier);
+	Integer getStartingWorkerUnits();
+	void setStartingWorkerUnits(Integer startingWorkerUnits);
 
-	int getStartingDefenseUnits();
+	Integer getStartingExploreUnits();
+	void setStartingExploreUnits(Integer startingExploreUnits);
 
-	void setStartingDefenseUnits(int startingDefenseUnits);
+	Integer getStartingGold();
+	void setStartingGold(Integer startingGold);
 
-	int getStartingWorkerUnits();
+	Integer getMaxCities();
+	void setMaxCities(Integer maxCities);
 
-	void setStartingWorkerUnits(int startingWorkerUnits);
+	Integer getFreePopulation();
+	void setFreePopulation(Integer freePopulation);
 
-	int getStartingExploreUnits();
+	Integer getStartPercent();
+	void setStartPercent(Integer startPercent);
 
-	void setStartingExploreUnits(int startingExploreUnits);
+	Integer getGrowthPercent();
+	void setGrowthPercent(Integer growthPercent);
 
-	int getStartingGold();
+	Integer getTrainPercent();
+	void setTrainPercent(Integer trainPercent);
 
-	void setStartingGold(int startingGold);
+	Integer getConstructPercent();
+	void setConstructPercent(Integer constructPercent);
 
-	int getMaxCities();
+	Integer getCreatePercent();
+	void setCreatePercent(Integer createPercent);
 
-	void setMaxCities(int maxCities);
+	Integer getResearchPercent();
+	void setResearchPercent(Integer researchPercent);
 
-	int getFreePopulation();
+	Integer getTechCostModifier();
+	void setTechCostModifier(Integer techCostModifier);
 
-	void setFreePopulation(int freePopulation);
+	Integer getBuildPercent();
+	void setBuildPercent(Integer buildPercent);
 
-	int getStartPercent();
+	Integer getImprovementPercent();
+	void setImprovementPercent(Integer improvementPercent);
 
-	void setStartPercent(int startPercent);
+	Integer getGreatPeoplePercent();
+	void setGreatPeoplePercent(Integer greatPeoplePercent);
 
-	int getGrowthPercent();
+	Integer getCulturePercent();
+	void setCulturePercent(Integer culturePercent);
 
-	void setGrowthPercent(int growthPercent);
+	Integer getAnarchyPercent();
+	void setAnarchyPercent(Integer anarchyPercent);
 
-	int getTrainPercent();
+	Integer getEventChancePerTurn();
+	void setEventChancePerTurn(Integer eventChancePerTurn);
 
-	void setTrainPercent(int trainPercent);
+	Boolean isUnitRangeUnbound();
+	void setUnitRangeUnbound(Boolean unitRangeUnbound);
 
-	int getConstructPercent();
+	Boolean isUnitTerritoryUnbound();
+	void setUnitTerritoryUnbound(Boolean unitTerritoryUnbound);
 
-	void setConstructPercent(int constructPercent);
+	Integer getUnitRangeChange();
+	void setUnitRangeChange(Integer unitRangeChange);
 
-	int getCreatePercent();
+	Integer getUnitRangeModifier();
+	void setUnitRangeModifier(Integer unitRangeModifier);
 
-	void setCreatePercent(int createPercent);
+	Integer getSoundtrackSpace();
+	void setSoundtrackSpace(Integer soundtrackSpace);
 
-	int getResearchPercent();
-
-	void setResearchPercent(int researchPercent);
-
-	int getTechCostModifier();
-
-	void setTechCostModifier(int techCostModifier);
-
-	int getBuildPercent();
-
-	void setBuildPercent(int buildPercent);
-
-	int getImprovementPercent();
-
-	void setImprovementPercent(int improvementPercent);
-
-	int getGreatPeoplePercent();
-
-	void setGreatPeoplePercent(int greatPeoplePercent);
-
-	int getCulturePercent();
-
-	void setCulturePercent(int culturePercent);
-
-	int getAnarchyPercent();
-
-	void setAnarchyPercent(int anarchyPercent);
-
-	int getEventChancePerTurn();
-
-	void setEventChancePerTurn(int eventChancePerTurn);
-
-	int getUnitRangeChange();
-
-	void setUnitRangeChange(int unitRangeChange);
-
-	int getUnitRangeModifier();
-
-	void setUnitRangeModifier(int unitRangeModifier);
-
-	int getSoundtrackSpace();
-
-	void setSoundtrackSpace(int soundtrackSpace);
-
-	boolean isNoGoodies();
-
-	void setNoGoodies(boolean noGoodies);
-
-	boolean isNoAnimals();
-
-	void setNoAnimals(boolean noAnimals);
-
-	boolean isNoBarbUnits();
-
-	void setNoBarbUnits(boolean noBarbUnits);
-
-	boolean isNoBarbCities();
-
-	void setNoBarbCities(boolean noBarbCities);
-
-	boolean isUnitRangeUnbound();
-
-	void setUnitRangeUnbound(boolean unitRangeUnbound);
-
-	boolean isUnitTerritoryUnbound();
-
-	void setUnitTerritoryUnbound(boolean unitTerritoryUnbound);
-
-	boolean isFirstSoundtrackFirst();
-
-	void setFirstSoundtrackFirst(boolean firstSoundtrackFirst);
-
-	List<String> getEraInfoSoundtracks();
-	
-	void addEraInfoSoundtrack(String soundtrack);
-
-	List<IPair<String, String>> getCitySoundscapes();
-
-	void addCitySoundscape(IPair<String, String> citySoundscape);
+	Boolean isFirstSoundtrackFirst();
+	void setFirstSoundtrackFirst(Boolean firstSoundtrackFirst);
 
 	List<Integer> getNaturalYieldLimits();
 	void addNaturalYieldLimit(Integer naturalYieldLimit);
+
+	List<String> getEraInfoSoundtracks();
+	void addEraInfoSoundtrack(String eraInfoSoundtrack);
+
+	List<IPair<String, String>> getCitySoundscapes();
+	void addCitySoundscape(IPair<String, String> citySoundscape);
+
+	String getAudioUnitVictoryScript();
+	void setAudioUnitVictoryScript(String audioUnitVictoryScript);
+
+	String getAudioUnitDefeatScript();
+	void setAudioUnitDefeatScript(String audioUnitDefeatScript);
 
 }

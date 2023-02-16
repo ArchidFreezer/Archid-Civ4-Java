@@ -9,6 +9,8 @@ public class TagFactory {
 			return new UnitInfoTagProcessor();
 		} else if (infoName.equalsIgnoreCase("BonusInfo")) {
 			return new BonusInfoTagProcessor();
+		} else if (infoName.equalsIgnoreCase("EraInfo")) {
+			return new EraInfoTagProcessor();
 		} else {
 			return null;
 		}
