@@ -469,7 +469,7 @@ public class EventMapAdapter extends XmlAdapter<EventMapAdapter.EventMap, Map<St
 		EventMap map = new EventMap();
 		for (IEventInfo info: v.values()) {
 			AdaptedEvent aInfo = new AdaptedEvent();
-			aInfo.type = info.getType();
+			aInfo.type = JaxbUtils.marshallString(info.getType());
 			aInfo.description = JaxbUtils.marshallString(info.getDescription());
 			aInfo.localInfoText = JaxbUtils.marshallString(info.getLocalInfoText());
 

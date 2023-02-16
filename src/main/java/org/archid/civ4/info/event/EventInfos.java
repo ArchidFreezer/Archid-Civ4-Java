@@ -159,7 +159,7 @@ public class EventInfos extends AbstractInfos<IEventInfo> {
 
 		@Override
 		public void addWorldNewsText(String worldNewsText) {
-			worldNewsTexts.add(worldNewsText);
+			this.worldNewsTexts.add(worldNewsText);
 		}
 
 		@Override
@@ -349,7 +349,7 @@ public class EventInfos extends AbstractInfos<IEventInfo> {
 
 		@Override
 		public void addTechFlavor(IPair<String, Integer> techFlavor) {
-			techFlavors.add(techFlavor);
+			this.techFlavors.add(techFlavor);
 		}
 
 		@Override
@@ -469,7 +469,7 @@ public class EventInfos extends AbstractInfos<IEventInfo> {
 
 		@Override
 		public void addUnitCombatPromotion(IPair<String, String> unitCombatPromotion) {
-			unitCombatPromotions.add(unitCombatPromotion);
+			this.unitCombatPromotions.add(unitCombatPromotion);
 		}
 
 		@Override
@@ -479,7 +479,7 @@ public class EventInfos extends AbstractInfos<IEventInfo> {
 
 		@Override
 		public void addUnitClassPromotion(IPair<String, String> unitClassPromotion) {
-			unitClassPromotions.add(unitClassPromotion);
+			this.unitClassPromotions.add(unitClassPromotion);
 		}
 
 		@Override
@@ -509,7 +509,7 @@ public class EventInfos extends AbstractInfos<IEventInfo> {
 
 		@Override
 		public void addBuildingExtraYield(ITriple<String, String, Integer> buildingExtraYield) {
-			buildingExtraYields.add(buildingExtraYield);
+			this.buildingExtraYields.add(buildingExtraYield);
 		}
 
 		@Override
@@ -519,7 +519,7 @@ public class EventInfos extends AbstractInfos<IEventInfo> {
 
 		@Override
 		public void addBuildingExtraCommerce(ITriple<String, String, Integer> buildingExtraCommerce) {
-			buildingExtraCommerces.add(buildingExtraCommerce);
+			this.buildingExtraCommerces.add(buildingExtraCommerce);
 		}
 
 		@Override
@@ -529,7 +529,7 @@ public class EventInfos extends AbstractInfos<IEventInfo> {
 
 		@Override
 		public void addBuildingExtraHappie(IPair<String, Integer> buildingExtraHappie) {
-			buildingExtraHappies.add(buildingExtraHappie);
+			this.buildingExtraHappies.add(buildingExtraHappie);
 		}
 
 		@Override
@@ -539,7 +539,7 @@ public class EventInfos extends AbstractInfos<IEventInfo> {
 
 		@Override
 		public void addBuildingExtraHealth(IPair<String, Integer> buildingExtraHealth) {
-			buildingExtraHealths.add(buildingExtraHealth);
+			this.buildingExtraHealths.add(buildingExtraHealth);
 		}
 
 		@Override
@@ -639,7 +639,7 @@ public class EventInfos extends AbstractInfos<IEventInfo> {
 
 		@Override
 		public void addFreeSpecialistCount(IPair<String, Integer> freeSpecialistCount) {
-			freeSpecialistCounts.add(freeSpecialistCount);
+			this.freeSpecialistCounts.add(freeSpecialistCount);
 		}
 
 		@Override
@@ -749,7 +749,7 @@ public class EventInfos extends AbstractInfos<IEventInfo> {
 
 		@Override
 		public void addPlotExtraYield(IPair<String, Integer> plotExtraYield) {
-			plotExtraYields.add(plotExtraYield);
+			this.plotExtraYields.add(plotExtraYield);
 		}
 
 		@Override
@@ -829,7 +829,7 @@ public class EventInfos extends AbstractInfos<IEventInfo> {
 
 		@Override
 		public void addAdditionalEvent(IPair<String, Integer> additionalEvent) {
-			additionalEvents.add(additionalEvent);
+			this.additionalEvents.add(additionalEvent);
 		}
 
 		@Override
@@ -839,7 +839,7 @@ public class EventInfos extends AbstractInfos<IEventInfo> {
 
 		@Override
 		public void addEventTime(IPair<String, Integer> eventTime) {
-			eventTimes.add(eventTime);
+			this.eventTimes.add(eventTime);
 		}
 
 		@Override
@@ -849,7 +849,7 @@ public class EventInfos extends AbstractInfos<IEventInfo> {
 
 		@Override
 		public void addClearEvent(IPair<String, Integer> clearEvent) {
-			clearEvents.add(clearEvent);
+			this.clearEvents.add(clearEvent);
 		}
 
 		@Override

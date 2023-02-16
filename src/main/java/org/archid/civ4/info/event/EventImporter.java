@@ -24,12 +24,13 @@ public class EventImporter extends AbstractImporter<IInfos<IEventInfo>, IEventIn
 	@Override
 	protected IEventInfo parseRow(Row row) {
 		int colNum = 0;
-		String type = row.getCell(colNum++).getStringCellValue();
+		String type = row.getCell(0).getStringCellValue();
 		// Handle cells that have been moved
 		if (type.isEmpty())
 			return null;
 
 		IEventInfo info = EventInfos.createInfo(type);
+		parseCell(row.getCell(colNum++), String.class, info::setType);
 		parseCell(row.getCell(colNum++), String.class, info::setDescription);
 		parseCell(row.getCell(colNum++), String.class, info::setLocalInfoText);
 		parseListCell(row.getCell(colNum++), String.class, info::addWorldNewsText);
