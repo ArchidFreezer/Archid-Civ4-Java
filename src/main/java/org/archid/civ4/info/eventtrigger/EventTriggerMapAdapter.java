@@ -380,7 +380,7 @@ public class EventTriggerMapAdapter extends XmlAdapter<EventTriggerMapAdapter.Ev
 		EventTriggerMap map = new EventTriggerMap();
 		for (IEventTriggerInfo info: v.values()) {
 			AdaptedEventTrigger aInfo = new AdaptedEventTrigger();
-			aInfo.type = info.getType();
+			aInfo.type = JaxbUtils.marshallString(info.getType());
 
 			if (CollectionUtils.hasElements(info.getWorldNewsTexts())) {
 				aInfo.worldNewsTexts = new ArrayList<String>();

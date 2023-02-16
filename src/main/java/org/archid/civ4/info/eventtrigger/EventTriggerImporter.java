@@ -24,12 +24,13 @@ public class EventTriggerImporter extends AbstractImporter<IInfos<IEventTriggerI
 	@Override
 	protected IEventTriggerInfo parseRow(Row row) {
 		int colNum = 0;
-		String type = row.getCell(colNum++).getStringCellValue();
+		String type = row.getCell(0).getStringCellValue();
 		// Handle cells that have been moved
 		if (type.isEmpty())
 			return null;
 
 		IEventTriggerInfo info = EventTriggerInfos.createInfo(type);
+		parseCell(row.getCell(colNum++), String.class, info::setType);
 		parseListCell(row.getCell(colNum++), String.class, info::addWorldNewsText);
 		parsePairsCell(row.getCell(colNum++), String.class, String.class, info::addTriggerText);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setSinglePlayer);

@@ -128,7 +128,7 @@ public class EventTriggerInfos extends AbstractInfos<IEventTriggerInfo> {
 
 		@Override
 		public void addWorldNewsText(String worldNewsText) {
-			worldNewsTexts.add(worldNewsText);
+			this.worldNewsTexts.add(worldNewsText);
 		}
 
 		@Override
@@ -138,7 +138,7 @@ public class EventTriggerInfos extends AbstractInfos<IEventTriggerInfo> {
 
 		@Override
 		public void addTriggerText(IPair<String, String> triggerText) {
-			triggerTexts.add(triggerText);
+			this.triggerTexts.add(triggerText);
 		}
 
 		@Override
@@ -298,7 +298,7 @@ public class EventTriggerInfos extends AbstractInfos<IEventTriggerInfo> {
 
 		@Override
 		public void addUnitRequired(String unitRequired) {
-			unitsRequired.add(unitRequired);
+			this.unitsRequired.add(unitRequired);
 		}
 
 		@Override
@@ -368,7 +368,7 @@ public class EventTriggerInfos extends AbstractInfos<IEventTriggerInfo> {
 
 		@Override
 		public void addBuildingRequired(String buildingRequired) {
-			buildingsRequired.add(buildingRequired);
+			this.buildingsRequired.add(buildingRequired);
 		}
 
 		@Override
@@ -428,7 +428,7 @@ public class EventTriggerInfos extends AbstractInfos<IEventTriggerInfo> {
 
 		@Override
 		public void addFeatureRequired(String featureRequired) {
-			featuresRequired.add(featureRequired);
+			this.featuresRequired.add(featureRequired);
 		}
 
 		@Override
@@ -438,7 +438,7 @@ public class EventTriggerInfos extends AbstractInfos<IEventTriggerInfo> {
 
 		@Override
 		public void addTerrainRequired(String terrainRequired) {
-			terrainsRequired.add(terrainRequired);
+			this.terrainsRequired.add(terrainRequired);
 		}
 
 		@Override
@@ -448,7 +448,7 @@ public class EventTriggerInfos extends AbstractInfos<IEventTriggerInfo> {
 
 		@Override
 		public void addImprovementRequired(String improvementRequired) {
-			improvementsRequired.add(improvementRequired);
+			this.improvementsRequired.add(improvementRequired);
 		}
 
 		@Override
@@ -458,7 +458,7 @@ public class EventTriggerInfos extends AbstractInfos<IEventTriggerInfo> {
 
 		@Override
 		public void addBonusRequired(String bonusRequired) {
-			bonusesRequired.add(bonusRequired);
+			this.bonusesRequired.add(bonusRequired);
 		}
 
 		@Override
@@ -468,7 +468,7 @@ public class EventTriggerInfos extends AbstractInfos<IEventTriggerInfo> {
 
 		@Override
 		public void addRouteRequired(String routeRequired) {
-			routesRequired.add(routeRequired);
+			this.routesRequired.add(routeRequired);
 		}
 
 		@Override
@@ -478,7 +478,7 @@ public class EventTriggerInfos extends AbstractInfos<IEventTriggerInfo> {
 
 		@Override
 		public void addReligionRequired(String religionRequired) {
-			religionsRequired.add(religionRequired);
+			this.religionsRequired.add(religionRequired);
 		}
 
 		@Override
@@ -498,7 +498,7 @@ public class EventTriggerInfos extends AbstractInfos<IEventTriggerInfo> {
 
 		@Override
 		public void addCorporationRequired(String corporationRequired) {
-			corporationsRequired.add(corporationRequired);
+			this.corporationsRequired.add(corporationRequired);
 		}
 
 		@Override
@@ -568,7 +568,7 @@ public class EventTriggerInfos extends AbstractInfos<IEventTriggerInfo> {
 
 		@Override
 		public void addEvent(String event) {
-			events.add(event);
+			this.events.add(event);
 		}
 
 		@Override
@@ -578,7 +578,7 @@ public class EventTriggerInfos extends AbstractInfos<IEventTriggerInfo> {
 
 		@Override
 		public void addPrereqEvent(String prereqEvent) {
-			prereqEvents.add(prereqEvent);
+			this.prereqEvents.add(prereqEvent);
 		}
 
 		@Override
@@ -598,7 +598,7 @@ public class EventTriggerInfos extends AbstractInfos<IEventTriggerInfo> {
 
 		@Override
 		public void addOrPreReq(String orPreReq) {
-			orPreReqs.add(orPreReq);
+			this.orPreReqs.add(orPreReq);
 		}
 
 		@Override
@@ -608,7 +608,7 @@ public class EventTriggerInfos extends AbstractInfos<IEventTriggerInfo> {
 
 		@Override
 		public void addAndPreReq(String andPreReq) {
-			andPreReqs.add(andPreReq);
+			this.andPreReqs.add(andPreReq);
 		}
 
 		@Override
@@ -618,7 +618,7 @@ public class EventTriggerInfos extends AbstractInfos<IEventTriggerInfo> {
 
 		@Override
 		public void addObsoleteTech(String obsoleteTech) {
-			obsoleteTechs.add(obsoleteTech);
+			this.obsoleteTechs.add(obsoleteTech);
 		}
 
 		@Override
