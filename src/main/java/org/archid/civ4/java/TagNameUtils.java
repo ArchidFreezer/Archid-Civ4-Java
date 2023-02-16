@@ -71,7 +71,7 @@ public class TagNameUtils {
 				} else {
 					String clashTag = null;
 					for (String loopTag: tagUniqueNames.keySet()) {
-						if (tagUniqueNames.get(loopTag).equals(tag)) {
+						if (tagUniqueNames.get(loopTag).equals(unique)) {
 							clashTag = loopTag;
 							break;
 						}
