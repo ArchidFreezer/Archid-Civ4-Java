@@ -327,7 +327,7 @@ public class JavaCodeGenerator {
 		marshalClass.append(NEWLINETT + infoNameRoot + "Map map = new " + infoNameRoot + "Map();");
 		marshalClass.append(NEWLINETT + "for (I" + infoName + " info: v.values()) {");
 		marshalClass.append(NEWLINETTT + "Adapted" + infoNameRoot + " aInfo = new Adapted" + infoNameRoot + "();");
-		marshalClass.append(NEWLINETTT + "aInfo.type = info.getType();");
+		marshalClass.append(NEWLINETTT + "aInfo.type = JaxbUtils.marshallString(info.getType());");
 		
 		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
 			ITagProcessor processor = null;
