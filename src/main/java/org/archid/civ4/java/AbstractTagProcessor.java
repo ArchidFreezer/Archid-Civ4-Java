@@ -1,14 +1,21 @@
 package org.archid.civ4.java;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.archid.utils.StringUtils;
 
 public abstract class AbstractTagProcessor implements ITagProcessor {
 	
 	protected final String tagName;
-	protected List<String> adapterImports = new ArrayList<String>();
+	protected Set<String> adapterImports = new HashSet<String>();
+	protected Set<String> exporterImports = new HashSet<String>();
+	protected Set<String> importerImports = new HashSet<String>();
+	protected Map<String, String> filesToWrite = new HashMap<String, String>();
 	
 	public AbstractTagProcessor (String tagName) {
 		this.tagName = tagName;
@@ -31,8 +38,18 @@ public abstract class AbstractTagProcessor implements ITagProcessor {
 	}
 	
 	@Override
-	public List<String> getAdapterImports() {
+	public Set<String> getAdapterImports() {
 		return adapterImports;
+	}
+	
+	@Override
+	public Set<String> getExporterImports() {
+		return exporterImports;
+	}
+	
+	@Override
+	public Set<String> getImporterImports() {
+		return importerImports;
 	}
 	
 	@Override
@@ -45,6 +62,10 @@ public abstract class AbstractTagProcessor implements ITagProcessor {
 	
 	protected String getVarName() {
 		return StringUtils.lCaseFirstChar(tagName);
+	}
+	
+	public Map<String, String> getFilesToWrite() {
+		return filesToWrite;
 	}
 	
 }

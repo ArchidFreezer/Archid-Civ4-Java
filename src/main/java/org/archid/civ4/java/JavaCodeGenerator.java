@@ -65,8 +65,13 @@ public class JavaCodeGenerator {
 		namespaceFolder = infoNameRoot.toLowerCase();                       // somevalue
 		packageDef = "package org.archid.civ4.info." + namespaceFolder + ";";
 		topLevelTagDefinition = parser.getTagDefinition(infoName);
-		customTags = TagFactory.getProcessor(infoName);
-		if (customTags != null) customTags.init(namespaceFolder);
+		customTags = TagFactory.getProcessor(infoName, tagNameUtils);
+		if (customTags != null) {
+			customTags.init(namespaceFolder);
+			for (String filename: customTags.getFilesToWrite().keySet()) {
+				writeFile(filename, customTags.getFilesToWrite().get(filename));
+			}
+		}
 		parseInfo(topLevelTagDefinition);
 	}
 

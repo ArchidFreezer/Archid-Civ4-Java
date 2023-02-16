@@ -1,16 +1,22 @@
 package org.archid.civ4.java;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class DefaultInfoTagProcessor implements IInfoTagProcessor {
 	
 	private Map<String, ITagProcessor> tags = new HashMap<String, ITagProcessor>();
 	protected String packageName;
-	protected List<String> exportImports = new ArrayList<String>();
-	protected List<String> importImports = new ArrayList<String>();
+	protected Set<String> exportImports = new HashSet<String>();
+	protected Set<String> importImports = new HashSet<String>();
+	protected Map<String, String> filesToWrite = new HashMap<String, String>();
+	protected TagNameUtils tagNameUtils;
+	
+	public DefaultInfoTagProcessor(TagNameUtils tagNameUtils) {
+		this.tagNameUtils = tagNameUtils;
+	}
 	
 
 	@Override
@@ -25,6 +31,9 @@ public class DefaultInfoTagProcessor implements IInfoTagProcessor {
 	
 	public void addTagProcessor(ITagProcessor tag) {
 		tags.put(tag.getTagName(), tag);
+		exportImports.addAll(tag.getExporterImports());
+		importImports.addAll(tag.getImporterImports());
+		filesToWrite.putAll(tag.getFilesToWrite());
 	}
 
 	@Override
@@ -43,13 +52,19 @@ public class DefaultInfoTagProcessor implements IInfoTagProcessor {
 	}
 	
 	@Override
-	public List<String> getExportImports() {
+	public Set<String> getExportImports() {
 		return exportImports;
 	}
 	
 	@Override
-	public List<String> getImportImports() {
+	public Set<String> getImportImports() {
 		return importImports;
+	}
+
+
+	@Override
+	public Map<String, String> getFilesToWrite() {
+		return filesToWrite;
 	}
 	
 }

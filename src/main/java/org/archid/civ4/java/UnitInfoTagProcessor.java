@@ -2,6 +2,10 @@ package org.archid.civ4.java;
 
 public class UnitInfoTagProcessor extends DefaultInfoTagProcessor {
 	
+	public UnitInfoTagProcessor(TagNameUtils tagNameUtils) {
+		super(tagNameUtils);
+	}
+
 	@Override
 	public void init(String packageName) {
 		this.packageName = packageName;

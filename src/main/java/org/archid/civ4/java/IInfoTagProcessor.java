@@ -1,6 +1,7 @@
 package org.archid.civ4.java;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public interface IInfoTagProcessor {
 
@@ -9,6 +10,7 @@ public interface IInfoTagProcessor {
 	public ITagProcessor getTagProcessor(String tag);
 	public String getXmlFormatter();
 	public Integer getTypeTagIndex();
-	public List<String> getExportImports();
-	public List<String> getImportImports();
+	public Set<String> getExportImports();
+	public Set<String> getImportImports();
+	public Map<String, String> getFilesToWrite();
 }

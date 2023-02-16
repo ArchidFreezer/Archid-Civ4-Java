@@ -2,6 +2,10 @@ package org.archid.civ4.java;
 
 public class BonusInfoTagProcessor extends DefaultInfoTagProcessor {
 	
+	public BonusInfoTagProcessor(TagNameUtils tagNameUtils) {
+		super(tagNameUtils);
+	}
+
 	public void init(String packageName) {
 		this.packageName = packageName;
 		exportImports.add("import org.apache.poi.ss.usermodel.Cell;");
