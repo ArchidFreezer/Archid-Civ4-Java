@@ -196,8 +196,12 @@ public class StringUtils {
 		return sb.toString();
 	}
 	
-	public static String lcaseFirstChar(String val) {
+	public static String lCaseFirstChar(String val) {
 		return val.substring(0,1).toLowerCase() + val.substring(1);
+	}
+
+	public static String uCaseFirstChar(String val) {
+		return val.substring(0,1).toUpperCase() + val.substring(1);
 	}
 
 	/**
@@ -215,5 +219,8 @@ public class StringUtils {
     }
     return words;
 	}
-	
+
+	public static boolean startsWithLowerCase(String val) {
+		return val.matches("[a-z].*");
+	}
 }

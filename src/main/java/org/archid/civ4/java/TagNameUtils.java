@@ -155,8 +155,11 @@ public class TagNameUtils {
 		Integer numWordsLeft = words.size();
 		for (String word: words) {
 			numWordsLeft--;
-			if (singularMap.containsKey(word)) {
-				singular.append(singularMap.get(word));
+			// Need to check if we are processing a word starting with a cap
+			boolean lCase = StringUtils.startsWithLowerCase(word);
+			String test = lCase ? StringUtils.uCaseFirstChar(word) : word;
+			if (singularMap.containsKey(test)) {
+				singular.append(lCase ? StringUtils.lCaseFirstChar(singularMap.get(test)) : singularMap.get(test));
 			} else if (numWordsLeft == 0 && word.endsWith("s")) {
 				singular.append(word.substring(0,word.length() -1));
 			} else {
@@ -188,7 +191,7 @@ public class TagNameUtils {
 	}
 
 	private String getJavaVarName(String var) {
-		return StringUtils.lcaseFirstChar(getSafeName(var));
+		return StringUtils.lCaseFirstChar(getSafeName(var));
 	}
 
 	/**

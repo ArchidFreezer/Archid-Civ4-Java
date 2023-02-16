@@ -44,7 +44,7 @@ public abstract class AbstractTagProcessor implements ITagProcessor {
 	}
 	
 	protected String getVarName() {
-		return StringUtils.lcaseFirstChar(tagName);
+		return StringUtils.lCaseFirstChar(tagName);
 	}
 	
 }
