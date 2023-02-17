@@ -63,6 +63,7 @@ public class JavaCodeGenerator {
 		infoName = infoNamePlural.substring(0,infoNamePlural.length() - 1); // SomeValueInfo
 		infoNameRoot = infoName.substring(0,infoName.length() - 4);         // SomeValue
 		namespaceFolder = infoNameRoot.toLowerCase();                       // somevalue
+		createPackageFolder();
 		packageDef = "package org.archid.civ4.info." + namespaceFolder + ";";
 		topLevelTagDefinition = parser.getTagDefinition(infoName);
 		customTags = TagFactory.getProcessor(infoName, tagNameUtils);
@@ -103,7 +104,6 @@ public class JavaCodeGenerator {
 	public void createJavaCode(String infoTopLevelTag) {
 		init(infoTopLevelTag);
 		//First we need to create the output folder (package) for the java code
-		createPackageFolder();
 		createPackageInfoFile();
 		createInfoInterface();
 		createInfoClass();
