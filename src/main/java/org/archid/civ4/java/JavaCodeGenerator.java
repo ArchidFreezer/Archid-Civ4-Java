@@ -81,7 +81,7 @@ public class JavaCodeGenerator {
 		for (XmlTagInstance tag: info.getChildren()) {
 			XmlTagDefinition tagDef = parser.getTagDefinition(tag.getTagName());
 			boolean customTagProcessing = (customTags == null) ? false : customTags.hasTagProcessor(tag.getTagName());
-			Tag tagData = new Tag(tagDef, tag.isMandatory(), customTagProcessing);
+			Tag tagData = new Tag(tagDef, tag, customTagProcessing);
 			if (tagData.requiresArray()) {
 				dynamicImports.add("import java.util.List;");
 				dynamicImports.add("import java.util.ArrayList;");
@@ -408,18 +408,18 @@ public class JavaCodeGenerator {
 				} else if (tag.requiresArray()) {
 					unmarshalClass.append(NEWLINE);
 					unmarshalClass.append(NEWLINETTT + "if (CollectionUtils.hasElements(aInfo." + tag.varName + ")) {");
-					unmarshalClass.append(NEWLINETTTT + "for (" + tag.getDataType() + " val: aInfo." + tag.varName + ") {");
+					unmarshalClass.append(NEWLINETTTT + "for (" + getXmlDataType(tag.getDataType()) + " val: aInfo." + tag.varName + ") {");
 					if (tag.getDataType().equals("String")) {
 						unmarshalClass.append(NEWLINETTTTT + "if (StringUtils.hasCharacters(val)) {");
-						unmarshalClass.append(NEWLINETTTTTT + "info." + tag.getSetterName() + "(val);");
+						unmarshalClass.append(NEWLINETTTTTT + "info." + tag.getSetterName() + "(" + getUnmarshallString(tag, "val") + ");");
 						unmarshalClass.append(NEWLINETTTTT + "}");
 					} else {
-						unmarshalClass.append(NEWLINETTTTT + "info." + tag.getSetterName() + "(val);");
+						unmarshalClass.append(NEWLINETTTTT + "info." + tag.getSetterName() + "(" + getUnmarshallString(tag, "val") + ");");
 					}
 					unmarshalClass.append(NEWLINETTTT + "}");
 					unmarshalClass.append(NEWLINETTT + "}");
 				} else {
-					unmarshalClass.append(NEWLINETTT + "info." + tag.getSetterName() + "(JaxbUtils.unmarshall" + tag.getDataType() + "(aInfo." + tag.varName + "));");
+					unmarshalClass.append(NEWLINETTT + "info." + tag.getSetterName() + "(" + getUnmarshallString(tag, "aInfo." + tag.varName) + ");");
 				}
 			}
 			
@@ -456,16 +456,13 @@ public class JavaCodeGenerator {
 				} else if (tag.requiresArray()) {
 					marshalClass.append(NEWLINE);
 					marshalClass.append(NEWLINETTT + "if (CollectionUtils.hasElements(info." + tag.getGetterName() + "())) {");
-					marshalClass.append(NEWLINETTTT + "aInfo." + tag.varName + " = new ArrayList<" + tag.getDataType() + ">();");
+					marshalClass.append(NEWLINETTTT + "aInfo." + tag.varName + " = new ArrayList<" + getXmlDataType(tag.getDataType()) + ">();");
 					marshalClass.append(NEWLINETTTT + "for(" + tag.getDataType() + " val: info." + tag.getGetterName() + "()) {");
-					marshalClass.append(NEWLINETTTTT + "aInfo." + tag.varName + ".add(val);");
+					marshalClass.append(NEWLINETTTTT + "aInfo." + tag.varName + ".add(" + getMarshallString(tag, "val", true) + ");");
 					marshalClass.append(NEWLINETTTT + "}");
 					marshalClass.append(NEWLINETTT + "}");
 				} else {
-					if (tag.isMandatory())
-						marshalClass.append(NEWLINETTT + "aInfo." + tag.varName + " = JaxbUtils.marshallMandatory" + tag.getDataType() + "(info." + tag.getGetterName() + "());");
-					else
-						marshalClass.append(NEWLINETTT + "aInfo." + tag.varName + " = JaxbUtils.marshall" + tag.getDataType() + "(info." + tag.getGetterName() + "());");
+					marshalClass.append(NEWLINETTT + "aInfo." + tag.varName + " = " + getMarshallString(tag, "info." + tag.getGetterName() + "()") + ";");
 				}
 			}
 			
@@ -718,7 +715,26 @@ public class JavaCodeGenerator {
 				log.error("Error closing output file!");
 			}
 		}
-
+	}
+	
+	private String getMarshallString(Tag tag, String val) {
+		return getMarshallString(tag, val, tag.isMandatory());
+	}
+	
+	private String getMarshallString(Tag tag, String val, boolean mandatory) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("JaxbUtils.marshall");
+		if (mandatory) sb.append("Mandatory");
+		sb.append(tag.getDataType() + "(" + val + ")");
+		return sb.toString();
+	}
+	
+	private String getUnmarshallString(Tag tag, String val) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("JaxbUtils.unmarshall");
+//		if (tag.isMandatory()) sb.append("Mandatory");
+		sb.append(tag.getDataType() + "(" + val + ")");
+		return sb.toString();
 	}
 	
 	private String getXmlDataType(String javaType) {
@@ -732,6 +748,7 @@ public class JavaCodeGenerator {
 	
 	private class Tag {
 		
+		private XmlTagInstance tagInstance = null;
 		private XmlTagDefinition tagDefinition = null; // iSomeTag
 		private String rootName = "";      // SomeTag
 		private String varName = "";       // someTag
@@ -739,13 +756,12 @@ public class JavaCodeGenerator {
 		private String setterName = null;
 		private String dataType = null;
 		private Integer numLevels = null;
-		private boolean mandatory = false;
 		private boolean custom = false;
 		private List<LeafData> leaves = new ArrayList<LeafData>(); 
 		
-		private Tag(XmlTagDefinition tag, boolean mandatory, boolean custom) {
-			this.tagDefinition = tag;
-			this.mandatory = mandatory;
+		private Tag(XmlTagDefinition tagDef, XmlTagInstance tagInst, boolean custom) {
+			this.tagDefinition = tagDef;
+			this.tagInstance = tagInst;
 			this.custom = custom;
 			numLevels = getNumLevels(tagDefinition, 0);
 			populateLeafData();
@@ -881,7 +897,7 @@ public class JavaCodeGenerator {
 		}
 		
 		public Boolean isMandatory() {
-			return mandatory;
+			return tagInstance.isMandatory();
 		}
 		
 		public void setDataType(String dataType) {
@@ -924,7 +940,7 @@ public class JavaCodeGenerator {
 		public boolean isCustom() {
 			return custom;
 		}
-
+		
 	}
 	
 	private class LeafData {
