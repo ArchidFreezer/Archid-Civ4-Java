@@ -67,4 +67,14 @@ public class DefaultInfoTagProcessor implements IInfoTagProcessor {
 		return filesToWrite;
 	}
 	
+	protected DefaultResourceArrayTagProcessorData getTagData(String outer, String wrapper, String resource, String list, String element) {
+		DefaultResourceArrayTagProcessorData tagData = new DefaultResourceArrayTagProcessorData();
+		tagData.outer = outer;
+		tagData.wrapper = wrapper;
+		tagData.resource = resource;
+		tagData.list = list;
+		tagData.element = element;
+		return tagData;
+	}
+	
 }

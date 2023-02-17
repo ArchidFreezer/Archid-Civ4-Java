@@ -18,6 +18,10 @@ public class CivicInfoTagProcessor extends DefaultInfoTagProcessor {
 		addTagProcessor(getImprovementYieldChangesProcessor());
 	}
 	
+	private DefaultResourceArrayTagProcessor getImprovementYieldChangesProcessor() {
+		return new DefaultResourceArrayTagProcessor(getTagData("ImprovementYieldChanges", "ImprovementYieldChange", "ImprovementType", "ImprovementYields", "iYield"), tagNameUtils);
+	}
+	
 	@Override
 	public String getXmlFormatter() {
 		return "CivicInfoXmlFormatter()";
@@ -28,16 +32,12 @@ public class CivicInfoTagProcessor extends DefaultInfoTagProcessor {
 		return 1;
 	}
 	
-	private DefaultResourceArrayTagProcessor getImprovementYieldChangesProcessor() {
-		DefaultResourceArrayTagProcessorData tagData = new DefaultResourceArrayTagProcessorData();
-		tagData.outer = "ImprovementYieldChanges";
-		tagData.wrapper = "ImprovementYieldChange";
-		tagData.resource = "ImprovementType";
-		tagData.list = "ImprovementYields";
-		tagData.element = "iYield";
+	@Override
+	protected DefaultResourceArrayTagProcessorData getTagData(String outer, String wrapper, String resource, String list, String element) {
+		DefaultResourceArrayTagProcessorData tagData = super.getTagData(outer, wrapper, resource, list, element);
 		tagData.infoInterface = "ICivicInfo";
 		tagData.folder = "civic";
-		return new DefaultResourceArrayTagProcessor(tagData, tagNameUtils);
+		return tagData;
 	}
 	
 }
