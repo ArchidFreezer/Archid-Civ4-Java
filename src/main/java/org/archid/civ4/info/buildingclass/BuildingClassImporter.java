@@ -10,7 +10,7 @@ public class BuildingClassImporter extends AbstractImporter<IInfos<IBuildingClas
 
 	/** Logging facility */
 	static Logger log = Logger.getLogger(BuildingClassImporter.class.getName());
-	
+
 	public BuildingClassImporter(EInfo infoEnum) {
 		super(infoEnum, new BuildingClassInfoXmlFormatter());
 	}
@@ -23,13 +23,13 @@ public class BuildingClassImporter extends AbstractImporter<IInfos<IBuildingClas
 	@Override
 	protected IBuildingClassInfo parseRow(Row row) {
 		int colNum = 0;
-		String type = row.getCell(colNum++).getStringCellValue();
-		
-		// Handle building classes that have been deleted or are incomplete
+		String type = row.getCell(0).getStringCellValue();
+		// Handle cells that have been moved
 		if (type.isEmpty())
 			return null;
-		
+
 		IBuildingClassInfo info = BuildingClassInfos.createInfo(type);
+		parseCell(row.getCell(colNum++), String.class, info::setType);
 		parseCell(row.getCell(colNum++), String.class, info::setDescription);
 		parseCell(row.getCell(colNum++), Integer.class, info::setCategory);
 		parseCell(row.getCell(colNum++), Integer.class, info::setMaxGlobalInstances);
@@ -43,5 +43,4 @@ public class BuildingClassImporter extends AbstractImporter<IInfos<IBuildingClas
 
 		return info;
 	}
-
 }

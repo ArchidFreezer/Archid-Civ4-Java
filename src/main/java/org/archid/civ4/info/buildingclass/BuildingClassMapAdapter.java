@@ -4,24 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-
 import org.archid.utils.CollectionUtils;
 import org.archid.utils.IPair;
 import org.archid.utils.JaxbUtils;
 import org.archid.utils.Pair;
 import org.archid.utils.StringUtils;
 
-public class BuildingClassMapAdapter extends XmlAdapter<BuildingClassMapAdapter.BuildingClassMap, Map<String, IBuildingClassInfo>>{
-	
+public class BuildingClassMapAdapter extends XmlAdapter<BuildingClassMapAdapter.BuildingClassMap, Map<String, IBuildingClassInfo>> {
+
 	public static class BuildingClassMap {
-		 @XmlElement(name = "BuildingClassInfo")
-		 List<AdaptedBuildingClass> entries = new ArrayList<AdaptedBuildingClass>();		
+		@XmlElement(name = "BuildingClassInfo")
+		List<AdaptedBuildingClass> entries = new ArrayList<AdaptedBuildingClass>();
 	}
-	
+
 	private static class AdaptedBuildingClass {
 		@XmlElement(name="Type")
 		private String type;
@@ -45,15 +43,14 @@ public class BuildingClassMapAdapter extends XmlAdapter<BuildingClassMapAdapter.
 		private String defaultBuilding;
 		@XmlElementWrapper(name="VictoryThresholds")
 		@XmlElement(name="VictoryThreshold")
-		private List<AdaptedVictoryThreshold> victoryThresholds;
-	
+		private List<AdaptedVictoryThresholds> victoryThresholds;
 	}
 
-	private static class AdaptedVictoryThreshold {
+	private static class AdaptedVictoryThresholds {
 		@XmlElement(name="VictoryType")
-		private String victory;
+		private String victoryType;
 		@XmlElement(name="iThreshold")
-		private Integer threshold;
+		private Integer iThreshold;
 	}
 
 	@Override
@@ -72,16 +69,15 @@ public class BuildingClassMapAdapter extends XmlAdapter<BuildingClassMapAdapter.
 			info.setDefaultBuilding(JaxbUtils.unmarshallString(aInfo.defaultBuilding));
 
 			if (CollectionUtils.hasElements(aInfo.victoryThresholds)) {
-				for (AdaptedVictoryThreshold adaptor: aInfo.victoryThresholds) {
-					if (StringUtils.hasCharacters(adaptor.victory)) {
-						info.addVictoryThreshold(new Pair<String, Integer>(adaptor.victory, adaptor.threshold));
+				for (AdaptedVictoryThresholds adaptor: aInfo.victoryThresholds) {
+					if (StringUtils.hasCharacters(adaptor.victoryType)) {
+						info.addVictoryThreshold(new Pair<String, Integer>(adaptor.victoryType, adaptor.iThreshold));
 					}
 				}
 			}
-			
+
 			map.put(aInfo.type, info);
 		}
-		
 		return map;
 	}
 
@@ -90,8 +86,8 @@ public class BuildingClassMapAdapter extends XmlAdapter<BuildingClassMapAdapter.
 		BuildingClassMap map = new BuildingClassMap();
 		for (IBuildingClassInfo info: v.values()) {
 			AdaptedBuildingClass aInfo = new AdaptedBuildingClass();
-			aInfo.type = info.getType();
-			aInfo.description = JaxbUtils.marshallString(info.getDescription());
+			aInfo.type = JaxbUtils.marshallString(info.getType());
+			aInfo.description = JaxbUtils.marshallMandatoryString(info.getDescription());
 			aInfo.category = JaxbUtils.marshallInteger(info.getCategory());
 			aInfo.maxGlobalInstances = JaxbUtils.marshallInteger(info.getMaxGlobalInstances());
 			aInfo.maxTeamInstances = JaxbUtils.marshallInteger(info.getMaxTeamInstances());
@@ -99,21 +95,20 @@ public class BuildingClassMapAdapter extends XmlAdapter<BuildingClassMapAdapter.
 			aInfo.extraPlayerInstances = JaxbUtils.marshallInteger(info.getExtraPlayerInstances());
 			aInfo.noLimit = JaxbUtils.marshallBoolean(info.isNoLimit());
 			aInfo.monument = JaxbUtils.marshallBoolean(info.isMonument());
-			aInfo.defaultBuilding = JaxbUtils.marshallString(info.getDefaultBuilding());
-			
+			aInfo.defaultBuilding = JaxbUtils.marshallMandatoryString(info.getDefaultBuilding());
+
 			if (CollectionUtils.hasElements(info.getVictoryThresholds())) {
-				aInfo.victoryThresholds = new ArrayList<AdaptedVictoryThreshold>();
+				aInfo.victoryThresholds = new ArrayList<AdaptedVictoryThresholds>();
 				for (IPair<String, Integer> pair: info.getVictoryThresholds()) {
-					AdaptedVictoryThreshold adapter = new AdaptedVictoryThreshold();
-					adapter.victory = pair.getKey();
-					adapter.threshold = pair.getValue();
-					aInfo.victoryThresholds.add(adapter);
+					AdaptedVictoryThresholds adaptor = new AdaptedVictoryThresholds();
+					adaptor.victoryType = pair.getKey();
+					adaptor.iThreshold = pair.getValue();
+					aInfo.victoryThresholds.add(adaptor);
 				}
 			}
-			
+
 			map.entries.add(aInfo);
 		}
 		return map;
 	}
-
 }

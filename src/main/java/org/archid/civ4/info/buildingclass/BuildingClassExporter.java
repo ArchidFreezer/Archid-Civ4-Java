@@ -2,7 +2,6 @@ package org.archid.civ4.info.buildingclass;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import org.archid.civ4.info.AbstractExporter;
@@ -14,7 +13,7 @@ public class BuildingClassExporter extends AbstractExporter<IInfos<IBuildingClas
 
 	/** Logging facility */
 	static Logger log = Logger.getLogger(BuildingClassExporter.class.getName());
-	
+
 	public BuildingClassExporter(EInfo infoEnum) {
 		super(infoEnum);
 	}
@@ -26,6 +25,16 @@ public class BuildingClassExporter extends AbstractExporter<IInfos<IBuildingClas
 			headers.add(header.toString());
 		}
 		return headers;
+	}
+
+	@Override
+	protected int getNumCols() {
+		return IBuildingClassWorkbook.SheetHeaders.values().length;
+	}
+
+	@Override
+	protected String getInfoListSheetName() {
+		return IBuildingClassWorkbook.SHEETNAME_LIST;
 	}
 
 	@Override
@@ -46,16 +55,4 @@ public class BuildingClassExporter extends AbstractExporter<IInfos<IBuildingClas
 
 		row.setHeightInPoints(maxHeight * row.getSheet().getDefaultRowHeightInPoints());
 	}
-
-	@Override
-	protected int getNumCols() {
-		return IBuildingClassWorkbook.SheetHeaders.values().length;
-	}
-
-	@Override
-	protected String getInfoListSheetName() {
-		return IBuildingClassWorkbook.SHEETNAME_LIST;
-	}
-	
-	
 }
