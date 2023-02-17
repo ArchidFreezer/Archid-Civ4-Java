@@ -86,8 +86,8 @@ public class JavaCodeGenerator {
 				dynamicImports.add("import java.util.List;");
 				dynamicImports.add("import java.util.ArrayList;");
 			}
-			if (tagData.leaves.size() == 2) dynamicImports.add("import org.archid.utils.IPair;");
-			if (tagData.leaves.size() == 3) dynamicImports.add("import org.archid.utils.ITriple;");
+			if (tagData.getNumLeaves() == 2) dynamicImports.add("import org.archid.utils.IPair;");
+			if (tagData.getNumLeaves() == 3) dynamicImports.add("import org.archid.utils.ITriple;");
 			infoTagData.put(tag.getTagName(), tagData);
 			tagNameData.put(tag.getTagName(), tagDef.getDataType());
 		}
@@ -163,25 +163,24 @@ public class JavaCodeGenerator {
 			if (customTags != null && customTags.hasTagProcessor(mainChild.getTagName())) {
 				processor = customTags.getTagProcessor(mainChild.getTagName());
 				tag.setDataType(processor.getDataType());
-				tag.setSingularDataType(processor.getDataType());
 			}
 			if (processor != null) {
 				mainClass.append(processor.getImporterRow());
 				customCellReaders.append(processor.getImporterCellReader());
 			} else if (tag.requiresArray()) {
-				if (tag.leaves.size() == 1) {
+				if (tag.getNumLeaves() == 1) {
 					if (tag.requiresArray()) {
-						mainClass.append(NEWLINETT + "parseListCell(row.getCell(colNum++), " + tag.singularDataType + ".class, info::" + tag.setterName + ");");
+						mainClass.append(NEWLINETT + "parseListCell(row.getCell(colNum++), " + tag.getDataType() + ".class, info::" + tag.getSetterName() + ");");
 					} else {
-						mainClass.append(NEWLINETT + "parseCell(row.getCell(colNum++), " + tag.dataType + ".class, info::" + tag.setterName + ");");
+						mainClass.append(NEWLINETT + "parseCell(row.getCell(colNum++), " + tag.getDataType() + ".class, info::" + tag.getSetterName() + ");");
 					}
-				} else if (tag.leaves.size() == 2) { 
-					mainClass.append(NEWLINETT + "parsePairsCell(row.getCell(colNum++), " + tag.leaves.get(0).type + ".class, " + tag.leaves.get(1).type + ".class, info::" + tag.setterName + ");");
-				} else if (tag.leaves.size() == 3) {
-					mainClass.append(NEWLINETT + "parseTriplesCell(row.getCell(colNum++), " + tag.leaves.get(0).type + ".class, " + tag.leaves.get(1).type + ".class, " + tag.leaves.get(2).type + ".class, info::" + tag.setterName + ");");
+				} else if (tag.getNumLeaves() == 2) { 
+					mainClass.append(NEWLINETT + "parsePairsCell(row.getCell(colNum++), " + tag.getLeaf(0).getType() + ".class, " + tag.getLeaf(1).getType() + ".class, info::" + tag.getSetterName() + ");");
+				} else if (tag.getNumLeaves() == 3) {
+					mainClass.append(NEWLINETT + "parseTriplesCell(row.getCell(colNum++), " + tag.getLeaf(0).getType() + ".class, " + tag.getLeaf(1).getType() + ".class, " + tag.getLeaf(2).getType() + ".class, info::" + tag.getSetterName() + ");");
 				}
 			} else {
-				mainClass.append(NEWLINETT + "parseCell(row.getCell(colNum++), " + tag.dataType + ".class, info::" + tag.setterName + ");");					
+				mainClass.append(NEWLINETT + "parseCell(row.getCell(colNum++), " + tag.getDataType() + ".class, info::" + tag.getSetterName() + ");");					
 			}
 		}
 		
@@ -259,21 +258,20 @@ public class JavaCodeGenerator {
 			if (customTags != null && customTags.hasTagProcessor(mainChild.getTagName())) {
 				processor = customTags.getTagProcessor(mainChild.getTagName());
 				tag.setDataType(processor.getDataType());
-				tag.setSingularDataType(processor.getDataType());
 			}
 			if (processor != null) {
 				mainClass.append(processor.getExporterRow());
 				customCellWriters.append(processor.getExporterCellWriter());
 			} else if (tag.requiresArray()) {
-				if (tag.leaves.size() == 1) {
-					mainClass.append(NEWLINETT + "maxHeight = addRepeatingCell(row.createCell(colNum++), info." + tag.getterName + "(), maxHeight);");					
-				} else if (tag.leaves.size() == 2) { 
-					mainClass.append(NEWLINETT + "maxHeight = addRepeatingPairCell(row.createCell(colNum++), info." + tag.getterName + "(), maxHeight);");					
-				} else if (tag.leaves.size() == 3) {
-					mainClass.append(NEWLINETT + "maxHeight = addRepeatingTripleCell(row.createCell(colNum++), info." + tag.getterName + "(), maxHeight);");					
+				if (tag.getNumLeaves() == 1) {
+					mainClass.append(NEWLINETT + "maxHeight = addRepeatingCell(row.createCell(colNum++), info." + tag.getGetterName() + "(), maxHeight);");					
+				} else if (tag.getNumLeaves() == 2) { 
+					mainClass.append(NEWLINETT + "maxHeight = addRepeatingPairCell(row.createCell(colNum++), info." + tag.getGetterName() + "(), maxHeight);");					
+				} else if (tag.getNumLeaves() == 3) {
+					mainClass.append(NEWLINETT + "maxHeight = addRepeatingTripleCell(row.createCell(colNum++), info." + tag.getGetterName() + "(), maxHeight);");					
 				}
 			} else {
-				mainClass.append(NEWLINETT + "addSingleCell(row.createCell(colNum++), info." + tag.getterName + "());");					
+				mainClass.append(NEWLINETT + "addSingleCell(row.createCell(colNum++), info." + tag.getGetterName() + "());");					
 			}
 		}
 		
@@ -340,7 +338,6 @@ public class JavaCodeGenerator {
 			if (customTags != null && customTags.hasTagProcessor(mainChild.getTagName())) {
 				processor = customTags.getTagProcessor(mainChild.getTagName());
 				tag.setDataType(processor.getDataType());
-				tag.setSingularDataType(processor.getDataType());
 				imports.addAll(processor.getAdapterImports());
 			}
 			// Process the adapted class
@@ -355,27 +352,27 @@ public class JavaCodeGenerator {
 				XmlTagDefinition innerTagXmlDef = parser.getTagDefinition(tag.tagDefinition.getChildren().get(0).getTagName());
 				adaptedClass.append(NEWLINETT + "@XmlElementWrapper(name=\"" + mainChild.getTagName() + "\")");
 				adaptedClass.append(NEWLINETT + "@XmlElement(name=\"" + innerTagXmlDef.getTagName() + "\")");
-				adaptedClass.append(NEWLINETT + "private " + getXmlDataType(tag.leaves.get(0).type) + " " + tag.varName + ";");				
+				adaptedClass.append(NEWLINETT + "private List<" + getXmlDataType(tag.getLeaf(0).getType()) + "> " + tag.varName + ";");				
 			} else {
 				adaptedClass.append(NEWLINETT + "@XmlElement(name=\"" + mainChild.getTagName() + "\")");
-				adaptedClass.append(NEWLINETT + "private " + getXmlDataType(tag.leaves.get(0).type) + " " + tag.varName + ";");				
+				adaptedClass.append(NEWLINETT + "private " + getXmlDataType(tag.getLeaf(0).getType()) + " " + tag.varName + ";");				
 			}
 			
 			// Process any custom adapters
 			if (tag.requiresAdapter() && processor == null) {
-				if (tag.custom) {
-					log.warn("Unable to create adapter for " + tag.rootName + ": " + tag.dataType);
+				if (tag.isCustom()) {
+					log.warn("Unable to create adapter for " + tag.getRootName() + ": " + tag.getDataType());
 					customAdapters.append(NEWLINE);
 					customAdapters.append(NEWLINET + "private static class Adapted" + mainChild.getTagName() + " {");
-					customAdapters.append(NEWLINETT + "@XmlElement(name=\"" + tag.dataType + "\")");
-					customAdapters.append(NEWLINETT + "private " + tag.dataType + " VAR_NAME;");
+					customAdapters.append(NEWLINETT + "@XmlElement(name=\"" + tag.getDataType() + "\")");
+					customAdapters.append(NEWLINETT + "private " + tag.getDataType() + " VAR_NAME;");
 					customAdapters.append(NEWLINET + "}");
 				} else {
 					customAdapters.append(NEWLINE);
 					customAdapters.append(NEWLINET + "private static class Adapted" + mainChild.getTagName() + " {");
-					for (LeafData leaf: tag.leaves) {
-						customAdapters.append(NEWLINETT + "@XmlElement(name=\"" + leaf.name + "\")");
-						customAdapters.append(NEWLINETT + "private " + getXmlDataType(leaf.type) + " " + leaf.varName + ";");
+					for (LeafData leaf: tag.getLeaves()) {
+						customAdapters.append(NEWLINETT + "@XmlElement(name=\"" + leaf.getName() + "\")");
+						customAdapters.append(NEWLINETT + "private " + getXmlDataType(leaf.getType()) + " " + leaf.getVarName() + ";");
 					}
 					customAdapters.append(NEWLINET + "}");
 				}
@@ -383,27 +380,27 @@ public class JavaCodeGenerator {
 			
 			// Process the unmarshall class
 			// The type is set when we instantiated the info class above and has no mutator
-			if (!tag.rootName.equals("Type")) {
+			if (!tag.getRootName().equals("Type")) {
 				if (processor != null) {
 					unmarshalClass.append(processor.getUnmarshallString());
-				} else if (tag.custom) {
+				} else if (tag.isCustom()) {
 					unmarshalClass.append(NEWLINE);
 					unmarshalClass.append(NEWLINETTT + "if (CollectionUtils.hasElements(aInfo." + tag.varName + ")) {");
 					unmarshalClass.append(NEWLINETTTT + "for (Adapted" + mainChild.getTagName() + " adaptor: aInfo." + tag.varName + ") {");
-					unmarshalClass.append(NEWLINETTTTT + tag.dataType);
+					unmarshalClass.append(NEWLINETTTTT + tag.getDataType());
 					unmarshalClass.append(NEWLINETTTT + "}");
 					unmarshalClass.append(NEWLINETTT + "}");
 				} else if (tag.requiresAdapter()) {
 					unmarshalClass.append(NEWLINE);
 					unmarshalClass.append(NEWLINETTT + "if (CollectionUtils.hasElements(aInfo." + tag.varName + ")) {");
 					unmarshalClass.append(NEWLINETTTT + "for (Adapted" + mainChild.getTagName() + " adaptor: aInfo." + tag.varName + ") {");
-					unmarshalClass.append(NEWLINETTTTT + "if (StringUtils.hasCharacters(adaptor." + tag.leaves.get(0).varName + ")) {");
-					if (tag.leaves.size() == 2) {
+					unmarshalClass.append(NEWLINETTTTT + "if (StringUtils.hasCharacters(adaptor." + tag.getLeaf(0).getVarName() + ")) {");
+					if (tag.getNumLeaves() == 2) {
 						imports.add("import org.archid.utils.Pair;");
-						unmarshalClass.append(NEWLINETTTTTT + "info." + tag.setterName + "(new Pair<" + tag.leaves.get(0).type + ", " + tag.leaves.get(1).type + ">(adaptor." + tag.leaves.get(0).varName + ", adaptor." + tag.leaves.get(1).varName + "));");
-					} else if (tag.leaves.size() == 3) {
+						unmarshalClass.append(NEWLINETTTTTT + "info." + tag.getSetterName() + "(new Pair<" + tag.getLeaf(0).getType() + ", " + tag.getLeaf(1).getType() + ">(adaptor." + tag.getLeaf(0).getVarName() + ", adaptor." + tag.getLeaf(1).getVarName() + "));");
+					} else if (tag.getNumLeaves() == 3) {
 						imports.add("import org.archid.utils.Triple;");
-						unmarshalClass.append(NEWLINETTTTTT + "info." + tag.setterName + "(new Triple<" + tag.leaves.get(0).type + ", " + tag.leaves.get(1).type + ", " + tag.leaves.get(2).type + ">(adaptor." + tag.leaves.get(0).varName + ", adaptor." + tag.leaves.get(1).varName + ", adaptor." + tag.leaves.get(2).varName + "));");						
+						unmarshalClass.append(NEWLINETTTTTT + "info." + tag.getSetterName() + "(new Triple<" + tag.getLeaf(0).getType() + ", " + tag.getLeaf(1).getType() + ", " + tag.getLeaf(2).getType() + ">(adaptor." + tag.getLeaf(0).getVarName() + ", adaptor." + tag.getLeaf(1).getVarName() + ", adaptor." + tag.getLeaf(2).getVarName() + "));");						
 					}
 					unmarshalClass.append(NEWLINETTTTT + "}");
 					unmarshalClass.append(NEWLINETTTT + "}");
@@ -411,64 +408,64 @@ public class JavaCodeGenerator {
 				} else if (tag.requiresArray()) {
 					unmarshalClass.append(NEWLINE);
 					unmarshalClass.append(NEWLINETTT + "if (CollectionUtils.hasElements(aInfo." + tag.varName + ")) {");
-					unmarshalClass.append(NEWLINETTTT + "for (" + tag.singularDataType + " val: aInfo." + tag.varName + ") {");
-					if (tag.singularDataType.equals("String")) {
+					unmarshalClass.append(NEWLINETTTT + "for (" + tag.getDataType() + " val: aInfo." + tag.varName + ") {");
+					if (tag.getDataType().equals("String")) {
 						unmarshalClass.append(NEWLINETTTTT + "if (StringUtils.hasCharacters(val)) {");
-						unmarshalClass.append(NEWLINETTTTTT + "info." + tag.setterName + "(val);");
+						unmarshalClass.append(NEWLINETTTTTT + "info." + tag.getSetterName() + "(val);");
 						unmarshalClass.append(NEWLINETTTTT + "}");
 					} else {
-						unmarshalClass.append(NEWLINETTTTT + "info." + tag.setterName + "(val);");
+						unmarshalClass.append(NEWLINETTTTT + "info." + tag.getSetterName() + "(val);");
 					}
 					unmarshalClass.append(NEWLINETTTT + "}");
 					unmarshalClass.append(NEWLINETTT + "}");
 				} else {
-					unmarshalClass.append(NEWLINETTT + "info." + tag.setterName + "(JaxbUtils.unmarshall" + tag.dataType + "(aInfo." + tag.varName + "));");
+					unmarshalClass.append(NEWLINETTT + "info." + tag.getSetterName() + "(JaxbUtils.unmarshall" + tag.getDataType() + "(aInfo." + tag.varName + "));");
 				}
 			}
 			
 			// Process the marshall class
-			if (!tag.rootName.equals("Type")) {
+			if (!tag.getRootName().equals("Type")) {
 				if (processor != null) {
 					marshalClass.append(processor.getMarshallString());
-				} else if (tag.custom) {
+				} else if (tag.isCustom()) {
 					marshalClass.append(NEWLINE);
-					marshalClass.append(NEWLINETTT + "if (CollectionUtils.hasElements(info." + tag.getterName + "())) {");
+					marshalClass.append(NEWLINETTT + "if (CollectionUtils.hasElements(info." + tag.getGetterName() + "())) {");
 					marshalClass.append(NEWLINETTTT + "aInfo." + tag.varName + " = new ArrayList<Adapted" + mainChild.getTagName() + ">();");
-					marshalClass.append(NEWLINETTTTT + tag.dataType);
+					marshalClass.append(NEWLINETTTTT + tag.getDataType());
 					marshalClass.append(NEWLINETTTT + "}");
 					marshalClass.append(NEWLINETTT + "}");
 				} else if (tag.requiresAdapter()) {
 					marshalClass.append(NEWLINE);
-					marshalClass.append(NEWLINETTT + "if (CollectionUtils.hasElements(info." + tag.getterName + "())) {");
+					marshalClass.append(NEWLINETTT + "if (CollectionUtils.hasElements(info." + tag.getGetterName() + "())) {");
 					marshalClass.append(NEWLINETTTT + "aInfo." + tag.varName + " = new ArrayList<Adapted" + mainChild.getTagName() + ">();");
-					if (tag.leaves.size() == 2) {
-						marshalClass.append(NEWLINETTTT + "for (IPair<" + tag.leaves.get(0).type + ", " + tag.leaves.get(1).type + "> pair: info." + tag.getterName + "()) {");
+					if (tag.getNumLeaves() == 2) {
+						marshalClass.append(NEWLINETTTT + "for (IPair<" + tag.getLeaf(0).getType() + ", " + tag.getLeaf(1).getType() + "> pair: info." + tag.getGetterName() + "()) {");
 						marshalClass.append(NEWLINETTTTT + "Adapted" + mainChild.getTagName() + " adaptor = new Adapted" + mainChild.getTagName() + "();");
-						marshalClass.append(NEWLINETTTTT + "adaptor." + tag.leaves.get(0).varName + " = pair.getKey();");
-						marshalClass.append(NEWLINETTTTT + "adaptor." + tag.leaves.get(1).varName + " = pair.getValue();");
-					} else if (tag.leaves.size() == 3) {
-						marshalClass.append(NEWLINETTTT + "for (ITriple<" + tag.leaves.get(0).type + ", " + tag.leaves.get(1).type + ", " + tag.leaves.get(2).type + "> triple: info." + tag.getterName + "()) {");
+						marshalClass.append(NEWLINETTTTT + "adaptor." + tag.getLeaf(0).getVarName() + " = pair.getKey();");
+						marshalClass.append(NEWLINETTTTT + "adaptor." + tag.getLeaf(1).getVarName() + " = pair.getValue();");
+					} else if (tag.getNumLeaves() == 3) {
+						marshalClass.append(NEWLINETTTT + "for (ITriple<" + tag.getLeaf(0).getType() + ", " + tag.getLeaf(1).getType() + ", " + tag.getLeaf(2).getType() + "> triple: info." + tag.getGetterName() + "()) {");
 						marshalClass.append(NEWLINETTTTT + "Adapted" + mainChild.getTagName() + " adaptor = new Adapted" + mainChild.getTagName() + "();");
-						marshalClass.append(NEWLINETTTTT + "adaptor." + tag.leaves.get(0).varName + " = triple.getKey();");
-						marshalClass.append(NEWLINETTTTT + "adaptor." + tag.leaves.get(1).varName + " = triple.getValue();");
-						marshalClass.append(NEWLINETTTTT + "adaptor." + tag.leaves.get(2).varName + " = triple.getData();");
+						marshalClass.append(NEWLINETTTTT + "adaptor." + tag.getLeaf(0).getVarName() + " = triple.getKey();");
+						marshalClass.append(NEWLINETTTTT + "adaptor." + tag.getLeaf(1).getVarName() + " = triple.getValue();");
+						marshalClass.append(NEWLINETTTTT + "adaptor." + tag.getLeaf(2).getVarName() + " = triple.getData();");
 					}
 					marshalClass.append(NEWLINETTTTT + "aInfo." + tag.varName + ".add(adaptor);");
 					marshalClass.append(NEWLINETTTT + "}");
 					marshalClass.append(NEWLINETTT + "}");
 				} else if (tag.requiresArray()) {
 					marshalClass.append(NEWLINE);
-					marshalClass.append(NEWLINETTT + "if (CollectionUtils.hasElements(info." + tag.getterName + "())) {");
-					marshalClass.append(NEWLINETTTT + "aInfo." + tag.varName + " = new ArrayList<" + tag.singularDataType + ">();");
-					marshalClass.append(NEWLINETTTT + "for(" + tag.singularDataType + " val: info." + tag.getterName + "()) {");
+					marshalClass.append(NEWLINETTT + "if (CollectionUtils.hasElements(info." + tag.getGetterName() + "())) {");
+					marshalClass.append(NEWLINETTTT + "aInfo." + tag.varName + " = new ArrayList<" + tag.getDataType() + ">();");
+					marshalClass.append(NEWLINETTTT + "for(" + tag.getDataType() + " val: info." + tag.getGetterName() + "()) {");
 					marshalClass.append(NEWLINETTTTT + "aInfo." + tag.varName + ".add(val);");
 					marshalClass.append(NEWLINETTTT + "}");
 					marshalClass.append(NEWLINETTT + "}");
 				} else {
 					if (tag.isMandatory())
-						marshalClass.append(NEWLINETTT + "aInfo." + tag.varName + " = JaxbUtils.marshallMandatory" + tag.dataType + "(info." + tag.getterName + "());");
+						marshalClass.append(NEWLINETTT + "aInfo." + tag.varName + " = JaxbUtils.marshallMandatory" + tag.getDataType() + "(info." + tag.getGetterName() + "());");
 					else
-						marshalClass.append(NEWLINETTT + "aInfo." + tag.varName + " = JaxbUtils.marshall" + tag.dataType + "(info." + tag.getterName + "());");
+						marshalClass.append(NEWLINETTT + "aInfo." + tag.varName + " = JaxbUtils.marshall" + tag.getDataType() + "(info." + tag.getGetterName() + "());");
 				}
 			}
 			
@@ -615,23 +612,22 @@ public class JavaCodeGenerator {
 			if (customTags != null && customTags.hasTagProcessor(mainChild.getTagName())) {
 				ITagProcessor processor = customTags.getTagProcessor(mainChild.getTagName());
 				tag.setDataType(processor.getDataType());
-				tag.setSingularDataType(processor.getDataType());
 			}
-			if (tag.custom) {
-				vars.append(NEWLINETT + "private " + tag.dataType + " " + tag.varName + " = new " + tag.dataType + "();");
+			if (tag.isCustom()) {
+				vars.append(NEWLINETT + "private " + tag.getDataType() + " " + tag.varName + " = new " + tag.getDataType() + "();");
 			} else if (tag.requiresArray())
-					vars.append(NEWLINETT + "private " + tag.dataType + " " + tag.varName + " = new ArrayList<" + tag.singularDataType + ">();");
+					vars.append(NEWLINETT + "private List<" + tag.getDataType() + "> " + tag.varName + " = new ArrayList<" + tag.getDataType() + ">();");
 			else 
-				vars.append(NEWLINETT + "private " + tag.dataType + " " + tag.varName + ";");
+				vars.append(NEWLINETT + "private " + tag.getDataType() + " " + tag.varName + ";");
 			methods.append(NEWLINE);
 			methods.append(NEWLINETT + "@Override");
-			methods.append(NEWLINETT + "public " + tag.dataType + " " + tag.getterName + "() {");
+			methods.append(NEWLINETT + "public " + tag.getterSignature() + " {");
 			methods.append(NEWLINETTT + "return " + tag.varName + ";");
 			methods.append(NEWLINETT + "}");
 			methods.append(NEWLINE);
 			methods.append(NEWLINETT + "@Override");
 			methods.append(NEWLINETT + "public " + tag.setterSignature() + " {");
-			if (tag.requiresArray() && !tag.custom)
+			if (tag.requiresArray() && !tag.isCustom())
 				methods.append(NEWLINETTT + "this." + tag.varName + ".add(" + tag.setterVarName() + ");");
 			else
 				methods.append(NEWLINETTT + "this." + tag.varName + " = " + tag.setterVarName() + ";");
@@ -683,7 +679,7 @@ public class JavaCodeGenerator {
 			if (customTags != null && customTags.hasTagProcessor(mainChild.getTagName())) {
 				ITagProcessor processor = customTags.getTagProcessor(mainChild.getTagName());
 				tag.setDataType(processor.getDataType());
-				tag.setSingularDataType(processor.getDataType());
+				tag.resetLevels();
 			}
 			file.append(NEWLINET + tag.getterSignature() + ";");
 			file.append(NEWLINET + tag.setterSignature() + ";");
@@ -742,7 +738,6 @@ public class JavaCodeGenerator {
 		private String getterName = null;
 		private String setterName = null;
 		private String dataType = null;
-		private String singularDataType = null;
 		private Integer numLevels = null;
 		private boolean mandatory = false;
 		private boolean custom = false;
@@ -773,32 +768,27 @@ public class JavaCodeGenerator {
 			if (custom) return;
 			if (numLevels == 0) {
 				LeafData leafData = new LeafData();
-				leafData.name = rootName;
-				leafData.varName = varName;
-				leafData.type = tagDefinition.getDataType().getJavaType();
-				leafData.singularType = tagDefinition.getDataType().getJavaType();
+				leafData.setName(rootName);
+				leafData.setVarName(varName);
+				leafData.setType(tagDefinition.getDataType().getJavaType());
 				leaves.add(leafData);
-				dataType = leafData.type;
-				singularDataType = leafData.singularType;
+				dataType = leafData.getType();
 			} else if (numLevels == 1) {
 				LeafData leafData = new LeafData();
-				leafData.name = rootName;
-				leafData.varName = varName;
-				leafData.singularType = parser.getTagDefinition(tagDefinition.getChildren().get(0).getTagName()).getDataType().getJavaType();
-				leafData.type = "List<" + leafData.singularType + ">";
+				leafData.setName(rootName);
+				leafData.setVarName(varName);
+				leafData.setType(parser.getTagDefinition(tagDefinition.getChildren().get(0).getTagName()).getDataType().getJavaType());
 				leaves.add(leafData);
-				dataType = leafData.type;
-				singularDataType = leafData.singularType;
+				dataType = leafData.getType();
 			} else if (numLevels == 2) {
 				StringBuilder sbInner = new StringBuilder();
 				// We need to drop down to the bottom level to determine how many leaf tags there are
 				XmlTagDefinition wrapper = parser.getTagDefinition(tagDefinition.getChildren().get(0).getTagName());
 				for (XmlTagInstance leaf: wrapper.getChildren()) {
 					LeafData leafData = new LeafData();
-					leafData.name = leaf.getTagName();
-					leafData.varName = tagNameUtils.getVarName(leaf.getTagName());
-					leafData.type = parser.getTagDefinition(leaf.getTagName()).getDataType().getJavaType();
-					leafData.singularType = leafData.type;
+					leafData.setName(leaf.getTagName());
+					leafData.setVarName(tagNameUtils.getVarName(leaf.getTagName()));
+					leafData.setType(parser.getTagDefinition(leaf.getTagName()).getDataType().getJavaType());
 					leaves.add(leafData);
 				}
 				if (leaves.size() == 2) {
@@ -810,7 +800,6 @@ public class JavaCodeGenerator {
 					leaves.clear();
 					custom = true;
 					dataType = rootName;
-					singularDataType = dataType;
 				}
 				if (!custom) {
 					Boolean first = true;
@@ -820,16 +809,14 @@ public class JavaCodeGenerator {
 						} else {
 							sbInner.append(", ");
 						}
-						sbInner.append(leaf.type);
+						sbInner.append(leaf.getType());
 					}
 					sbInner.append(">");
-					singularDataType = sbInner.toString();
-					dataType = "List<" + singularDataType + ">";
+					dataType = sbInner.toString();
 				}
 			} else {
 				custom = true;
 				dataType = rootName;
-				singularDataType = dataType;
 			}
 		}
 
@@ -866,11 +853,16 @@ public class JavaCodeGenerator {
 		}
 
 		public String getterSignature() {
-			return dataType + " " + getterName + "()";
+			StringBuilder sb = new StringBuilder();
+			if (requiresArray()) sb.append("List<");
+			sb.append(dataType);
+			if (requiresArray()) sb.append(">");
+			sb.append(" " + getterName + "()");
+			return sb.toString();
 		}
 		
 		public String setterSignature() {
-			 return "void " + setterName + "(" + singularDataType + " " + setterVarName() + ")";
+			 return "void " + setterName + "(" + dataType + " " + setterVarName() + ")";
 		}
 		
 		public String setterVarName() {
@@ -896,18 +888,69 @@ public class JavaCodeGenerator {
 			this.dataType = dataType;
 		}
 		
-		public void setSingularDataType(String dataType) {
-			this.singularDataType = dataType;
+		public String getDataType() {
+			return dataType;
 		}
 		
+		public void resetLevels() {
+			// Reset the computed data
+			numLevels = 0;
+		}
+		
+		public List<LeafData> getLeaves() {
+			return leaves;
+		}
+		
+		public LeafData getLeaf(int index) {
+			return  leaves.get(index);
+		}
+		
+		public int getNumLeaves() {
+			return leaves.size();
+		}
+
+		public String getGetterName() {
+			return getterName;
+		}
+
+		public String getSetterName() {
+			return setterName;
+		}
+
+		public String getRootName() {
+			return rootName;
+		}
+
+		public boolean isCustom() {
+			return custom;
+		}
+
 	}
 	
 	private class LeafData {
 		
 		private String name;
 		private String varName;
-		private String singularType;
 		private String type;
+		
+		public String getName() {
+			return name;
+		}
+		public void setName(String name) {
+			this.name = name;
+		}
+		public String getVarName() {
+			return varName;
+		}
+		public void setVarName(String varName) {
+			this.varName = varName;
+		}
+		public String getType() {
+			return type;
+		}
+		public void setType(String type) {
+			this.type = type;
+		}
 
 	}
 
