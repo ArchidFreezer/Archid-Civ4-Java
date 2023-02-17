@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-
 import org.archid.utils.CollectionUtils;
 import org.archid.utils.IPair;
 import org.archid.utils.JaxbUtils;
@@ -16,12 +14,12 @@ import org.archid.utils.Pair;
 import org.archid.utils.StringUtils;
 
 public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMap, Map<String, IBuildingInfo>> {
-	
+
 	public static class BuildingMap {
-		 @XmlElement(name = "BuildingInfo")
-		 List<AdaptedBuilding> entries = new ArrayList<AdaptedBuilding>();		
+		@XmlElement(name = "BuildingInfo")
+		List<AdaptedBuilding> entries = new ArrayList<AdaptedBuilding>();
 	}
-	
+
 	private static class AdaptedBuilding {
 		@XmlElement(name="BuildingClass")
 		private String buildingClass;
@@ -52,7 +50,7 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		@XmlElement(name="StateReligion")
 		private String stateReligion;
 		@XmlElement(name="bStateReligion")
-		private Integer anyStateReligion;
+		private Integer stateReligionBool;
 		@XmlElement(name="PrereqReligion")
 		private String prereqReligion;
 		@XmlElement(name="PrereqCorporation")
@@ -116,10 +114,10 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		private Integer prereqPower;
 		@XmlElementWrapper(name="ProductionTraits")
 		@XmlElement(name="ProductionTrait")
-		private List<AdaptedTraitChange> productionTraits;
+		private List<AdaptedProductionTraits> productionTraits;
 		@XmlElementWrapper(name="HappinessTraits")
 		@XmlElement(name="HappinessTrait")
-		private List<AdaptedTraitChange> happinessTraits;
+		private List<AdaptedHappinessTraits> happinessTraits;
 		@XmlElement(name="NoBonus")
 		private String noBonus;
 		@XmlElement(name="PowerBonus")
@@ -149,7 +147,7 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		@XmlElement(name="bRiver")
 		private Integer river;
 		@XmlElement(name="bPower")
-		private Integer providesPower;
+		private Integer powerBool;
 		@XmlElement(name="bDirtyPower")
 		private Integer dirtyPower;
 		@XmlElement(name="bAreaCleanPower")
@@ -179,7 +177,7 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		@XmlElement(name="bNukeImmune")
 		private Integer nukeImmune;
 		@XmlElement(name="bPrereqReligion")
-		private Integer prereqAnyReligion;
+		private Integer prereqReligionBool;
 		@XmlElement(name="bCenterInCity")
 		private Integer centerInCity;
 		@XmlElement(name="bSlaveMarket")
@@ -197,7 +195,7 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		@XmlElement(name="iGlobalStarSignScaleChangePercent")
 		private Integer globalStarSignScaleChangePercent;
 		@XmlElement(name="iAIWeight")
-		private Integer aiWeight;
+		private Integer aIWeight;
 		@XmlElement(name="iCost")
 		private Integer cost;
 		@XmlElement(name="iHurryCostModifier")
@@ -323,7 +321,7 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		@XmlElement(name="iPower")
 		private Integer power;
 		@XmlElement(name="fVisibilityPriority")
-		private Float visibilityPriority;
+		private String fVisibilityPriority;
 		@XmlElementWrapper(name="SeaPlotYieldChanges")
 		@XmlElement(name="iYield")
 		private List<Integer> seaPlotYieldChanges;
@@ -374,13 +372,13 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		private List<Integer> commerceHappinesses;
 		@XmlElementWrapper(name="ReligionChanges")
 		@XmlElement(name="ReligionChange")
-		private List<AdaptedReligionChange> religionChanges;
+		private List<AdaptedReligionChanges> religionChanges;
 		@XmlElementWrapper(name="SpecialistCounts")
 		@XmlElement(name="SpecialistCount")
-		private List<AdaptedSpecialistCount> specialistCounts;
+		private List<AdaptedSpecialistCounts> specialistCounts;
 		@XmlElementWrapper(name="FreeSpecialistCounts")
 		@XmlElement(name="SpecialistCount")
-		private List<AdaptedSpecialistCount> freeSpecialistCounts;
+		private List<AdaptedFreeSpecialistCounts> freeSpecialistCounts;
 		@XmlElementWrapper(name="CommerceFlexibles")
 		@XmlElement(name="bCommerce")
 		private List<Integer> commerceFlexibles;
@@ -391,31 +389,31 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		private String constructSound;
 		@XmlElementWrapper(name="BonusHealthChanges")
 		@XmlElement(name="BonusHealthChange")
-		private List<AdaptedBonusChange> bonusHealthChanges;
+		private List<AdaptedBonusHealthChanges> bonusHealthChanges;
 		@XmlElementWrapper(name="BonusHappinessChanges")
 		@XmlElement(name="BonusHappinessChange")
-		private List<AdaptedBonusChange> bonusHappinessChanges;
+		private List<AdaptedBonusHappinessChanges> bonusHappinessChanges;
 		@XmlElementWrapper(name="BonusProductionModifiers")
 		@XmlElement(name="BonusProductionModifier")
-		private List<AdaptedBonusModifier> bonusProductionModifiers;
+		private List<AdaptedBonusProductionModifiers> bonusProductionModifiers;
 		@XmlElementWrapper(name="UnitCombatFreeExperiences")
 		@XmlElement(name="UnitCombatFreeExperience")
-		private List<AdaptedUnitCombatExperience> unitCombatFreeExperiences;
+		private List<AdaptedUnitCombatFreeExperiences> unitCombatFreeExperiences;
 		@XmlElementWrapper(name="DomainFreeExperiences")
 		@XmlElement(name="DomainFreeExperience")
-		private List<AdaptedDomainExperience> domainFreeExperiences;
+		private List<AdaptedDomainFreeExperiences> domainFreeExperiences;
 		@XmlElementWrapper(name="DomainProductionModifiers")
 		@XmlElement(name="DomainProductionModifier")
-		private List<AdaptedDomainModifier> domainProductionModifiers;
+		private List<AdaptedDomainProductionModifiers> domainProductionModifiers;
 		@XmlElementWrapper(name="BuildingClassProductionModifiers")
 		@XmlElement(name="BuildingClassProductionModifier")
-		private List<AdaptedBuildingClassProductionModifier> buildingClassProductionModifiers;
+		private List<AdaptedBuildingClassProductionModifiers> buildingClassProductionModifiers;
 		@XmlElementWrapper(name="BuildingHappinessChanges")
 		@XmlElement(name="BuildingHappinessChange")
-		private List<AdaptedBuildingChange> buildingHappinessChanges;
+		private List<AdaptedBuildingHappinessChanges> buildingHappinessChanges;
 		@XmlElementWrapper(name="PrereqNumOfBuildingClasses")
 		@XmlElement(name="PrereqNumOfBuildingClass")
-		private List<AdaptedBuildingClassNumber> prereqNumOfBuildingClasses;
+		private List<AdaptedPrereqNumOfBuildingClasses> prereqNumOfBuildingClasses;
 		@XmlElementWrapper(name="PrereqAndBuildingClasses")
 		@XmlElement(name="BuildingClass")
 		private List<String> prereqAndBuildingClasses;
@@ -428,27 +426,22 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		@XmlElementWrapper(name="ReplacedByBuildingClasses")
 		@XmlElement(name="BuildingClassType")
 		private List<String> replacedByBuildingClasses;
-		@XmlElementWrapper(name="SpecialistYieldChanges")
-		@XmlElement(name="SpecialistYieldChange")
-		private List<AdaptedSpecialistYieldChange> specialistYieldChanges;
-		@XmlElementWrapper(name="BonusYieldModifiers")
-		@XmlElement(name="BonusYieldModifier")
-		private List<AdaptedBonusYieldModifier> bonusYieldModifiers;
+		@XmlElement(name="SpecialistYieldChanges")
+		private SpecialistYieldChanges specialistYieldChanges;
+		@XmlElement(name="BonusYieldModifiers")
+		private BonusYieldModifiers bonusYieldModifiers;
+		@XmlElement(name="BonusYieldChanges")
+		private BonusYieldChanges bonusYieldChanges;
+		@XmlElement(name="VicinityBonusYieldChanges")
+		private VicinityBonusYieldChanges vicinityBonusYieldChanges;
+		@XmlElement(name="TechCommerceChanges")
+		private TechCommerceChanges techCommerceChanges;
 		@XmlElementWrapper(name="ImprovementFreeSpecialists")
 		@XmlElement(name="ImprovementFreeSpecialist")
-		private List<AdaptedImprovementCount> improvementFreeSpecialists;
-		@XmlElementWrapper(name="BonusYieldChanges")
-		@XmlElement(name="BonusYieldChange")
-		private List<AdaptedBonusYieldChange> bonusYieldChanges;
-		@XmlElementWrapper(name="VicinityBonusYieldChanges")
-		@XmlElement(name="BonusYieldChange")
-		private List<AdaptedBonusYieldChange> vicinityBonusYieldChanges;
-		@XmlElementWrapper(name="TechCommerceChanges")
-		@XmlElement(name="TechCommerceChange")
-		private List<AdaptedTechCommerceChange> techCommerceChanges;
+		private List<AdaptedImprovementFreeSpecialists> improvementFreeSpecialists;
 		@XmlElementWrapper(name="Flavors")
 		@XmlElement(name="Flavor")
-		private List<AdaptedFlavor> flavors;
+		private List<AdaptedFlavors> flavors;
 		@XmlElement(name="HotKey")
 		private String hotKey;
 		@XmlElement(name="bAltDown")
@@ -463,130 +456,118 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		private Integer orderPriority;
 		@XmlElement(name="bGraphicalOnly")
 		private Integer graphicalOnly;
-
-	}
-	
-	private static class AdaptedFlavor {
-		@XmlElement(name="FlavorType")
-		private String flavor;
-		@XmlElement(name="iFlavor")
-		private Integer value;
 	}
 
-	private static class AdaptedImprovementCount {
-		@XmlElement(name="ImprovementType")
-		private String improvement;
-		@XmlElement(name="iCount")
-		private Integer count;
-	}
-
-	private static class AdaptedBonusYieldModifier {
-		@XmlElement(name="BonusType")
-		private String bonus;
-		@XmlElementWrapper(name="YieldModifiers")
-		@XmlElement(name="iYield")
-		private List<Integer> yields = new ArrayList<Integer>();
-	}
-
-	private static class AdaptedSpecialistYieldChange {
-		@XmlElement(name="SpecialistType")
-		private String specialist;
-		@XmlElementWrapper(name="YieldChanges")
-		@XmlElement(name="iYield")
-		private List<Integer> yields = new ArrayList<Integer>();
-	}
-
-	private static class AdaptedBonusYieldChange {
-		@XmlElement(name="BonusType")
-		private String bonus;
-		@XmlElementWrapper(name="YieldChanges")
-		@XmlElement(name="iYield")
-		private List<Integer> yields = new ArrayList<Integer>();
-	}
-
-	private static class AdaptedTechCommerceChange {
-		@XmlElement(name="TechType")
-		private String tech;
-		@XmlElementWrapper(name="CommerceChanges")
-		@XmlElement(name="iCommerce")
-		private List<Integer> commerces = new ArrayList<Integer>();
-	}
-
-	private static class AdaptedBuildingChange {
-		@XmlElement(name="BuildingType")
-		private String building;
+	private static class AdaptedProductionTraits {
+		@XmlElement(name="TraitType")
+		private String traitType;
 		@XmlElement(name="iChange")
-		private Integer change;
+		private Integer iChange;
 	}
 
-	private static class AdaptedBuildingClassNumber {
-		@XmlElement(name="BuildingClassType")
-		private String buildingClass;
-		@XmlElement(name="iNeeded")
-		private Integer needed;
+	private static class AdaptedHappinessTraits {
+		@XmlElement(name="TraitType")
+		private String traitType;
+		@XmlElement(name="iChange")
+		private Integer iChange;
 	}
 
-	private static class AdaptedDomainModifier {
-		@XmlElement(name="DomainType")
-		private String domainType;
+	private static class AdaptedReligionChanges {
+		@XmlElement(name="ReligionType")
+		private String religionType;
+		@XmlElement(name="iChange")
+		private Integer iChange;
+	}
+
+	private static class AdaptedSpecialistCounts {
+		@XmlElement(name="SpecialistType")
+		private String specialistType;
+		@XmlElement(name="iCount")
+		private Integer iCount;
+	}
+
+	private static class AdaptedFreeSpecialistCounts {
+		@XmlElement(name="SpecialistType")
+		private String specialistType;
+		@XmlElement(name="iCount")
+		private Integer iCount;
+	}
+
+	private static class AdaptedBonusHealthChanges {
+		@XmlElement(name="BonusType")
+		private String bonusType;
+		@XmlElement(name="iChange")
+		private Integer iChange;
+	}
+
+	private static class AdaptedBonusHappinessChanges {
+		@XmlElement(name="BonusType")
+		private String bonusType;
+		@XmlElement(name="iChange")
+		private Integer iChange;
+	}
+
+	private static class AdaptedBonusProductionModifiers {
+		@XmlElement(name="BonusType")
+		private String bonusType;
 		@XmlElement(name="iModifier")
-		private Integer modifier;
+		private Integer iModifier;
 	}
 
-	private static class AdaptedBuildingClassProductionModifier {
-		@XmlElement(name="BuildingClassType")
-		private String buildingClassType;
-		@XmlElement(name="iModifier")
-		private Integer modifier;
-	}
-
-	private static class AdaptedDomainExperience {
-		@XmlElement(name="DomainType")
-		private String domainType;
-		@XmlElement(name="iExperience")
-		private Integer experience;
-	}
-
-	private static class AdaptedUnitCombatExperience {
+	private static class AdaptedUnitCombatFreeExperiences {
 		@XmlElement(name="UnitCombatType")
 		private String unitCombatType;
 		@XmlElement(name="iExperience")
-		private Integer experience;
+		private Integer iExperience;
 	}
 
-	private static class AdaptedBonusChange {
-		@XmlElement(name="BonusType")
-		private String bonus;
-		@XmlElement(name="iChange")
-		private Integer change;
+	private static class AdaptedDomainFreeExperiences {
+		@XmlElement(name="DomainType")
+		private String domainType;
+		@XmlElement(name="iExperience")
+		private Integer iExperience;
 	}
 
-	private static class AdaptedBonusModifier {
-		@XmlElement(name="BonusType")
-		private String bonus;
+	private static class AdaptedDomainProductionModifiers {
+		@XmlElement(name="DomainType")
+		private String domainType;
 		@XmlElement(name="iModifier")
-		private Integer modifier;
+		private Integer iModifier;
 	}
 
-	private static class AdaptedSpecialistCount {
-		@XmlElement(name="SpecialistType")
-		private String specialist;
+	private static class AdaptedBuildingClassProductionModifiers {
+		@XmlElement(name="BuildingClassType")
+		private String buildingClassType;
+		@XmlElement(name="iModifier")
+		private Integer iModifier;
+	}
+
+	private static class AdaptedBuildingHappinessChanges {
+		@XmlElement(name="BuildingType")
+		private String buildingType;
+		@XmlElement(name="iChange")
+		private Integer iChange;
+	}
+
+	private static class AdaptedPrereqNumOfBuildingClasses {
+		@XmlElement(name="BuildingClassType")
+		private String buildingClassType;
+		@XmlElement(name="iNeeded")
+		private Integer iNeeded;
+	}
+
+	private static class AdaptedImprovementFreeSpecialists {
+		@XmlElement(name="ImprovementType")
+		private String improvementType;
 		@XmlElement(name="iCount")
-		private Integer count;
+		private Integer iCount;
 	}
 
-	private static class AdaptedReligionChange {
-		@XmlElement(name="ReligionType")
-		private String religion;
-		@XmlElement(name="iChange")
-		private Integer change;
-	}
-
-	private static class AdaptedTraitChange {
-		@XmlElement(name="TraitType")
-		private String trait;
-		@XmlElement(name="iChange")
-		private Integer change;
+	private static class AdaptedFlavors {
+		@XmlElement(name="FlavorType")
+		private String flavorType;
+		@XmlElement(name="iFlavor")
+		private Integer iFlavor;
 	}
 
 	@Override
@@ -607,7 +588,7 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 			info.setHolyCity(JaxbUtils.unmarshallString(aInfo.holyCity));
 			info.setReligionType(JaxbUtils.unmarshallString(aInfo.religionType));
 			info.setStateReligion(JaxbUtils.unmarshallString(aInfo.stateReligion));
-			info.setStateReligion(JaxbUtils.unmarshallBoolean(aInfo.anyStateReligion));
+			info.setStateReligionBool(JaxbUtils.unmarshallBoolean(aInfo.stateReligionBool));
 			info.setPrereqReligion(JaxbUtils.unmarshallString(aInfo.prereqReligion));
 			info.setPrereqCorporation(JaxbUtils.unmarshallString(aInfo.prereqCorporation));
 			info.setFoundsCorporation(JaxbUtils.unmarshallString(aInfo.foundsCorporation));
@@ -617,108 +598,115 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 			info.setFreeStartEra(JaxbUtils.unmarshallString(aInfo.freeStartEra));
 			info.setMaxStartEra(JaxbUtils.unmarshallString(aInfo.maxStartEra));
 			info.setObsoleteTech(JaxbUtils.unmarshallString(aInfo.obsoleteTech));
-			
+
 			if (CollectionUtils.hasElements(aInfo.prereqAndTechs)) {
 				for (String val: aInfo.prereqAndTechs) {
-					if (StringUtils.hasCharacters(val))
-						info.addPrereqAndTech(val);
+					if (StringUtils.hasCharacters(val)) {
+						info.addPrereqAndTech(JaxbUtils.unmarshallString(val));
+					}
 				}
 			}
-			
 			info.setPrereqBonus(JaxbUtils.unmarshallString(aInfo.prereqBonus));
 
 			if (CollectionUtils.hasElements(aInfo.prereqOrBonuses)) {
 				for (String val: aInfo.prereqOrBonuses) {
-					if (StringUtils.hasCharacters(val))
-						info.addPrereqOrBonus(val);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(aInfo.prereqAndCivics)) {
-				for (String val: aInfo.prereqAndCivics) {
-					if (StringUtils.hasCharacters(val))
-						info.addPrereqAndCivic(val);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(aInfo.prereqOrCivics)) {
-				for (String val: aInfo.prereqOrCivics) {
-					if (StringUtils.hasCharacters(val))
-						info.addPrereqOrCivic(val);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(aInfo.prereqAndTerrains)) {
-				for (String val: aInfo.prereqAndTerrains) {
-					if (StringUtils.hasCharacters(val))
-						info.addPrereqAndTerrain(val);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(aInfo.prereqOrTerrains)) {
-				for (String val: aInfo.prereqOrTerrains) {
-					if (StringUtils.hasCharacters(val))
-						info.addPrereqOrTerrain(val);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(aInfo.prereqVicinityAndBonus)) {
-				for (String val: aInfo.prereqVicinityAndBonus) {
-					if (StringUtils.hasCharacters(val))
-						info.addPrereqVicinityAndBonus(val);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(aInfo.prereqVicinityOrBonus)) {
-				for (String val: aInfo.prereqVicinityOrBonus) {
-					if (StringUtils.hasCharacters(val))
-						info.addPrereqVicinityOrBonus(val);
+					if (StringUtils.hasCharacters(val)) {
+						info.addPrereqOrBonus(JaxbUtils.unmarshallString(val));
+					}
 				}
 			}
 
-			info.setRequirePrereqVicinityBonusConnected(JaxbUtils.unmarshallBoolean(aInfo.requirePrereqVicinityBonusConnected, true));
+			if (CollectionUtils.hasElements(aInfo.prereqAndCivics)) {
+				for (String val: aInfo.prereqAndCivics) {
+					if (StringUtils.hasCharacters(val)) {
+						info.addPrereqAndCivic(JaxbUtils.unmarshallString(val));
+					}
+				}
+			}
+
+			if (CollectionUtils.hasElements(aInfo.prereqOrCivics)) {
+				for (String val: aInfo.prereqOrCivics) {
+					if (StringUtils.hasCharacters(val)) {
+						info.addPrereqOrCivic(JaxbUtils.unmarshallString(val));
+					}
+				}
+			}
+
+			if (CollectionUtils.hasElements(aInfo.prereqAndTerrains)) {
+				for (String val: aInfo.prereqAndTerrains) {
+					if (StringUtils.hasCharacters(val)) {
+						info.addPrereqAndTerrain(JaxbUtils.unmarshallString(val));
+					}
+				}
+			}
+
+			if (CollectionUtils.hasElements(aInfo.prereqOrTerrains)) {
+				for (String val: aInfo.prereqOrTerrains) {
+					if (StringUtils.hasCharacters(val)) {
+						info.addPrereqOrTerrain(JaxbUtils.unmarshallString(val));
+					}
+				}
+			}
+
+			if (CollectionUtils.hasElements(aInfo.prereqVicinityAndBonus)) {
+				for (String val: aInfo.prereqVicinityAndBonus) {
+					if (StringUtils.hasCharacters(val)) {
+						info.addPrereqVicinityAndBonu(JaxbUtils.unmarshallString(val));
+					}
+				}
+			}
+
+			if (CollectionUtils.hasElements(aInfo.prereqVicinityOrBonus)) {
+				for (String val: aInfo.prereqVicinityOrBonus) {
+					if (StringUtils.hasCharacters(val)) {
+						info.addPrereqVicinityOrBonu(JaxbUtils.unmarshallString(val));
+					}
+				}
+			}
+			info.setRequirePrereqVicinityBonusConnected(JaxbUtils.unmarshallBoolean(aInfo.requirePrereqVicinityBonusConnected));
 
 			if (CollectionUtils.hasElements(aInfo.prereqVicinityImprovements)) {
 				for (String val: aInfo.prereqVicinityImprovements) {
-					if (StringUtils.hasCharacters(val))
-						info.addPrereqVicinityImprovement(val);
+					if (StringUtils.hasCharacters(val)) {
+						info.addPrereqVicinityImprovement(JaxbUtils.unmarshallString(val));
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.prereqVicinityFeatures)) {
 				for (String val: aInfo.prereqVicinityFeatures) {
-					if (StringUtils.hasCharacters(val))
-						info.addPrereqVicinityFeature(val);
+					if (StringUtils.hasCharacters(val)) {
+						info.addPrereqVicinityFeature(JaxbUtils.unmarshallString(val));
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.prereqWorldViews)) {
 				for (String val: aInfo.prereqWorldViews) {
-					if (StringUtils.hasCharacters(val))
-						info.addPrereqWorldView(val);
+					if (StringUtils.hasCharacters(val)) {
+						info.addPrereqWorldView(JaxbUtils.unmarshallString(val));
+					}
 				}
 			}
-			
 			info.setMinPopulation(JaxbUtils.unmarshallInteger(aInfo.minPopulation));
 			info.setMinCultureLevel(JaxbUtils.unmarshallString(aInfo.minCultureLevel));
 			info.setPrereqPower(JaxbUtils.unmarshallBoolean(aInfo.prereqPower));
 
 			if (CollectionUtils.hasElements(aInfo.productionTraits)) {
-				for (AdaptedTraitChange adaptor: aInfo.productionTraits) {
-					if (StringUtils.hasCharacters(adaptor.trait)) {
-						info.addProductionTrait(new Pair<String, Integer>(adaptor.trait, adaptor.change));
+				for (AdaptedProductionTraits adaptor: aInfo.productionTraits) {
+					if (StringUtils.hasCharacters(adaptor.traitType)) {
+						info.addProductionTrait(new Pair<String, Integer>(adaptor.traitType, adaptor.iChange));
 					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.happinessTraits)) {
-				for (AdaptedTraitChange adaptor: aInfo.happinessTraits) {
-					if (StringUtils.hasCharacters(adaptor.trait)) {
-						info.addProductionTrait(new Pair<String, Integer>(adaptor.trait, adaptor.change));
+				for (AdaptedHappinessTraits adaptor: aInfo.happinessTraits) {
+					if (StringUtils.hasCharacters(adaptor.traitType)) {
+						info.addHappinessTrait(new Pair<String, Integer>(adaptor.traitType, adaptor.iChange));
 					}
 				}
 			}
-			
 			info.setNoBonus(JaxbUtils.unmarshallString(aInfo.noBonus));
 			info.setPowerBonus(JaxbUtils.unmarshallString(aInfo.powerBonus));
 			info.setFreeBonus(JaxbUtils.unmarshallString(aInfo.freeBonus));
@@ -733,7 +721,7 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 			info.setTeamShare(JaxbUtils.unmarshallBoolean(aInfo.teamShare));
 			info.setWater(JaxbUtils.unmarshallBoolean(aInfo.water));
 			info.setRiver(JaxbUtils.unmarshallBoolean(aInfo.river));
-			info.setPower(JaxbUtils.unmarshallBoolean(aInfo.power));
+			info.setPowerBool(JaxbUtils.unmarshallBoolean(aInfo.powerBool));
 			info.setDirtyPower(JaxbUtils.unmarshallBoolean(aInfo.dirtyPower));
 			info.setAreaCleanPower(JaxbUtils.unmarshallBoolean(aInfo.areaCleanPower));
 			info.setDiploVoteType(JaxbUtils.unmarshallString(aInfo.diploVoteType));
@@ -748,7 +736,7 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 			info.setBuildingOnlyHealthy(JaxbUtils.unmarshallBoolean(aInfo.buildingOnlyHealthy));
 			info.setNeverCapture(JaxbUtils.unmarshallBoolean(aInfo.neverCapture));
 			info.setNukeImmune(JaxbUtils.unmarshallBoolean(aInfo.nukeImmune));
-			info.setPrereqReligion(JaxbUtils.unmarshallBoolean(aInfo.prereqAnyReligion));
+			info.setPrereqReligionBool(JaxbUtils.unmarshallBoolean(aInfo.prereqReligionBool));
 			info.setCenterInCity(JaxbUtils.unmarshallBoolean(aInfo.centerInCity));
 			info.setSlaveMarket(JaxbUtils.unmarshallBoolean(aInfo.slaveMarket));
 			info.setForceDisableStarSigns(JaxbUtils.unmarshallBoolean(aInfo.forceDisableStarSigns));
@@ -757,7 +745,7 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 			info.setGlobalStarSignMitigateChangePercent(JaxbUtils.unmarshallInteger(aInfo.globalStarSignMitigateChangePercent));
 			info.setStarSignScaleChangePercent(JaxbUtils.unmarshallInteger(aInfo.starSignScaleChangePercent));
 			info.setGlobalStarSignScaleChangePercent(JaxbUtils.unmarshallInteger(aInfo.globalStarSignScaleChangePercent));
-			info.setAIWeight(JaxbUtils.unmarshallInteger(aInfo.aiWeight));
+			info.setAIWeight(JaxbUtils.unmarshallInteger(aInfo.aIWeight));
 			info.setCost(JaxbUtils.unmarshallInteger(aInfo.cost));
 			info.setHurryCostModifier(JaxbUtils.unmarshallInteger(aInfo.hurryCostModifier));
 			info.setAdvancedStartCost(JaxbUtils.unmarshallInteger(aInfo.advancedStartCost));
@@ -820,298 +808,265 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 			info.setEspionageDefense(JaxbUtils.unmarshallInteger(aInfo.espionageDefense));
 			info.setAsset(JaxbUtils.unmarshallInteger(aInfo.asset));
 			info.setPower(JaxbUtils.unmarshallInteger(aInfo.power));
-			info.setVisibilityPriority(JaxbUtils.unmarshallFloat(aInfo.visibilityPriority));
+			info.setfVisibilityPriority(JaxbUtils.unmarshallString(aInfo.fVisibilityPriority));
 
 			if (CollectionUtils.hasElements(aInfo.seaPlotYieldChanges)) {
 				for (Integer val: aInfo.seaPlotYieldChanges) {
-						info.addSeaPlotYieldChange(val);
+					info.addSeaPlotYieldChange(JaxbUtils.unmarshallInteger(val));
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.riverPlotYieldChanges)) {
 				for (Integer val: aInfo.riverPlotYieldChanges) {
-					info.addRiverPlotYieldChange(val);
+					info.addRiverPlotYieldChange(JaxbUtils.unmarshallInteger(val));
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.globalSeaPlotYieldChanges)) {
 				for (Integer val: aInfo.globalSeaPlotYieldChanges) {
-					info.addGlobalSeaPlotYieldChange(val);
+					info.addGlobalSeaPlotYieldChange(JaxbUtils.unmarshallInteger(val));
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.yieldChanges)) {
 				for (Integer val: aInfo.yieldChanges) {
-					info.addYieldChange(val);
+					info.addYieldChange(JaxbUtils.unmarshallInteger(val));
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.yieldModifiers)) {
 				for (Integer val: aInfo.yieldModifiers) {
-					info.addYieldModifier(val);
+					info.addYieldModifier(JaxbUtils.unmarshallInteger(val));
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.powerYieldModifiers)) {
 				for (Integer val: aInfo.powerYieldModifiers) {
-					info.addPowerYieldModifier(val);
+					info.addPowerYieldModifier(JaxbUtils.unmarshallInteger(val));
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.areaYieldModifiers)) {
 				for (Integer val: aInfo.areaYieldModifiers) {
-					info.addAreaYieldModifier(val);
+					info.addAreaYieldModifier(JaxbUtils.unmarshallInteger(val));
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.globalYieldModifiers)) {
 				for (Integer val: aInfo.globalYieldModifiers) {
-					info.addGlobalYieldModifier(val);
+					info.addGlobalYieldModifier(JaxbUtils.unmarshallInteger(val));
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.commerceChanges)) {
 				for (Integer val: aInfo.commerceChanges) {
-					info.addCommerceChange(val);
+					info.addCommerceChange(JaxbUtils.unmarshallInteger(val));
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.obsoleteSafeCommerceChanges)) {
 				for (Integer val: aInfo.obsoleteSafeCommerceChanges) {
-					info.addObsoleteSafeCommerceChange(val);
+					info.addObsoleteSafeCommerceChange(JaxbUtils.unmarshallInteger(val));
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.commerceChangeDoubleTimes)) {
 				for (Integer val: aInfo.commerceChangeDoubleTimes) {
-					info.addCommerceChangeDoubleTime(val);
+					info.addCommerceChangeDoubleTime(JaxbUtils.unmarshallInteger(val));
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.commerceModifiers)) {
 				for (Integer val: aInfo.commerceModifiers) {
-					info.addCommerceModifier(val);
+					info.addCommerceModifier(JaxbUtils.unmarshallInteger(val));
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.globalCommerceModifiers)) {
 				for (Integer val: aInfo.globalCommerceModifiers) {
-					info.addGlobalCommerceModifier(val);
+					info.addGlobalCommerceModifier(JaxbUtils.unmarshallInteger(val));
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.specialistExtraCommerces)) {
 				for (Integer val: aInfo.specialistExtraCommerces) {
-					info.addSpecialistExtraCommerce(val);
+					info.addSpecialistExtraCommerce(JaxbUtils.unmarshallInteger(val));
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.stateReligionCommerces)) {
 				for (Integer val: aInfo.stateReligionCommerces) {
-					info.addStateReligionCommerce(val);
+					info.addStateReligionCommerce(JaxbUtils.unmarshallInteger(val));
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.commerceHappinesses)) {
 				for (Integer val: aInfo.commerceHappinesses) {
-					info.addCommerceHappiness(val);
+					info.addCommerceHappinesse(JaxbUtils.unmarshallInteger(val));
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.religionChanges)) {
-				for (AdaptedReligionChange adaptor: aInfo.religionChanges) {
-					if (StringUtils.hasCharacters(adaptor.religion)) {
-						info.addReligionChange(new Pair<String, Integer>(adaptor.religion, adaptor.change));
+				for (AdaptedReligionChanges adaptor: aInfo.religionChanges) {
+					if (StringUtils.hasCharacters(adaptor.religionType)) {
+						info.addReligionChange(new Pair<String, Integer>(adaptor.religionType, adaptor.iChange));
 					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.specialistCounts)) {
-				for (AdaptedSpecialistCount adaptor: aInfo.specialistCounts) {
-					if (StringUtils.hasCharacters(adaptor.specialist)) {
-						info.addSpecialistCount(new Pair<String, Integer>(adaptor.specialist, adaptor.count));
+				for (AdaptedSpecialistCounts adaptor: aInfo.specialistCounts) {
+					if (StringUtils.hasCharacters(adaptor.specialistType)) {
+						info.addSpecialistCount(new Pair<String, Integer>(adaptor.specialistType, adaptor.iCount));
 					}
 				}
 			}
 
 			if (CollectionUtils.hasElements(aInfo.freeSpecialistCounts)) {
-				for (AdaptedSpecialistCount adaptor: aInfo.freeSpecialistCounts) {
-					if (StringUtils.hasCharacters(adaptor.specialist)) {
-						info.addFreeSpecialistCount(new Pair<String, Integer>(adaptor.specialist, adaptor.count));
+				for (AdaptedFreeSpecialistCounts adaptor: aInfo.freeSpecialistCounts) {
+					if (StringUtils.hasCharacters(adaptor.specialistType)) {
+						info.addFreeSpecialistCount(new Pair<String, Integer>(adaptor.specialistType, adaptor.iCount));
 					}
 				}
 			}
 
 			if (CollectionUtils.hasElements(aInfo.commerceFlexibles)) {
 				for (Integer val: aInfo.commerceFlexibles) {
-					info.addCommerceFlexible(val);
+					info.addCommerceFlexible(JaxbUtils.unmarshallBoolean(val));
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.commerceChangeOriginalOwners)) {
 				for (Integer val: aInfo.commerceChangeOriginalOwners) {
-					info.addCommerceChangeOriginalOwner(val);
+					info.addCommerceChangeOriginalOwner(JaxbUtils.unmarshallBoolean(val));
 				}
 			}
-			
 			info.setConstructSound(JaxbUtils.unmarshallString(aInfo.constructSound));
-						
+
 			if (CollectionUtils.hasElements(aInfo.bonusHealthChanges)) {
-				for (AdaptedBonusChange adaptor: aInfo.bonusHealthChanges) {
-					if (StringUtils.hasCharacters(adaptor.bonus)) {
-						info.addBonusHealthChange(new Pair<String, Integer>(adaptor.bonus, adaptor.change));
+				for (AdaptedBonusHealthChanges adaptor: aInfo.bonusHealthChanges) {
+					if (StringUtils.hasCharacters(adaptor.bonusType)) {
+						info.addBonusHealthChange(new Pair<String, Integer>(adaptor.bonusType, adaptor.iChange));
 					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.bonusHappinessChanges)) {
-				for (AdaptedBonusChange adaptor: aInfo.bonusHappinessChanges) {
-					if (StringUtils.hasCharacters(adaptor.bonus)) {
-						info.addBonusHappinessChange(new Pair<String, Integer>(adaptor.bonus, adaptor.change));
+				for (AdaptedBonusHappinessChanges adaptor: aInfo.bonusHappinessChanges) {
+					if (StringUtils.hasCharacters(adaptor.bonusType)) {
+						info.addBonusHappinessChange(new Pair<String, Integer>(adaptor.bonusType, adaptor.iChange));
 					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.bonusProductionModifiers)) {
-				for (AdaptedBonusModifier adaptor: aInfo.bonusProductionModifiers) {
-					if (StringUtils.hasCharacters(adaptor.bonus)) {
-						info.addBonusProductionModifier(new Pair<String, Integer>(adaptor.bonus, adaptor.modifier));
+				for (AdaptedBonusProductionModifiers adaptor: aInfo.bonusProductionModifiers) {
+					if (StringUtils.hasCharacters(adaptor.bonusType)) {
+						info.addBonusProductionModifier(new Pair<String, Integer>(adaptor.bonusType, adaptor.iModifier));
 					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.unitCombatFreeExperiences)) {
-				for (AdaptedUnitCombatExperience adaptor: aInfo.unitCombatFreeExperiences) {
+				for (AdaptedUnitCombatFreeExperiences adaptor: aInfo.unitCombatFreeExperiences) {
 					if (StringUtils.hasCharacters(adaptor.unitCombatType)) {
-						info.addUnitCombatFreeExperience(new Pair<String, Integer>(adaptor.unitCombatType, adaptor.experience));
+						info.addUnitCombatFreeExperience(new Pair<String, Integer>(adaptor.unitCombatType, adaptor.iExperience));
 					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.domainFreeExperiences)) {
-				for (AdaptedDomainExperience adaptor: aInfo.domainFreeExperiences) {
+				for (AdaptedDomainFreeExperiences adaptor: aInfo.domainFreeExperiences) {
 					if (StringUtils.hasCharacters(adaptor.domainType)) {
-						info.addDomainFreeExperience(new Pair<String, Integer>(adaptor.domainType, adaptor.experience));
+						info.addDomainFreeExperience(new Pair<String, Integer>(adaptor.domainType, adaptor.iExperience));
 					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.domainProductionModifiers)) {
-				for (AdaptedDomainModifier adaptor: aInfo.domainProductionModifiers) {
+				for (AdaptedDomainProductionModifiers adaptor: aInfo.domainProductionModifiers) {
 					if (StringUtils.hasCharacters(adaptor.domainType)) {
-						info.addDomainProductionModifier(new Pair<String, Integer>(adaptor.domainType, adaptor.modifier));
+						info.addDomainProductionModifier(new Pair<String, Integer>(adaptor.domainType, adaptor.iModifier));
 					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.buildingClassProductionModifiers)) {
-				for (AdaptedBuildingClassProductionModifier adaptor: aInfo.buildingClassProductionModifiers) {
+				for (AdaptedBuildingClassProductionModifiers adaptor: aInfo.buildingClassProductionModifiers) {
 					if (StringUtils.hasCharacters(adaptor.buildingClassType)) {
-						info.addBuildingClassProductionModifier(new Pair<String, Integer>(adaptor.buildingClassType, adaptor.modifier));
+						info.addBuildingClassProductionModifier(new Pair<String, Integer>(adaptor.buildingClassType, adaptor.iModifier));
 					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.buildingHappinessChanges)) {
-				for (AdaptedBuildingChange adaptor: aInfo.buildingHappinessChanges) {
-					if (StringUtils.hasCharacters(adaptor.building)) {
-						info.addBuildingHappinessChange(new Pair<String, Integer>(adaptor.building, adaptor.change));
+				for (AdaptedBuildingHappinessChanges adaptor: aInfo.buildingHappinessChanges) {
+					if (StringUtils.hasCharacters(adaptor.buildingType)) {
+						info.addBuildingHappinessChange(new Pair<String, Integer>(adaptor.buildingType, adaptor.iChange));
 					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.prereqNumOfBuildingClasses)) {
-				for (AdaptedBuildingClassNumber adaptor: aInfo.prereqNumOfBuildingClasses) {
-					if (StringUtils.hasCharacters(adaptor.buildingClass)) {
-						info.addPrereqNumOfBuildingClass(new Pair<String, Integer>(adaptor.buildingClass, adaptor.needed));
+				for (AdaptedPrereqNumOfBuildingClasses adaptor: aInfo.prereqNumOfBuildingClasses) {
+					if (StringUtils.hasCharacters(adaptor.buildingClassType)) {
+						info.addPrereqNumOfBuildingClass(new Pair<String, Integer>(adaptor.buildingClassType, adaptor.iNeeded));
 					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.prereqAndBuildingClasses)) {
 				for (String val: aInfo.prereqAndBuildingClasses) {
-					if (StringUtils.hasCharacters(val))
-						info.addPrereqAndBuildingClass(val);
+					if (StringUtils.hasCharacters(val)) {
+						info.addPrereqAndBuildingClass(JaxbUtils.unmarshallString(val));
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.prereqOrBuildingClasses)) {
 				for (String val: aInfo.prereqOrBuildingClasses) {
-					if (StringUtils.hasCharacters(val))
-						info.addPrereqOrBuildingClass(val);
+					if (StringUtils.hasCharacters(val)) {
+						info.addPrereqOrBuildingClass(JaxbUtils.unmarshallString(val));
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.prereqNotBuildingClasses)) {
 				for (String val: aInfo.prereqNotBuildingClasses) {
-					if (StringUtils.hasCharacters(val))
-						info.addPrereqNotBuildingClass(val);
+					if (StringUtils.hasCharacters(val)) {
+						info.addPrereqNotBuildingClass(JaxbUtils.unmarshallString(val));
+					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.replacedByBuildingClasses)) {
 				for (String val: aInfo.replacedByBuildingClasses) {
-					if (StringUtils.hasCharacters(val))
-						info.addReplacedByBuildingClass(val);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(aInfo.specialistYieldChanges)) {
-				for (AdaptedSpecialistYieldChange adaptor: aInfo.specialistYieldChanges) {
-					if (StringUtils.hasCharacters(adaptor.specialist)) {
-						info.addSpecialistYieldChange(adaptor.specialist, new ArrayList<Integer>(adaptor.yields));
+					if (StringUtils.hasCharacters(val)) {
+						info.addReplacedByBuildingClass(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
-			
-			if (CollectionUtils.hasElements(aInfo.bonusYieldModifiers)) {
-				for (AdaptedBonusYieldModifier adaptor: aInfo.bonusYieldModifiers) {
-					if (StringUtils.hasCharacters(adaptor.bonus)) {
-						info.addBonusYieldModifier(adaptor.bonus, new ArrayList<Integer>(adaptor.yields));
-					}
-				}
-			}
-			
-			if (CollectionUtils.hasElements(aInfo.bonusYieldChanges)) {
-				for (AdaptedBonusYieldChange adaptor: aInfo.bonusYieldChanges) {
-					if (StringUtils.hasCharacters(adaptor.bonus)) {
-						info.addBonusYieldChange(adaptor.bonus, new ArrayList<Integer>(adaptor.yields));
-					}
-				}
-			}
-			
-			if (CollectionUtils.hasElements(aInfo.vicinityBonusYieldChanges)) {
-				for (AdaptedBonusYieldChange adaptor: aInfo.vicinityBonusYieldChanges) {
-					if (StringUtils.hasCharacters(adaptor.bonus)) {
-						info.addVicinityBonusYieldChange(adaptor.bonus, new ArrayList<Integer>(adaptor.yields));
-					}
-				}
-			}
-			
-			if (CollectionUtils.hasElements(aInfo.techCommerceChanges)) {
-				for (AdaptedTechCommerceChange adaptor: aInfo.techCommerceChanges) {
-					if (StringUtils.hasCharacters(adaptor.tech)) {
-						info.addTechCommerceChange(adaptor.tech, new ArrayList<Integer>(adaptor.commerces));
-					}
-				}
-			}
-			
+			info.setSpecialistYieldChanges(aInfo.specialistYieldChanges);
+			info.setBonusYieldModifiers(aInfo.bonusYieldModifiers);
+			info.setBonusYieldChanges(aInfo.bonusYieldChanges);
+			info.setVicinityBonusYieldChanges(aInfo.vicinityBonusYieldChanges);
+			info.setTechCommerceChanges(aInfo.techCommerceChanges);
+
 			if (CollectionUtils.hasElements(aInfo.improvementFreeSpecialists)) {
-				for (AdaptedImprovementCount adaptor: aInfo.improvementFreeSpecialists) {
-					if (StringUtils.hasCharacters(adaptor.improvement)) {
-						info.addImprovementFreeSpecialist(new Pair<String, Integer>(adaptor.improvement, adaptor.count));
+				for (AdaptedImprovementFreeSpecialists adaptor: aInfo.improvementFreeSpecialists) {
+					if (StringUtils.hasCharacters(adaptor.improvementType)) {
+						info.addImprovementFreeSpecialist(new Pair<String, Integer>(adaptor.improvementType, adaptor.iCount));
 					}
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(aInfo.flavors)) {
-				for (AdaptedFlavor adaptor: aInfo.flavors) {
-					if (StringUtils.hasCharacters(adaptor.flavor)) {
-						info.addFlavor(new Pair<String, Integer>(adaptor.flavor, adaptor.value));
+				for (AdaptedFlavors adaptor: aInfo.flavors) {
+					if (StringUtils.hasCharacters(adaptor.flavorType)) {
+						info.addFlavor(new Pair<String, Integer>(adaptor.flavorType, adaptor.iFlavor));
 					}
 				}
 			}
-			
 			info.setHotKey(JaxbUtils.unmarshallString(aInfo.hotKey));
 			info.setAltDown(JaxbUtils.unmarshallBoolean(aInfo.altDown));
 			info.setShiftDown(JaxbUtils.unmarshallBoolean(aInfo.shiftDown));
@@ -1130,21 +1085,21 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		BuildingMap map = new BuildingMap();
 		for (IBuildingInfo info: v.values()) {
 			AdaptedBuilding aInfo = new AdaptedBuilding();
-			aInfo.buildingClass = JaxbUtils.marshallString(info.getBuildingClass());
-			aInfo.type = info.getType();
+			aInfo.type = JaxbUtils.marshallString(info.getType());
+			aInfo.buildingClass = JaxbUtils.marshallMandatoryString(info.getBuildingClass());
 			aInfo.specialBuildingType = JaxbUtils.marshallString(info.getSpecialBuildingType());
-			aInfo.description = JaxbUtils.marshallString(info.getDescription());
-			aInfo.civilopedia = JaxbUtils.marshallString(info.getCivilopedia());
-			aInfo.strategy = JaxbUtils.marshallString(info.getStrategy());
+			aInfo.description = JaxbUtils.marshallMandatoryString(info.getDescription());
+			aInfo.civilopedia = JaxbUtils.marshallMandatoryString(info.getCivilopedia());
+			aInfo.strategy = JaxbUtils.marshallMandatoryString(info.getStrategy());
 			aInfo.help = JaxbUtils.marshallString(info.getHelp());
-			aInfo.advisor = JaxbUtils.marshallString(info.getAdvisor());
-			aInfo.artDefineTag = JaxbUtils.marshallString(info.getArtDefineTag());
+			aInfo.advisor = JaxbUtils.marshallMandatoryString(info.getAdvisor());
+			aInfo.artDefineTag = JaxbUtils.marshallMandatoryString(info.getArtDefineTag());
 			aInfo.movieDefineTag = JaxbUtils.marshallString(info.getMovieDefineTag());
 			aInfo.autoBuild = JaxbUtils.marshallBoolean(info.isAutoBuild());
 			aInfo.holyCity = JaxbUtils.marshallString(info.getHolyCity());
 			aInfo.religionType = JaxbUtils.marshallString(info.getReligionType());
 			aInfo.stateReligion = JaxbUtils.marshallString(info.getStateReligion());
-			aInfo.anyStateReligion = JaxbUtils.marshallBoolean(info.isStateReligion());
+			aInfo.stateReligionBool = JaxbUtils.marshallBoolean(info.isStateReligionBool());
 			aInfo.prereqReligion = JaxbUtils.marshallString(info.getPrereqReligion());
 			aInfo.prereqCorporation = JaxbUtils.marshallString(info.getPrereqCorporation());
 			aInfo.foundsCorporation = JaxbUtils.marshallString(info.getFoundsCorporation());
@@ -1157,109 +1112,105 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 
 			if (CollectionUtils.hasElements(info.getPrereqAndTechs())) {
 				aInfo.prereqAndTechs = new ArrayList<String>();
-				for (String val: info.getPrereqAndTechs()) {
-					aInfo.prereqAndTechs.add(val);
+				for(String val: info.getPrereqAndTechs()) {
+					aInfo.prereqAndTechs.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
-		
 			aInfo.prereqBonus = JaxbUtils.marshallString(info.getPrereqBonus());
 
 			if (CollectionUtils.hasElements(info.getPrereqOrBonuses())) {
 				aInfo.prereqOrBonuses = new ArrayList<String>();
-				for (String val: info.getPrereqOrBonuses()) {
-					aInfo.prereqOrBonuses.add(val);
+				for(String val: info.getPrereqOrBonuses()) {
+					aInfo.prereqOrBonuses.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
-		
+
 			if (CollectionUtils.hasElements(info.getPrereqAndCivics())) {
 				aInfo.prereqAndCivics = new ArrayList<String>();
-				for (String val: info.getPrereqAndCivics()) {
-					aInfo.prereqAndCivics.add(val);
+				for(String val: info.getPrereqAndCivics()) {
+					aInfo.prereqAndCivics.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
-		
+
 			if (CollectionUtils.hasElements(info.getPrereqOrCivics())) {
 				aInfo.prereqOrCivics = new ArrayList<String>();
-				for (String val: info.getPrereqOrCivics()) {
-					aInfo.prereqOrCivics.add(val);
+				for(String val: info.getPrereqOrCivics()) {
+					aInfo.prereqOrCivics.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
-		
+
 			if (CollectionUtils.hasElements(info.getPrereqAndTerrains())) {
 				aInfo.prereqAndTerrains = new ArrayList<String>();
-				for (String val: info.getPrereqAndTerrains()) {
-					aInfo.prereqAndTerrains.add(val);
+				for(String val: info.getPrereqAndTerrains()) {
+					aInfo.prereqAndTerrains.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
-		
+
 			if (CollectionUtils.hasElements(info.getPrereqOrTerrains())) {
 				aInfo.prereqOrTerrains = new ArrayList<String>();
-				for (String val: info.getPrereqOrTerrains()) {
-					aInfo.prereqOrTerrains.add(val);
+				for(String val: info.getPrereqOrTerrains()) {
+					aInfo.prereqOrTerrains.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
-		
+
 			if (CollectionUtils.hasElements(info.getPrereqVicinityAndBonus())) {
 				aInfo.prereqVicinityAndBonus = new ArrayList<String>();
-				for (String val: info.getPrereqVicinityAndBonus()) {
-					aInfo.prereqVicinityAndBonus.add(val);
+				for(String val: info.getPrereqVicinityAndBonus()) {
+					aInfo.prereqVicinityAndBonus.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
-		
+
 			if (CollectionUtils.hasElements(info.getPrereqVicinityOrBonus())) {
 				aInfo.prereqVicinityOrBonus = new ArrayList<String>();
-				for (String val: info.getPrereqVicinityOrBonus()) {
-					aInfo.prereqVicinityOrBonus.add(val);
+				for(String val: info.getPrereqVicinityOrBonus()) {
+					aInfo.prereqVicinityOrBonus.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
-		
-			aInfo.requirePrereqVicinityBonusConnected = JaxbUtils.marshallBoolean(info.isRequirePrereqVicinityBonusConnected(), true);
+			aInfo.requirePrereqVicinityBonusConnected = JaxbUtils.marshallBoolean(info.isRequirePrereqVicinityBonusConnected());
 
 			if (CollectionUtils.hasElements(info.getPrereqVicinityImprovements())) {
 				aInfo.prereqVicinityImprovements = new ArrayList<String>();
-				for (String val: info.getPrereqVicinityImprovements()) {
-					aInfo.prereqVicinityImprovements.add(val);
+				for(String val: info.getPrereqVicinityImprovements()) {
+					aInfo.prereqVicinityImprovements.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
-		
+
 			if (CollectionUtils.hasElements(info.getPrereqVicinityFeatures())) {
 				aInfo.prereqVicinityFeatures = new ArrayList<String>();
-				for (String val: info.getPrereqVicinityFeatures()) {
-					aInfo.prereqVicinityFeatures.add(val);
+				for(String val: info.getPrereqVicinityFeatures()) {
+					aInfo.prereqVicinityFeatures.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
-		
+
 			if (CollectionUtils.hasElements(info.getPrereqWorldViews())) {
 				aInfo.prereqWorldViews = new ArrayList<String>();
-				for (String val: info.getPrereqWorldViews()) {
-					aInfo.prereqWorldViews.add(val);
+				for(String val: info.getPrereqWorldViews()) {
+					aInfo.prereqWorldViews.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
-		
 			aInfo.minPopulation = JaxbUtils.marshallInteger(info.getMinPopulation());
 			aInfo.minCultureLevel = JaxbUtils.marshallString(info.getMinCultureLevel());
 			aInfo.prereqPower = JaxbUtils.marshallBoolean(info.isPrereqPower());
-			
+
 			if (CollectionUtils.hasElements(info.getProductionTraits())) {
-				aInfo.productionTraits = new ArrayList<AdaptedTraitChange>();
+				aInfo.productionTraits = new ArrayList<AdaptedProductionTraits>();
 				for (IPair<String, Integer> pair: info.getProductionTraits()) {
-					AdaptedTraitChange adaptor = new AdaptedTraitChange();
-					adaptor.trait = pair.getKey();
-					adaptor.change = pair.getValue();
+					AdaptedProductionTraits adaptor = new AdaptedProductionTraits();
+					adaptor.traitType = pair.getKey();
+					adaptor.iChange = pair.getValue();
 					aInfo.productionTraits.add(adaptor);
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(info.getHappinessTraits())) {
-				aInfo.happinessTraits = new ArrayList<AdaptedTraitChange>();
+				aInfo.happinessTraits = new ArrayList<AdaptedHappinessTraits>();
 				for (IPair<String, Integer> pair: info.getHappinessTraits()) {
-					AdaptedTraitChange adaptor = new AdaptedTraitChange();
-					adaptor.trait = pair.getKey();
-					adaptor.change = pair.getValue();
+					AdaptedHappinessTraits adaptor = new AdaptedHappinessTraits();
+					adaptor.traitType = pair.getKey();
+					adaptor.iChange = pair.getValue();
 					aInfo.happinessTraits.add(adaptor);
 				}
 			}
-			
 			aInfo.noBonus = JaxbUtils.marshallString(info.getNoBonus());
 			aInfo.powerBonus = JaxbUtils.marshallString(info.getPowerBonus());
 			aInfo.freeBonus = JaxbUtils.marshallString(info.getFreeBonus());
@@ -1274,7 +1225,7 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 			aInfo.teamShare = JaxbUtils.marshallBoolean(info.isTeamShare());
 			aInfo.water = JaxbUtils.marshallBoolean(info.isWater());
 			aInfo.river = JaxbUtils.marshallBoolean(info.isRiver());
-			aInfo.power = JaxbUtils.marshallBoolean(info.isPower());
+			aInfo.powerBool = JaxbUtils.marshallBoolean(info.isPowerBool());
 			aInfo.dirtyPower = JaxbUtils.marshallBoolean(info.isDirtyPower());
 			aInfo.areaCleanPower = JaxbUtils.marshallBoolean(info.isAreaCleanPower());
 			aInfo.diploVoteType = JaxbUtils.marshallString(info.getDiploVoteType());
@@ -1289,7 +1240,7 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 			aInfo.buildingOnlyHealthy = JaxbUtils.marshallBoolean(info.isBuildingOnlyHealthy());
 			aInfo.neverCapture = JaxbUtils.marshallBoolean(info.isNeverCapture());
 			aInfo.nukeImmune = JaxbUtils.marshallBoolean(info.isNukeImmune());
-			aInfo.prereqAnyReligion = JaxbUtils.marshallBoolean(info.isPrereqReligion());
+			aInfo.prereqReligionBool = JaxbUtils.marshallBoolean(info.isPrereqReligionBool());
 			aInfo.centerInCity = JaxbUtils.marshallBoolean(info.isCenterInCity());
 			aInfo.slaveMarket = JaxbUtils.marshallBoolean(info.isSlaveMarket());
 			aInfo.forceDisableStarSigns = JaxbUtils.marshallBoolean(info.isForceDisableStarSigns());
@@ -1298,7 +1249,7 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 			aInfo.globalStarSignMitigateChangePercent = JaxbUtils.marshallInteger(info.getGlobalStarSignMitigateChangePercent());
 			aInfo.starSignScaleChangePercent = JaxbUtils.marshallInteger(info.getStarSignScaleChangePercent());
 			aInfo.globalStarSignScaleChangePercent = JaxbUtils.marshallInteger(info.getGlobalStarSignScaleChangePercent());
-			aInfo.aiWeight = JaxbUtils.marshallInteger(info.getAIWeight());
+			aInfo.aIWeight = JaxbUtils.marshallInteger(info.getAIWeight());
 			aInfo.cost = JaxbUtils.marshallInteger(info.getCost());
 			aInfo.hurryCostModifier = JaxbUtils.marshallInteger(info.getHurryCostModifier());
 			aInfo.advancedStartCost = JaxbUtils.marshallInteger(info.getAdvancedStartCost());
@@ -1361,364 +1312,307 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 			aInfo.espionageDefense = JaxbUtils.marshallInteger(info.getEspionageDefense());
 			aInfo.asset = JaxbUtils.marshallInteger(info.getAsset());
 			aInfo.power = JaxbUtils.marshallInteger(info.getPower());
-			aInfo.visibilityPriority = JaxbUtils.marshallFloat(info.getVisibilityPriority());
+			aInfo.fVisibilityPriority = JaxbUtils.marshallString(info.getfVisibilityPriority());
 
 			if (CollectionUtils.hasElements(info.getSeaPlotYieldChanges())) {
 				aInfo.seaPlotYieldChanges = new ArrayList<Integer>();
-				for (Integer val: info.getSeaPlotYieldChanges()) {
-					aInfo.seaPlotYieldChanges.add(val);
+				for(Integer val: info.getSeaPlotYieldChanges()) {
+					aInfo.seaPlotYieldChanges.add(JaxbUtils.marshallMandatoryInteger(val));
 				}
 			}
-		
+
 			if (CollectionUtils.hasElements(info.getRiverPlotYieldChanges())) {
 				aInfo.riverPlotYieldChanges = new ArrayList<Integer>();
-				for (Integer val: info.getRiverPlotYieldChanges()) {
-					aInfo.riverPlotYieldChanges.add(val);
+				for(Integer val: info.getRiverPlotYieldChanges()) {
+					aInfo.riverPlotYieldChanges.add(JaxbUtils.marshallMandatoryInteger(val));
 				}
 			}
-		
+
 			if (CollectionUtils.hasElements(info.getGlobalSeaPlotYieldChanges())) {
 				aInfo.globalSeaPlotYieldChanges = new ArrayList<Integer>();
-				for (Integer val: info.getGlobalSeaPlotYieldChanges()) {
-					aInfo.globalSeaPlotYieldChanges.add(val);
+				for(Integer val: info.getGlobalSeaPlotYieldChanges()) {
+					aInfo.globalSeaPlotYieldChanges.add(JaxbUtils.marshallMandatoryInteger(val));
 				}
 			}
-		
+
 			if (CollectionUtils.hasElements(info.getYieldChanges())) {
 				aInfo.yieldChanges = new ArrayList<Integer>();
-				for (Integer val: info.getYieldChanges()) {
-					aInfo.yieldChanges.add(val);
+				for(Integer val: info.getYieldChanges()) {
+					aInfo.yieldChanges.add(JaxbUtils.marshallMandatoryInteger(val));
 				}
 			}
-		
+
 			if (CollectionUtils.hasElements(info.getYieldModifiers())) {
 				aInfo.yieldModifiers = new ArrayList<Integer>();
-				for (Integer val: info.getYieldModifiers()) {
-					aInfo.yieldModifiers.add(val);
+				for(Integer val: info.getYieldModifiers()) {
+					aInfo.yieldModifiers.add(JaxbUtils.marshallMandatoryInteger(val));
 				}
 			}
-		
+
 			if (CollectionUtils.hasElements(info.getPowerYieldModifiers())) {
 				aInfo.powerYieldModifiers = new ArrayList<Integer>();
-				for (Integer val: info.getPowerYieldModifiers()) {
-					aInfo.powerYieldModifiers.add(val);
+				for(Integer val: info.getPowerYieldModifiers()) {
+					aInfo.powerYieldModifiers.add(JaxbUtils.marshallMandatoryInteger(val));
 				}
 			}
-		
+
 			if (CollectionUtils.hasElements(info.getAreaYieldModifiers())) {
 				aInfo.areaYieldModifiers = new ArrayList<Integer>();
-				for (Integer val: info.getAreaYieldModifiers()) {
-					aInfo.areaYieldModifiers.add(val);
+				for(Integer val: info.getAreaYieldModifiers()) {
+					aInfo.areaYieldModifiers.add(JaxbUtils.marshallMandatoryInteger(val));
 				}
 			}
-		
+
 			if (CollectionUtils.hasElements(info.getGlobalYieldModifiers())) {
 				aInfo.globalYieldModifiers = new ArrayList<Integer>();
-				for (Integer val: info.getGlobalYieldModifiers()) {
-					aInfo.globalYieldModifiers.add(val);
+				for(Integer val: info.getGlobalYieldModifiers()) {
+					aInfo.globalYieldModifiers.add(JaxbUtils.marshallMandatoryInteger(val));
 				}
 			}
-		
+
 			if (CollectionUtils.hasElements(info.getCommerceChanges())) {
 				aInfo.commerceChanges = new ArrayList<Integer>();
-				for (Integer val: info.getCommerceChanges()) {
-					aInfo.commerceChanges.add(val);
+				for(Integer val: info.getCommerceChanges()) {
+					aInfo.commerceChanges.add(JaxbUtils.marshallMandatoryInteger(val));
 				}
 			}
-		
+
 			if (CollectionUtils.hasElements(info.getObsoleteSafeCommerceChanges())) {
 				aInfo.obsoleteSafeCommerceChanges = new ArrayList<Integer>();
-				for (Integer val: info.getObsoleteSafeCommerceChanges()) {
-					aInfo.obsoleteSafeCommerceChanges.add(val);
+				for(Integer val: info.getObsoleteSafeCommerceChanges()) {
+					aInfo.obsoleteSafeCommerceChanges.add(JaxbUtils.marshallMandatoryInteger(val));
 				}
 			}
-		
+
 			if (CollectionUtils.hasElements(info.getCommerceChangeDoubleTimes())) {
 				aInfo.commerceChangeDoubleTimes = new ArrayList<Integer>();
-				for (Integer val: info.getCommerceChangeDoubleTimes()) {
-					aInfo.commerceChangeDoubleTimes.add(val);
+				for(Integer val: info.getCommerceChangeDoubleTimes()) {
+					aInfo.commerceChangeDoubleTimes.add(JaxbUtils.marshallMandatoryInteger(val));
 				}
 			}
-		
+
 			if (CollectionUtils.hasElements(info.getCommerceModifiers())) {
 				aInfo.commerceModifiers = new ArrayList<Integer>();
-				for (Integer val: info.getCommerceModifiers()) {
-					aInfo.commerceModifiers.add(val);
+				for(Integer val: info.getCommerceModifiers()) {
+					aInfo.commerceModifiers.add(JaxbUtils.marshallMandatoryInteger(val));
 				}
 			}
-		
+
 			if (CollectionUtils.hasElements(info.getGlobalCommerceModifiers())) {
 				aInfo.globalCommerceModifiers = new ArrayList<Integer>();
-				for (Integer val: info.getGlobalCommerceModifiers()) {
-					aInfo.globalCommerceModifiers.add(val);
+				for(Integer val: info.getGlobalCommerceModifiers()) {
+					aInfo.globalCommerceModifiers.add(JaxbUtils.marshallMandatoryInteger(val));
 				}
 			}
-		
+
 			if (CollectionUtils.hasElements(info.getSpecialistExtraCommerces())) {
 				aInfo.specialistExtraCommerces = new ArrayList<Integer>();
-				for (Integer val: info.getSpecialistExtraCommerces()) {
-					aInfo.specialistExtraCommerces.add(val);
+				for(Integer val: info.getSpecialistExtraCommerces()) {
+					aInfo.specialistExtraCommerces.add(JaxbUtils.marshallMandatoryInteger(val));
 				}
 			}
-		
+
 			if (CollectionUtils.hasElements(info.getStateReligionCommerces())) {
 				aInfo.stateReligionCommerces = new ArrayList<Integer>();
-				for (Integer val: info.getStateReligionCommerces()) {
-					aInfo.stateReligionCommerces.add(val);
+				for(Integer val: info.getStateReligionCommerces()) {
+					aInfo.stateReligionCommerces.add(JaxbUtils.marshallMandatoryInteger(val));
 				}
 			}
-		
+
 			if (CollectionUtils.hasElements(info.getCommerceHappinesses())) {
 				aInfo.commerceHappinesses = new ArrayList<Integer>();
-				for (Integer val: info.getCommerceHappinesses()) {
-					aInfo.commerceHappinesses.add(val);
+				for(Integer val: info.getCommerceHappinesses()) {
+					aInfo.commerceHappinesses.add(JaxbUtils.marshallMandatoryInteger(val));
 				}
 			}
-		
+
 			if (CollectionUtils.hasElements(info.getReligionChanges())) {
-				aInfo.religionChanges = new ArrayList<AdaptedReligionChange>();
+				aInfo.religionChanges = new ArrayList<AdaptedReligionChanges>();
 				for (IPair<String, Integer> pair: info.getReligionChanges()) {
-					AdaptedReligionChange adaptor = new AdaptedReligionChange();
-					adaptor.religion = pair.getKey();
-					adaptor.change = pair.getValue();
+					AdaptedReligionChanges adaptor = new AdaptedReligionChanges();
+					adaptor.religionType = pair.getKey();
+					adaptor.iChange = pair.getValue();
 					aInfo.religionChanges.add(adaptor);
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(info.getSpecialistCounts())) {
-				aInfo.specialistCounts = new ArrayList<AdaptedSpecialistCount>();
+				aInfo.specialistCounts = new ArrayList<AdaptedSpecialistCounts>();
 				for (IPair<String, Integer> pair: info.getSpecialistCounts()) {
-					AdaptedSpecialistCount adaptor = new AdaptedSpecialistCount();
-					adaptor.specialist = pair.getKey();
-					adaptor.count = pair.getValue();
+					AdaptedSpecialistCounts adaptor = new AdaptedSpecialistCounts();
+					adaptor.specialistType = pair.getKey();
+					adaptor.iCount = pair.getValue();
 					aInfo.specialistCounts.add(adaptor);
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(info.getFreeSpecialistCounts())) {
-				aInfo.freeSpecialistCounts = new ArrayList<AdaptedSpecialistCount>();
+				aInfo.freeSpecialistCounts = new ArrayList<AdaptedFreeSpecialistCounts>();
 				for (IPair<String, Integer> pair: info.getFreeSpecialistCounts()) {
-					AdaptedSpecialistCount adaptor = new AdaptedSpecialistCount();
-					adaptor.specialist = pair.getKey();
-					adaptor.count = pair.getValue();
+					AdaptedFreeSpecialistCounts adaptor = new AdaptedFreeSpecialistCounts();
+					adaptor.specialistType = pair.getKey();
+					adaptor.iCount = pair.getValue();
 					aInfo.freeSpecialistCounts.add(adaptor);
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(info.getCommerceFlexibles())) {
 				aInfo.commerceFlexibles = new ArrayList<Integer>();
-				for (Integer val: info.getCommerceFlexibles()) {
-					aInfo.commerceFlexibles.add(val);
+				for(Boolean val: info.getCommerceFlexibles()) {
+					aInfo.commerceFlexibles.add(JaxbUtils.marshallMandatoryBoolean(val));
 				}
 			}
-		
+
 			if (CollectionUtils.hasElements(info.getCommerceChangeOriginalOwners())) {
 				aInfo.commerceChangeOriginalOwners = new ArrayList<Integer>();
-				for (Integer val: info.getCommerceChangeOriginalOwners()) {
-					aInfo.commerceChangeOriginalOwners.add(val);
+				for(Boolean val: info.getCommerceChangeOriginalOwners()) {
+					aInfo.commerceChangeOriginalOwners.add(JaxbUtils.marshallMandatoryBoolean(val));
 				}
 			}
-		
 			aInfo.constructSound = JaxbUtils.marshallString(info.getConstructSound());
 
 			if (CollectionUtils.hasElements(info.getBonusHealthChanges())) {
-				aInfo.bonusHealthChanges = new ArrayList<AdaptedBonusChange>();
+				aInfo.bonusHealthChanges = new ArrayList<AdaptedBonusHealthChanges>();
 				for (IPair<String, Integer> pair: info.getBonusHealthChanges()) {
-					AdaptedBonusChange adaptor = new AdaptedBonusChange();
-					adaptor.bonus = pair.getKey();
-					adaptor.change = pair.getValue();
+					AdaptedBonusHealthChanges adaptor = new AdaptedBonusHealthChanges();
+					adaptor.bonusType = pair.getKey();
+					adaptor.iChange = pair.getValue();
 					aInfo.bonusHealthChanges.add(adaptor);
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(info.getBonusHappinessChanges())) {
-				aInfo.bonusHappinessChanges = new ArrayList<AdaptedBonusChange>();
+				aInfo.bonusHappinessChanges = new ArrayList<AdaptedBonusHappinessChanges>();
 				for (IPair<String, Integer> pair: info.getBonusHappinessChanges()) {
-					AdaptedBonusChange adaptor = new AdaptedBonusChange();
-					adaptor.bonus = pair.getKey();
-					adaptor.change = pair.getValue();
+					AdaptedBonusHappinessChanges adaptor = new AdaptedBonusHappinessChanges();
+					adaptor.bonusType = pair.getKey();
+					adaptor.iChange = pair.getValue();
 					aInfo.bonusHappinessChanges.add(adaptor);
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(info.getBonusProductionModifiers())) {
-				aInfo.bonusProductionModifiers = new ArrayList<AdaptedBonusModifier>();
+				aInfo.bonusProductionModifiers = new ArrayList<AdaptedBonusProductionModifiers>();
 				for (IPair<String, Integer> pair: info.getBonusProductionModifiers()) {
-					AdaptedBonusModifier adaptor = new AdaptedBonusModifier();
-					adaptor.bonus = pair.getKey();
-					adaptor.modifier = pair.getValue();
+					AdaptedBonusProductionModifiers adaptor = new AdaptedBonusProductionModifiers();
+					adaptor.bonusType = pair.getKey();
+					adaptor.iModifier = pair.getValue();
 					aInfo.bonusProductionModifiers.add(adaptor);
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(info.getUnitCombatFreeExperiences())) {
-				aInfo.unitCombatFreeExperiences = new ArrayList<AdaptedUnitCombatExperience>();
+				aInfo.unitCombatFreeExperiences = new ArrayList<AdaptedUnitCombatFreeExperiences>();
 				for (IPair<String, Integer> pair: info.getUnitCombatFreeExperiences()) {
-					AdaptedUnitCombatExperience adaptor = new AdaptedUnitCombatExperience();
+					AdaptedUnitCombatFreeExperiences adaptor = new AdaptedUnitCombatFreeExperiences();
 					adaptor.unitCombatType = pair.getKey();
-					adaptor.experience = pair.getValue();
+					adaptor.iExperience = pair.getValue();
 					aInfo.unitCombatFreeExperiences.add(adaptor);
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(info.getDomainFreeExperiences())) {
-				aInfo.domainFreeExperiences = new ArrayList<AdaptedDomainExperience>();
+				aInfo.domainFreeExperiences = new ArrayList<AdaptedDomainFreeExperiences>();
 				for (IPair<String, Integer> pair: info.getDomainFreeExperiences()) {
-					AdaptedDomainExperience adaptor = new AdaptedDomainExperience();
+					AdaptedDomainFreeExperiences adaptor = new AdaptedDomainFreeExperiences();
 					adaptor.domainType = pair.getKey();
-					adaptor.experience = pair.getValue();
+					adaptor.iExperience = pair.getValue();
 					aInfo.domainFreeExperiences.add(adaptor);
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(info.getDomainProductionModifiers())) {
-				aInfo.domainProductionModifiers = new ArrayList<AdaptedDomainModifier>();
+				aInfo.domainProductionModifiers = new ArrayList<AdaptedDomainProductionModifiers>();
 				for (IPair<String, Integer> pair: info.getDomainProductionModifiers()) {
-					AdaptedDomainModifier adaptor = new AdaptedDomainModifier();
+					AdaptedDomainProductionModifiers adaptor = new AdaptedDomainProductionModifiers();
 					adaptor.domainType = pair.getKey();
-					adaptor.modifier = pair.getValue();
+					adaptor.iModifier = pair.getValue();
 					aInfo.domainProductionModifiers.add(adaptor);
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(info.getBuildingClassProductionModifiers())) {
-				aInfo.buildingClassProductionModifiers = new ArrayList<AdaptedBuildingClassProductionModifier>();
+				aInfo.buildingClassProductionModifiers = new ArrayList<AdaptedBuildingClassProductionModifiers>();
 				for (IPair<String, Integer> pair: info.getBuildingClassProductionModifiers()) {
-					AdaptedBuildingClassProductionModifier adaptor = new AdaptedBuildingClassProductionModifier();
+					AdaptedBuildingClassProductionModifiers adaptor = new AdaptedBuildingClassProductionModifiers();
 					adaptor.buildingClassType = pair.getKey();
-					adaptor.modifier = pair.getValue();
+					adaptor.iModifier = pair.getValue();
 					aInfo.buildingClassProductionModifiers.add(adaptor);
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(info.getBuildingHappinessChanges())) {
-				aInfo.buildingHappinessChanges = new ArrayList<AdaptedBuildingChange>();
+				aInfo.buildingHappinessChanges = new ArrayList<AdaptedBuildingHappinessChanges>();
 				for (IPair<String, Integer> pair: info.getBuildingHappinessChanges()) {
-					AdaptedBuildingChange adaptor = new AdaptedBuildingChange();
-					adaptor.building = pair.getKey();
-					adaptor.change = pair.getValue();
+					AdaptedBuildingHappinessChanges adaptor = new AdaptedBuildingHappinessChanges();
+					adaptor.buildingType = pair.getKey();
+					adaptor.iChange = pair.getValue();
 					aInfo.buildingHappinessChanges.add(adaptor);
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(info.getPrereqNumOfBuildingClasses())) {
-				aInfo.prereqNumOfBuildingClasses = new ArrayList<AdaptedBuildingClassNumber>();
+				aInfo.prereqNumOfBuildingClasses = new ArrayList<AdaptedPrereqNumOfBuildingClasses>();
 				for (IPair<String, Integer> pair: info.getPrereqNumOfBuildingClasses()) {
-					AdaptedBuildingClassNumber adaptor = new AdaptedBuildingClassNumber();
-					adaptor.buildingClass = pair.getKey();
-					adaptor.needed = pair.getValue();
+					AdaptedPrereqNumOfBuildingClasses adaptor = new AdaptedPrereqNumOfBuildingClasses();
+					adaptor.buildingClassType = pair.getKey();
+					adaptor.iNeeded = pair.getValue();
 					aInfo.prereqNumOfBuildingClasses.add(adaptor);
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(info.getPrereqAndBuildingClasses())) {
 				aInfo.prereqAndBuildingClasses = new ArrayList<String>();
-				for (String val: info.getPrereqAndBuildingClasses()) {
-					aInfo.prereqAndBuildingClasses.add(val);
+				for(String val: info.getPrereqAndBuildingClasses()) {
+					aInfo.prereqAndBuildingClasses.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
-		
+
 			if (CollectionUtils.hasElements(info.getPrereqOrBuildingClasses())) {
 				aInfo.prereqOrBuildingClasses = new ArrayList<String>();
-				for (String val: info.getPrereqOrBuildingClasses()) {
-					aInfo.prereqOrBuildingClasses.add(val);
+				for(String val: info.getPrereqOrBuildingClasses()) {
+					aInfo.prereqOrBuildingClasses.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
-		
+
 			if (CollectionUtils.hasElements(info.getPrereqNotBuildingClasses())) {
 				aInfo.prereqNotBuildingClasses = new ArrayList<String>();
-				for (String val: info.getPrereqNotBuildingClasses()) {
-					aInfo.prereqNotBuildingClasses.add(val);
+				for(String val: info.getPrereqNotBuildingClasses()) {
+					aInfo.prereqNotBuildingClasses.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
-		
+
 			if (CollectionUtils.hasElements(info.getReplacedByBuildingClasses())) {
 				aInfo.replacedByBuildingClasses = new ArrayList<String>();
-				for (String val: info.getReplacedByBuildingClasses()) {
-					aInfo.replacedByBuildingClasses.add(val);
+				for(String val: info.getReplacedByBuildingClasses()) {
+					aInfo.replacedByBuildingClasses.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
-		
-			if (CollectionUtils.hasElements(info.getSpecialistYieldChanges().keySet())) {
-				aInfo.specialistYieldChanges = new ArrayList<AdaptedSpecialistYieldChange>();
-				for (String specialist: info.getSpecialistYieldChanges().keySet()) {
-					AdaptedSpecialistYieldChange adaptor = new AdaptedSpecialistYieldChange();
-					adaptor.specialist = specialist;
-					for (Integer yield: info.getSpecialistYieldChanges().get(specialist)) {
-						adaptor.yields.add(yield);
-					}
-					aInfo.specialistYieldChanges.add(adaptor);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(info.getBonusYieldModifiers().keySet())) {
-				aInfo.bonusYieldModifiers = new ArrayList<AdaptedBonusYieldModifier>();
-				for (String bonus: info.getBonusYieldModifiers().keySet()) {
-					AdaptedBonusYieldModifier adaptor = new AdaptedBonusYieldModifier();
-					adaptor.bonus = bonus;
-					for (Integer yield: info.getBonusYieldModifiers().get(bonus)) {
-						adaptor.yields.add(yield);
-					}
-					aInfo.bonusYieldModifiers.add(adaptor);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(info.getBonusYieldChanges().keySet())) {
-				aInfo.bonusYieldChanges = new ArrayList<AdaptedBonusYieldChange>();
-				for (String bonus: info.getBonusYieldChanges().keySet()) {
-					AdaptedBonusYieldChange adaptor = new AdaptedBonusYieldChange();
-					adaptor.bonus = bonus;
-					for (Integer yield: info.getBonusYieldChanges().get(bonus)) {
-						adaptor.yields.add(yield);
-					}
-					aInfo.bonusYieldChanges.add(adaptor);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(info.getVicinityBonusYieldChanges().keySet())) {
-				aInfo.vicinityBonusYieldChanges = new ArrayList<AdaptedBonusYieldChange>();
-				for (String bonus: info.getVicinityBonusYieldChanges().keySet()) {
-					AdaptedBonusYieldChange adaptor = new AdaptedBonusYieldChange();
-					adaptor.bonus = bonus;
-					for (Integer yield: info.getVicinityBonusYieldChanges().get(bonus)) {
-						adaptor.yields.add(yield);
-					}
-					aInfo.vicinityBonusYieldChanges.add(adaptor);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(info.getTechCommerceChanges().keySet())) {
-				aInfo.techCommerceChanges = new ArrayList<AdaptedTechCommerceChange>();
-				for (String tech: info.getTechCommerceChanges().keySet()) {
-					AdaptedTechCommerceChange adaptor = new AdaptedTechCommerceChange();
-					adaptor.tech = tech;
-					for (Integer commerce: info.getTechCommerceChanges().get(tech)) {
-						adaptor.commerces.add(commerce);
-					}
-					aInfo.techCommerceChanges.add(adaptor);
-				}
-			}
-			
+			aInfo.specialistYieldChanges = info.getSpecialistYieldChanges();
+			aInfo.bonusYieldModifiers = info.getBonusYieldModifiers();
+			aInfo.bonusYieldChanges = info.getBonusYieldChanges();
+			aInfo.vicinityBonusYieldChanges = info.getVicinityBonusYieldChanges();
+			aInfo.techCommerceChanges = info.getTechCommerceChanges();
+
 			if (CollectionUtils.hasElements(info.getImprovementFreeSpecialists())) {
-				aInfo.improvementFreeSpecialists = new ArrayList<AdaptedImprovementCount>();
+				aInfo.improvementFreeSpecialists = new ArrayList<AdaptedImprovementFreeSpecialists>();
 				for (IPair<String, Integer> pair: info.getImprovementFreeSpecialists()) {
-					AdaptedImprovementCount adaptor = new AdaptedImprovementCount();
-					adaptor.improvement = pair.getKey();
-					adaptor.count = pair.getValue();
+					AdaptedImprovementFreeSpecialists adaptor = new AdaptedImprovementFreeSpecialists();
+					adaptor.improvementType = pair.getKey();
+					adaptor.iCount = pair.getValue();
 					aInfo.improvementFreeSpecialists.add(adaptor);
 				}
 			}
-			
+
 			if (CollectionUtils.hasElements(info.getFlavors())) {
-				aInfo.flavors = new ArrayList<AdaptedFlavor>();
+				aInfo.flavors = new ArrayList<AdaptedFlavors>();
 				for (IPair<String, Integer> pair: info.getFlavors()) {
-					AdaptedFlavor adaptor = new AdaptedFlavor();
-					adaptor.flavor = pair.getKey();
-					adaptor.value = pair.getValue();
+					AdaptedFlavors adaptor = new AdaptedFlavors();
+					adaptor.flavorType = pair.getKey();
+					adaptor.iFlavor = pair.getValue();
 					aInfo.flavors.add(adaptor);
 				}
 			}
-			
 			aInfo.hotKey = JaxbUtils.marshallString(info.getHotKey());
 			aInfo.altDown = JaxbUtils.marshallBoolean(info.isAltDown());
 			aInfo.shiftDown = JaxbUtils.marshallBoolean(info.isShiftDown());
@@ -1726,11 +1620,9 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 			aInfo.hotKeyPriority = JaxbUtils.marshallInteger(info.getHotKeyPriority());
 			aInfo.orderPriority = JaxbUtils.marshallInteger(info.getOrderPriority());
 			aInfo.graphicalOnly = JaxbUtils.marshallBoolean(info.isGraphicalOnly());
-			
+
 			map.entries.add(aInfo);
 		}
-		
 		return map;
 	}
-
 }

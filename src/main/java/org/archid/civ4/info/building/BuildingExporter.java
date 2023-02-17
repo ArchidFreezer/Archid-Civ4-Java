@@ -2,19 +2,25 @@ package org.archid.civ4.info.building;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.log4j.Logger;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.archid.civ4.info.AbstractExporter;
 import org.archid.civ4.info.EInfo;
+import org.archid.civ4.info.IInfoWorkbook;
 import org.archid.civ4.info.IInfos;
+import org.archid.civ4.info.building.BonusYieldChanges.BonusYieldChange;
+import org.archid.civ4.info.building.BonusYieldModifiers.BonusYieldModifier;
 import org.archid.civ4.info.building.IBuildingWorkbook.SheetHeaders;
+import org.archid.civ4.info.building.SpecialistYieldChanges.SpecialistYieldChange;
+import org.archid.civ4.info.building.TechCommerceChanges.TechCommerceChange;
+import org.archid.civ4.info.building.VicinityBonusYieldChanges.VicinityBonusYieldChange;
 
-public class BuildingExporter extends AbstractExporter<IInfos<IBuildingInfo>, IBuildingInfo>{
+public class BuildingExporter extends AbstractExporter<IInfos<IBuildingInfo>, IBuildingInfo> {
 
 	/** Logging facility */
 	static Logger log = Logger.getLogger(BuildingExporter.class.getName());
-	
+
 	public BuildingExporter(EInfo infoEnum) {
 		super(infoEnum);
 	}
@@ -26,6 +32,16 @@ public class BuildingExporter extends AbstractExporter<IInfos<IBuildingInfo>, IB
 			headers.add(header.toString());
 		}
 		return headers;
+	}
+
+	@Override
+	protected int getNumCols() {
+		return IBuildingWorkbook.SheetHeaders.values().length;
+	}
+
+	@Override
+	protected String getInfoListSheetName() {
+		return IBuildingWorkbook.SHEETNAME_LIST;
 	}
 
 	@Override
@@ -46,7 +62,7 @@ public class BuildingExporter extends AbstractExporter<IInfos<IBuildingInfo>, IB
 		addSingleCell(row.createCell(colNum++), info.getHolyCity());
 		addSingleCell(row.createCell(colNum++), info.getReligionType());
 		addSingleCell(row.createCell(colNum++), info.getStateReligion());
-		addSingleCell(row.createCell(colNum++), info.isStateReligion());
+		addSingleCell(row.createCell(colNum++), info.isStateReligionBool());
 		addSingleCell(row.createCell(colNum++), info.getPrereqReligion());
 		addSingleCell(row.createCell(colNum++), info.getPrereqCorporation());
 		addSingleCell(row.createCell(colNum++), info.getFoundsCorporation());
@@ -56,7 +72,7 @@ public class BuildingExporter extends AbstractExporter<IInfos<IBuildingInfo>, IB
 		addSingleCell(row.createCell(colNum++), info.getFreeStartEra());
 		addSingleCell(row.createCell(colNum++), info.getMaxStartEra());
 		addSingleCell(row.createCell(colNum++), info.getObsoleteTech());
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqAndTechs(), maxHeight);		
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqAndTechs(), maxHeight);
 		addSingleCell(row.createCell(colNum++), info.getPrereqBonus());
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqOrBonuses(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqAndCivics(), maxHeight);
@@ -88,7 +104,7 @@ public class BuildingExporter extends AbstractExporter<IInfos<IBuildingInfo>, IB
 		addSingleCell(row.createCell(colNum++), info.isTeamShare());
 		addSingleCell(row.createCell(colNum++), info.isWater());
 		addSingleCell(row.createCell(colNum++), info.isRiver());
-		addSingleCell(row.createCell(colNum++), info.isPower());
+		addSingleCell(row.createCell(colNum++), info.isPowerBool());
 		addSingleCell(row.createCell(colNum++), info.isDirtyPower());
 		addSingleCell(row.createCell(colNum++), info.isAreaCleanPower());
 		addSingleCell(row.createCell(colNum++), info.getDiploVoteType());
@@ -103,7 +119,7 @@ public class BuildingExporter extends AbstractExporter<IInfos<IBuildingInfo>, IB
 		addSingleCell(row.createCell(colNum++), info.isBuildingOnlyHealthy());
 		addSingleCell(row.createCell(colNum++), info.isNeverCapture());
 		addSingleCell(row.createCell(colNum++), info.isNukeImmune());
-		addSingleCell(row.createCell(colNum++), info.isPrereqReligion());
+		addSingleCell(row.createCell(colNum++), info.isPrereqReligionBool());
 		addSingleCell(row.createCell(colNum++), info.isCenterInCity());
 		addSingleCell(row.createCell(colNum++), info.isSlaveMarket());
 		addSingleCell(row.createCell(colNum++), info.isForceDisableStarSigns());
@@ -175,7 +191,7 @@ public class BuildingExporter extends AbstractExporter<IInfos<IBuildingInfo>, IB
 		addSingleCell(row.createCell(colNum++), info.getEspionageDefense());
 		addSingleCell(row.createCell(colNum++), info.getAsset());
 		addSingleCell(row.createCell(colNum++), info.getPower());
-		addSingleCell(row.createCell(colNum++), info.getVisibilityPriority());
+		addSingleCell(row.createCell(colNum++), info.getfVisibilityPriority());
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getSeaPlotYieldChanges(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getRiverPlotYieldChanges(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getGlobalSeaPlotYieldChanges(), maxHeight);
@@ -211,11 +227,11 @@ public class BuildingExporter extends AbstractExporter<IInfos<IBuildingInfo>, IB
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqOrBuildingClasses(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqNotBuildingClasses(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getReplacedByBuildingClasses(), maxHeight);
-		maxHeight = addMapListCell(row.createCell(colNum++), info.getSpecialistYieldChanges(), maxHeight);
-		maxHeight = addMapListCell(row.createCell(colNum++), info.getBonusYieldModifiers(), maxHeight);
-		maxHeight = addMapListCell(row.createCell(colNum++), info.getBonusYieldChanges(), maxHeight);
-		maxHeight = addMapListCell(row.createCell(colNum++), info.getVicinityBonusYieldChanges(), maxHeight);
-		maxHeight = addMapListCell(row.createCell(colNum++), info.getTechCommerceChanges(), maxHeight);
+		maxHeight = addSpecialistYieldChangeCell(row.createCell(colNum++), info.getSpecialistYieldChanges(), maxHeight);
+		maxHeight = addBonusYieldModifierCell(row.createCell(colNum++), info.getBonusYieldModifiers(), maxHeight);
+		maxHeight = addBonusYieldChangeCell(row.createCell(colNum++), info.getBonusYieldChanges(), maxHeight);
+		maxHeight = addVicinityBonusYieldChangeCell(row.createCell(colNum++), info.getVicinityBonusYieldChanges(), maxHeight);
+		maxHeight = addTechCommerceChangeCell(row.createCell(colNum++), info.getTechCommerceChanges(), maxHeight);
 		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getImprovementFreeSpecialists(), maxHeight);
 		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getFlavors(), maxHeight);
 		addSingleCell(row.createCell(colNum++), info.getHotKey());
@@ -227,17 +243,115 @@ public class BuildingExporter extends AbstractExporter<IInfos<IBuildingInfo>, IB
 		addSingleCell(row.createCell(colNum++), info.isGraphicalOnly());
 
 		row.setHeightInPoints(maxHeight * row.getSheet().getDefaultRowHeightInPoints());
-		
 	}
 
-	@Override
-	protected int getNumCols() {
-		return IBuildingWorkbook.SheetHeaders.values().length;
+	private int addSpecialistYieldChangeCell(Cell cell, SpecialistYieldChanges list, int maxHeight) {
+		int currHeight = 0;
+		cell.setCellStyle(csWrap);
+		StringBuilder cellvalue = new StringBuilder();
+		if (list != null) {
+			for (SpecialistYieldChange wrapper: list.getSpecialistYieldChangeList()) {
+				if (currHeight > 0) cellvalue.append(IInfoWorkbook.CELL_NEWLINE);
+				cellvalue.append(wrapper.getResource() + IInfoWorkbook.CELL_NEWLINE);
+				for (Integer element: wrapper.getElements()) {
+					cellvalue.append(element + IInfoWorkbook.CELL_NEWLINE);
+					currHeight ++;
+				}
+				cellvalue.append("-");
+				currHeight += 2;
+			}
+		}
+		cell.setCellValue(cellvalue.toString());
+		if (currHeight > maxHeight) maxHeight = currHeight;
+		return maxHeight;
 	}
 
-	@Override
-	protected String getInfoListSheetName() {
-		return IBuildingWorkbook.SHEETNAME_LIST;
+
+	private int addBonusYieldModifierCell(Cell cell, BonusYieldModifiers list, int maxHeight) {
+		int currHeight = 0;
+		cell.setCellStyle(csWrap);
+		StringBuilder cellvalue = new StringBuilder();
+		if (list != null) {
+			for (BonusYieldModifier wrapper: list.getBonusYieldModifierList()) {
+				if (currHeight > 0) cellvalue.append(IInfoWorkbook.CELL_NEWLINE);
+				cellvalue.append(wrapper.getResource() + IInfoWorkbook.CELL_NEWLINE);
+				for (Integer element: wrapper.getElements()) {
+					cellvalue.append(element + IInfoWorkbook.CELL_NEWLINE);
+					currHeight ++;
+				}
+				cellvalue.append("-");
+				currHeight += 2;
+			}
+		}
+		cell.setCellValue(cellvalue.toString());
+		if (currHeight > maxHeight) maxHeight = currHeight;
+		return maxHeight;
 	}
-	
+
+
+	private int addBonusYieldChangeCell(Cell cell, BonusYieldChanges list, int maxHeight) {
+		int currHeight = 0;
+		cell.setCellStyle(csWrap);
+		StringBuilder cellvalue = new StringBuilder();
+		if (list != null) {
+			for (BonusYieldChange wrapper: list.getBonusYieldChangeList()) {
+				if (currHeight > 0) cellvalue.append(IInfoWorkbook.CELL_NEWLINE);
+				cellvalue.append(wrapper.getResource() + IInfoWorkbook.CELL_NEWLINE);
+				for (Integer element: wrapper.getElements()) {
+					cellvalue.append(element + IInfoWorkbook.CELL_NEWLINE);
+					currHeight ++;
+				}
+				cellvalue.append("-");
+				currHeight += 2;
+			}
+		}
+		cell.setCellValue(cellvalue.toString());
+		if (currHeight > maxHeight) maxHeight = currHeight;
+		return maxHeight;
+	}
+
+
+	private int addVicinityBonusYieldChangeCell(Cell cell, VicinityBonusYieldChanges list, int maxHeight) {
+		int currHeight = 0;
+		cell.setCellStyle(csWrap);
+		StringBuilder cellvalue = new StringBuilder();
+		if (list != null) {
+			for (VicinityBonusYieldChange wrapper: list.getVicinityBonusYieldChangeList()) {
+				if (currHeight > 0) cellvalue.append(IInfoWorkbook.CELL_NEWLINE);
+				cellvalue.append(wrapper.getResource() + IInfoWorkbook.CELL_NEWLINE);
+				for (Integer element: wrapper.getElements()) {
+					cellvalue.append(element + IInfoWorkbook.CELL_NEWLINE);
+					currHeight ++;
+				}
+				cellvalue.append("-");
+				currHeight += 2;
+			}
+		}
+		cell.setCellValue(cellvalue.toString());
+		if (currHeight > maxHeight) maxHeight = currHeight;
+		return maxHeight;
+	}
+
+
+	private int addTechCommerceChangeCell(Cell cell, TechCommerceChanges list, int maxHeight) {
+		int currHeight = 0;
+		cell.setCellStyle(csWrap);
+		StringBuilder cellvalue = new StringBuilder();
+		if (list != null) {
+			for (TechCommerceChange wrapper: list.getTechCommerceChangeList()) {
+				if (currHeight > 0) cellvalue.append(IInfoWorkbook.CELL_NEWLINE);
+				cellvalue.append(wrapper.getResource() + IInfoWorkbook.CELL_NEWLINE);
+				for (Integer element: wrapper.getElements()) {
+					cellvalue.append(element + IInfoWorkbook.CELL_NEWLINE);
+					currHeight ++;
+				}
+				cellvalue.append("-");
+				currHeight += 2;
+			}
+		}
+		cell.setCellValue(cellvalue.toString());
+		if (currHeight > maxHeight) maxHeight = currHeight;
+		return maxHeight;
+	}
+
 }

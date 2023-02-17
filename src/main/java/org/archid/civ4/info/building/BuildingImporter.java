@@ -1,32 +1,46 @@
 package org.archid.civ4.info.building;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.log4j.Logger;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.archid.civ4.info.AbstractImporter;
 import org.archid.civ4.info.EInfo;
+import org.archid.civ4.info.IInfoWorkbook;
 import org.archid.civ4.info.IInfos;
+import org.archid.civ4.info.building.BonusYieldChanges.BonusYieldChange;
+import org.archid.civ4.info.building.BonusYieldModifiers.BonusYieldModifier;
+import org.archid.civ4.info.building.SpecialistYieldChanges.SpecialistYieldChange;
+import org.archid.civ4.info.building.TechCommerceChanges.TechCommerceChange;
+import org.archid.civ4.info.building.VicinityBonusYieldChanges.VicinityBonusYieldChange;
+import org.archid.utils.StringUtils;
 
 public class BuildingImporter extends AbstractImporter<IInfos<IBuildingInfo>, IBuildingInfo> {
 
 	/** Logging facility */
 	static Logger log = Logger.getLogger(BuildingImporter.class.getName());
-	
+
 	public BuildingImporter(EInfo infoEnum) {
 		super(infoEnum, new BuildingInfoXmlFormatter());
 	}
 
 	@Override
+	public String getListSheetName() {
+		return IBuildingWorkbook.SHEETNAME_LIST;
+	}
+
+	@Override
 	protected IBuildingInfo parseRow(Row row) {
 		int colNum = 0;
-		String clazz = row.getCell(colNum++).getStringCellValue();
-		String type = row.getCell(colNum++).getStringCellValue();
-		
-		// Handle buildings that have been deleted or are incomplete
-		if (clazz.isEmpty() || type.isEmpty())
+		String type = row.getCell(1).getStringCellValue();
+		// Handle cells that have been moved
+		if (type.isEmpty())
 			return null;
-		
+
 		IBuildingInfo info = BuildingInfos.createInfo(type);
-		info.setBuildingClass(clazz);
+		parseCell(row.getCell(colNum++), String.class, info::setBuildingClass);
+		parseCell(row.getCell(colNum++), String.class, info::setType);
 		parseCell(row.getCell(colNum++), String.class, info::setSpecialBuildingType);
 		parseCell(row.getCell(colNum++), String.class, info::setDescription);
 		parseCell(row.getCell(colNum++), String.class, info::setCivilopedia);
@@ -39,7 +53,7 @@ public class BuildingImporter extends AbstractImporter<IInfos<IBuildingInfo>, IB
 		parseCell(row.getCell(colNum++), String.class, info::setHolyCity);
 		parseCell(row.getCell(colNum++), String.class, info::setReligionType);
 		parseCell(row.getCell(colNum++), String.class, info::setStateReligion);
-		parseCell(row.getCell(colNum++), Boolean.class, info::setStateReligion);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setStateReligionBool);
 		parseCell(row.getCell(colNum++), String.class, info::setPrereqReligion);
 		parseCell(row.getCell(colNum++), String.class, info::setPrereqCorporation);
 		parseCell(row.getCell(colNum++), String.class, info::setFoundsCorporation);
@@ -56,8 +70,8 @@ public class BuildingImporter extends AbstractImporter<IInfos<IBuildingInfo>, IB
 		parseListCell(row.getCell(colNum++), String.class, info::addPrereqOrCivic);
 		parseListCell(row.getCell(colNum++), String.class, info::addPrereqAndTerrain);
 		parseListCell(row.getCell(colNum++), String.class, info::addPrereqOrTerrain);
-		parseListCell(row.getCell(colNum++), String.class, info::addPrereqVicinityAndBonus);
-		parseListCell(row.getCell(colNum++), String.class, info::addPrereqVicinityOrBonus);
+		parseListCell(row.getCell(colNum++), String.class, info::addPrereqVicinityAndBonu);
+		parseListCell(row.getCell(colNum++), String.class, info::addPrereqVicinityOrBonu);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setRequirePrereqVicinityBonusConnected);
 		parseListCell(row.getCell(colNum++), String.class, info::addPrereqVicinityImprovement);
 		parseListCell(row.getCell(colNum++), String.class, info::addPrereqVicinityFeature);
@@ -81,7 +95,7 @@ public class BuildingImporter extends AbstractImporter<IInfos<IBuildingInfo>, IB
 		parseCell(row.getCell(colNum++), Boolean.class, info::setTeamShare);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setWater);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setRiver);
-		parseCell(row.getCell(colNum++), Boolean.class, info::setPower);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setPowerBool);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setDirtyPower);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setAreaCleanPower);
 		parseCell(row.getCell(colNum++), String.class, info::setDiploVoteType);
@@ -96,7 +110,7 @@ public class BuildingImporter extends AbstractImporter<IInfos<IBuildingInfo>, IB
 		parseCell(row.getCell(colNum++), Boolean.class, info::setBuildingOnlyHealthy);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setNeverCapture);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setNukeImmune);
-		parseCell(row.getCell(colNum++), Boolean.class, info::setPrereqReligion);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setPrereqReligionBool);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setCenterInCity);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setSlaveMarket);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setForceDisableStarSigns);
@@ -168,7 +182,7 @@ public class BuildingImporter extends AbstractImporter<IInfos<IBuildingInfo>, IB
 		parseCell(row.getCell(colNum++), Integer.class, info::setEspionageDefense);
 		parseCell(row.getCell(colNum++), Integer.class, info::setAsset);
 		parseCell(row.getCell(colNum++), Integer.class, info::setPower);
-		parseCell(row.getCell(colNum++), Float.class, info::setVisibilityPriority);
+		parseCell(row.getCell(colNum++), String.class, info::setfVisibilityPriority);
 		parseListCell(row.getCell(colNum++), Integer.class, info::addSeaPlotYieldChange);
 		parseListCell(row.getCell(colNum++), Integer.class, info::addRiverPlotYieldChange);
 		parseListCell(row.getCell(colNum++), Integer.class, info::addGlobalSeaPlotYieldChange);
@@ -184,12 +198,12 @@ public class BuildingImporter extends AbstractImporter<IInfos<IBuildingInfo>, IB
 		parseListCell(row.getCell(colNum++), Integer.class, info::addGlobalCommerceModifier);
 		parseListCell(row.getCell(colNum++), Integer.class, info::addSpecialistExtraCommerce);
 		parseListCell(row.getCell(colNum++), Integer.class, info::addStateReligionCommerce);
-		parseListCell(row.getCell(colNum++), Integer.class, info::addCommerceHappiness);
+		parseListCell(row.getCell(colNum++), Integer.class, info::addCommerceHappinesse);
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addReligionChange);
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addSpecialistCount);
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addFreeSpecialistCount);
-		parseListCell(row.getCell(colNum++), Integer.class, info::addCommerceFlexible);
-		parseListCell(row.getCell(colNum++), Integer.class, info::addCommerceChangeOriginalOwner);
+		parseListCell(row.getCell(colNum++), Boolean.class, info::addCommerceFlexible);
+		parseListCell(row.getCell(colNum++), Boolean.class, info::addCommerceChangeOriginalOwner);
 		parseCell(row.getCell(colNum++), String.class, info::setConstructSound);
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addBonusHealthChange);
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addBonusHappinessChange);
@@ -204,11 +218,11 @@ public class BuildingImporter extends AbstractImporter<IInfos<IBuildingInfo>, IB
 		parseListCell(row.getCell(colNum++), String.class, info::addPrereqOrBuildingClass);
 		parseListCell(row.getCell(colNum++), String.class, info::addPrereqNotBuildingClass);
 		parseListCell(row.getCell(colNum++), String.class, info::addReplacedByBuildingClass);
-		parseMapListCell(row.getCell(colNum++), String.class, Integer.class, info::addSpecialistYieldChange);
-		parseMapListCell(row.getCell(colNum++), String.class, Integer.class, info::addBonusYieldModifier);
-		parseMapListCell(row.getCell(colNum++), String.class, Integer.class, info::addBonusYieldChange);
-		parseMapListCell(row.getCell(colNum++), String.class, Integer.class, info::addVicinityBonusYieldChange);
-		parseMapListCell(row.getCell(colNum++), String.class, Integer.class, info::addTechCommerceChange);
+		parseSpecialistYieldChangeCell(row.getCell(colNum++), info);
+		parseBonusYieldModifierCell(row.getCell(colNum++), info);
+		parseBonusYieldChangeCell(row.getCell(colNum++), info);
+		parseVicinityBonusYieldChangeCell(row.getCell(colNum++), info);
+		parseTechCommerceChangeCell(row.getCell(colNum++), info);
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addImprovementFreeSpecialist);
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addFlavor);
 		parseCell(row.getCell(colNum++), String.class, info::setHotKey);
@@ -222,9 +236,143 @@ public class BuildingImporter extends AbstractImporter<IInfos<IBuildingInfo>, IB
 		return info;
 	}
 
-	@Override
-	public String getListSheetName() {
-		return IBuildingWorkbook.SHEETNAME_LIST;
+	private void parseSpecialistYieldChangeCell(Cell cell, IBuildingInfo info) {
+		String[] arr = cell.getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE);
+		if (arr.length > 1) {
+			boolean first = true;
+			String resource = null;
+			List<Integer> list = null;
+			for (String str: arr) {
+				if (StringUtils.hasCharacters(str)) {
+					if (first) {
+						list = new ArrayList<Integer>();
+						resource = getVal(str, String.class);
+						first = false;
+					} else if (str.equals("-")) {
+						SpecialistYieldChange wrapper = new SpecialistYieldChange();
+						wrapper.setResource(resource);
+						for (Integer element: list) {
+							wrapper.addElement(element);
+						}
+						info.getSpecialistYieldChanges().getSpecialistYieldChangeList().add(wrapper);
+						first = !first;
+					} else {
+						list.add(Integer.valueOf(str));
+					}
+				}
+			}
+		}
 	}
 
+	private void parseBonusYieldModifierCell(Cell cell, IBuildingInfo info) {
+		String[] arr = cell.getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE);
+		if (arr.length > 1) {
+			boolean first = true;
+			String resource = null;
+			List<Integer> list = null;
+			for (String str: arr) {
+				if (StringUtils.hasCharacters(str)) {
+					if (first) {
+						list = new ArrayList<Integer>();
+						resource = getVal(str, String.class);
+						first = false;
+					} else if (str.equals("-")) {
+						BonusYieldModifier wrapper = new BonusYieldModifier();
+						wrapper.setResource(resource);
+						for (Integer element: list) {
+							wrapper.addElement(element);
+						}
+						info.getBonusYieldModifiers().getBonusYieldModifierList().add(wrapper);
+						first = !first;
+					} else {
+						list.add(Integer.valueOf(str));
+					}
+				}
+			}
+		}
+	}
+
+	private void parseBonusYieldChangeCell(Cell cell, IBuildingInfo info) {
+		String[] arr = cell.getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE);
+		if (arr.length > 1) {
+			boolean first = true;
+			String resource = null;
+			List<Integer> list = null;
+			for (String str: arr) {
+				if (StringUtils.hasCharacters(str)) {
+					if (first) {
+						list = new ArrayList<Integer>();
+						resource = getVal(str, String.class);
+						first = false;
+					} else if (str.equals("-")) {
+						BonusYieldChange wrapper = new BonusYieldChange();
+						wrapper.setResource(resource);
+						for (Integer element: list) {
+							wrapper.addElement(element);
+						}
+						info.getBonusYieldChanges().getBonusYieldChangeList().add(wrapper);
+						first = !first;
+					} else {
+						list.add(Integer.valueOf(str));
+					}
+				}
+			}
+		}
+	}
+
+	private void parseVicinityBonusYieldChangeCell(Cell cell, IBuildingInfo info) {
+		String[] arr = cell.getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE);
+		if (arr.length > 1) {
+			boolean first = true;
+			String resource = null;
+			List<Integer> list = null;
+			for (String str: arr) {
+				if (StringUtils.hasCharacters(str)) {
+					if (first) {
+						list = new ArrayList<Integer>();
+						resource = getVal(str, String.class);
+						first = false;
+					} else if (str.equals("-")) {
+						VicinityBonusYieldChange wrapper = new VicinityBonusYieldChange();
+						wrapper.setResource(resource);
+						for (Integer element: list) {
+							wrapper.addElement(element);
+						}
+						info.getVicinityBonusYieldChanges().getVicinityBonusYieldChangeList().add(wrapper);
+						first = !first;
+					} else {
+						list.add(Integer.valueOf(str));
+					}
+				}
+			}
+		}
+	}
+
+	private void parseTechCommerceChangeCell(Cell cell, IBuildingInfo info) {
+		String[] arr = cell.getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE);
+		if (arr.length > 1) {
+			boolean first = true;
+			String resource = null;
+			List<Integer> list = null;
+			for (String str: arr) {
+				if (StringUtils.hasCharacters(str)) {
+					if (first) {
+						list = new ArrayList<Integer>();
+						resource = getVal(str, String.class);
+						first = false;
+					} else if (str.equals("-")) {
+						TechCommerceChange wrapper = new TechCommerceChange();
+						wrapper.setResource(resource);
+						for (Integer element: list) {
+							wrapper.addElement(element);
+						}
+						info.getTechCommerceChanges().getTechCommerceChangeList().add(wrapper);
+						first = !first;
+					} else {
+						list.add(Integer.valueOf(str));
+					}
+				}
+			}
+		}
+	}
 }
