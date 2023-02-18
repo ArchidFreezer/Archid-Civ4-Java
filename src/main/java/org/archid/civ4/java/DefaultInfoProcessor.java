@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class DefaultInfoTagProcessor implements IInfoTagProcessor {
+public class DefaultInfoProcessor implements IInfoProcessor {
 	
 	private Map<String, ITagProcessor> tags = new HashMap<String, ITagProcessor>();
 	protected String packageName;
@@ -15,7 +15,7 @@ public class DefaultInfoTagProcessor implements IInfoTagProcessor {
 	protected Map<InfoOverrides, String> overrides = new HashMap<InfoOverrides, String>();
 	protected TagNameUtils tagNameUtils;
 	
-	public DefaultInfoTagProcessor(TagNameUtils tagNameUtils) {
+	public DefaultInfoProcessor(TagNameUtils tagNameUtils) {
 		this.tagNameUtils = tagNameUtils;
 	}
 	

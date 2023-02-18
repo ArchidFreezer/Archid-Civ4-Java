@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.archid.civ4.java.IInfoTagProcessor.InfoOverrides;
+import org.archid.civ4.java.IInfoProcessor.InfoOverrides;
 import org.archid.civ4.schema.SchemaParser;
 import org.archid.civ4.schema.XmlTagDefinition;
 import org.archid.civ4.schema.XmlTagInstance;
@@ -52,7 +52,7 @@ public class JavaCodeGenerator {
 	
 	private TagNameUtils tagNameUtils = new TagNameUtils();
 	
-	private IInfoTagProcessor customTags = null;
+	private IInfoProcessor infoProcessor = null;
 
 	public JavaCodeGenerator(SchemaParser parser) {
 		this.parser = parser;
@@ -67,11 +67,11 @@ public class JavaCodeGenerator {
 		createPackageFolder();
 		packageDef = "package org.archid.civ4.info." + namespaceFolder + ";";
 		topLevelTagDefinition = parser.getTagDefinition(infoName);
-		customTags = TagFactory.getProcessor(infoName, tagNameUtils);
-		if (customTags != null) {
-			customTags.init(namespaceFolder);
-			for (String filename: customTags.getFilesToWrite().keySet()) {
-				writeFile(filename, customTags.getFilesToWrite().get(filename));
+		infoProcessor = TagFactory.getProcessor(infoName, tagNameUtils);
+		if (infoProcessor != null) {
+			infoProcessor.init(namespaceFolder);
+			for (String filename: infoProcessor.getFilesToWrite().keySet()) {
+				writeFile(filename, infoProcessor.getFilesToWrite().get(filename));
 			}
 		}
 		parseInfo(topLevelTagDefinition);
@@ -81,7 +81,7 @@ public class JavaCodeGenerator {
 		Map<String, DataType> tagNameData = new HashMap<String, XmlTagDefinition.DataType>();
 		for (XmlTagInstance tag: info.getChildren()) {
 			XmlTagDefinition tagDef = parser.getTagDefinition(tag.getTagName());
-			boolean customTagProcessing = (customTags == null) ? false : customTags.hasTagProcessor(tag.getTagName());
+			boolean customTagProcessing = (infoProcessor == null) ? false : infoProcessor.hasTagProcessor(tag.getTagName());
 			Tag tagData = new Tag(tagDef, tag, customTagProcessing);
 			if (tagData.requiresArray()) {
 				dynamicImports.add("import java.util.List;");
@@ -121,11 +121,11 @@ public class JavaCodeGenerator {
 		imports.add("import org.archid.civ4.info.AbstractImporter;");
 		imports.add("import org.archid.civ4.info.EInfo;");
 		imports.add("import org.archid.civ4.info.IInfos;");
-		if (customTags == null) imports.add("import org.archid.civ4.info.DefaultXmlFormatter;");
+		if (infoProcessor == null) imports.add("import org.archid.civ4.info.DefaultXmlFormatter;");
 
 		// Main content
 		StringBuilder mainClass = new StringBuilder();
-		String xmlFormatter = (customTags == null) ? "DefaultXmlFormatter(\"" + infoNameRoot + "\")" : customTags.getXmlFormatter();
+		String xmlFormatter = (infoProcessor == null) ? "DefaultXmlFormatter(\"" + infoNameRoot + "\")" : infoProcessor.getXmlFormatter();
 		mainClass.append(NEWLINE);
 		mainClass.append(NEWLINE + "public class " + infoNameRoot + "Importer extends AbstractImporter<IInfos<I" + infoName + ">, I" + infoName + "> {");
 		mainClass.append(NEWLINE);
@@ -144,7 +144,7 @@ public class JavaCodeGenerator {
 		mainClass.append(NEWLINE + "}");
 
 		// Sort the imports
-		if (customTags != null) imports.addAll(customTags.getImportImports());
+		if (infoProcessor != null) imports.addAll(infoProcessor.getImportImports());
 		List<String> sortedImports = new ArrayList<String>(imports);
 		Collections.sort(sortedImports);
 		
@@ -161,15 +161,15 @@ public class JavaCodeGenerator {
 	}
 	
 	private String getInfoImporterOverrides() {
-		if (customTags.hasOverride(InfoOverrides.IMPORTER)) {
-			return customTags.getOverride(InfoOverrides.IMPORTER);
+		if (infoProcessor.hasOverride(InfoOverrides.IMPORTER)) {
+			return infoProcessor.getOverride(InfoOverrides.IMPORTER);
 		} else {
 			return getDefaultInfoImporterOverrides();
 		}
 	}
 
 	private String getDefaultInfoImporterOverrides() {
-		Integer typeTagIndex = (customTags == null) ? 0 : customTags.getTypeTagIndex();
+		Integer typeTagIndex = (infoProcessor == null) ? 0 : infoProcessor.getTypeTagIndex();
 		StringBuilder customCellReaders = new StringBuilder();
 		StringBuilder sb = new StringBuilder();
 		sb.append(NEWLINE);
@@ -186,8 +186,8 @@ public class JavaCodeGenerator {
 		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
 			Tag tag = infoTagData.get(mainChild.getTagName());
 			ITagProcessor processor = null;
-			if (customTags != null && customTags.hasTagProcessor(mainChild.getTagName())) {
-				processor = customTags.getTagProcessor(mainChild.getTagName());
+			if (infoProcessor != null && infoProcessor.hasTagProcessor(mainChild.getTagName())) {
+				processor = infoProcessor.getTagProcessor(mainChild.getTagName());
 				tag.setDataType(processor.getDataType());
 			}
 			if (processor != null) {
@@ -264,7 +264,7 @@ public class JavaCodeGenerator {
 		mainClass.append(NEWLINE + "}");
 
 		// Sort the imports
-		if (customTags != null) imports.addAll(customTags.getExportImports());
+		if (infoProcessor != null) imports.addAll(infoProcessor.getExportImports());
 		List<String> sortedImports = new ArrayList<String>(imports);
 		Collections.sort(sortedImports);
 		
@@ -282,8 +282,8 @@ public class JavaCodeGenerator {
 	}
 	
 	private String getInfoExporterOverrides() {
-		if (customTags.hasOverride(InfoOverrides.EXPORTER)) {
-			return customTags.getOverride(InfoOverrides.EXPORTER);
+		if (infoProcessor.hasOverride(InfoOverrides.EXPORTER)) {
+			return infoProcessor.getOverride(InfoOverrides.EXPORTER);
 		} else {
 			return getDefaultInfoExporterOverrides();
 		}
@@ -300,8 +300,8 @@ public class JavaCodeGenerator {
 		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
 			Tag tag = infoTagData.get(mainChild.getTagName());
 			ITagProcessor processor = null;
-			if (customTags != null && customTags.hasTagProcessor(mainChild.getTagName())) {
-				processor = customTags.getTagProcessor(mainChild.getTagName());
+			if (infoProcessor != null && infoProcessor.hasTagProcessor(mainChild.getTagName())) {
+				processor = infoProcessor.getTagProcessor(mainChild.getTagName());
 				tag.setDataType(processor.getDataType());
 			}
 			if (processor != null) {
@@ -370,8 +370,8 @@ public class JavaCodeGenerator {
 		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
 			ITagProcessor processor = null;
 			Tag tag = infoTagData.get(mainChild.getTagName());
-			if (customTags != null && customTags.hasTagProcessor(mainChild.getTagName())) {
-				processor = customTags.getTagProcessor(mainChild.getTagName());
+			if (infoProcessor != null && infoProcessor.hasTagProcessor(mainChild.getTagName())) {
+				processor = infoProcessor.getTagProcessor(mainChild.getTagName());
 				tag.setDataType(processor.getDataType());
 				imports.addAll(processor.getAdapterImports());
 			}
@@ -641,8 +641,8 @@ public class JavaCodeGenerator {
 		methods.append(NEWLINETT + "}");
 		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
 			Tag tag = infoTagData.get(mainChild.getTagName());
-			if (customTags != null && customTags.hasTagProcessor(mainChild.getTagName())) {
-				ITagProcessor processor = customTags.getTagProcessor(mainChild.getTagName());
+			if (infoProcessor != null && infoProcessor.hasTagProcessor(mainChild.getTagName())) {
+				ITagProcessor processor = infoProcessor.getTagProcessor(mainChild.getTagName());
 				tag.setDataType(processor.getDataType());
 			}
 			if (tag.isCustom()) {
@@ -708,8 +708,8 @@ public class JavaCodeGenerator {
 				continue;
 				
 			Tag tag = infoTagData.get(mainChild.getTagName());
-			if (customTags != null && customTags.hasTagProcessor(mainChild.getTagName())) {
-				ITagProcessor processor = customTags.getTagProcessor(mainChild.getTagName());
+			if (infoProcessor != null && infoProcessor.hasTagProcessor(mainChild.getTagName())) {
+				ITagProcessor processor = infoProcessor.getTagProcessor(mainChild.getTagName());
 				tag.setDataType(processor.getDataType());
 				tag.resetLevels();
 			}

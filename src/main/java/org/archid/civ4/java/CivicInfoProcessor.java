@@ -1,8 +1,8 @@
 package org.archid.civ4.java;
 
-public class CivicInfoTagProcessor extends DefaultInfoTagProcessor {
+public class CivicInfoProcessor extends DefaultInfoProcessor {
 
-	public CivicInfoTagProcessor(TagNameUtils tagNameUtils) {
+	public CivicInfoProcessor(TagNameUtils tagNameUtils) {
 		super(tagNameUtils);
 	}
 

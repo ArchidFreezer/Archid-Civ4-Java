@@ -1,8 +1,8 @@
 package org.archid.civ4.java;
 
-public class EraInfoTagProcessor extends DefaultInfoTagProcessor {
+public class EraInfoProcessor extends DefaultInfoProcessor {
 	
-	public EraInfoTagProcessor(TagNameUtils tagNameUtils) {
+	public EraInfoProcessor(TagNameUtils tagNameUtils) {
 		super(tagNameUtils);
 	}
 

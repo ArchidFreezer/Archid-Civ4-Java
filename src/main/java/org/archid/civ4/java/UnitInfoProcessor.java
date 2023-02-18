@@ -1,8 +1,8 @@
 package org.archid.civ4.java;
 
-public class UnitInfoTagProcessor extends DefaultInfoTagProcessor {
+public class UnitInfoProcessor extends DefaultInfoProcessor {
 	
-	public UnitInfoTagProcessor(TagNameUtils tagNameUtils) {
+	public UnitInfoProcessor(TagNameUtils tagNameUtils) {
 		super(tagNameUtils);
 	}
 

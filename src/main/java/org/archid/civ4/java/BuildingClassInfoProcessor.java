@@ -1,8 +1,8 @@
 package org.archid.civ4.java;
 
-public class BuildingClassInfoTagProcessor extends DefaultInfoTagProcessor {
+public class BuildingClassInfoProcessor extends DefaultInfoProcessor {
 
-	public BuildingClassInfoTagProcessor(TagNameUtils tagNameUtils) {
+	public BuildingClassInfoProcessor(TagNameUtils tagNameUtils) {
 		super(tagNameUtils);
 	}
 

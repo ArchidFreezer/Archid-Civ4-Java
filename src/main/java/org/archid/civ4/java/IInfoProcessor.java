@@ -3,7 +3,7 @@ package org.archid.civ4.java;
 import java.util.Map;
 import java.util.Set;
 
-public interface IInfoTagProcessor {
+public interface IInfoProcessor {
 	
 	public enum InfoOverrides {
 		IMPORTER, EXPORTER;

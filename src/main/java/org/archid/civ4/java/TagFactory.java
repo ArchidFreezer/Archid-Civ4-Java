@@ -2,19 +2,19 @@ package org.archid.civ4.java;
 
 public class TagFactory {
 	
-	public static IInfoTagProcessor getProcessor(String infoName, TagNameUtils tagNameUtils) {
+	public static IInfoProcessor getProcessor(String infoName, TagNameUtils tagNameUtils) {
 		if (infoName.equalsIgnoreCase("BonusInfo")) {
-			return new BonusInfoTagProcessor(tagNameUtils);
+			return new BonusInfoProcessor(tagNameUtils);
 		} else if (infoName.equalsIgnoreCase("BuildingClassInfo")) {
-			return new BuildingClassInfoTagProcessor(tagNameUtils);
+			return new BuildingClassInfoProcessor(tagNameUtils);
 		} else if (infoName.equalsIgnoreCase("BuildingInfo")) {
-			return new BuildingInfoTagProcessor(tagNameUtils);
+			return new BuildingInfoProcessor(tagNameUtils);
 		} else if (infoName.equalsIgnoreCase("CivicInfo")) {
-			return new CivicInfoTagProcessor(tagNameUtils);
+			return new CivicInfoProcessor(tagNameUtils);
 		} else if (infoName.equalsIgnoreCase("EraInfo")) {
-			return new EraInfoTagProcessor(tagNameUtils);
+			return new EraInfoProcessor(tagNameUtils);
 		} else if (infoName.equalsIgnoreCase("UnitInfo")) {
-			return new UnitInfoTagProcessor(tagNameUtils);
+			return new UnitInfoProcessor(tagNameUtils);
 		} else {
 			return null;
 		}
