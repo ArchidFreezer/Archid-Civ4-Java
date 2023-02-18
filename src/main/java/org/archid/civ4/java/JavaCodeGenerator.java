@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.archid.civ4.java.IInfoTagProcessor.InfoOverrides;
 import org.archid.civ4.schema.SchemaParser;
 import org.archid.civ4.schema.XmlTagDefinition;
 import org.archid.civ4.schema.XmlTagInstance;
@@ -103,7 +104,6 @@ public class JavaCodeGenerator {
 
 	public void createJavaCode(String infoTopLevelTag) {
 		init(infoTopLevelTag);
-		//First we need to create the output folder (package) for the java code
 		createPackageInfoFile();
 		createInfoInterface();
 		createInfoClass();
@@ -114,6 +114,7 @@ public class JavaCodeGenerator {
 	}
 	
 	private void createInfoImporter() {
+		// Imports
 		Set<String> imports = new HashSet<String>();
 		imports.add("import org.apache.log4j.Logger;");
 		imports.add("import org.apache.poi.ss.usermodel.Row;");
@@ -122,16 +123,9 @@ public class JavaCodeGenerator {
 		imports.add("import org.archid.civ4.info.IInfos;");
 		if (customTags == null) imports.add("import org.archid.civ4.info.DefaultXmlFormatter;");
 
-		StringBuilder file = new StringBuilder();
-		StringBuilder customCellReaders = new StringBuilder();
-
-		file.append(packageDef);
-		file.append(NEWLINE);
-
-		
+		// Main content
 		StringBuilder mainClass = new StringBuilder();
 		String xmlFormatter = (customTags == null) ? "DefaultXmlFormatter(\"" + infoNameRoot + "\")" : customTags.getXmlFormatter();
-		Integer typeTagIndex = (customTags == null) ? 0 : customTags.getTypeTagIndex();
 		mainClass.append(NEWLINE);
 		mainClass.append(NEWLINE + "public class " + infoNameRoot + "Importer extends AbstractImporter<IInfos<I" + infoName + ">, I" + infoName + "> {");
 		mainClass.append(NEWLINE);
@@ -146,16 +140,48 @@ public class JavaCodeGenerator {
 		mainClass.append(NEWLINET + "public String getListSheetName() {");
 		mainClass.append(NEWLINETT + "return I" + infoNameRoot + "Workbook.SHEETNAME_LIST;");
 		mainClass.append(NEWLINET + "}");
-		mainClass.append(NEWLINE);
-		mainClass.append(NEWLINET + "@Override");
-		mainClass.append(NEWLINET + "protected I" + infoName + " parseRow(Row row) {");
-		mainClass.append(NEWLINETT + "int colNum = 0;");
-		mainClass.append(NEWLINETT + "String type = row.getCell(" + typeTagIndex.toString() + ").getStringCellValue();");
-		mainClass.append(NEWLINETT + "// Handle cells that have been moved");
-		mainClass.append(NEWLINETT + "if (type.isEmpty())");
-		mainClass.append(NEWLINETTT + "return null;");
-		mainClass.append(NEWLINE + "");
-		mainClass.append(NEWLINETT + "I" + infoName + " info = " + infoName + "s.createInfo(type);");
+		mainClass.append(getInfoImporterOverrides());
+		mainClass.append(NEWLINE + "}");
+
+		// Sort the imports
+		if (customTags != null) imports.addAll(customTags.getImportImports());
+		List<String> sortedImports = new ArrayList<String>(imports);
+		Collections.sort(sortedImports);
+		
+		// Build the file
+		StringBuilder file = new StringBuilder();
+		file.append(packageDef);
+		file.append(NEWLINE);
+		for (String imp: sortedImports) {
+			file.append(NEWLINE + imp);
+		}
+		file.append(mainClass);
+		writeFile(infoNameRoot + "Importer.java", file.toString());
+		
+	}
+	
+	private String getInfoImporterOverrides() {
+		if (customTags.hasOverride(InfoOverrides.IMPORTER)) {
+			return customTags.getOverride(InfoOverrides.IMPORTER);
+		} else {
+			return getDefaultInfoImporterOverrides();
+		}
+	}
+
+	private String getDefaultInfoImporterOverrides() {
+		Integer typeTagIndex = (customTags == null) ? 0 : customTags.getTypeTagIndex();
+		StringBuilder customCellReaders = new StringBuilder();
+		StringBuilder sb = new StringBuilder();
+		sb.append(NEWLINE);
+		sb.append(NEWLINET + "@Override");
+		sb.append(NEWLINET + "protected I" + infoName + " parseRow(Row row) {");
+		sb.append(NEWLINETT + "int colNum = 0;");
+		sb.append(NEWLINETT + "String type = row.getCell(" + typeTagIndex.toString() + ").getStringCellValue();");
+		sb.append(NEWLINETT + "// Handle cells that have been moved");
+		sb.append(NEWLINETT + "if (type.isEmpty())");
+		sb.append(NEWLINETTT + "return null;");
+		sb.append(NEWLINE + "");
+		sb.append(NEWLINETT + "I" + infoName + " info = " + infoName + "s.createInfo(type);");
 
 		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
 			Tag tag = infoTagData.get(mainChild.getTagName());
@@ -165,44 +191,35 @@ public class JavaCodeGenerator {
 				tag.setDataType(processor.getDataType());
 			}
 			if (processor != null) {
-				mainClass.append(processor.getImporterRow());
+				sb.append(processor.getImporterRow());
 				customCellReaders.append(processor.getImporterCellReader());
 			} else if (tag.requiresArray()) {
 				if (tag.getNumLeaves() == 1) {
 					if (tag.requiresArray()) {
-						mainClass.append(NEWLINETT + "parseListCell(row.getCell(colNum++), " + tag.getDataType() + ".class, info::" + tag.getSetterName() + ");");
+						sb.append(NEWLINETT + "parseListCell(row.getCell(colNum++), " + tag.getDataType() + ".class, info::" + tag.getSetterName() + ");");
 					} else {
-						mainClass.append(NEWLINETT + "parseCell(row.getCell(colNum++), " + tag.getDataType() + ".class, info::" + tag.getSetterName() + ");");
+						sb.append(NEWLINETT + "parseCell(row.getCell(colNum++), " + tag.getDataType() + ".class, info::" + tag.getSetterName() + ");");
 					}
 				} else if (tag.getNumLeaves() == 2) { 
-					mainClass.append(NEWLINETT + "parsePairsCell(row.getCell(colNum++), " + tag.getLeaf(0).getType() + ".class, " + tag.getLeaf(1).getType() + ".class, info::" + tag.getSetterName() + ");");
+					sb.append(NEWLINETT + "parsePairsCell(row.getCell(colNum++), " + tag.getLeaf(0).getType() + ".class, " + tag.getLeaf(1).getType() + ".class, info::" + tag.getSetterName() + ");");
 				} else if (tag.getNumLeaves() == 3) {
-					mainClass.append(NEWLINETT + "parseTriplesCell(row.getCell(colNum++), " + tag.getLeaf(0).getType() + ".class, " + tag.getLeaf(1).getType() + ".class, " + tag.getLeaf(2).getType() + ".class, info::" + tag.getSetterName() + ");");
+					sb.append(NEWLINETT + "parseTriplesCell(row.getCell(colNum++), " + tag.getLeaf(0).getType() + ".class, " + tag.getLeaf(1).getType() + ".class, " + tag.getLeaf(2).getType() + ".class, info::" + tag.getSetterName() + ");");
 				}
 			} else {
-				mainClass.append(NEWLINETT + "parseCell(row.getCell(colNum++), " + tag.getDataType() + ".class, info::" + tag.getSetterName() + ");");					
+				sb.append(NEWLINETT + "parseCell(row.getCell(colNum++), " + tag.getDataType() + ".class, info::" + tag.getSetterName() + ");");					
 			}
 		}
 		
-		mainClass.append(NEWLINE);
-		mainClass.append(NEWLINETT + "return info;");
-		mainClass.append(NEWLINET + "}");
-		mainClass.append(customCellReaders);
-		mainClass.append(NEWLINE + "}");
-
-		// Sort the imports
-		if (customTags != null) imports.addAll(customTags.getImportImports());
-		List<String> sortedImports = new ArrayList<String>(imports);
-		Collections.sort(sortedImports);
-		for (String imp: sortedImports) {
-			file.append(NEWLINE + imp);
-		}
-		file.append(mainClass);
-		writeFile(infoNameRoot + "Importer.java", file.toString());
+		sb.append(NEWLINE);
+		sb.append(NEWLINETT + "return info;");
+		sb.append(NEWLINET + "}");
+		sb.append(customCellReaders);
 		
-}
+		return sb.toString();
+	}
 
 	private void createInfoExporter() {
+		// Imports
 		Set<String> imports = new HashSet<String>();
 		imports.add("import java.util.ArrayList;");
 		imports.add("import java.util.List;");
@@ -213,11 +230,7 @@ public class JavaCodeGenerator {
 		imports.add("import org.archid.civ4.info.IInfos;");
 		imports.add("import org.archid.civ4.info." + namespaceFolder + ".I" + infoNameRoot + "Workbook.SheetHeaders;");
 
-		StringBuilder file = new StringBuilder();
-		StringBuilder customCellWriters = new StringBuilder();
-		file.append(packageDef);
-		file.append(NEWLINE);
-
+		// Main content
 		StringBuilder mainClass = new StringBuilder();
 		mainClass.append(NEWLINE);
 		mainClass.append(NEWLINE + "public class " + infoNameRoot + "Exporter extends AbstractExporter<IInfos<I" + infoName + ">, I" + infoName + "> {");
@@ -247,44 +260,18 @@ public class JavaCodeGenerator {
 		mainClass.append(NEWLINET + "protected String getInfoListSheetName() {");
 		mainClass.append(NEWLINETT + "return I" + infoNameRoot + "Workbook.SHEETNAME_LIST;");
 		mainClass.append(NEWLINET + "}");
-		mainClass.append(NEWLINE);
-		mainClass.append(NEWLINET + "@Override");
-		mainClass.append(NEWLINET + "protected void populateRow(Row row, I" + infoName + " info) {");
-		mainClass.append(NEWLINETT + "int maxHeight = 1;");
-		mainClass.append(NEWLINETT + "int colNum = 0;");
-		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
-			Tag tag = infoTagData.get(mainChild.getTagName());
-			ITagProcessor processor = null;
-			if (customTags != null && customTags.hasTagProcessor(mainChild.getTagName())) {
-				processor = customTags.getTagProcessor(mainChild.getTagName());
-				tag.setDataType(processor.getDataType());
-			}
-			if (processor != null) {
-				mainClass.append(processor.getExporterRow());
-				customCellWriters.append(processor.getExporterCellWriter());
-			} else if (tag.requiresArray()) {
-				if (tag.getNumLeaves() == 1) {
-					mainClass.append(NEWLINETT + "maxHeight = addRepeatingCell(row.createCell(colNum++), info." + tag.getGetterName() + "(), maxHeight);");					
-				} else if (tag.getNumLeaves() == 2) { 
-					mainClass.append(NEWLINETT + "maxHeight = addRepeatingPairCell(row.createCell(colNum++), info." + tag.getGetterName() + "(), maxHeight);");					
-				} else if (tag.getNumLeaves() == 3) {
-					mainClass.append(NEWLINETT + "maxHeight = addRepeatingTripleCell(row.createCell(colNum++), info." + tag.getGetterName() + "(), maxHeight);");					
-				}
-			} else {
-				mainClass.append(NEWLINETT + "addSingleCell(row.createCell(colNum++), info." + tag.getGetterName() + "());");					
-			}
-		}
-		
-		mainClass.append(NEWLINE);
-		mainClass.append(NEWLINETT + "row.setHeightInPoints(maxHeight * row.getSheet().getDefaultRowHeightInPoints());");
-		mainClass.append(NEWLINET + "}");
-		mainClass.append(customCellWriters);
+		mainClass.append(getInfoExporterOverrides());
 		mainClass.append(NEWLINE + "}");
 
 		// Sort the imports
 		if (customTags != null) imports.addAll(customTags.getExportImports());
 		List<String> sortedImports = new ArrayList<String>(imports);
 		Collections.sort(sortedImports);
+		
+		// Build the file
+		StringBuilder file = new StringBuilder();
+		file.append(packageDef);
+		file.append(NEWLINE);
 		for (String imp: sortedImports) {
 			file.append(NEWLINE + imp);
 		}
@@ -293,6 +280,54 @@ public class JavaCodeGenerator {
 		writeFile(infoNameRoot + "Exporter.java", file.toString());
 		
 	}
+	
+	private String getInfoExporterOverrides() {
+		if (customTags.hasOverride(InfoOverrides.EXPORTER)) {
+			return customTags.getOverride(InfoOverrides.EXPORTER);
+		} else {
+			return getDefaultInfoExporterOverrides();
+		}
+	}
+
+	private String getDefaultInfoExporterOverrides() {
+		StringBuilder customCellWriters = new StringBuilder();
+		StringBuilder sb = new StringBuilder();
+		sb.append(NEWLINE);
+		sb.append(NEWLINET + "@Override");
+		sb.append(NEWLINET + "protected void populateRow(Row row, I" + infoName + " info) {");
+		sb.append(NEWLINETT + "int maxHeight = 1;");
+		sb.append(NEWLINETT + "int colNum = 0;");
+		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
+			Tag tag = infoTagData.get(mainChild.getTagName());
+			ITagProcessor processor = null;
+			if (customTags != null && customTags.hasTagProcessor(mainChild.getTagName())) {
+				processor = customTags.getTagProcessor(mainChild.getTagName());
+				tag.setDataType(processor.getDataType());
+			}
+			if (processor != null) {
+				sb.append(processor.getExporterRow());
+				customCellWriters.append(processor.getExporterCellWriter());
+			} else if (tag.requiresArray()) {
+				if (tag.getNumLeaves() == 1) {
+					sb.append(NEWLINETT + "maxHeight = addRepeatingCell(row.createCell(colNum++), info." + tag.getGetterName() + "(), maxHeight);");					
+				} else if (tag.getNumLeaves() == 2) { 
+					sb.append(NEWLINETT + "maxHeight = addRepeatingPairCell(row.createCell(colNum++), info." + tag.getGetterName() + "(), maxHeight);");					
+				} else if (tag.getNumLeaves() == 3) {
+					sb.append(NEWLINETT + "maxHeight = addRepeatingTripleCell(row.createCell(colNum++), info." + tag.getGetterName() + "(), maxHeight);");					
+				}
+			} else {
+				sb.append(NEWLINETT + "addSingleCell(row.createCell(colNum++), info." + tag.getGetterName() + "());");					
+			}
+		}
+		
+		sb.append(NEWLINE);
+		sb.append(NEWLINETT + "row.setHeightInPoints(maxHeight * row.getSheet().getDefaultRowHeightInPoints());");
+		sb.append(NEWLINET + "}");
+		sb.append(customCellWriters);
+		
+		return sb.toString();
+	}
+
 
 	private void createInfoMapAdapter() {
 		Set<String> imports = new HashSet<String>(dynamicImports);

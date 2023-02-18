@@ -12,6 +12,7 @@ public class DefaultInfoTagProcessor implements IInfoTagProcessor {
 	protected Set<String> exportImports = new HashSet<String>();
 	protected Set<String> importImports = new HashSet<String>();
 	protected Map<String, String> filesToWrite = new HashMap<String, String>();
+	protected Map<InfoOverrides, String> overrides = new HashMap<InfoOverrides, String>();
 	protected TagNameUtils tagNameUtils;
 	
 	public DefaultInfoTagProcessor(TagNameUtils tagNameUtils) {
@@ -76,5 +77,18 @@ public class DefaultInfoTagProcessor implements IInfoTagProcessor {
 		tagData.element = element;
 		return tagData;
 	}
-	
+
+
+	@Override
+	public boolean hasOverride(InfoOverrides override) {
+		return overrides.containsKey(override);
+	}
+
+
+	@Override
+	public String getOverride(InfoOverrides override) {
+		return hasOverride(override) ? overrides.get(override) : "";
+	}
+
+
 }

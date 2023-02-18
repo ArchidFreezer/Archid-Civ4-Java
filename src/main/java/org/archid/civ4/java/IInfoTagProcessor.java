@@ -4,6 +4,10 @@ import java.util.Map;
 import java.util.Set;
 
 public interface IInfoTagProcessor {
+	
+	public enum InfoOverrides {
+		IMPORTER, EXPORTER;
+	}
 
 	public void init(String packageName);
 	public boolean hasTagProcessor(String tag);
@@ -13,4 +17,6 @@ public interface IInfoTagProcessor {
 	public Set<String> getExportImports();
 	public Set<String> getImportImports();
 	public Map<String, String> getFilesToWrite();
+	public boolean hasOverride(InfoOverrides override);
+	public String getOverride(InfoOverrides override);
 }
