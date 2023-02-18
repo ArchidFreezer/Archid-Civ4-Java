@@ -95,8 +95,8 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		@XmlElementWrapper(name="PrereqVicinityOrBonus")
 		@XmlElement(name="BonusType")
 		private List<String> prereqVicinityOrBonus;
-		@XmlElement(name="bRequirePrereqVicinityBonusConnected")
-		private Integer requirePrereqVicinityBonusConnected;
+		@XmlElement(name="bPrereqVicinityBonusUnconnectedAllowed")
+		private Integer prereqVicinityBonusUnconnectedAllowed;
 		@XmlElementWrapper(name="PrereqVicinityImprovements")
 		@XmlElement(name="ImprovementType")
 		private List<String> prereqVicinityImprovements;
@@ -663,7 +663,7 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 					}
 				}
 			}
-			info.setRequirePrereqVicinityBonusConnected(JaxbUtils.unmarshallBoolean(aInfo.requirePrereqVicinityBonusConnected));
+			info.setPrereqVicinityBonusUnconnectedAllowed(JaxbUtils.unmarshallBoolean(aInfo.prereqVicinityBonusUnconnectedAllowed));
 
 			if (CollectionUtils.hasElements(aInfo.prereqVicinityImprovements)) {
 				for (String val: aInfo.prereqVicinityImprovements) {
@@ -1166,7 +1166,7 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 					aInfo.prereqVicinityOrBonus.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
-			aInfo.requirePrereqVicinityBonusConnected = JaxbUtils.marshallBoolean(info.isRequirePrereqVicinityBonusConnected());
+			aInfo.prereqVicinityBonusUnconnectedAllowed = JaxbUtils.marshallBoolean(info.isPrereqVicinityBonusUnconnectedAllowed());
 
 			if (CollectionUtils.hasElements(info.getPrereqVicinityImprovements())) {
 				aInfo.prereqVicinityImprovements = new ArrayList<String>();

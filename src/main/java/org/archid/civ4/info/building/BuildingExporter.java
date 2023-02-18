@@ -81,7 +81,7 @@ public class BuildingExporter extends AbstractExporter<IInfos<IBuildingInfo>, IB
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqOrTerrains(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqVicinityAndBonus(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqVicinityOrBonus(), maxHeight);
-		addSingleCell(row.createCell(colNum++), info.isRequirePrereqVicinityBonusConnected());
+		addSingleCell(row.createCell(colNum++), info.isPrereqVicinityBonusUnconnectedAllowed());
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqVicinityImprovements(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqVicinityFeatures(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqWorldViews(), maxHeight);

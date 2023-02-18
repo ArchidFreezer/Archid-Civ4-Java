@@ -102,8 +102,8 @@ public interface IBuildingInfo extends IInfo {
 	List<String> getPrereqVicinityOrBonus();
 	void addPrereqVicinityOrBonu(String prereqVicinityOrBonu);
 
-	Boolean isRequirePrereqVicinityBonusConnected();
-	void setRequirePrereqVicinityBonusConnected(Boolean requirePrereqVicinityBonusConnected);
+	Boolean isPrereqVicinityBonusUnconnectedAllowed();
+	void setPrereqVicinityBonusUnconnectedAllowed(Boolean prereqVicinityBonusUnconnectedAllowed);
 
 	List<String> getPrereqVicinityImprovements();
 	void addPrereqVicinityImprovement(String prereqVicinityImprovement);

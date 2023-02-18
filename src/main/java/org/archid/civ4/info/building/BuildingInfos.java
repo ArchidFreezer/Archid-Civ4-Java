@@ -70,7 +70,7 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo> {
 		private List<String> prereqOrTerrains = new ArrayList<String>();
 		private List<String> prereqVicinityAndBonus = new ArrayList<String>();
 		private List<String> prereqVicinityOrBonus = new ArrayList<String>();
-		private Boolean requirePrereqVicinityBonusConnected;
+		private Boolean prereqVicinityBonusUnconnectedAllowed;
 		private List<String> prereqVicinityImprovements = new ArrayList<String>();
 		private List<String> prereqVicinityFeatures = new ArrayList<String>();
 		private List<String> prereqWorldViews = new ArrayList<String>();
@@ -566,13 +566,13 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo> {
 		}
 
 		@Override
-		public Boolean isRequirePrereqVicinityBonusConnected() {
-			return requirePrereqVicinityBonusConnected;
+		public Boolean isPrereqVicinityBonusUnconnectedAllowed() {
+			return prereqVicinityBonusUnconnectedAllowed;
 		}
 
 		@Override
-		public void setRequirePrereqVicinityBonusConnected(Boolean requirePrereqVicinityBonusConnected) {
-			this.requirePrereqVicinityBonusConnected = requirePrereqVicinityBonusConnected;
+		public void setPrereqVicinityBonusUnconnectedAllowed(Boolean prereqVicinityBonusUnconnectedAllowed) {
+			this.prereqVicinityBonusUnconnectedAllowed = prereqVicinityBonusUnconnectedAllowed;
 		}
 
 		@Override
