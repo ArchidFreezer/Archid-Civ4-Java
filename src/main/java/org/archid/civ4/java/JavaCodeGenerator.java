@@ -78,7 +78,7 @@ public class JavaCodeGenerator {
 	}
 
 	private void parseInfo(XmlTagDefinition info) {
-		Map<String, DataType> tagNameData = new HashMap<String, XmlTagDefinition.DataType>();
+		Map<String, DataType> tagDatatype = new HashMap<String, XmlTagDefinition.DataType>();
 		for (XmlTagInstance tag: info.getChildren()) {
 			XmlTagDefinition tagDef = parser.getTagDefinition(tag.getTagName());
 			boolean customTagProcessing = (infoProcessor == null) ? false : infoProcessor.hasTagProcessor(tag.getTagName());
@@ -90,10 +90,10 @@ public class JavaCodeGenerator {
 			if (tagData.getNumLeaves() == 2) dynamicImports.add("import org.archid.utils.IPair;");
 			if (tagData.getNumLeaves() == 3) dynamicImports.add("import org.archid.utils.ITriple;");
 			infoTagData.put(tag.getTagName(), tagData);
-			tagNameData.put(tag.getTagName(), tagDef.getDataType());
+			tagDatatype.put(tag.getTagName(), tagDef.getDataType());
 		}
 		// Get the variable names to be used
-		tagNameUtils.buildUniqueNames(tagNameData);
+		tagNameUtils.buildUniqueNames(tagDatatype);
 		// Set the variable names to be used
 		for (String tagName: infoTagData.keySet()) {
 			infoTagData.get(tagName).setRootName(tagNameUtils.getRootName(tagName));
