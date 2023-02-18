@@ -23,20 +23,12 @@ import org.archid.utils.PropertyHandler;
 import org.archid.utils.PropertyKeys;
 import org.archid.utils.StringUtils;
 
-public class JavaCodeGenerator {
+public class JavaCodeGenerator implements IJavaFileCreator{
 
 	/** Logging facility */
 	static Logger log = Logger.getLogger(JavaCodeGenerator.class.getName());
 	
 	static final String MANUAL_INTERVENTION = "ManualInterventionRequired";
-	
-	private final String NEWLINE = System.getProperty("line.separator");
-	private final String NEWLINET = NEWLINE + "\t";
-	private final String NEWLINETT = NEWLINE + "\t\t";
-	private final String NEWLINETTT = NEWLINE + "\t\t\t";
-	private final String NEWLINETTTT = NEWLINE + "\t\t\t\t";
-	private final String NEWLINETTTTT = NEWLINE + "\t\t\t\t\t";
-	private final String NEWLINETTTTTT = NEWLINE + "\t\t\t\t\t\t";
 	
 	private String namespaceFolder = null; // somevalue
 	private String infoName = null;        // SomeValueInfo
