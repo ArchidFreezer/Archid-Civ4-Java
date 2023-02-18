@@ -1,4 +1,7 @@
-package org.archid.civ4.java;
+package org.archid.civ4.java.infoprocessor;
+
+import org.archid.civ4.java.AbstractTagProcessor;
+import org.archid.civ4.java.TagNameData;
 
 public class BonusInfoProcessor extends DefaultInfoProcessor {
 	

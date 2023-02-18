@@ -1,9 +1,13 @@
-package org.archid.civ4.java;
+package org.archid.civ4.java.infoprocessor;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import org.archid.civ4.java.DefaultResourceArrayTagProcessorData;
+import org.archid.civ4.java.ITagProcessor;
+import org.archid.civ4.java.TagNameData;
 
 public class DefaultInfoProcessor implements IInfoProcessor {
 	

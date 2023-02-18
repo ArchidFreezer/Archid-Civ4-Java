@@ -1,4 +1,8 @@
-package org.archid.civ4.java;
+package org.archid.civ4.java.infoprocessor;
+
+import org.archid.civ4.java.DefaultResourceArrayTagProcessor;
+import org.archid.civ4.java.DefaultResourceArrayTagProcessorData;
+import org.archid.civ4.java.TagNameData;
 
 public class BuildingInfoProcessor extends DefaultInfoProcessor {
 

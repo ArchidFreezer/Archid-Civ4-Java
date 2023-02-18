@@ -1,7 +1,9 @@
-package org.archid.civ4.java;
+package org.archid.civ4.java.infoprocessor;
 
 import java.util.Map;
 import java.util.Set;
+
+import org.archid.civ4.java.ITagProcessor;
 
 public interface IInfoProcessor {
 	

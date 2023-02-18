@@ -1,5 +1,13 @@
 package org.archid.civ4.java;
 
+import org.archid.civ4.java.infoprocessor.BonusInfoProcessor;
+import org.archid.civ4.java.infoprocessor.BuildingClassInfoProcessor;
+import org.archid.civ4.java.infoprocessor.BuildingInfoProcessor;
+import org.archid.civ4.java.infoprocessor.CivicInfoProcessor;
+import org.archid.civ4.java.infoprocessor.EraInfoProcessor;
+import org.archid.civ4.java.infoprocessor.IInfoProcessor;
+import org.archid.civ4.java.infoprocessor.UnitInfoProcessor;
+
 public class TagFactory {
 	
 	public static IInfoProcessor getProcessor(String infoName, TagNameData tagNameData) {

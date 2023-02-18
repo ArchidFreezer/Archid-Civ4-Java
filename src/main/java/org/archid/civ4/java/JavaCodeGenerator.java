@@ -12,7 +12,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.archid.civ4.java.IInfoProcessor.InfoOverrides;
+import org.archid.civ4.java.infoprocessor.IInfoProcessor;
+import org.archid.civ4.java.infoprocessor.IInfoProcessor.InfoOverrides;
 import org.archid.civ4.schema.SchemaParser;
 import org.archid.civ4.schema.XmlTagDefinition;
 import org.archid.civ4.schema.XmlTagInstance;
