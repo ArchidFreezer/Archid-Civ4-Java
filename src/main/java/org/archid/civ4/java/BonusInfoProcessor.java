@@ -2,8 +2,8 @@ package org.archid.civ4.java;
 
 public class BonusInfoProcessor extends DefaultInfoProcessor {
 	
-	public BonusInfoProcessor(TagNameUtils tagNameUtils) {
-		super(tagNameUtils);
+	public BonusInfoProcessor(TagNameData tagNameData) {
+		super(tagNameData);
 	}
 
 	public void init(String packageName) {

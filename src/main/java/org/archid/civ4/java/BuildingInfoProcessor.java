@@ -2,8 +2,8 @@ package org.archid.civ4.java;
 
 public class BuildingInfoProcessor extends DefaultInfoProcessor {
 
-	public BuildingInfoProcessor(TagNameUtils tagNameUtils) {
-		super(tagNameUtils);
+	public BuildingInfoProcessor(TagNameData tagNameData) {
+		super(tagNameData);
 	}
 	
 	public void init(String packageName) {
@@ -23,23 +23,23 @@ public class BuildingInfoProcessor extends DefaultInfoProcessor {
 	}
 	
 	private DefaultResourceArrayTagProcessor getSpecialistYieldChangesProcessor() {
-		return new DefaultResourceArrayTagProcessor(getTagData("SpecialistYieldChanges", "SpecialistYieldChange", "SpecialistType", "YieldChanges", "iYield"), tagNameUtils);
+		return new DefaultResourceArrayTagProcessor(getTagData("SpecialistYieldChanges", "SpecialistYieldChange", "SpecialistType", "YieldChanges", "iYield"), tagNameData);
 	}
 	
 	private DefaultResourceArrayTagProcessor getBonusYieldModifiersProcessor() {
-		return new DefaultResourceArrayTagProcessor(getTagData("BonusYieldModifiers", "BonusYieldModifier", "BonusType", "YieldModifiers", "iYield"), tagNameUtils);
+		return new DefaultResourceArrayTagProcessor(getTagData("BonusYieldModifiers", "BonusYieldModifier", "BonusType", "YieldModifiers", "iYield"), tagNameData);
 	}
 	
 	private DefaultResourceArrayTagProcessor getBonusYieldChangesProcessor() {
-		return new DefaultResourceArrayTagProcessor(getTagData("BonusYieldChanges", "BonusYieldChange", "BonusType", "YieldChanges", "iYield"), tagNameUtils);
+		return new DefaultResourceArrayTagProcessor(getTagData("BonusYieldChanges", "BonusYieldChange", "BonusType", "YieldChanges", "iYield"), tagNameData);
 	}
 	
 	private DefaultResourceArrayTagProcessor getVicinityBonusYieldChangesProcessor() {
-		return new DefaultResourceArrayTagProcessor(getTagData("VicinityBonusYieldChanges", "VicinityBonusYieldChange", "BonusType", "YieldChanges", "iYield"), tagNameUtils);
+		return new DefaultResourceArrayTagProcessor(getTagData("VicinityBonusYieldChanges", "VicinityBonusYieldChange", "BonusType", "YieldChanges", "iYield"), tagNameData);
 	}
 		
 	private DefaultResourceArrayTagProcessor getTechCommerceChangesProcessor() {
-		return new DefaultResourceArrayTagProcessor(getTagData("TechCommerceChanges", "TechCommerceChange", "TechType", "CommerceChanges", "iCommerce"), tagNameUtils);
+		return new DefaultResourceArrayTagProcessor(getTagData("TechCommerceChanges", "TechCommerceChange", "TechType", "CommerceChanges", "iCommerce"), tagNameData);
 	}
 	
 

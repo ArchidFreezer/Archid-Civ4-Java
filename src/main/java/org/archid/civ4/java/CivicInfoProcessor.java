@@ -2,8 +2,8 @@ package org.archid.civ4.java;
 
 public class CivicInfoProcessor extends DefaultInfoProcessor {
 
-	public CivicInfoProcessor(TagNameUtils tagNameUtils) {
-		super(tagNameUtils);
+	public CivicInfoProcessor(TagNameData tagNameData) {
+		super(tagNameData);
 	}
 
 	public void init(String packageName) {
@@ -19,7 +19,7 @@ public class CivicInfoProcessor extends DefaultInfoProcessor {
 	}
 	
 	private DefaultResourceArrayTagProcessor getImprovementYieldChangesProcessor() {
-		return new DefaultResourceArrayTagProcessor(getTagData("ImprovementYieldChanges", "ImprovementYieldChange", "ImprovementType", "ImprovementYields", "iYield"), tagNameUtils);
+		return new DefaultResourceArrayTagProcessor(getTagData("ImprovementYieldChanges", "ImprovementYieldChange", "ImprovementType", "ImprovementYields", "iYield"), tagNameData);
 	}
 	
 	@Override

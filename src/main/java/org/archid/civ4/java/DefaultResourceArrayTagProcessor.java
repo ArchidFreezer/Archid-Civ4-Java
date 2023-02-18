@@ -3,9 +3,9 @@ package org.archid.civ4.java;
 public class DefaultResourceArrayTagProcessor extends AbstractTagProcessor {
 	
 	private final DefaultResourceArrayTagProcessorData tagVals;
-	private TagNameUtils tagNameUtils;
+	private TagNameData tagNameUtils;
 	
-	public DefaultResourceArrayTagProcessor(DefaultResourceArrayTagProcessorData tagVals, TagNameUtils tagNameUtils) {
+	public DefaultResourceArrayTagProcessor(DefaultResourceArrayTagProcessorData tagVals, TagNameData tagNameUtils) {
 		super(tagVals.outer);
 		this.tagVals = tagVals;
 		this.tagNameUtils = tagNameUtils;

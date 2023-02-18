@@ -50,7 +50,7 @@ public class JavaCodeGenerator {
 	Set<String> dynamicImports = new HashSet<String>();
 	private Map<String, Tag> infoTagData = new HashMap<String, Tag>();
 	
-	private TagNameUtils tagNameUtils = new TagNameUtils();
+	private TagNameData tagNameData = new TagNameData();
 	
 	private IInfoProcessor infoProcessor = null;
 
@@ -67,7 +67,7 @@ public class JavaCodeGenerator {
 		createPackageFolder();
 		packageDef = "package org.archid.civ4.info." + namespaceFolder + ";";
 		topLevelTagDefinition = parser.getTagDefinition(infoName);
-		infoProcessor = TagFactory.getProcessor(infoName, tagNameUtils);
+		infoProcessor = TagFactory.getProcessor(infoName, tagNameData);
 		if (infoProcessor != null) {
 			infoProcessor.init(namespaceFolder);
 			for (String filename: infoProcessor.getFilesToWrite().keySet()) {
@@ -93,11 +93,11 @@ public class JavaCodeGenerator {
 			tagDatatype.put(tag.getTagName(), tagDef.getDataType());
 		}
 		// Get the variable names to be used
-		tagNameUtils.buildUniqueNames(tagDatatype);
+		tagNameData.buildUniqueNames(tagDatatype);
 		// Set the variable names to be used
 		for (String tagName: infoTagData.keySet()) {
-			infoTagData.get(tagName).setRootName(tagNameUtils.getRootName(tagName));
-			infoTagData.get(tagName).setVarName(tagNameUtils.getVarName(tagName));
+			infoTagData.get(tagName).setRootName(tagNameData.getRootName(tagName));
+			infoTagData.get(tagName).setVarName(tagNameData.getVarName(tagName));
 			infoTagData.get(tagName).init();
 		}
 	}
@@ -838,7 +838,7 @@ public class JavaCodeGenerator {
 				for (XmlTagInstance leaf: wrapper.getChildren()) {
 					LeafData leafData = new LeafData();
 					leafData.setName(leaf.getTagName());
-					leafData.setVarName(tagNameUtils.getVarName(leaf.getTagName()));
+					leafData.setVarName(tagNameData.getVarName(leaf.getTagName()));
 					leafData.setType(parser.getTagDefinition(leaf.getTagName()).getDataType().getJavaType());
 					leaves.add(leafData);
 				}
@@ -897,7 +897,7 @@ public class JavaCodeGenerator {
 		private String buildSetterName() {
 			String setter = null;
 			if (numLevels > 0 && !custom)
-				setter = "add" + tagNameUtils.singularForm(rootName);
+				setter = "add" + tagNameData.singularForm(rootName);
 			else
 				setter = "set" + rootName;
 			return setter;
@@ -918,7 +918,7 @@ public class JavaCodeGenerator {
 		
 		public String setterVarName() {
 			if (numLevels > 0 && !custom)
-				return tagNameUtils.singularForm(varName);
+				return tagNameData.singularForm(varName);
 			else
 				return varName;
 		}

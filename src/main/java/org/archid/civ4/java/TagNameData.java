@@ -8,7 +8,7 @@ import org.apache.commons.collections4.map.HashedMap;
 import org.archid.civ4.schema.XmlTagDefinition.DataType;
 import org.archid.utils.StringUtils;
 
-public class TagNameUtils {
+public class TagNameData {
 	
 	private static Map<String, String> javaKeywords = buildJavaKeywordsMap();
 	private static Map<String, String> buildJavaKeywordsMap() {

@@ -2,8 +2,8 @@ package org.archid.civ4.java;
 
 public class UnitInfoProcessor extends DefaultInfoProcessor {
 	
-	public UnitInfoProcessor(TagNameUtils tagNameUtils) {
-		super(tagNameUtils);
+	public UnitInfoProcessor(TagNameData tagNameData) {
+		super(tagNameData);
 	}
 
 	@Override

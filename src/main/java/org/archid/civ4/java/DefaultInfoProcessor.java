@@ -13,10 +13,10 @@ public class DefaultInfoProcessor implements IInfoProcessor {
 	protected Set<String> importImports = new HashSet<String>();
 	protected Map<String, String> filesToWrite = new HashMap<String, String>();
 	protected Map<InfoOverrides, String> overrides = new HashMap<InfoOverrides, String>();
-	protected TagNameUtils tagNameUtils;
+	protected TagNameData tagNameData;
 	
-	public DefaultInfoProcessor(TagNameUtils tagNameUtils) {
-		this.tagNameUtils = tagNameUtils;
+	public DefaultInfoProcessor(TagNameData tagNameData) {
+		this.tagNameData = tagNameData;
 	}
 	
 
