@@ -6,7 +6,6 @@ import java.util.Set;
 public interface ITagProcessor extends IJavaFileContent {
 
 	String getTagName();
-	String getDataType();
 
 	Set<String> getAdapterImports();
 	Set<String> getExporterImports();

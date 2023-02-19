@@ -13,6 +13,8 @@ public class DefaultResourceArrayTagProcessor extends AbstractTagProcessor {
 		importerImports.add("import org.archid.civ4.info." + tagVals.folder + "." + tagVals.outer + "." + tagVals.wrapper + ";");
 		filesToWrite.put(tagVals.outer + ".java", getTagFileContent());
 		filesToWrite.put(tagVals.outer + "Adapter.java", getAdapterFileContent());
+		JavaCodeGeneratorData.getInstance().getTagInstance(tagName).setDataType(getTagName());
+		JavaCodeGeneratorData.getInstance().getTagInstance(tagName).resetLevels();
 	}
 
 	@Override
@@ -202,6 +204,14 @@ public class DefaultResourceArrayTagProcessor extends AbstractTagProcessor {
 		sb.append(NEWLINETT + "return changes;");
 		sb.append(NEWLINET + "}");
 		sb.append(NEWLINE + "}");
+		return sb.toString();
+	}
+	
+	@Override
+	public String getAdapterElement() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(NEWLINETT + "@XmlElement(name=\"" + tagName + "\")");
+		sb.append(NEWLINETT + "private " + getTagName() + " " + getVarName() + ";");
 		return sb.toString();
 	}
 	

@@ -29,13 +29,6 @@ public abstract class AbstractTagProcessor implements ITagProcessor {
 	}
 	
 	@Override
-	public String getDataType() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(getTagName());
-		return sb.toString();
-	}
-	
-	@Override
 	public Set<String> getAdapterImports() {
 		return adapterImports;
 	}
@@ -54,7 +47,7 @@ public abstract class AbstractTagProcessor implements ITagProcessor {
 	public String getAdapterElement() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(NEWLINETT + "@XmlElement(name=\"" + tagName + "\")");
-		sb.append(NEWLINETT + "private " + getTagName() + " " + getVarName() + ";");
+		sb.append(NEWLINETT + "private " + JavaCodeGeneratorData.getInstance().getTagInstance(tagName).getDataType() + " " + getVarName() + ";");
 		return sb.toString();
 	}
 	

@@ -103,11 +103,7 @@ public class DefaultInfoExporterCreator implements IJavaFileCreator {
 		sb.append(NEWLINETT + "int colNum = 0;");
 		for (XmlTagInstance mainChild : JavaCodeGeneratorData.getInstance().getInfoChildTags()) {
 			TagInstance tag = JavaCodeGeneratorData.getInstance().getTagInstance(mainChild.getTagName());
-			ITagProcessor tagProcessor = null;
-			if (infoProcessor.hasTagProcessor(mainChild.getTagName())) {
-				tagProcessor = infoProcessor.getTagProcessor(mainChild.getTagName());
-				tag.setDataType(tagProcessor.getDataType());
-			}
+			ITagProcessor tagProcessor = infoProcessor.getTagProcessor(mainChild.getTagName());
 			if (tagProcessor != null) {
 				sb.append(tagProcessor.getExporterRow());
 				customCellWriters.append(tagProcessor.getExporterCellWriter());

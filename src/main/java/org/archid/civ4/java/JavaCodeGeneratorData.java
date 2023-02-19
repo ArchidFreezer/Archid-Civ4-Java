@@ -54,20 +54,18 @@ public class JavaCodeGeneratorData {
 		createPackageFolder();
 		packageDef = "package org.archid.civ4.info." + namespaceFolder + ";";
 		this.infoTagDefinition = parser.getTagDefinition(infoName);
+		parseInfo();
 		infoProcessor = InfoProcessorFactory.getProcessor(infoName);
 		if (infoProcessor != null) {
 			infoProcessor.init(namespaceFolder);
 		}
-		parseInfo();
-
 	}
 
 	private void parseInfo() {
 		Map<String, DataType> tagDatatype = new HashMap<String, XmlTagDefinition.DataType>();
 		for (XmlTagInstance tag: getInfoChildTags()) {
 			XmlTagDefinition tagDef = parser.getTagDefinition(tag.getTagName());
-			boolean customTagProcessing = (infoProcessor == null) ? false : infoProcessor.hasTagProcessor(tag.getTagName());
-			TagInstance tagInstance = new TagInstance(tagDef, tag, customTagProcessing);
+			TagInstance tagInstance = new TagInstance(tagDef, tag);
 			if (tagInstance.requiresArray()) {
 				dynamicImports.add("import java.util.List;");
 				dynamicImports.add("import java.util.ArrayList;");

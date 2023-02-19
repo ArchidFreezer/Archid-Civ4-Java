@@ -70,7 +70,6 @@ public class DefaultInfoMapAdapterCreator implements IJavaFileCreator {
 			String tagVarName = tag.getVarName();
 			if (infoProcessor.hasTagProcessor(mainChild.getTagName())) {
 				tagProcessor = infoProcessor.getTagProcessor(mainChild.getTagName());
-				tag.setDataType(tagProcessor.getDataType());
 				imports.addAll(tagProcessor.getAdapterImports());
 			}
 			
@@ -94,7 +93,7 @@ public class DefaultInfoMapAdapterCreator implements IJavaFileCreator {
 			
 			// Process any custom adapters
 			if (tag.requiresAdapter() && tagProcessor == null) {
-				if (tag.isCustom()) {
+				if (tag.isCustomDataType()) {
 					log.warn("Unable to create adapter for " + tag.getRootName() + ": " + tag.getDataType());
 					customAdapters.append(NEWLINE);
 					customAdapters.append(NEWLINET + "private static class Adapted" + mainChild.getTagName() + " {");
@@ -117,7 +116,7 @@ public class DefaultInfoMapAdapterCreator implements IJavaFileCreator {
 			if (!tag.getRootName().equals("Type")) {
 				if (tagProcessor != null) {
 					unmarshalClass.append(tagProcessor.getUnmarshallString());
-				} else if (tag.isCustom()) {
+				} else if (tag.isCustomDataType()) {
 					unmarshalClass.append(NEWLINE);
 					unmarshalClass.append(NEWLINETTT + "if (CollectionUtils.hasElements(aInfo." + tagVarName + ")) {");
 					unmarshalClass.append(NEWLINETTTT + "for (Adapted" + mainChild.getTagName() + " adaptor: aInfo." + tagVarName + ") {");
@@ -161,7 +160,7 @@ public class DefaultInfoMapAdapterCreator implements IJavaFileCreator {
 			if (!tag.getRootName().equals("Type")) {
 				if (tagProcessor != null) {
 					marshalClass.append(tagProcessor.getMarshallString());
-				} else if (tag.isCustom()) {
+				} else if (tag.isCustomDataType()) {
 					marshalClass.append(NEWLINE);
 					marshalClass.append(NEWLINETTT + "if (CollectionUtils.hasElements(info." + tag.getGetterName() + "())) {");
 					marshalClass.append(NEWLINETTTT + "aInfo." + tagVarName + " = new ArrayList<Adapted" + mainChild.getTagName() + ">();");

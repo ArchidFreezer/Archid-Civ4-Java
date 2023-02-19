@@ -17,13 +17,12 @@ public class TagInstance {
 	private String setterName = null;
 	private String dataType = null;
 	private Integer numLevels = null;
-	private boolean custom = false;
+	private boolean customDataType = false;
 	private List<TagInstanceLeafData> leaves = new ArrayList<TagInstanceLeafData>(); 
 	
-	TagInstance(XmlTagDefinition tagDef, XmlTagInstance tagInst, boolean custom) {
+	TagInstance(XmlTagDefinition tagDef, XmlTagInstance tagInst) {
 		this.tagDefinition = tagDef;
 		this.tagInstance = tagInst;
-		this.custom = custom;
 		numLevels = getNumLevels(tagDefinition, 0);
 		populateLeafData();
 	}
@@ -43,7 +42,6 @@ public class TagInstance {
 	
 	private void populateLeafData() {
 		JavaCodeGeneratorData jcgd = JavaCodeGeneratorData.getInstance();
-		if (custom) return;
 		if (numLevels == 0) {
 			TagInstanceLeafData leafData = new TagInstanceLeafData();
 			leafData.setName(rootName);
@@ -76,10 +74,10 @@ public class TagInstance {
 			} else {
 				// give up at this point
 				leaves.clear();
-				custom = true;
+				customDataType = true;
 				dataType = rootName;
 			}
-			if (!custom) {
+			if (!customDataType) {
 				Boolean first = true;
 				for (TagInstanceLeafData leaf: leaves) {
 					if (first) {
@@ -93,7 +91,7 @@ public class TagInstance {
 				dataType = sbInner.toString();
 			}
 		} else {
-			custom = true;
+			customDataType = true;
 			dataType = rootName;
 		}
 	}
@@ -123,7 +121,7 @@ public class TagInstance {
 
 	private String buildSetterName() {
 		String setter = null;
-		if (numLevels > 0 && !custom)
+		if (numLevels > 0 && !customDataType)
 			setter = "add" + JavaCodeGeneratorData.getInstance().getTagNameData().singularForm(rootName);
 		else
 			setter = "set" + rootName;
@@ -144,7 +142,7 @@ public class TagInstance {
 	}
 	
 	public String setterVarName() {
-		if (numLevels > 0 && !custom)
+		if (numLevels > 0 && !customDataType)
 			return JavaCodeGeneratorData.getInstance().getTagNameData().singularForm(varName);
 		else
 			return varName;
@@ -163,6 +161,7 @@ public class TagInstance {
 	}
 	
 	public void setDataType(String dataType) {
+		customDataType = true;
 		this.dataType = dataType;
 	}
 	
@@ -199,8 +198,8 @@ public class TagInstance {
 		return rootName;
 	}
 
-	public boolean isCustom() {
-		return custom;
+	public boolean isCustomDataType() {
+		return customDataType;
 	}
 
 	public String getVarName() {

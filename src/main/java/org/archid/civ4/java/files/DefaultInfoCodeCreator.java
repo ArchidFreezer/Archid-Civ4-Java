@@ -7,10 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.archid.civ4.java.IJavaFileCreator;
-import org.archid.civ4.java.ITagProcessor;
 import org.archid.civ4.java.JavaCodeGeneratorData;
 import org.archid.civ4.java.TagInstance;
-import org.archid.civ4.java.infoprocessor.IInfoProcessor;
 import org.archid.civ4.schema.XmlTagInstance;
 import org.archid.utils.PropertyHandler;
 import org.archid.utils.PropertyKeys;
@@ -22,7 +20,6 @@ public class DefaultInfoCodeCreator implements IJavaFileCreator {
 		String infoNameRoot = JavaCodeGeneratorData.getInstance().getInfoNameRoot();
 		String infoName = JavaCodeGeneratorData.getInstance().getInfoName();
 		String infoNamePlural = JavaCodeGeneratorData.getInstance().getInfoNamePlural();
-		IInfoProcessor infoProcessor = JavaCodeGeneratorData.getInstance().getInfoProcessor();
 		
 		// Sort the imports, this is cosmetic, but easy enough
 		Set<String> imports = new HashSet<String>(JavaCodeGeneratorData.getInstance().getDynamicImports());
@@ -73,16 +70,13 @@ public class DefaultInfoCodeCreator implements IJavaFileCreator {
 		methods.append(NEWLINETT + "}");
 		for (XmlTagInstance mainChild : JavaCodeGeneratorData.getInstance().getInfoChildTags()) {
 			TagInstance tag = JavaCodeGeneratorData.getInstance().getTagInstance(mainChild.getTagName());
-			if (infoProcessor.hasTagProcessor(mainChild.getTagName())) {
-				ITagProcessor tagProcessor = infoProcessor.getTagProcessor(mainChild.getTagName());
-				tag.setDataType(tagProcessor.getDataType());
-			}
-			if (tag.isCustom()) {
+			if (tag.isCustomDataType()) {
 				vars.append(NEWLINETT + "private " + tag.getDataType() + " " + tag.getVarName() + " = new " + tag.getDataType() + "();");
-			} else if (tag.requiresArray())
-					vars.append(NEWLINETT + "private List<" + tag.getDataType() + "> " + tag.getVarName() + " = new ArrayList<" + tag.getDataType() + ">();");
-			else 
+			} else if (tag.requiresArray()) {
+				vars.append(NEWLINETT + "private List<" + tag.getDataType() + "> " + tag.getVarName() + " = new ArrayList<" + tag.getDataType() + ">();");
+			} else { 
 				vars.append(NEWLINETT + "private " + tag.getDataType() + " " + tag.getVarName() + ";");
+			}
 			methods.append(NEWLINE);
 			methods.append(NEWLINETT + "@Override");
 			methods.append(NEWLINETT + "public " + tag.getterSignature() + " {");
@@ -91,7 +85,7 @@ public class DefaultInfoCodeCreator implements IJavaFileCreator {
 			methods.append(NEWLINE);
 			methods.append(NEWLINETT + "@Override");
 			methods.append(NEWLINETT + "public " + tag.setterSignature() + " {");
-			if (tag.requiresArray() && !tag.isCustom())
+			if (tag.requiresArray() && !tag.isCustomDataType())
 				methods.append(NEWLINETTT + "this." + tag.getVarName() + ".add(" + tag.setterVarName() + ");");
 			else
 				methods.append(NEWLINETTT + "this." + tag.getVarName() + " = " + tag.setterVarName() + ";");

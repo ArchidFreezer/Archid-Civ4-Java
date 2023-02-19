@@ -93,11 +93,7 @@ public class DefaultInfoImporterCreator implements IJavaFileCreator {
 
 		for (XmlTagInstance mainChild : JavaCodeGeneratorData.getInstance().getInfoChildTags()) {
 			TagInstance tag = JavaCodeGeneratorData.getInstance().getTagInstance(mainChild.getTagName());
-			ITagProcessor tagProcessor = null;
-			if (infoProcessor.hasTagProcessor(mainChild.getTagName())) {
-				tagProcessor = infoProcessor.getTagProcessor(mainChild.getTagName());
-				tag.setDataType(infoProcessor.getTagProcessor(mainChild.getTagName()).getDataType());
-			}
+			ITagProcessor tagProcessor = infoProcessor.getTagProcessor(mainChild.getTagName());
 			if (tagProcessor != null) {
 				sb.append(tagProcessor.getImporterRow());
 				customCellReaders.append(tagProcessor.getImporterCellReader());

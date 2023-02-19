@@ -7,10 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.archid.civ4.java.IJavaFileCreator;
-import org.archid.civ4.java.ITagProcessor;
 import org.archid.civ4.java.JavaCodeGeneratorData;
 import org.archid.civ4.java.TagInstance;
-import org.archid.civ4.java.infoprocessor.IInfoProcessor;
 import org.archid.civ4.schema.XmlTagInstance;
 
 public class DefaultInfoInterfaceCreator implements IJavaFileCreator {
@@ -18,7 +16,6 @@ public class DefaultInfoInterfaceCreator implements IJavaFileCreator {
 	@Override
 	public String getFileContent() {
 		String infoName = JavaCodeGeneratorData.getInstance().getInfoName();
-		IInfoProcessor infoProcessor = JavaCodeGeneratorData.getInstance().getInfoProcessor();
 
 		StringBuilder file = new StringBuilder();
 		file.append(JavaCodeGeneratorData.getInstance().getPackageDef());
@@ -40,11 +37,6 @@ public class DefaultInfoInterfaceCreator implements IJavaFileCreator {
 				continue;
 				
 			TagInstance tag = JavaCodeGeneratorData.getInstance().getTagInstance(mainChild.getTagName());
-			if (infoProcessor.hasTagProcessor(mainChild.getTagName())) {
-				ITagProcessor tagProcessor = infoProcessor.getTagProcessor(mainChild.getTagName());
-				tag.setDataType(tagProcessor.getDataType());
-				tag.resetLevels();
-			}
 			file.append(NEWLINET + tag.getterSignature() + ";");
 			file.append(NEWLINET + tag.setterSignature() + ";");
 			file.append(NEWLINE);
