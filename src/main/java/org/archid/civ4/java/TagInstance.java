@@ -18,7 +18,7 @@ public class TagInstance {
 	private String dataType = null;
 	private Integer numLevels = null;
 	private boolean custom = false;
-	private List<LeafData> leaves = new ArrayList<LeafData>(); 
+	private List<TagInstanceLeafData> leaves = new ArrayList<TagInstanceLeafData>(); 
 	
 	TagInstance(XmlTagDefinition tagDef, XmlTagInstance tagInst, boolean custom) {
 		this.tagDefinition = tagDef;
@@ -45,14 +45,14 @@ public class TagInstance {
 		JavaCodeGeneratorData jcgd = JavaCodeGeneratorData.getInstance();
 		if (custom) return;
 		if (numLevels == 0) {
-			LeafData leafData = new LeafData();
+			TagInstanceLeafData leafData = new TagInstanceLeafData();
 			leafData.setName(rootName);
 			leafData.setVarName(varName);
 			leafData.setType(tagDefinition.getDataType().getJavaType());
 			leaves.add(leafData);
 			dataType = leafData.getType();
 		} else if (numLevels == 1) {
-			LeafData leafData = new LeafData();
+			TagInstanceLeafData leafData = new TagInstanceLeafData();
 			leafData.setName(rootName);
 			leafData.setVarName(varName);
 			leafData.setType(jcgd.getTagDefinition(tagDefinition.getChildren().get(0).getTagName()).getDataType().getJavaType());
@@ -63,7 +63,7 @@ public class TagInstance {
 			// We need to drop down to the bottom level to determine how many leaf tags there are
 			XmlTagDefinition wrapper = jcgd.getTagDefinition(tagDefinition.getChildren().get(0).getTagName());
 			for (XmlTagInstance leaf: wrapper.getChildren()) {
-				LeafData leafData = new LeafData();
+				TagInstanceLeafData leafData = new TagInstanceLeafData();
 				leafData.setName(leaf.getTagName());
 				leafData.setVarName(JavaCodeGeneratorData.getInstance().getTagNameData().getVarName(leaf.getTagName()));
 				leafData.setType(jcgd.getTagDefinition(leaf.getTagName()).getDataType().getJavaType());
@@ -81,7 +81,7 @@ public class TagInstance {
 			}
 			if (!custom) {
 				Boolean first = true;
-				for (LeafData leaf: leaves) {
+				for (TagInstanceLeafData leaf: leaves) {
 					if (first) {
 						first = false;
 					} else {
@@ -175,11 +175,11 @@ public class TagInstance {
 		numLevels = 0;
 	}
 	
-	public List<LeafData> getLeaves() {
+	public List<TagInstanceLeafData> getLeaves() {
 		return leaves;
 	}
 	
-	public LeafData getLeaf(int index) {
+	public TagInstanceLeafData getLeaf(int index) {
 		return  leaves.get(index);
 	}
 	
@@ -207,31 +207,8 @@ public class TagInstance {
 		return varName;
 	}
 	
-}
-
-class LeafData {
+	public List<XmlTagInstance> getChildren() {
+		return tagDefinition.getChildren();
+	}
 	
-	private String name;
-	private String varName;
-	private String type;
-	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getVarName() {
-		return varName;
-	}
-	public void setVarName(String varName) {
-		this.varName = varName;
-	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
-
 }

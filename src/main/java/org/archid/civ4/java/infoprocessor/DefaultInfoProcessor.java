@@ -12,6 +12,7 @@ import org.archid.civ4.java.JavaCodeGeneratorData;
 import org.archid.civ4.java.TagNameData;
 import org.archid.civ4.java.files.DefaultInfoCodeCreator;
 import org.archid.civ4.java.files.DefaultInfoInterfaceCreator;
+import org.archid.civ4.java.files.DefaultInfoMapAdapterCreator;
 import org.archid.civ4.java.files.DefaultInfoWorkbookCreator;
 import org.archid.civ4.java.files.DefaultPackageInfoCreator;
 
@@ -108,6 +109,8 @@ public class DefaultInfoProcessor implements IInfoProcessor {
 			return new DefaultInfoCodeCreator();
 		case INFO_INTERFACE:
 			return new DefaultInfoInterfaceCreator();
+		case INFO_MAP_ADAPTER:
+			return new DefaultInfoMapAdapterCreator();
 		case INFO_WORKBOOK:
 			return new DefaultInfoWorkbookCreator();
 		case PACKAGE:
