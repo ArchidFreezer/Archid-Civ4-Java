@@ -38,12 +38,12 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 	private String infoTopLevelTag = null; // Civ4SomeValueInfos
 	private String packageDef = null;
 	private XmlTagDefinition topLevelTagDefinition = null;
-	private SchemaParser parser = null;
+	SchemaParser parser = null;
 	private IPropertyHandler props = PropertyHandler.getInstance();
 	Set<String> dynamicImports = new HashSet<String>();
-	private Map<String, Tag> infoTagData = new HashMap<String, Tag>();
+	private Map<String, TagInstance> infoTagData = new HashMap<String, TagInstance>();
 	
-	private TagNameData tagNameData = new TagNameData();
+	TagNameData tagNameData = new TagNameData();
 	
 	private IInfoProcessor infoProcessor = null;
 
@@ -75,7 +75,7 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		for (XmlTagInstance tag: info.getChildren()) {
 			XmlTagDefinition tagDef = parser.getTagDefinition(tag.getTagName());
 			boolean customTagProcessing = (infoProcessor == null) ? false : infoProcessor.hasTagProcessor(tag.getTagName());
-			Tag tagData = new Tag(tagDef, tag, customTagProcessing);
+			TagInstance tagData = new TagInstance(this, tagDef, tag, customTagProcessing);
 			if (tagData.requiresArray()) {
 				dynamicImports.add("import java.util.List;");
 				dynamicImports.add("import java.util.ArrayList;");
@@ -177,7 +177,7 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		sb.append(NEWLINETT + "I" + infoName + " info = " + infoName + "s.createInfo(type);");
 
 		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
-			Tag tag = infoTagData.get(mainChild.getTagName());
+			TagInstance tag = infoTagData.get(mainChild.getTagName());
 			ITagProcessor processor = null;
 			if (infoProcessor != null && infoProcessor.hasTagProcessor(mainChild.getTagName())) {
 				processor = infoProcessor.getTagProcessor(mainChild.getTagName());
@@ -291,7 +291,7 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		sb.append(NEWLINETT + "int maxHeight = 1;");
 		sb.append(NEWLINETT + "int colNum = 0;");
 		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
-			Tag tag = infoTagData.get(mainChild.getTagName());
+			TagInstance tag = infoTagData.get(mainChild.getTagName());
 			ITagProcessor processor = null;
 			if (infoProcessor != null && infoProcessor.hasTagProcessor(mainChild.getTagName())) {
 				processor = infoProcessor.getTagProcessor(mainChild.getTagName());
@@ -362,7 +362,7 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		
 		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
 			ITagProcessor processor = null;
-			Tag tag = infoTagData.get(mainChild.getTagName());
+			TagInstance tag = infoTagData.get(mainChild.getTagName());
 			if (infoProcessor != null && infoProcessor.hasTagProcessor(mainChild.getTagName())) {
 				processor = infoProcessor.getTagProcessor(mainChild.getTagName());
 				tag.setDataType(processor.getDataType());
@@ -554,7 +554,7 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		boolean first = true;
 		boolean reset = false;
 		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
-			Tag tag = infoTagData.get(mainChild.getTagName());
+			TagInstance tag = infoTagData.get(mainChild.getTagName());
 			if (first) {
 				first = false;
 			} else if (reset) {
@@ -633,7 +633,7 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		methods.append(NEWLINETTT + "this.type = type;");
 		methods.append(NEWLINETT + "}");
 		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
-			Tag tag = infoTagData.get(mainChild.getTagName());
+			TagInstance tag = infoTagData.get(mainChild.getTagName());
 			if (infoProcessor != null && infoProcessor.hasTagProcessor(mainChild.getTagName())) {
 				ITagProcessor processor = infoProcessor.getTagProcessor(mainChild.getTagName());
 				tag.setDataType(processor.getDataType());
@@ -700,7 +700,7 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 			if (mainChild.getTagName().equals("Type"))
 				continue;
 				
-			Tag tag = infoTagData.get(mainChild.getTagName());
+			TagInstance tag = infoTagData.get(mainChild.getTagName());
 			if (infoProcessor != null && infoProcessor.hasTagProcessor(mainChild.getTagName())) {
 				ITagProcessor processor = infoProcessor.getTagProcessor(mainChild.getTagName());
 				tag.setDataType(processor.getDataType());
@@ -745,11 +745,11 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		}
 	}
 	
-	private String getMarshallString(Tag tag, String val) {
+	private String getMarshallString(TagInstance tag, String val) {
 		return getMarshallString(tag, val, tag.isMandatory());
 	}
 	
-	private String getMarshallString(Tag tag, String val, boolean mandatory) {
+	private String getMarshallString(TagInstance tag, String val, boolean mandatory) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("JaxbUtils.marshall");
 		if (mandatory) sb.append("Mandatory");
@@ -757,7 +757,7 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		return sb.toString();
 	}
 	
-	private String getUnmarshallString(Tag tag, String val) {
+	private String getUnmarshallString(TagInstance tag, String val) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("JaxbUtils.unmarshall");
 //		if (tag.isMandatory()) sb.append("Mandatory");
@@ -772,230 +772,6 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 			return "String";
 		else
 			return javaType;
-	}
-	
-	private class Tag {
-		
-		private XmlTagInstance tagInstance = null;
-		private XmlTagDefinition tagDefinition = null; // iSomeTag
-		private String rootName = "";      // SomeTag
-		private String varName = "";       // someTag
-		private String getterName = null;
-		private String setterName = null;
-		private String dataType = null;
-		private Integer numLevels = null;
-		private boolean custom = false;
-		private List<LeafData> leaves = new ArrayList<LeafData>(); 
-		
-		private Tag(XmlTagDefinition tagDef, XmlTagInstance tagInst, boolean custom) {
-			this.tagDefinition = tagDef;
-			this.tagInstance = tagInst;
-			this.custom = custom;
-			numLevels = getNumLevels(tagDefinition, 0);
-			populateLeafData();
-		}
-		
-		public void init() {
-			getterName = buildGetterName();
-			setterName = buildSetterName();
-		}
-		
-		public void setVarName(String varName) {
-			this.varName = varName;
-		}
-		
-		public void setRootName(String rootName) {
-			this.rootName = rootName;
-		}
-		
-		private void populateLeafData() {
-			if (custom) return;
-			if (numLevels == 0) {
-				LeafData leafData = new LeafData();
-				leafData.setName(rootName);
-				leafData.setVarName(varName);
-				leafData.setType(tagDefinition.getDataType().getJavaType());
-				leaves.add(leafData);
-				dataType = leafData.getType();
-			} else if (numLevels == 1) {
-				LeafData leafData = new LeafData();
-				leafData.setName(rootName);
-				leafData.setVarName(varName);
-				leafData.setType(parser.getTagDefinition(tagDefinition.getChildren().get(0).getTagName()).getDataType().getJavaType());
-				leaves.add(leafData);
-				dataType = leafData.getType();
-			} else if (numLevels == 2) {
-				StringBuilder sbInner = new StringBuilder();
-				// We need to drop down to the bottom level to determine how many leaf tags there are
-				XmlTagDefinition wrapper = parser.getTagDefinition(tagDefinition.getChildren().get(0).getTagName());
-				for (XmlTagInstance leaf: wrapper.getChildren()) {
-					LeafData leafData = new LeafData();
-					leafData.setName(leaf.getTagName());
-					leafData.setVarName(tagNameData.getVarName(leaf.getTagName()));
-					leafData.setType(parser.getTagDefinition(leaf.getTagName()).getDataType().getJavaType());
-					leaves.add(leafData);
-				}
-				if (leaves.size() == 2) {
-					sbInner.append("IPair<");
-				} else if (leaves.size() == 3) {
-					sbInner.append("ITriple<");
-				} else {
-					// give up at this point
-					leaves.clear();
-					custom = true;
-					dataType = rootName;
-				}
-				if (!custom) {
-					Boolean first = true;
-					for (LeafData leaf: leaves) {
-						if (first) {
-							first = false;
-						} else {
-							sbInner.append(", ");
-						}
-						sbInner.append(leaf.getType());
-					}
-					sbInner.append(">");
-					dataType = sbInner.toString();
-				}
-			} else {
-				custom = true;
-				dataType = rootName;
-			}
-		}
-
-		private Integer getNumLevels(XmlTagDefinition tag, Integer level) {
-			if (tag.getChildren().size() == 0) {
-				return level;
-			}
-			
-			level++;
-			for (XmlTagInstance child: tag.getChildren()) {
-				Integer newLevel = getNumLevels(parser.getTagDefinition(child.getTagName()), level);
-				if (newLevel > level) level = newLevel;
-			}
-			return level;
-		}
-
-		private String buildGetterName() {
-			StringBuilder sb = new StringBuilder();
-			if (tagDefinition.getDataType() == DataType.BOOLEAN)
-				sb.append("is");
-			else
-				sb.append("get");
-			sb.append(rootName);
-			return sb.toString();
-		}
-
-		private String buildSetterName() {
-			String setter = null;
-			if (numLevels > 0 && !custom)
-				setter = "add" + tagNameData.singularForm(rootName);
-			else
-				setter = "set" + rootName;
-			return setter;
-		}
-
-		public String getterSignature() {
-			StringBuilder sb = new StringBuilder();
-			if (requiresArray()) sb.append("List<");
-			sb.append(dataType);
-			if (requiresArray()) sb.append(">");
-			sb.append(" " + getterName + "()");
-			return sb.toString();
-		}
-		
-		public String setterSignature() {
-			 return "void " + setterName + "(" + dataType + " " + setterVarName() + ")";
-		}
-		
-		public String setterVarName() {
-			if (numLevels > 0 && !custom)
-				return tagNameData.singularForm(varName);
-			else
-				return varName;
-		}
-		
-		public Boolean requiresArray() {
-			return numLevels > 0;
-		}
-		
-		public Boolean requiresAdapter() {
-			return numLevels > 1;
-		}
-		
-		public Boolean isMandatory() {
-			return tagInstance.isMandatory();
-		}
-		
-		public void setDataType(String dataType) {
-			this.dataType = dataType;
-		}
-		
-		public String getDataType() {
-			return dataType;
-		}
-		
-		public void resetLevels() {
-			// Reset the computed data
-			numLevels = 0;
-		}
-		
-		public List<LeafData> getLeaves() {
-			return leaves;
-		}
-		
-		public LeafData getLeaf(int index) {
-			return  leaves.get(index);
-		}
-		
-		public int getNumLeaves() {
-			return leaves.size();
-		}
-
-		public String getGetterName() {
-			return getterName;
-		}
-
-		public String getSetterName() {
-			return setterName;
-		}
-
-		public String getRootName() {
-			return rootName;
-		}
-
-		public boolean isCustom() {
-			return custom;
-		}
-		
-	}
-	
-	private class LeafData {
-		
-		private String name;
-		private String varName;
-		private String type;
-		
-		public String getName() {
-			return name;
-		}
-		public void setName(String name) {
-			this.name = name;
-		}
-		public String getVarName() {
-			return varName;
-		}
-		public void setVarName(String varName) {
-			this.varName = varName;
-		}
-		public String getType() {
-			return type;
-		}
-		public void setType(String type) {
-			this.type = type;
-		}
-
 	}
 
 	
