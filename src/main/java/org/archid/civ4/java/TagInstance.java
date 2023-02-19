@@ -7,7 +7,7 @@ import org.archid.civ4.schema.XmlTagDefinition;
 import org.archid.civ4.schema.XmlTagInstance;
 import org.archid.civ4.schema.XmlTagDefinition.DataType;
 
-class TagInstance {
+public class TagInstance {
 	
 	private XmlTagInstance tagInstance = null;
 	XmlTagDefinition tagDefinition = null; // iSomeTag

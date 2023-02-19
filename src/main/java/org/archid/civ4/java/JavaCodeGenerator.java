@@ -647,41 +647,7 @@ public class JavaCodeGenerator implements IJavaFileContent{
 	}
 
 	private void createInfoInterface() {
-		String infoName = JavaCodeGeneratorData.getInstance().getInfoName();
-		IInfoProcessor infoProcessor = JavaCodeGeneratorData.getInstance().getInfoProcessor();
-
-		StringBuilder file = new StringBuilder();
-		file.append(JavaCodeGeneratorData.getInstance().getPackageDef());
-		file.append(NEWLINE);
-		
-		Set<String> imports = new HashSet<String>(JavaCodeGeneratorData.getInstance().getDynamicImports());
-		imports.add("import org.archid.civ4.info.IInfo;");
-		List<String> sortedImports = new ArrayList<String>(imports);
-		Collections.sort(sortedImports);
-		for (String imp: sortedImports) {
-			file.append(NEWLINE + imp);
-		}
-		
-		// Now do the interface
-		file.append(NEWLINE + NEWLINE + "public interface I" + infoName + " extends IInfo {");
-		for (XmlTagInstance mainChild : JavaCodeGeneratorData.getInstance().getInfoChildTags()) {
-			// The Type tag is processed in the IInfo interface 
-			if (mainChild.getTagName().equals("Type"))
-				continue;
-				
-			TagInstance tag = JavaCodeGeneratorData.getInstance().getTagInstance(mainChild.getTagName());
-			if (infoProcessor.hasTagProcessor(mainChild.getTagName())) {
-				ITagProcessor tagProcessor = infoProcessor.getTagProcessor(mainChild.getTagName());
-				tag.setDataType(tagProcessor.getDataType());
-				tag.resetLevels();
-			}
-			file.append(NEWLINET + tag.getterSignature() + ";");
-			file.append(NEWLINET + tag.setterSignature() + ";");
-			file.append(NEWLINE);
-		}
-		file.append(NEWLINE + "}");
-		
-		writeFile("I" + infoName + ".java", file.toString());
+		writeFile("I" + JavaCodeGeneratorData.getInstance().getInfoName() + ".java", JavaCodeGeneratorData.getInstance().getInfoProcessor().getFileCreator(FileCreators.INFO_INTERFACE).getFileContent());
 	}
 
 	private void createPackageInfo() {
