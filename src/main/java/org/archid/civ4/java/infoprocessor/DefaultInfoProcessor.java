@@ -10,6 +10,7 @@ import org.archid.civ4.java.IJavaFileCreator;
 import org.archid.civ4.java.ITagProcessor;
 import org.archid.civ4.java.JavaCodeGeneratorData;
 import org.archid.civ4.java.TagNameData;
+import org.archid.civ4.java.files.DefaultInfoCodeCreator;
 import org.archid.civ4.java.files.DefaultInfoInterfaceCreator;
 import org.archid.civ4.java.files.DefaultPackageInfoCreator;
 
@@ -102,6 +103,8 @@ public class DefaultInfoProcessor implements IInfoProcessor {
 	@Override
 	public IJavaFileCreator getFileCreator(FileCreators creator) {
 		switch(creator) {
+		case INFO_CODE:
+			return new DefaultInfoCodeCreator();
 		case INFO_INTERFACE:
 			return new DefaultInfoInterfaceCreator();
 		case PACKAGE:

@@ -202,6 +202,10 @@ public class TagInstance {
 	public boolean isCustom() {
 		return custom;
 	}
+
+	public String getVarName() {
+		return varName;
+	}
 	
 }
 
