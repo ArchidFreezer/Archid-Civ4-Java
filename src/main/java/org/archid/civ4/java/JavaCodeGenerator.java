@@ -64,11 +64,9 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		imports.add("import org.archid.civ4.info.AbstractImporter;");
 		imports.add("import org.archid.civ4.info.EInfo;");
 		imports.add("import org.archid.civ4.info.IInfos;");
-		if (infoProcessor == null) imports.add("import org.archid.civ4.info.DefaultXmlFormatter;");
 
 		// Main content
 		StringBuilder mainClass = new StringBuilder();
-		String xmlFormatter = (infoProcessor == null) ? "DefaultXmlFormatter(\"" + infoNameRoot + "\")" : infoProcessor.getXmlFormatter();
 		mainClass.append(NEWLINE);
 		mainClass.append(NEWLINE + "public class " + infoNameRoot + "Importer extends AbstractImporter<IInfos<I" + infoName + ">, I" + infoName + "> {");
 		mainClass.append(NEWLINE);
@@ -76,7 +74,7 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		mainClass.append(NEWLINET + "static Logger log = Logger.getLogger(" + infoNameRoot + "Importer.class.getName());");
 		mainClass.append(NEWLINE);
 		mainClass.append(NEWLINET + "public " + infoNameRoot + "Importer(EInfo infoEnum) {");
-		mainClass.append(NEWLINETT + "super(infoEnum, new " + xmlFormatter + ");");
+		mainClass.append(NEWLINETT + "super(infoEnum, new " + infoProcessor.getXmlFormatter() + ");");
 		mainClass.append(NEWLINET + "}");
 		mainClass.append(NEWLINE);
 		mainClass.append(NEWLINET + "@Override");
@@ -87,7 +85,7 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		mainClass.append(NEWLINE + "}");
 
 		// Sort the imports
-		if (infoProcessor != null) imports.addAll(infoProcessor.getImportImports());
+		imports.addAll(infoProcessor.getImportImports());
 		List<String> sortedImports = new ArrayList<String>(imports);
 		Collections.sort(sortedImports);
 		
@@ -115,7 +113,6 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 	private String getDefaultInfoImporterOverrides() {
 		String infoName = JavaCodeGeneratorData.getInstance().getInfoName();
 		IInfoProcessor infoProcessor = JavaCodeGeneratorData.getInstance().getInfoProcessor();
-		Integer typeTagIndex = (infoProcessor == null) ? 0 : infoProcessor.getTypeTagIndex();
 		
 		StringBuilder customCellReaders = new StringBuilder();
 		StringBuilder sb = new StringBuilder();
@@ -123,7 +120,7 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		sb.append(NEWLINET + "@Override");
 		sb.append(NEWLINET + "protected I" + infoName + " parseRow(Row row) {");
 		sb.append(NEWLINETT + "int colNum = 0;");
-		sb.append(NEWLINETT + "String type = row.getCell(" + typeTagIndex.toString() + ").getStringCellValue();");
+		sb.append(NEWLINETT + "String type = row.getCell(" + infoProcessor.getTypeTagIndex().toString() + ").getStringCellValue();");
 		sb.append(NEWLINETT + "// Handle cells that have been moved");
 		sb.append(NEWLINETT + "if (type.isEmpty())");
 		sb.append(NEWLINETTT + "return null;");
@@ -132,14 +129,14 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 
 		for (XmlTagInstance mainChild : JavaCodeGeneratorData.getInstance().getInfoChildTags()) {
 			TagInstance tag = JavaCodeGeneratorData.getInstance().getTagInstance(mainChild.getTagName());
-			ITagProcessor processor = null;
-			if (infoProcessor != null && infoProcessor.hasTagProcessor(mainChild.getTagName())) {
-				processor = infoProcessor.getTagProcessor(mainChild.getTagName());
-				tag.setDataType(processor.getDataType());
+			ITagProcessor tagProcessor = null;
+			if (infoProcessor.hasTagProcessor(mainChild.getTagName())) {
+				tagProcessor = infoProcessor.getTagProcessor(mainChild.getTagName());
+				tag.setDataType(infoProcessor.getTagProcessor(mainChild.getTagName()).getDataType());
 			}
-			if (processor != null) {
-				sb.append(processor.getImporterRow());
-				customCellReaders.append(processor.getImporterCellReader());
+			if (tagProcessor != null) {
+				sb.append(tagProcessor.getImporterRow());
+				customCellReaders.append(tagProcessor.getImporterCellReader());
 			} else if (tag.requiresArray()) {
 				if (tag.getNumLeaves() == 1) {
 					if (tag.requiresArray()) {
@@ -215,7 +212,7 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		mainClass.append(NEWLINE + "}");
 
 		// Sort the imports
-		if (infoProcessor != null) imports.addAll(infoProcessor.getExportImports());
+		imports.addAll(infoProcessor.getExportImports());
 		List<String> sortedImports = new ArrayList<String>(imports);
 		Collections.sort(sortedImports);
 		
@@ -252,14 +249,14 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		sb.append(NEWLINETT + "int colNum = 0;");
 		for (XmlTagInstance mainChild : JavaCodeGeneratorData.getInstance().getInfoChildTags()) {
 			TagInstance tag = JavaCodeGeneratorData.getInstance().getTagInstance(mainChild.getTagName());
-			ITagProcessor processor = null;
-			if (infoProcessor != null && infoProcessor.hasTagProcessor(mainChild.getTagName())) {
-				processor = infoProcessor.getTagProcessor(mainChild.getTagName());
-				tag.setDataType(processor.getDataType());
+			ITagProcessor tagProcessor = null;
+			if (infoProcessor.hasTagProcessor(mainChild.getTagName())) {
+				tagProcessor = infoProcessor.getTagProcessor(mainChild.getTagName());
+				tag.setDataType(tagProcessor.getDataType());
 			}
-			if (processor != null) {
-				sb.append(processor.getExporterRow());
-				customCellWriters.append(processor.getExporterCellWriter());
+			if (tagProcessor != null) {
+				sb.append(tagProcessor.getExporterRow());
+				customCellWriters.append(tagProcessor.getExporterCellWriter());
 			} else if (tag.requiresArray()) {
 				if (tag.getNumLeaves() == 1) {
 					sb.append(NEWLINETT + "maxHeight = addRepeatingCell(row.createCell(colNum++), info." + tag.getGetterName() + "(), maxHeight);");					
@@ -325,16 +322,16 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		marshalClass.append(NEWLINETTT + "aInfo.type = JaxbUtils.marshallString(info.getType());");
 		
 		for (XmlTagInstance mainChild : JavaCodeGeneratorData.getInstance().getInfoChildTags()) {
-			ITagProcessor processor = null;
+			ITagProcessor tagProcessor = null;
 			TagInstance tag = JavaCodeGeneratorData.getInstance().getTagInstance(mainChild.getTagName());
-			if (infoProcessor != null && infoProcessor.hasTagProcessor(mainChild.getTagName())) {
-				processor = infoProcessor.getTagProcessor(mainChild.getTagName());
-				tag.setDataType(processor.getDataType());
-				imports.addAll(processor.getAdapterImports());
+			if (infoProcessor.hasTagProcessor(mainChild.getTagName())) {
+				tagProcessor = infoProcessor.getTagProcessor(mainChild.getTagName());
+				tag.setDataType(tagProcessor.getDataType());
+				imports.addAll(tagProcessor.getAdapterImports());
 			}
 			// Process the adapted class
-			if (processor != null) {
-				adaptedClass.append(processor.getAdapterElement());
+			if (tagProcessor != null) {
+				adaptedClass.append(tagProcessor.getAdapterElement());
 			} else if (tag.requiresAdapter()) {
 				XmlTagDefinition innerTagXmlDef = JavaCodeGeneratorData.getInstance().getTagDefinition(tag.tagDefinition.getChildren().get(0).getTagName());
 				adaptedClass.append(NEWLINETT + "@XmlElementWrapper(name=\"" + mainChild.getTagName() + "\")");
@@ -351,7 +348,7 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 			}
 			
 			// Process any custom adapters
-			if (tag.requiresAdapter() && processor == null) {
+			if (tag.requiresAdapter() && tagProcessor == null) {
 				if (tag.isCustom()) {
 					log.warn("Unable to create adapter for " + tag.getRootName() + ": " + tag.getDataType());
 					customAdapters.append(NEWLINE);
@@ -373,8 +370,8 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 			// Process the unmarshall class
 			// The type is set when we instantiated the info class above and has no mutator
 			if (!tag.getRootName().equals("Type")) {
-				if (processor != null) {
-					unmarshalClass.append(processor.getUnmarshallString());
+				if (tagProcessor != null) {
+					unmarshalClass.append(tagProcessor.getUnmarshallString());
 				} else if (tag.isCustom()) {
 					unmarshalClass.append(NEWLINE);
 					unmarshalClass.append(NEWLINETTT + "if (CollectionUtils.hasElements(aInfo." + tag.varName + ")) {");
@@ -417,8 +414,8 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 			
 			// Process the marshall class
 			if (!tag.getRootName().equals("Type")) {
-				if (processor != null) {
-					marshalClass.append(processor.getMarshallString());
+				if (tagProcessor != null) {
+					marshalClass.append(tagProcessor.getMarshallString());
 				} else if (tag.isCustom()) {
 					marshalClass.append(NEWLINE);
 					marshalClass.append(NEWLINETTT + "if (CollectionUtils.hasElements(info." + tag.getGetterName() + "())) {");
@@ -604,9 +601,9 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		methods.append(NEWLINETT + "}");
 		for (XmlTagInstance mainChild : JavaCodeGeneratorData.getInstance().getInfoChildTags()) {
 			TagInstance tag = JavaCodeGeneratorData.getInstance().getTagInstance(mainChild.getTagName());
-			if (infoProcessor != null && infoProcessor.hasTagProcessor(mainChild.getTagName())) {
-				ITagProcessor processor = infoProcessor.getTagProcessor(mainChild.getTagName());
-				tag.setDataType(processor.getDataType());
+			if (infoProcessor.hasTagProcessor(mainChild.getTagName())) {
+				ITagProcessor tagProcessor = infoProcessor.getTagProcessor(mainChild.getTagName());
+				tag.setDataType(tagProcessor.getDataType());
 			}
 			if (tag.isCustom()) {
 				vars.append(NEWLINETT + "private " + tag.getDataType() + " " + tag.varName + " = new " + tag.getDataType() + "();");
@@ -672,9 +669,9 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 				continue;
 				
 			TagInstance tag = JavaCodeGeneratorData.getInstance().getTagInstance(mainChild.getTagName());
-			if (infoProcessor != null && infoProcessor.hasTagProcessor(mainChild.getTagName())) {
-				ITagProcessor processor = infoProcessor.getTagProcessor(mainChild.getTagName());
-				tag.setDataType(processor.getDataType());
+			if (infoProcessor.hasTagProcessor(mainChild.getTagName())) {
+				ITagProcessor tagProcessor = infoProcessor.getTagProcessor(mainChild.getTagName());
+				tag.setDataType(tagProcessor.getDataType());
 				tag.resetLevels();
 			}
 			file.append(NEWLINET + tag.getterSignature() + ";");

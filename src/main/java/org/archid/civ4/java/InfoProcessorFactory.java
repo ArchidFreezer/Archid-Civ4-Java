@@ -4,11 +4,12 @@ import org.archid.civ4.java.infoprocessor.BonusInfoProcessor;
 import org.archid.civ4.java.infoprocessor.BuildingClassInfoProcessor;
 import org.archid.civ4.java.infoprocessor.BuildingInfoProcessor;
 import org.archid.civ4.java.infoprocessor.CivicInfoProcessor;
+import org.archid.civ4.java.infoprocessor.DefaultInfoProcessor;
 import org.archid.civ4.java.infoprocessor.EraInfoProcessor;
 import org.archid.civ4.java.infoprocessor.IInfoProcessor;
 import org.archid.civ4.java.infoprocessor.UnitInfoProcessor;
 
-public class TagFactory {
+public class InfoProcessorFactory {
 	
 	public static IInfoProcessor getProcessor(String infoName) {
 		if (infoName.equalsIgnoreCase("BonusInfo")) {
@@ -24,7 +25,7 @@ public class TagFactory {
 		} else if (infoName.equalsIgnoreCase("UnitInfo")) {
 			return new UnitInfoProcessor();
 		} else {
-			return null;
+			return new DefaultInfoProcessor();
 		}
 	}
 

@@ -54,7 +54,7 @@ public class JavaCodeGeneratorData {
 		createPackageFolder();
 		packageDef = "package org.archid.civ4.info." + namespaceFolder + ";";
 		this.infoTagDefinition = parser.getTagDefinition(infoName);
-		infoProcessor = TagFactory.getProcessor(infoName);
+		infoProcessor = InfoProcessorFactory.getProcessor(infoName);
 		if (infoProcessor != null) {
 			infoProcessor.init(namespaceFolder);
 		}
