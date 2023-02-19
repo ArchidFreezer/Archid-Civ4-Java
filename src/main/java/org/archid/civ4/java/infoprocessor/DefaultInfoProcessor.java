@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.archid.civ4.java.DefaultResourceArrayTagProcessorData;
 import org.archid.civ4.java.ITagProcessor;
+import org.archid.civ4.java.JavaCodeGeneratorData;
 import org.archid.civ4.java.TagNameData;
 
 public class DefaultInfoProcessor implements IInfoProcessor {
@@ -19,8 +20,8 @@ public class DefaultInfoProcessor implements IInfoProcessor {
 	protected Map<InfoOverrides, String> overrides = new HashMap<InfoOverrides, String>();
 	protected TagNameData tagNameData;
 	
-	public DefaultInfoProcessor(TagNameData tagNameData) {
-		this.tagNameData = tagNameData;
+	public DefaultInfoProcessor() {
+		this.tagNameData = JavaCodeGeneratorData.getInstance().getTagNameData();
 	}
 	
 

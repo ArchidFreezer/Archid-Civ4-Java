@@ -9,10 +9,6 @@ import org.archid.civ4.schema.XmlTagDefinition.DataType;
 
 class TagInstance {
 	
-	/**
-	 * 
-	 */
-	private final JavaCodeGenerator javaCodeGeneratorTagInstance;
 	private XmlTagInstance tagInstance = null;
 	XmlTagDefinition tagDefinition = null; // iSomeTag
 	private String rootName = "";      // SomeTag
@@ -24,8 +20,7 @@ class TagInstance {
 	private boolean custom = false;
 	private List<LeafData> leaves = new ArrayList<LeafData>(); 
 	
-	TagInstance(JavaCodeGenerator javaCodeGenerator, XmlTagDefinition tagDef, XmlTagInstance tagInst, boolean custom) {
-		javaCodeGeneratorTagInstance = javaCodeGenerator;
+	TagInstance(XmlTagDefinition tagDef, XmlTagInstance tagInst, boolean custom) {
 		this.tagDefinition = tagDef;
 		this.tagInstance = tagInst;
 		this.custom = custom;
@@ -47,6 +42,7 @@ class TagInstance {
 	}
 	
 	private void populateLeafData() {
+		JavaCodeGeneratorData jcgd = JavaCodeGeneratorData.getInstance();
 		if (custom) return;
 		if (numLevels == 0) {
 			LeafData leafData = new LeafData();
@@ -59,18 +55,18 @@ class TagInstance {
 			LeafData leafData = new LeafData();
 			leafData.setName(rootName);
 			leafData.setVarName(varName);
-			leafData.setType(javaCodeGeneratorTagInstance.parser.getTagDefinition(tagDefinition.getChildren().get(0).getTagName()).getDataType().getJavaType());
+			leafData.setType(jcgd.getTagDefinition(tagDefinition.getChildren().get(0).getTagName()).getDataType().getJavaType());
 			leaves.add(leafData);
 			dataType = leafData.getType();
 		} else if (numLevels == 2) {
 			StringBuilder sbInner = new StringBuilder();
 			// We need to drop down to the bottom level to determine how many leaf tags there are
-			XmlTagDefinition wrapper = javaCodeGeneratorTagInstance.parser.getTagDefinition(tagDefinition.getChildren().get(0).getTagName());
+			XmlTagDefinition wrapper = jcgd.getTagDefinition(tagDefinition.getChildren().get(0).getTagName());
 			for (XmlTagInstance leaf: wrapper.getChildren()) {
 				LeafData leafData = new LeafData();
 				leafData.setName(leaf.getTagName());
-				leafData.setVarName(javaCodeGeneratorTagInstance.tagNameData.getVarName(leaf.getTagName()));
-				leafData.setType(javaCodeGeneratorTagInstance.parser.getTagDefinition(leaf.getTagName()).getDataType().getJavaType());
+				leafData.setVarName(JavaCodeGeneratorData.getInstance().getTagNameData().getVarName(leaf.getTagName()));
+				leafData.setType(jcgd.getTagDefinition(leaf.getTagName()).getDataType().getJavaType());
 				leaves.add(leafData);
 			}
 			if (leaves.size() == 2) {
@@ -109,7 +105,7 @@ class TagInstance {
 		
 		level++;
 		for (XmlTagInstance child: tag.getChildren()) {
-			Integer newLevel = getNumLevels(javaCodeGeneratorTagInstance.parser.getTagDefinition(child.getTagName()), level);
+			Integer newLevel = getNumLevels(JavaCodeGeneratorData.getInstance().getTagDefinition(child.getTagName()), level);
 			if (newLevel > level) level = newLevel;
 		}
 		return level;
@@ -128,7 +124,7 @@ class TagInstance {
 	private String buildSetterName() {
 		String setter = null;
 		if (numLevels > 0 && !custom)
-			setter = "add" + javaCodeGeneratorTagInstance.tagNameData.singularForm(rootName);
+			setter = "add" + JavaCodeGeneratorData.getInstance().getTagNameData().singularForm(rootName);
 		else
 			setter = "set" + rootName;
 		return setter;
@@ -149,7 +145,7 @@ class TagInstance {
 	
 	public String setterVarName() {
 		if (numLevels > 0 && !custom)
-			return javaCodeGeneratorTagInstance.tagNameData.singularForm(varName);
+			return JavaCodeGeneratorData.getInstance().getTagNameData().singularForm(varName);
 		else
 			return varName;
 	}

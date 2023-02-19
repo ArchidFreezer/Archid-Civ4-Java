@@ -73,7 +73,7 @@ public class JavaGenerator {
 	private void processSchema(String schema, String tag) {
 		try {
 			parser.parse(schema);
-			new JavaCodeGenerator(parser).createJavaCode(tag);
+			new JavaCodeGenerator(parser, tag).createJavaCode();
 		} catch (FileNotFoundException e) {
 			log.error("Could not find schema file", e);
 		}

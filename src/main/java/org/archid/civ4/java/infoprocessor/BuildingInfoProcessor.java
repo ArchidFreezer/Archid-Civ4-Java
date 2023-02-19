@@ -2,14 +2,9 @@ package org.archid.civ4.java.infoprocessor;
 
 import org.archid.civ4.java.DefaultResourceArrayTagProcessor;
 import org.archid.civ4.java.DefaultResourceArrayTagProcessorData;
-import org.archid.civ4.java.TagNameData;
 
 public class BuildingInfoProcessor extends DefaultInfoProcessor {
 
-	public BuildingInfoProcessor(TagNameData tagNameData) {
-		super(tagNameData);
-	}
-	
 	public void init(String packageName) {
 		this.packageName = packageName;
 		exportImports.add("import org.apache.poi.ss.usermodel.Cell;");

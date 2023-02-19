@@ -1,14 +1,9 @@
 package org.archid.civ4.java.infoprocessor;
 
 import org.archid.civ4.java.AbstractTagProcessor;
-import org.archid.civ4.java.TagNameData;
 
 public class UnitInfoProcessor extends DefaultInfoProcessor {
 	
-	public UnitInfoProcessor(TagNameData tagNameData) {
-		super(tagNameData);
-	}
-
 	@Override
 	public void init(String packageName) {
 		this.packageName = packageName;

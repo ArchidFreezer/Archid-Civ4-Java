@@ -2,13 +2,8 @@ package org.archid.civ4.java.infoprocessor;
 
 import org.archid.civ4.java.DefaultResourceArrayTagProcessor;
 import org.archid.civ4.java.DefaultResourceArrayTagProcessorData;
-import org.archid.civ4.java.TagNameData;
 
 public class CivicInfoProcessor extends DefaultInfoProcessor {
-
-	public CivicInfoProcessor(TagNameData tagNameData) {
-		super(tagNameData);
-	}
 
 	public void init(String packageName) {
 		this.packageName = packageName;

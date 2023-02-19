@@ -5,10 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -17,8 +15,6 @@ import org.archid.civ4.java.infoprocessor.IInfoProcessor.InfoOverrides;
 import org.archid.civ4.schema.SchemaParser;
 import org.archid.civ4.schema.XmlTagDefinition;
 import org.archid.civ4.schema.XmlTagInstance;
-import org.archid.civ4.schema.XmlTagDefinition.DataType;
-import org.archid.utils.FileUtils;
 import org.archid.utils.IPropertyHandler;
 import org.archid.utils.PropertyHandler;
 import org.archid.utils.PropertyKeys;
@@ -31,72 +27,14 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 	
 	static final String MANUAL_INTERVENTION = "ManualInterventionRequired";
 	
-	private String namespaceFolder = null; // somevalue
-	private String infoName = null;        // SomeValueInfo
-	private String infoNameRoot = null;    // SomeValue
-	private String infoNamePlural = null;  // SomeValueInfos
-	private String infoTopLevelTag = null; // Civ4SomeValueInfos
-	private String packageDef = null;
-	private XmlTagDefinition topLevelTagDefinition = null;
-	SchemaParser parser = null;
 	private IPropertyHandler props = PropertyHandler.getInstance();
-	Set<String> dynamicImports = new HashSet<String>();
-	private Map<String, TagInstance> infoTagData = new HashMap<String, TagInstance>();
 	
-	TagNameData tagNameData = new TagNameData();
-	
-	private IInfoProcessor infoProcessor = null;
-
-	public JavaCodeGenerator(SchemaParser parser) {
-		this.parser = parser;
-	}
-	
-	private void init(String infoTopLevelTag) {
-		this.infoTopLevelTag = infoTopLevelTag;                             // Civ4SomeValueInfos
-		infoNamePlural = infoTopLevelTag.substring(4);                      // SomeValueInfos
-		infoName = infoNamePlural.substring(0,infoNamePlural.length() - 1); // SomeValueInfo
-		infoNameRoot = infoName.substring(0,infoName.length() - 4);         // SomeValue
-		namespaceFolder = infoNameRoot.toLowerCase();                       // somevalue
-		createPackageFolder();
-		packageDef = "package org.archid.civ4.info." + namespaceFolder + ";";
-		topLevelTagDefinition = parser.getTagDefinition(infoName);
-		infoProcessor = TagFactory.getProcessor(infoName, tagNameData);
-		if (infoProcessor != null) {
-			infoProcessor.init(namespaceFolder);
-			for (String filename: infoProcessor.getFilesToWrite().keySet()) {
-				writeFile(filename, infoProcessor.getFilesToWrite().get(filename));
-			}
-		}
-		parseInfo(topLevelTagDefinition);
+	public JavaCodeGenerator(SchemaParser parser, String infoTopLevelTag) {
+		JavaCodeGeneratorData.getInstance().init(parser, infoTopLevelTag);
 	}
 
-	private void parseInfo(XmlTagDefinition info) {
-		Map<String, DataType> tagDatatype = new HashMap<String, XmlTagDefinition.DataType>();
-		for (XmlTagInstance tag: info.getChildren()) {
-			XmlTagDefinition tagDef = parser.getTagDefinition(tag.getTagName());
-			boolean customTagProcessing = (infoProcessor == null) ? false : infoProcessor.hasTagProcessor(tag.getTagName());
-			TagInstance tagData = new TagInstance(this, tagDef, tag, customTagProcessing);
-			if (tagData.requiresArray()) {
-				dynamicImports.add("import java.util.List;");
-				dynamicImports.add("import java.util.ArrayList;");
-			}
-			if (tagData.getNumLeaves() == 2) dynamicImports.add("import org.archid.utils.IPair;");
-			if (tagData.getNumLeaves() == 3) dynamicImports.add("import org.archid.utils.ITriple;");
-			infoTagData.put(tag.getTagName(), tagData);
-			tagDatatype.put(tag.getTagName(), tagDef.getDataType());
-		}
-		// Get the variable names to be used
-		tagNameData.buildUniqueNames(tagDatatype);
-		// Set the variable names to be used
-		for (String tagName: infoTagData.keySet()) {
-			infoTagData.get(tagName).setRootName(tagNameData.getRootName(tagName));
-			infoTagData.get(tagName).setVarName(tagNameData.getVarName(tagName));
-			infoTagData.get(tagName).init();
-		}
-	}
-
-	public void createJavaCode(String infoTopLevelTag) {
-		init(infoTopLevelTag);
+	public void createJavaCode() {
+		createInfoProcessorCustomFiles();
 		createPackageInfoFile();
 		createInfoInterface();
 		createInfoClass();
@@ -106,7 +44,19 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		createInfoImporter();
 	}
 	
+	private void createInfoProcessorCustomFiles() {
+		IInfoProcessor infoProcessor = JavaCodeGeneratorData.getInstance().getInfoProcessor();
+		if (infoProcessor != null) {
+			for (String filename: infoProcessor.getFilesToWrite().keySet()) {
+				writeFile(filename, infoProcessor.getFilesToWrite().get(filename));
+			}
+		}
+	}
+	
 	private void createInfoImporter() {
+		String infoNameRoot = JavaCodeGeneratorData.getInstance().getInfoNameRoot();
+		String infoName = JavaCodeGeneratorData.getInstance().getInfoName();
+		IInfoProcessor infoProcessor = JavaCodeGeneratorData.getInstance().getInfoProcessor();
 		// Imports
 		Set<String> imports = new HashSet<String>();
 		imports.add("import org.apache.log4j.Logger;");
@@ -143,7 +93,7 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		
 		// Build the file
 		StringBuilder file = new StringBuilder();
-		file.append(packageDef);
+		file.append(JavaCodeGeneratorData.getInstance().getPackageDef());
 		file.append(NEWLINE);
 		for (String imp: sortedImports) {
 			file.append(NEWLINE + imp);
@@ -154,6 +104,7 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 	}
 	
 	private String getInfoImporterOverrides() {
+		IInfoProcessor infoProcessor = JavaCodeGeneratorData.getInstance().getInfoProcessor();
 		if (infoProcessor.hasOverride(InfoOverrides.IMPORTER)) {
 			return infoProcessor.getOverride(InfoOverrides.IMPORTER);
 		} else {
@@ -162,7 +113,10 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 	}
 
 	private String getDefaultInfoImporterOverrides() {
+		String infoName = JavaCodeGeneratorData.getInstance().getInfoName();
+		IInfoProcessor infoProcessor = JavaCodeGeneratorData.getInstance().getInfoProcessor();
 		Integer typeTagIndex = (infoProcessor == null) ? 0 : infoProcessor.getTypeTagIndex();
+		
 		StringBuilder customCellReaders = new StringBuilder();
 		StringBuilder sb = new StringBuilder();
 		sb.append(NEWLINE);
@@ -176,8 +130,8 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		sb.append(NEWLINE + "");
 		sb.append(NEWLINETT + "I" + infoName + " info = " + infoName + "s.createInfo(type);");
 
-		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
-			TagInstance tag = infoTagData.get(mainChild.getTagName());
+		for (XmlTagInstance mainChild : JavaCodeGeneratorData.getInstance().getInfoChildTags()) {
+			TagInstance tag = JavaCodeGeneratorData.getInstance().getTagInstance(mainChild.getTagName());
 			ITagProcessor processor = null;
 			if (infoProcessor != null && infoProcessor.hasTagProcessor(mainChild.getTagName())) {
 				processor = infoProcessor.getTagProcessor(mainChild.getTagName());
@@ -212,6 +166,10 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 	}
 
 	private void createInfoExporter() {
+		String infoNameRoot = JavaCodeGeneratorData.getInstance().getInfoNameRoot();
+		String infoName = JavaCodeGeneratorData.getInstance().getInfoName();
+		IInfoProcessor infoProcessor = JavaCodeGeneratorData.getInstance().getInfoProcessor();
+
 		// Imports
 		Set<String> imports = new HashSet<String>();
 		imports.add("import java.util.ArrayList;");
@@ -221,7 +179,7 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		imports.add("import org.archid.civ4.info.AbstractExporter;");
 		imports.add("import org.archid.civ4.info.EInfo;");
 		imports.add("import org.archid.civ4.info.IInfos;");
-		imports.add("import org.archid.civ4.info." + namespaceFolder + ".I" + infoNameRoot + "Workbook.SheetHeaders;");
+		imports.add("import org.archid.civ4.info." + JavaCodeGeneratorData.getInstance().getNamespaceFolder() + ".I" + infoNameRoot + "Workbook.SheetHeaders;");
 
 		// Main content
 		StringBuilder mainClass = new StringBuilder();
@@ -263,7 +221,7 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		
 		// Build the file
 		StringBuilder file = new StringBuilder();
-		file.append(packageDef);
+		file.append(JavaCodeGeneratorData.getInstance().getPackageDef());
 		file.append(NEWLINE);
 		for (String imp: sortedImports) {
 			file.append(NEWLINE + imp);
@@ -275,6 +233,7 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 	}
 	
 	private String getInfoExporterOverrides() {
+		IInfoProcessor infoProcessor = JavaCodeGeneratorData.getInstance().getInfoProcessor();
 		if (infoProcessor.hasOverride(InfoOverrides.EXPORTER)) {
 			return infoProcessor.getOverride(InfoOverrides.EXPORTER);
 		} else {
@@ -283,15 +242,16 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 	}
 
 	private String getDefaultInfoExporterOverrides() {
+		IInfoProcessor infoProcessor = JavaCodeGeneratorData.getInstance().getInfoProcessor();
 		StringBuilder customCellWriters = new StringBuilder();
 		StringBuilder sb = new StringBuilder();
 		sb.append(NEWLINE);
 		sb.append(NEWLINET + "@Override");
-		sb.append(NEWLINET + "protected void populateRow(Row row, I" + infoName + " info) {");
+		sb.append(NEWLINET + "protected void populateRow(Row row, I" + JavaCodeGeneratorData.getInstance().getInfoName() + " info) {");
 		sb.append(NEWLINETT + "int maxHeight = 1;");
 		sb.append(NEWLINETT + "int colNum = 0;");
-		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
-			TagInstance tag = infoTagData.get(mainChild.getTagName());
+		for (XmlTagInstance mainChild : JavaCodeGeneratorData.getInstance().getInfoChildTags()) {
+			TagInstance tag = JavaCodeGeneratorData.getInstance().getTagInstance(mainChild.getTagName());
 			ITagProcessor processor = null;
 			if (infoProcessor != null && infoProcessor.hasTagProcessor(mainChild.getTagName())) {
 				processor = infoProcessor.getTagProcessor(mainChild.getTagName());
@@ -323,7 +283,11 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 
 
 	private void createInfoMapAdapter() {
-		Set<String> imports = new HashSet<String>(dynamicImports);
+		String infoNameRoot = JavaCodeGeneratorData.getInstance().getInfoNameRoot();
+		String infoName = JavaCodeGeneratorData.getInstance().getInfoName();
+		IInfoProcessor infoProcessor = JavaCodeGeneratorData.getInstance().getInfoProcessor();
+
+		Set<String> imports = new HashSet<String>(JavaCodeGeneratorData.getInstance().getDynamicImports());
 		imports.add("import java.util.ArrayList;");
 		imports.add("import java.util.List;");
 		imports.add("import java.util.Map;");
@@ -349,7 +313,7 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		unmarshalClass.append(NEWLINET + "public Map<String, I" + infoName + "> unmarshal(" + infoNameRoot + "Map v) throws Exception {");
 		unmarshalClass.append(NEWLINETT + "Map<String, I" + infoName + "> map = new TreeMap<String, I" + infoName + ">();");
 		unmarshalClass.append(NEWLINETT + "for (Adapted" + infoNameRoot + " aInfo: v.entries) {");
-		unmarshalClass.append(NEWLINETTT + "I" + infoName + " info = " + infoNamePlural + ".createInfo(aInfo.type);");
+		unmarshalClass.append(NEWLINETTT + "I" + infoName + " info = " + JavaCodeGeneratorData.getInstance().getInfoNamePlural() + ".createInfo(aInfo.type);");
 
 		StringBuilder marshalClass = new StringBuilder();
 		marshalClass.append(NEWLINE);
@@ -360,9 +324,9 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		marshalClass.append(NEWLINETTT + "Adapted" + infoNameRoot + " aInfo = new Adapted" + infoNameRoot + "();");
 		marshalClass.append(NEWLINETTT + "aInfo.type = JaxbUtils.marshallString(info.getType());");
 		
-		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
+		for (XmlTagInstance mainChild : JavaCodeGeneratorData.getInstance().getInfoChildTags()) {
 			ITagProcessor processor = null;
-			TagInstance tag = infoTagData.get(mainChild.getTagName());
+			TagInstance tag = JavaCodeGeneratorData.getInstance().getTagInstance(mainChild.getTagName());
 			if (infoProcessor != null && infoProcessor.hasTagProcessor(mainChild.getTagName())) {
 				processor = infoProcessor.getTagProcessor(mainChild.getTagName());
 				tag.setDataType(processor.getDataType());
@@ -372,12 +336,12 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 			if (processor != null) {
 				adaptedClass.append(processor.getAdapterElement());
 			} else if (tag.requiresAdapter()) {
-				XmlTagDefinition innerTagXmlDef = parser.getTagDefinition(tag.tagDefinition.getChildren().get(0).getTagName());
+				XmlTagDefinition innerTagXmlDef = JavaCodeGeneratorData.getInstance().getTagDefinition(tag.tagDefinition.getChildren().get(0).getTagName());
 				adaptedClass.append(NEWLINETT + "@XmlElementWrapper(name=\"" + mainChild.getTagName() + "\")");
 				adaptedClass.append(NEWLINETT + "@XmlElement(name=\"" + innerTagXmlDef.getTagName() + "\")");
 				adaptedClass.append(NEWLINETT + "private List<Adapted" + mainChild.getTagName() + "> " + tag.varName + ";");				
 			} else if (tag.requiresArray()) {
-				XmlTagDefinition innerTagXmlDef = parser.getTagDefinition(tag.tagDefinition.getChildren().get(0).getTagName());
+				XmlTagDefinition innerTagXmlDef = JavaCodeGeneratorData.getInstance().getTagDefinition(tag.tagDefinition.getChildren().get(0).getTagName());
 				adaptedClass.append(NEWLINETT + "@XmlElementWrapper(name=\"" + mainChild.getTagName() + "\")");
 				adaptedClass.append(NEWLINETT + "@XmlElement(name=\"" + innerTagXmlDef.getTagName() + "\")");
 				adaptedClass.append(NEWLINETT + "private List<" + getXmlDataType(tag.getLeaf(0).getType()) + "> " + tag.varName + ";");				
@@ -512,7 +476,7 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		marshalClass.append(NEWLINET + "}");
 		
 		StringBuilder file = new StringBuilder();
-		file.append(packageDef);
+		file.append(JavaCodeGeneratorData.getInstance().getPackageDef());
 		file.append(NEWLINE);
 		// Sort the imports
 		List<String> sortedImports = new ArrayList<String>(imports);
@@ -538,8 +502,10 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 }
 
 	private void createInfoWorkbookInterface() {
+		String infoNameRoot = JavaCodeGeneratorData.getInstance().getInfoNameRoot();
+
 		StringBuilder file = new StringBuilder();
-		file.append(packageDef);
+		file.append(JavaCodeGeneratorData.getInstance().getPackageDef());
 		file.append(NEWLINE);
 		file.append(NEWLINE + "import org.archid.civ4.info.IInfoWorkbook;");
 		file.append(NEWLINE + "import org.archid.utils.StringUtils;");
@@ -553,8 +519,8 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		StringBuilder row = new StringBuilder();
 		boolean first = true;
 		boolean reset = false;
-		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
-			TagInstance tag = infoTagData.get(mainChild.getTagName());
+		for (XmlTagInstance mainChild : JavaCodeGeneratorData.getInstance().getInfoChildTags()) {
+			TagInstance tag = JavaCodeGeneratorData.getInstance().getTagInstance(mainChild.getTagName());
 			if (first) {
 				first = false;
 			} else if (reset) {
@@ -584,9 +550,13 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 	}
 
 	private void createInfoClass() {
+		String infoNameRoot = JavaCodeGeneratorData.getInstance().getInfoNameRoot();
+		String infoName = JavaCodeGeneratorData.getInstance().getInfoName();
+		String infoNamePlural = JavaCodeGeneratorData.getInstance().getInfoNamePlural();
+		IInfoProcessor infoProcessor = JavaCodeGeneratorData.getInstance().getInfoProcessor();
 		
 		// Sort the imports, this is cosmetic, but easy enough
-		Set<String> imports = new HashSet<String>(dynamicImports);
+		Set<String> imports = new HashSet<String>(JavaCodeGeneratorData.getInstance().getDynamicImports());
 		imports.add("import java.util.LinkedHashMap;");
 		imports.add("import java.util.Map;");
 		imports.add("import org.archid.civ4.info.AbstractInfos;");
@@ -598,7 +568,7 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 
 		// Create the wrapper class
 		StringBuilder mainClass = new StringBuilder();
-		mainClass.append(NEWLINE + "@XmlRootElement(name=\"" + infoTopLevelTag + "\", namespace=\"x-schema:" + props.getAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA) + "\")");
+		mainClass.append(NEWLINE + "@XmlRootElement(name=\"" + JavaCodeGeneratorData.getInstance().getInfoTopLevelTag() + "\", namespace=\"x-schema:" + props.getAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA) + "\")");
 		mainClass.append(NEWLINE + "@XmlAccessorType(XmlAccessType.NONE)");
 		mainClass.append(NEWLINE + "public class " + infoNamePlural + " extends AbstractInfos<I" + infoName + "> {");
 		mainClass.append(NEWLINE);
@@ -632,8 +602,8 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		methods.append(NEWLINETT + "private " + infoName + "(String type) {");
 		methods.append(NEWLINETTT + "this.type = type;");
 		methods.append(NEWLINETT + "}");
-		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
-			TagInstance tag = infoTagData.get(mainChild.getTagName());
+		for (XmlTagInstance mainChild : JavaCodeGeneratorData.getInstance().getInfoChildTags()) {
+			TagInstance tag = JavaCodeGeneratorData.getInstance().getTagInstance(mainChild.getTagName());
 			if (infoProcessor != null && infoProcessor.hasTagProcessor(mainChild.getTagName())) {
 				ITagProcessor processor = infoProcessor.getTagProcessor(mainChild.getTagName());
 				tag.setDataType(processor.getDataType());
@@ -665,7 +635,7 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 
 		// Construct the file
 		StringBuilder file = new StringBuilder();
-		file.append(packageDef);
+		file.append(JavaCodeGeneratorData.getInstance().getPackageDef());
 		file.append(NEWLINE);
 		List<String> sortedImports = new ArrayList<String>(imports);
 		Collections.sort(sortedImports);
@@ -674,17 +644,19 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		}
 		file.append(NEWLINE);
 		file.append(mainClass);
-		writeFile(infoNamePlural + ".java", file.toString());
+		writeFile(JavaCodeGeneratorData.getInstance().getInfoNamePlural() + ".java", file.toString());
 		
 	}
 
 	private void createInfoInterface() {
-		
+		String infoName = JavaCodeGeneratorData.getInstance().getInfoName();
+		IInfoProcessor infoProcessor = JavaCodeGeneratorData.getInstance().getInfoProcessor();
+
 		StringBuilder file = new StringBuilder();
-		file.append(packageDef);
+		file.append(JavaCodeGeneratorData.getInstance().getPackageDef());
 		file.append(NEWLINE);
 		
-		Set<String> imports = new HashSet<String>(dynamicImports);
+		Set<String> imports = new HashSet<String>(JavaCodeGeneratorData.getInstance().getDynamicImports());
 		imports.add("import org.archid.civ4.info.IInfo;");
 		List<String> sortedImports = new ArrayList<String>(imports);
 		Collections.sort(sortedImports);
@@ -694,13 +666,12 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		
 		// Now do the interface
 		file.append(NEWLINE + NEWLINE + "public interface I" + infoName + " extends IInfo {");
-		for (XmlTagInstance mainChild : topLevelTagDefinition.getChildren()) {
-			
+		for (XmlTagInstance mainChild : JavaCodeGeneratorData.getInstance().getInfoChildTags()) {
 			// The Type tag is processed in the IInfo interface 
 			if (mainChild.getTagName().equals("Type"))
 				continue;
 				
-			TagInstance tag = infoTagData.get(mainChild.getTagName());
+			TagInstance tag = JavaCodeGeneratorData.getInstance().getTagInstance(mainChild.getTagName());
 			if (infoProcessor != null && infoProcessor.hasTagProcessor(mainChild.getTagName())) {
 				ITagProcessor processor = infoProcessor.getTagProcessor(mainChild.getTagName());
 				tag.setDataType(processor.getDataType());
@@ -718,18 +689,13 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 	private void createPackageInfoFile() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("@javax.xml.bind.annotation.XmlSchema(namespace=\"x-schema:" + props.getAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA) + "\", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)");
-		sb.append(NEWLINE + packageDef);
+		sb.append(NEWLINE + JavaCodeGeneratorData.getInstance().getPackageDef());
 		writeFile("package-info.java", sb.toString());
 	}
 
-	private void createPackageFolder() {
-		String folderPath = props.getAppProperty(PropertyKeys.PROPERTY_KEY_JAVA_OUTPUT_DIR, ".") + "\\" + namespaceFolder;
-		FileUtils.ensureDirExists(folderPath);
-	}
-
-	protected void writeFile(String fileName, String content) {
+	private void writeFile(String fileName, String content) {
 		BufferedWriter out = null;
-		String filePath = props.getAppProperty(PropertyKeys.PROPERTY_KEY_JAVA_OUTPUT_DIR, ".") + "\\" + namespaceFolder + "\\" + fileName;
+		String filePath = props.getAppProperty(PropertyKeys.PROPERTY_KEY_JAVA_OUTPUT_DIR, ".") + "\\" + JavaCodeGeneratorData.getInstance().getNamespaceFolder() + "\\" + fileName;
 		try {
 			out = new BufferedWriter(new FileWriter(filePath));
 			out.write(content);

@@ -1,14 +1,9 @@
 package org.archid.civ4.java.infoprocessor;
 
 import org.archid.civ4.java.AbstractTagProcessor;
-import org.archid.civ4.java.TagNameData;
 
 public class BonusInfoProcessor extends DefaultInfoProcessor {
 	
-	public BonusInfoProcessor(TagNameData tagNameData) {
-		super(tagNameData);
-	}
-
 	public void init(String packageName) {
 		this.packageName = packageName;
 		exportImports.add("import org.apache.poi.ss.usermodel.Cell;");

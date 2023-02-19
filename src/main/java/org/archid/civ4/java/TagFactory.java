@@ -10,19 +10,19 @@ import org.archid.civ4.java.infoprocessor.UnitInfoProcessor;
 
 public class TagFactory {
 	
-	public static IInfoProcessor getProcessor(String infoName, TagNameData tagNameData) {
+	public static IInfoProcessor getProcessor(String infoName) {
 		if (infoName.equalsIgnoreCase("BonusInfo")) {
-			return new BonusInfoProcessor(tagNameData);
+			return new BonusInfoProcessor();
 		} else if (infoName.equalsIgnoreCase("BuildingClassInfo")) {
-			return new BuildingClassInfoProcessor(tagNameData);
+			return new BuildingClassInfoProcessor();
 		} else if (infoName.equalsIgnoreCase("BuildingInfo")) {
-			return new BuildingInfoProcessor(tagNameData);
+			return new BuildingInfoProcessor();
 		} else if (infoName.equalsIgnoreCase("CivicInfo")) {
-			return new CivicInfoProcessor(tagNameData);
+			return new CivicInfoProcessor();
 		} else if (infoName.equalsIgnoreCase("EraInfo")) {
-			return new EraInfoProcessor(tagNameData);
+			return new EraInfoProcessor();
 		} else if (infoName.equalsIgnoreCase("UnitInfo")) {
-			return new UnitInfoProcessor(tagNameData);
+			return new UnitInfoProcessor();
 		} else {
 			return null;
 		}
