@@ -9,7 +9,7 @@ import org.archid.civ4.java.ITagProcessor;
 public interface IInfoProcessor {
 	
 	public enum FileCreators {
-		INFO_CODE, INFO_INTERFACE, PACKAGE;
+		INFO_CODE, INFO_INTERFACE, INFO_WORKBOOK, PACKAGE;
 	}
 	
 	public enum InfoOverrides {
