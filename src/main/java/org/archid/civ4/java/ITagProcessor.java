@@ -3,7 +3,7 @@ package org.archid.civ4.java;
 import java.util.Map;
 import java.util.Set;
 
-public interface ITagProcessor extends IJavaFileCreator {
+public interface ITagProcessor extends IJavaFileContent {
 
 	String getTagName();
 	String getDataType();

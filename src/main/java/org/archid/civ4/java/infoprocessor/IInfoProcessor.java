@@ -3,9 +3,14 @@ package org.archid.civ4.java.infoprocessor;
 import java.util.Map;
 import java.util.Set;
 
+import org.archid.civ4.java.IJavaFileCreator;
 import org.archid.civ4.java.ITagProcessor;
 
 public interface IInfoProcessor {
+	
+	public enum FileCreators {
+		PACKAGE;
+	}
 	
 	public enum InfoOverrides {
 		IMPORTER, EXPORTER;
@@ -16,6 +21,9 @@ public interface IInfoProcessor {
 	public ITagProcessor getTagProcessor(String tag);
 	public String getXmlFormatter();
 	public Integer getTypeTagIndex();
+	public IJavaFileCreator getFileCreator(FileCreators creator);
+	
+	
 	public Set<String> getExportImports();
 	public Set<String> getImportImports();
 	public Map<String, String> getFilesToWrite();

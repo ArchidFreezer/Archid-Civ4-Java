@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.archid.civ4.java.infoprocessor.IInfoProcessor;
+import org.archid.civ4.java.infoprocessor.IInfoProcessor.FileCreators;
 import org.archid.civ4.java.infoprocessor.IInfoProcessor.InfoOverrides;
 import org.archid.civ4.schema.SchemaParser;
 import org.archid.civ4.schema.XmlTagDefinition;
@@ -20,7 +21,7 @@ import org.archid.utils.PropertyHandler;
 import org.archid.utils.PropertyKeys;
 import org.archid.utils.StringUtils;
 
-public class JavaCodeGenerator implements IJavaFileCreator{
+public class JavaCodeGenerator implements IJavaFileContent{
 
 	/** Logging facility */
 	static Logger log = Logger.getLogger(JavaCodeGenerator.class.getName());
@@ -35,7 +36,7 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 
 	public void createJavaCode() {
 		createInfoProcessorCustomFiles();
-		createPackageInfoFile();
+		createPackageInfo();
 		createInfoInterface();
 		createInfoClass();
 		createInfoWorkbookInterface();
@@ -683,11 +684,8 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 		writeFile("I" + infoName + ".java", file.toString());
 	}
 
-	private void createPackageInfoFile() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("@javax.xml.bind.annotation.XmlSchema(namespace=\"x-schema:" + props.getAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA) + "\", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)");
-		sb.append(NEWLINE + JavaCodeGeneratorData.getInstance().getPackageDef());
-		writeFile("package-info.java", sb.toString());
+	private void createPackageInfo() {
+		writeFile("package-info.java", JavaCodeGeneratorData.getInstance().getInfoProcessor().getFileCreator(FileCreators.PACKAGE).getFileContent());
 	}
 
 	private void writeFile(String fileName, String content) {
@@ -737,5 +735,4 @@ public class JavaCodeGenerator implements IJavaFileCreator{
 			return javaType;
 	}
 
-	
 }

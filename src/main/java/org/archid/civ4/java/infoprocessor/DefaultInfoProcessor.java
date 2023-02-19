@@ -6,9 +6,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.archid.civ4.java.DefaultResourceArrayTagProcessorData;
+import org.archid.civ4.java.IJavaFileCreator;
 import org.archid.civ4.java.ITagProcessor;
 import org.archid.civ4.java.JavaCodeGeneratorData;
 import org.archid.civ4.java.TagNameData;
+import org.archid.civ4.java.files.DefaultPackageInfoCreator;
 
 public class DefaultInfoProcessor implements IInfoProcessor {
 	
@@ -93,6 +95,17 @@ public class DefaultInfoProcessor implements IInfoProcessor {
 	@Override
 	public String getOverride(InfoOverrides override) {
 		return hasOverride(override) ? overrides.get(override) : "";
+	}
+
+
+	@Override
+	public IJavaFileCreator getFileCreator(FileCreators creator) {
+		switch(creator) {
+		case PACKAGE:
+			return new DefaultPackageInfoCreator();
+		default:
+			return null;
+		}
 	}
 
 
