@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.archid.civ4.java.infoprocessor.IInfoProcessor;
 import org.archid.civ4.java.infoprocessor.IInfoProcessor.FileCreators;
 import org.archid.civ4.schema.SchemaParser;
+import org.archid.utils.FileUtils;
 import org.archid.utils.IPropertyHandler;
 import org.archid.utils.PropertyHandler;
 import org.archid.utils.PropertyKeys;
@@ -19,6 +20,7 @@ public class JavaCodeGenerator implements IJavaFileContent{
 	private IPropertyHandler props = PropertyHandler.getInstance();
 	
 	public JavaCodeGenerator(SchemaParser parser, String infoTopLevelTag) {
+		createPackageFolder(infoTopLevelTag.substring(4, infoTopLevelTag.length() - 5).toLowerCase());
 		JavaCodeGeneratorData.getInstance().init(parser, infoTopLevelTag);
 	}
 
@@ -70,6 +72,11 @@ public class JavaCodeGenerator implements IJavaFileContent{
 		writeFile("package-info.java", JavaCodeGeneratorData.getInstance().getInfoProcessor().getFileCreator(FileCreators.PACKAGE).getFileContent());
 	}
 
+	private void createPackageFolder(String namespaceFolder) {
+		String folderPath = props.getAppProperty(PropertyKeys.PROPERTY_KEY_JAVA_OUTPUT_DIR, ".") + "\\" + namespaceFolder;
+		FileUtils.ensureDirExists(folderPath);
+	}
+	
 	private void writeFile(String fileName, String content) {
 		BufferedWriter out = null;
 		String filePath = props.getAppProperty(PropertyKeys.PROPERTY_KEY_JAVA_OUTPUT_DIR, ".") + "\\" + JavaCodeGeneratorData.getInstance().getNamespaceFolder() + "\\" + fileName;

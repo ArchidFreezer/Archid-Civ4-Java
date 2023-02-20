@@ -51,9 +51,8 @@ public class JavaCodeGeneratorData {
 		infoName = infoNamePlural.substring(0,infoNamePlural.length() - 1); // SomeValueInfo
 		infoNameRoot = infoName.substring(0,infoName.length() - 4);         // SomeValue
 		namespaceFolder = infoNameRoot.toLowerCase();                       // somevalue
-		createPackageFolder();
 		packageDef = "package org.archid.civ4.info." + namespaceFolder + ";";
-		this.infoTagDefinition = parser.getTagDefinition(infoName);
+		infoTagDefinition = parser.getTagDefinition(infoName);
 		parseInfo();
 		infoProcessor = InfoProcessorFactory.getProcessor(infoName);
 		if (infoProcessor != null) {
@@ -85,11 +84,6 @@ public class JavaCodeGeneratorData {
 		}
 	}
 
-	private void createPackageFolder() {
-		String folderPath = props.getAppProperty(PropertyKeys.PROPERTY_KEY_JAVA_OUTPUT_DIR, ".") + "\\" + namespaceFolder;
-		FileUtils.ensureDirExists(folderPath);
-	}
-	
 	public XmlTagDefinition getTagDefinition(String tag) {
 		return parser.getTagDefinition(tag);
 	}
