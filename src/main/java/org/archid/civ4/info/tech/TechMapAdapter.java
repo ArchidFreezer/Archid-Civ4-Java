@@ -1,36 +1,25 @@
-/**
- * 
- */
 package org.archid.civ4.info.tech;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-
 import org.archid.utils.CollectionUtils;
 import org.archid.utils.IPair;
 import org.archid.utils.JaxbUtils;
 import org.archid.utils.Pair;
 import org.archid.utils.StringUtils;
 
-/**
- * @author Jim
- *
- */
 public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<String, ITechInfo>> {
-	
+
 	public static class TechMap {
-		 @XmlElement(name = "TechInfo")
-		 List<AdaptedTech> entries = new ArrayList<AdaptedTech>();		
+		@XmlElement(name = "TechInfo")
+		List<AdaptedTech> entries = new ArrayList<AdaptedTech>();
 	}
-	
+
 	private static class AdaptedTech {
 		@XmlElement(name="Type")
 		private String type;
@@ -45,9 +34,9 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 		@XmlElement(name="Advisor")
 		private String advisor;
 		@XmlElement(name="iAIWeight")
-		private Integer aiWeight;
+		private Integer aIWeight;
 		@XmlElement(name="iAITradeModifier")
-		private Integer aiTradeModifier;
+		private Integer aITradeModifier;
 		@XmlElement(name="iCost")
 		private Integer cost;
 		@XmlElement(name="iAdvancedStartCost")
@@ -55,7 +44,7 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 		@XmlElement(name="iAdvancedStartCostIncrease")
 		private Integer advancedStartCostIncrease;
 		@XmlElement(name="Era")
-		private String era = "NO_ERA";
+		private String era;
 		@XmlElement(name="bCivSettled")
 		private Integer civSettled;
 		@XmlElement(name="FreeCapitalBuildingClass")
@@ -134,21 +123,21 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 		private Integer gridX;
 		@XmlElement(name="iGridY")
 		private Integer gridY;
+		@XmlElementWrapper(name="DomainExtraMoves")
+		@XmlElement(name="DomainExtraMove")
+		private List<AdaptedDomainExtraMoves> domainExtraMoves;
 		@XmlElementWrapper(name="CommerceModifiers")
 		@XmlElement(name="iCommerce")
 		private List<Integer> commerceModifiers;
 		@XmlElementWrapper(name="SpecialistExtraCommerces")
 		@XmlElement(name="iCommerce")
 		private List<Integer> specialistExtraCommerces;
-		@XmlElementWrapper(name="DomainExtraMoves")
-		@XmlElement(name="DomainExtraMove")
-		private List<AdaptedDomainExtraMoves> domainExtraMoves;
 		@XmlElementWrapper(name="CommerceFlexible")
 		@XmlElement(name="bFlexible")
 		private List<Integer> commerceFlexible;
 		@XmlElementWrapper(name="TerrainTrades")
 		@XmlElement(name="TerrainType")
-		private Set<String> terrainTrades;
+		private List<String> terrainTrades;
 		@XmlElement(name="bRiverTrade")
 		private Integer riverTrade;
 		@XmlElement(name="bCaptureCities")
@@ -172,18 +161,18 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 		@XmlElementWrapper(name="SeaPlotYieldChanges")
 		@XmlElement(name="iYield")
 		private List<Integer> seaPlotYieldChanges;
-		@XmlElementWrapper(name="DomainExtraMoves")
-		@XmlElement(name="DomainExtraMove")
+		@XmlElementWrapper(name="WorldViewRevoltTurnChanges")
+		@XmlElement(name="WorldViewRevoltTurnChange")
 		private List<AdaptedWorldViewRevoltTurnChanges> worldViewRevoltTurnChanges;
 		@XmlElementWrapper(name="Flavors")
 		@XmlElement(name="Flavor")
 		private List<AdaptedFlavors> flavors;
 		@XmlElementWrapper(name="OrPreReqs")
 		@XmlElement(name="PrereqTech")
-		private List<String> orPrereqs;
+		private List<String> orPreReqs;
 		@XmlElementWrapper(name="AndPreReqs")
 		@XmlElement(name="PrereqTech")
-		private List<String> andPrereqs;
+		private List<String> andPreReqs;
 		@XmlElementWrapper(name="EnabledWorldViews")
 		@XmlElement(name="WorldViewType")
 		private List<String> enabledWorldViews;
@@ -196,199 +185,26 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 		@XmlElement(name="Button")
 		private String button;
 	}
-	
+
 	private static class AdaptedDomainExtraMoves {
 		@XmlElement(name="DomainType")
-		private String domain;
+		private String domainType;
 		@XmlElement(name="iExtraMoves")
-		private Integer moves;
+		private Integer iExtraMoves;
 	}
-	
+
 	private static class AdaptedWorldViewRevoltTurnChanges {
 		@XmlElement(name="WorldViewType")
-		private String worldView;
+		private String worldViewType;
 		@XmlElement(name="iChange")
-		private Integer change;
+		private Integer iChange;
 	}
 
 	private static class AdaptedFlavors {
 		@XmlElement(name="FlavorType")
-		private String flavor;
+		private String flavorType;
 		@XmlElement(name="iFlavor")
-		private Integer value;
-	}
-
-	@Override
-	public TechMap marshal(Map<String, ITechInfo> v) throws Exception {
-		TechMap map = new TechMap();
-		for (ITechInfo info: v.values()) {
-			AdaptedTech aInfo = new AdaptedTech();
-			aInfo.type = info.getType();
-			aInfo.description = info.getDescription();
-			aInfo.civilopedia = JaxbUtils.marshallString(info.getCivilopedia());
-			aInfo.help = JaxbUtils.marshallString(info.getHelp());
-			aInfo.strategy = JaxbUtils.marshallString(info.getStrategy());
-			aInfo.advisor = info.getAdvisor();
-			aInfo.aiWeight = JaxbUtils.marshallInteger(info.getAiWeight());
-			aInfo.aiTradeModifier = JaxbUtils.marshallInteger(info.getAiTradeModifier());
-			aInfo.cost = info.getCost();
-			aInfo.advancedStartCost = info.getAdvancedStartCost();
-			aInfo.advancedStartCostIncrease = JaxbUtils.marshallInteger(info.getAdvancedStartCostIncrease());
-			aInfo.era = info.getEra();
-			aInfo.civSettled = JaxbUtils.marshallBoolean(info.isCivSettled());
-			aInfo.freeCapitalBuildingClass = JaxbUtils.marshallString(info.getFreeCapitalBuildingClass());
-			aInfo.firstFreeUnitClass = JaxbUtils.marshallString(info.getFirstFreeUnitClass());
-			aInfo.freeUnitClass = JaxbUtils.marshallString(info.getFreeUnitClass());
-			aInfo.featureProductionModifier = JaxbUtils.marshallInteger(info.getFeatureProductionModifier());
-			aInfo.workerSpeedModifier = JaxbUtils.marshallInteger(info.getWorkerSpeedModifier());
-			aInfo.tradeRoutes = JaxbUtils.marshallInteger(info.getTradeRoutes());
-			aInfo.health = JaxbUtils.marshallInteger(info.getHealth());
-			aInfo.happiness = JaxbUtils.marshallInteger(info.getHappiness());
-			aInfo.firstFreeTechs = JaxbUtils.marshallInteger(info.getFirstFreeTechs());
-			aInfo.asset = info.getAsset();
-			aInfo.power = JaxbUtils.marshallInteger(info.getPower());
-			aInfo.repeat = JaxbUtils.marshallBoolean(info.isRepeat());
-			aInfo.trade = JaxbUtils.marshallBoolean(info.isTrade());
-			aInfo.embassyTrading = JaxbUtils.marshallBoolean(info.isEmbassyTrading());
-			aInfo.freeTradeAgreementTrading = JaxbUtils.marshallBoolean(info.isFreeTradeAgreementTrading());
-			aInfo.nonAggressionTrading = JaxbUtils.marshallBoolean(info.isNonAggressionTrading());
-			aInfo.disable = JaxbUtils.marshallBoolean(info.isDisable());
-			aInfo.goodyTech = JaxbUtils.marshallBoolean(info.isGoodyTech());
-			aInfo.extraWaterSeeFrom = JaxbUtils.marshallBoolean(info.isExtraWaterSeeFrom());
-			aInfo.mapCentering = JaxbUtils.marshallBoolean(info.isMapCentering());
-			aInfo.mapVisible = JaxbUtils.marshallBoolean(info.isMapVisible());
-			aInfo.mapTrading = JaxbUtils.marshallBoolean(info.isMapTrading());
-			aInfo.techTrading = JaxbUtils.marshallBoolean(info.isTechTrading());
-			aInfo.goldTrading = JaxbUtils.marshallBoolean(info.isGoldTrading());
-			aInfo.openBordersTrading = JaxbUtils.marshallBoolean(info.isOpenBordersTrading());
-			aInfo.limitedBordersTrading = JaxbUtils.marshallBoolean(info.isLimitedBordersTrading());
-			aInfo.defensivePactTrading = JaxbUtils.marshallBoolean(info.isDefensivePactTrading());
-			aInfo.permanentAllianceTrading = JaxbUtils.marshallBoolean(info.isPermanentAllianceTrading());
-			aInfo.vassalTrading = JaxbUtils.marshallBoolean(info.isVassalTrading());
-			aInfo.bridgeBuilding = JaxbUtils.marshallBoolean(info.isBridgeBuilding());
-			aInfo.irrigation = JaxbUtils.marshallBoolean(info.isIrrigation());
-			aInfo.ignoreIrrigation = JaxbUtils.marshallBoolean(info.isIgnoreIrrigation());
-			aInfo.waterWork = JaxbUtils.marshallBoolean(info.isWaterWork());
-			aInfo.canPassPeaks = JaxbUtils.marshallBoolean(info.isCanPassPeaks());
-			aInfo.moveFastPeaks = JaxbUtils.marshallBoolean(info.isMoveFastPeaks());
-			aInfo.canFoundOnPeaks = JaxbUtils.marshallBoolean(info.isCanFoundOnPeaks());
-			aInfo.gridX = info.getGridX();
-			aInfo.gridY = info.getGridY();
-			aInfo.riverTrade = JaxbUtils.marshallBoolean(info.isRiverTrade());
-			aInfo.captureCities = JaxbUtils.marshallBoolean(info.isCaptureCites());
-			aInfo.unitRangeUnbound = JaxbUtils.marshallBoolean(info.isUnitRangeUnbound());
-			aInfo.unitTerritoryUnbound = JaxbUtils.marshallBoolean(info.isUnitTerritoryUnbound());
-			aInfo.unitRangeChange = JaxbUtils.marshallInteger(info.getUnitRangeChange());
-			aInfo.unitRangeModifier = JaxbUtils.marshallInteger(info.getUnitRangeModifier());
-			aInfo.cultureDefenceModifier = JaxbUtils.marshallInteger(info.getCultureDefenceModifier());
-			aInfo.quote = JaxbUtils.marshallString(info.getQuote());
-			aInfo.sound = JaxbUtils.marshallString(info.getSound());
-			aInfo.soundMP = JaxbUtils.marshallString(info.getSoundMP());
-			aInfo.button = info.getButton();
-
-			if (CollectionUtils.hasElements(info.getCommerceModifiers())) {
-				aInfo.commerceModifiers = new ArrayList<Integer>();
-				for (Integer change: info.getCommerceModifiers()) {
-					aInfo.commerceModifiers.add(change);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(info.getSpecialistExtraCommerces())) {
-				aInfo.specialistExtraCommerces = new ArrayList<Integer>();
-				for (Integer change: info.getSpecialistExtraCommerces()) {
-					aInfo.specialistExtraCommerces.add(change);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(info.getDomainExtraMoves())) {
-				aInfo.domainExtraMoves = new ArrayList<AdaptedDomainExtraMoves>();
-				for (IPair<String, Integer> pair: info.getDomainExtraMoves()) {
-					AdaptedDomainExtraMoves adaptor = new AdaptedDomainExtraMoves();
-					adaptor.domain = pair.getKey();
-					adaptor.moves = pair.getValue();
-					aInfo.domainExtraMoves.add(adaptor);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(info.getWorldViewRevoltTurnChanges())) {
-				aInfo.worldViewRevoltTurnChanges = new ArrayList<AdaptedWorldViewRevoltTurnChanges>();
-				for (IPair<String, Integer> pair: info.getWorldViewRevoltTurnChanges()) {
-					AdaptedWorldViewRevoltTurnChanges adaptor = new AdaptedWorldViewRevoltTurnChanges();
-					adaptor.worldView = pair.getKey();
-					adaptor.change = pair.getValue();
-					aInfo.worldViewRevoltTurnChanges.add(adaptor);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(info.getFlavors())) {
-				aInfo.flavors = new ArrayList<AdaptedFlavors>();
-				for (IPair<String, Integer> pair: info.getFlavors()) {
-					AdaptedFlavors adaptor = new AdaptedFlavors();
-					adaptor.flavor = pair.getKey();
-					adaptor.value = pair.getValue();
-					aInfo.flavors.add(adaptor);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(info.getCommerceFlexibles())) {
-				aInfo.commerceFlexible = new ArrayList<Integer>();
-				for (Boolean flex: info.getCommerceFlexibles()) {
-					aInfo.commerceFlexible.add(flex ? 1 : 0);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(info.getTerrainTrades())) {
-				aInfo.terrainTrades = new HashSet<String>();
-				for (String terrain: info.getTerrainTrades()) {
-					aInfo.terrainTrades.add(terrain);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(info.getForestPlotYieldChanges())) {
-				aInfo.forestPlotYieldChanges = new ArrayList<Integer>();
-				for (Integer change: info.getForestPlotYieldChanges()) {
-					aInfo.forestPlotYieldChanges.add(change);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(info.getRiverPlotYieldChanges())) {
-				aInfo.riverPlotYieldChanges = new ArrayList<Integer>();
-				for (Integer change: info.getRiverPlotYieldChanges()) {
-					aInfo.riverPlotYieldChanges.add(change);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(info.getSeaPlotYieldChanges())) {
-				aInfo.seaPlotYieldChanges = new ArrayList<Integer>();
-				for (Integer change: info.getSeaPlotYieldChanges()) {
-					aInfo.seaPlotYieldChanges.add(change);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(info.getOrPrereqs())) {
-				aInfo.orPrereqs = new ArrayList<String>();
-				for (String prereq: info.getOrPrereqs()) {
-					aInfo.orPrereqs.add(prereq);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(info.getAndPrereqs())) {
-				aInfo.andPrereqs = new ArrayList<String>();
-				for (String prereq: info.getAndPrereqs()) {
-					aInfo.andPrereqs.add(prereq);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(info.getEnabledWorldViews())) {
-				aInfo.enabledWorldViews = new ArrayList<String>();
-				for (String worldView: info.getEnabledWorldViews()) {
-					aInfo.enabledWorldViews.add(worldView);
-				}
-			}
-			
-			map.entries.add(aInfo);
-		}
-		return map;
+		private Integer iFlavor;
 	}
 
 	@Override
@@ -401,8 +217,8 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 			info.setHelp(JaxbUtils.unmarshallString(aInfo.help));
 			info.setStrategy(JaxbUtils.unmarshallString(aInfo.strategy));
 			info.setAdvisor(JaxbUtils.unmarshallString(aInfo.advisor));
-			info.setAiWeight(JaxbUtils.unmarshallInteger(aInfo.aiWeight));
-			info.setAiTradeModifier(JaxbUtils.unmarshallInteger(aInfo.aiTradeModifier));
+			info.setAIWeight(JaxbUtils.unmarshallInteger(aInfo.aIWeight));
+			info.setAITradeModifier(JaxbUtils.unmarshallInteger(aInfo.aITradeModifier));
 			info.setCost(JaxbUtils.unmarshallInteger(aInfo.cost));
 			info.setAdvancedStartCost(JaxbUtils.unmarshallInteger(aInfo.advancedStartCost));
 			info.setAdvancedStartCostIncrease(JaxbUtils.unmarshallInteger(aInfo.advancedStartCostIncrease));
@@ -446,6 +262,40 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 			info.setCanFoundOnPeaks(JaxbUtils.unmarshallBoolean(aInfo.canFoundOnPeaks));
 			info.setGridX(JaxbUtils.unmarshallInteger(aInfo.gridX));
 			info.setGridY(JaxbUtils.unmarshallInteger(aInfo.gridY));
+
+			if (CollectionUtils.hasElements(aInfo.domainExtraMoves)) {
+				for (AdaptedDomainExtraMoves adaptor: aInfo.domainExtraMoves) {
+					if (StringUtils.hasCharacters(adaptor.domainType)) {
+						info.addDomainExtraMove(new Pair<String, Integer>(adaptor.domainType, adaptor.iExtraMoves));
+					}
+				}
+			}
+
+			if (CollectionUtils.hasElements(aInfo.commerceModifiers)) {
+				for (Integer val: aInfo.commerceModifiers) {
+					info.addCommerceModifier(JaxbUtils.unmarshallInteger(val));
+				}
+			}
+
+			if (CollectionUtils.hasElements(aInfo.specialistExtraCommerces)) {
+				for (Integer val: aInfo.specialistExtraCommerces) {
+					info.addSpecialistExtraCommerce(JaxbUtils.unmarshallInteger(val));
+				}
+			}
+
+			if (CollectionUtils.hasElements(aInfo.commerceFlexible)) {
+				for (Integer val: aInfo.commerceFlexible) {
+					info.addCommerceFlexible(JaxbUtils.unmarshallBoolean(val));
+				}
+			}
+
+			if (CollectionUtils.hasElements(aInfo.terrainTrades)) {
+				for (String val: aInfo.terrainTrades) {
+					if (StringUtils.hasCharacters(val)) {
+						info.addTerrainTrade(JaxbUtils.unmarshallString(val));
+					}
+				}
+			}
 			info.setRiverTrade(JaxbUtils.unmarshallBoolean(aInfo.riverTrade));
 			info.setCaptureCities(JaxbUtils.unmarshallBoolean(aInfo.captureCities));
 			info.setUnitRangeUnbound(JaxbUtils.unmarshallBoolean(aInfo.unitRangeUnbound));
@@ -453,100 +303,244 @@ public class TechMapAdapter extends XmlAdapter<TechMapAdapter.TechMap, Map<Strin
 			info.setUnitRangeChange(JaxbUtils.unmarshallInteger(aInfo.unitRangeChange));
 			info.setUnitRangeModifier(JaxbUtils.unmarshallInteger(aInfo.unitRangeModifier));
 			info.setCultureDefenceModifier(JaxbUtils.unmarshallInteger(aInfo.cultureDefenceModifier));
+
+			if (CollectionUtils.hasElements(aInfo.forestPlotYieldChanges)) {
+				for (Integer val: aInfo.forestPlotYieldChanges) {
+					info.addForestPlotYieldChange(JaxbUtils.unmarshallInteger(val));
+				}
+			}
+
+			if (CollectionUtils.hasElements(aInfo.riverPlotYieldChanges)) {
+				for (Integer val: aInfo.riverPlotYieldChanges) {
+					info.addRiverPlotYieldChange(JaxbUtils.unmarshallInteger(val));
+				}
+			}
+
+			if (CollectionUtils.hasElements(aInfo.seaPlotYieldChanges)) {
+				for (Integer val: aInfo.seaPlotYieldChanges) {
+					info.addSeaPlotYieldChange(JaxbUtils.unmarshallInteger(val));
+				}
+			}
+
+			if (CollectionUtils.hasElements(aInfo.worldViewRevoltTurnChanges)) {
+				for (AdaptedWorldViewRevoltTurnChanges adaptor: aInfo.worldViewRevoltTurnChanges) {
+					if (StringUtils.hasCharacters(adaptor.worldViewType)) {
+						info.addWorldViewRevoltTurnChange(new Pair<String, Integer>(adaptor.worldViewType, adaptor.iChange));
+					}
+				}
+			}
+
+			if (CollectionUtils.hasElements(aInfo.flavors)) {
+				for (AdaptedFlavors adaptor: aInfo.flavors) {
+					if (StringUtils.hasCharacters(adaptor.flavorType)) {
+						info.addFlavor(new Pair<String, Integer>(adaptor.flavorType, adaptor.iFlavor));
+					}
+				}
+			}
+
+			if (CollectionUtils.hasElements(aInfo.orPreReqs)) {
+				for (String val: aInfo.orPreReqs) {
+					if (StringUtils.hasCharacters(val)) {
+						info.addOrPreReq(JaxbUtils.unmarshallString(val));
+					}
+				}
+			}
+
+			if (CollectionUtils.hasElements(aInfo.andPreReqs)) {
+				for (String val: aInfo.andPreReqs) {
+					if (StringUtils.hasCharacters(val)) {
+						info.addAndPreReq(JaxbUtils.unmarshallString(val));
+					}
+				}
+			}
+
+			if (CollectionUtils.hasElements(aInfo.enabledWorldViews)) {
+				for (String val: aInfo.enabledWorldViews) {
+					if (StringUtils.hasCharacters(val)) {
+						info.addEnabledWorldView(JaxbUtils.unmarshallString(val));
+					}
+				}
+			}
 			info.setQuote(JaxbUtils.unmarshallString(aInfo.quote));
 			info.setSound(JaxbUtils.unmarshallString(aInfo.sound));
 			info.setSoundMP(JaxbUtils.unmarshallString(aInfo.soundMP));
 			info.setButton(JaxbUtils.unmarshallString(aInfo.button));
 
-			if (CollectionUtils.hasNonZeroElements(aInfo.commerceModifiers)) {
-				for (Integer change: aInfo.commerceModifiers) {
-					info.addCommerceModifier(change);
-				}
-			}
-			
-			if (CollectionUtils.hasNonZeroElements(aInfo.specialistExtraCommerces)) {
-				for (Integer change: aInfo.specialistExtraCommerces) {
-					info.addSpecialistExtraCommerce(change);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(aInfo.domainExtraMoves)) {
-				for (AdaptedDomainExtraMoves adaptor: aInfo.domainExtraMoves) {
-					if (adaptor.moves != 0)
-						info.addDomainExtraMove(new Pair<String, Integer>(adaptor.domain, adaptor.moves));
-				}
-			}
-			
-			if (CollectionUtils.hasElements(aInfo.worldViewRevoltTurnChanges)) {
-				for (AdaptedWorldViewRevoltTurnChanges adaptor: aInfo.worldViewRevoltTurnChanges) {
-					if (StringUtils.hasCharacters(adaptor.worldView) && adaptor.change != 0)
-						info.addWorldViewRevoltTurnChange(new Pair<String, Integer>(adaptor.worldView, adaptor.change));
-				}
-			}
-			
-			if (CollectionUtils.hasElements(aInfo.flavors)) {
-				for (AdaptedFlavors adaptor: aInfo.flavors) {
-					if (StringUtils.hasCharacters(adaptor.flavor) && adaptor.value != 0)
-						info.addFlavor(new Pair<String, Integer>(adaptor.flavor, adaptor.value));
-				}
-			}
-			
-			if (CollectionUtils.hasNonZeroElements(aInfo.commerceFlexible)) {
-				for (Integer flexible: aInfo.commerceFlexible) {
-					info.addCommerceFlexible(JaxbUtils.unmarshallBoolean(flexible));					
-				}
-			}
-			
-			if (CollectionUtils.hasElements(aInfo.terrainTrades)) {
-				for (String terrain: aInfo.terrainTrades) {
-					if (StringUtils.hasCharacters(terrain))
-						info.addTerrainTrade(terrain);
-				}
-			}
-			
-			if (CollectionUtils.hasNonZeroElements(aInfo.forestPlotYieldChanges)) {
-				// Only add this tag if there are non-zero changes
-				for (Integer change: aInfo.forestPlotYieldChanges) {
-					info.addForestPlotYieldChange(change);
-				}
-			}
-			
-			if (CollectionUtils.hasNonZeroElements(aInfo.riverPlotYieldChanges)) {
-				for (Integer change: aInfo.riverPlotYieldChanges) {
-					info.addRiverPlotYieldChange(change);
-				}
-			}
-			
-			if (CollectionUtils.hasNonZeroElements(aInfo.seaPlotYieldChanges)) {
-				for (Integer change: aInfo.seaPlotYieldChanges) {
-					info.addSeaPlotYieldChange(change);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(aInfo.orPrereqs)) {
-				for (String prereq: aInfo.orPrereqs) {
-					if (StringUtils.hasCharacters(prereq))
-						info.addOrPrereq(prereq);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(aInfo.andPrereqs)) {
-				for (String prereq: aInfo.andPrereqs) {
-					if (StringUtils.hasCharacters(prereq))
-						info.addAndPrereq(prereq);
-				}
-			}
-			
-			if (CollectionUtils.hasElements(aInfo.enabledWorldViews)) {
-				for (String worldView: aInfo.enabledWorldViews) {
-					if (StringUtils.hasCharacters(worldView))
-						info.addEnabledWorldViews(worldView);
-				}
-			}
-			
 			map.put(aInfo.type, info);
 		}
 		return map;
 	}
 
+	@Override
+	public TechMap marshal(Map<String, ITechInfo> v) throws Exception {
+		TechMap map = new TechMap();
+		for (ITechInfo info: v.values()) {
+			AdaptedTech aInfo = new AdaptedTech();
+			aInfo.type = JaxbUtils.marshallString(info.getType());
+			aInfo.description = JaxbUtils.marshallMandatoryString(info.getDescription());
+			aInfo.civilopedia = JaxbUtils.marshallString(info.getCivilopedia());
+			aInfo.help = JaxbUtils.marshallString(info.getHelp());
+			aInfo.strategy = JaxbUtils.marshallString(info.getStrategy());
+			aInfo.advisor = JaxbUtils.marshallMandatoryString(info.getAdvisor());
+			aInfo.aIWeight = JaxbUtils.marshallInteger(info.getAIWeight());
+			aInfo.aITradeModifier = JaxbUtils.marshallInteger(info.getAITradeModifier());
+			aInfo.cost = JaxbUtils.marshallMandatoryInteger(info.getCost());
+			aInfo.advancedStartCost = JaxbUtils.marshallMandatoryInteger(info.getAdvancedStartCost());
+			aInfo.advancedStartCostIncrease = JaxbUtils.marshallInteger(info.getAdvancedStartCostIncrease());
+			aInfo.era = JaxbUtils.marshallMandatoryString(info.getEra());
+			aInfo.civSettled = JaxbUtils.marshallBoolean(info.isCivSettled());
+			aInfo.freeCapitalBuildingClass = JaxbUtils.marshallString(info.getFreeCapitalBuildingClass());
+			aInfo.firstFreeUnitClass = JaxbUtils.marshallString(info.getFirstFreeUnitClass());
+			aInfo.freeUnitClass = JaxbUtils.marshallString(info.getFreeUnitClass());
+			aInfo.featureProductionModifier = JaxbUtils.marshallInteger(info.getFeatureProductionModifier());
+			aInfo.workerSpeedModifier = JaxbUtils.marshallInteger(info.getWorkerSpeedModifier());
+			aInfo.tradeRoutes = JaxbUtils.marshallInteger(info.getTradeRoutes());
+			aInfo.health = JaxbUtils.marshallInteger(info.getHealth());
+			aInfo.happiness = JaxbUtils.marshallInteger(info.getHappiness());
+			aInfo.firstFreeTechs = JaxbUtils.marshallInteger(info.getFirstFreeTechs());
+			aInfo.asset = JaxbUtils.marshallMandatoryInteger(info.getAsset());
+			aInfo.power = JaxbUtils.marshallInteger(info.getPower());
+			aInfo.repeat = JaxbUtils.marshallBoolean(info.isRepeat());
+			aInfo.trade = JaxbUtils.marshallBoolean(info.isTrade());
+			aInfo.embassyTrading = JaxbUtils.marshallBoolean(info.isEmbassyTrading());
+			aInfo.freeTradeAgreementTrading = JaxbUtils.marshallBoolean(info.isFreeTradeAgreementTrading());
+			aInfo.nonAggressionTrading = JaxbUtils.marshallBoolean(info.isNonAggressionTrading());
+			aInfo.disable = JaxbUtils.marshallBoolean(info.isDisable());
+			aInfo.goodyTech = JaxbUtils.marshallBoolean(info.isGoodyTech());
+			aInfo.extraWaterSeeFrom = JaxbUtils.marshallBoolean(info.isExtraWaterSeeFrom());
+			aInfo.mapCentering = JaxbUtils.marshallBoolean(info.isMapCentering());
+			aInfo.mapVisible = JaxbUtils.marshallBoolean(info.isMapVisible());
+			aInfo.mapTrading = JaxbUtils.marshallBoolean(info.isMapTrading());
+			aInfo.techTrading = JaxbUtils.marshallBoolean(info.isTechTrading());
+			aInfo.goldTrading = JaxbUtils.marshallBoolean(info.isGoldTrading());
+			aInfo.openBordersTrading = JaxbUtils.marshallBoolean(info.isOpenBordersTrading());
+			aInfo.limitedBordersTrading = JaxbUtils.marshallBoolean(info.isLimitedBordersTrading());
+			aInfo.defensivePactTrading = JaxbUtils.marshallBoolean(info.isDefensivePactTrading());
+			aInfo.permanentAllianceTrading = JaxbUtils.marshallBoolean(info.isPermanentAllianceTrading());
+			aInfo.vassalTrading = JaxbUtils.marshallBoolean(info.isVassalTrading());
+			aInfo.bridgeBuilding = JaxbUtils.marshallBoolean(info.isBridgeBuilding());
+			aInfo.irrigation = JaxbUtils.marshallBoolean(info.isIrrigation());
+			aInfo.ignoreIrrigation = JaxbUtils.marshallBoolean(info.isIgnoreIrrigation());
+			aInfo.waterWork = JaxbUtils.marshallBoolean(info.isWaterWork());
+			aInfo.canPassPeaks = JaxbUtils.marshallBoolean(info.isCanPassPeaks());
+			aInfo.moveFastPeaks = JaxbUtils.marshallBoolean(info.isMoveFastPeaks());
+			aInfo.canFoundOnPeaks = JaxbUtils.marshallBoolean(info.isCanFoundOnPeaks());
+			aInfo.gridX = JaxbUtils.marshallMandatoryInteger(info.getGridX());
+			aInfo.gridY = JaxbUtils.marshallMandatoryInteger(info.getGridY());
+
+			if (CollectionUtils.hasElements(info.getDomainExtraMoves())) {
+				aInfo.domainExtraMoves = new ArrayList<AdaptedDomainExtraMoves>();
+				for (IPair<String, Integer> pair: info.getDomainExtraMoves()) {
+					AdaptedDomainExtraMoves adaptor = new AdaptedDomainExtraMoves();
+					adaptor.domainType = pair.getKey();
+					adaptor.iExtraMoves = pair.getValue();
+					aInfo.domainExtraMoves.add(adaptor);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getCommerceModifiers())) {
+				aInfo.commerceModifiers = new ArrayList<Integer>();
+				for(Integer val: info.getCommerceModifiers()) {
+					aInfo.commerceModifiers.add(JaxbUtils.marshallMandatoryInteger(val));
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getSpecialistExtraCommerces())) {
+				aInfo.specialistExtraCommerces = new ArrayList<Integer>();
+				for(Integer val: info.getSpecialistExtraCommerces()) {
+					aInfo.specialistExtraCommerces.add(JaxbUtils.marshallMandatoryInteger(val));
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getCommerceFlexible())) {
+				aInfo.commerceFlexible = new ArrayList<Integer>();
+				for(Boolean val: info.getCommerceFlexible()) {
+					aInfo.commerceFlexible.add(JaxbUtils.marshallMandatoryBoolean(val));
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getTerrainTrades())) {
+				aInfo.terrainTrades = new ArrayList<String>();
+				for(String val: info.getTerrainTrades()) {
+					aInfo.terrainTrades.add(JaxbUtils.marshallMandatoryString(val));
+				}
+			}
+			aInfo.riverTrade = JaxbUtils.marshallBoolean(info.isRiverTrade());
+			aInfo.captureCities = JaxbUtils.marshallBoolean(info.isCaptureCities());
+			aInfo.unitRangeUnbound = JaxbUtils.marshallBoolean(info.isUnitRangeUnbound());
+			aInfo.unitTerritoryUnbound = JaxbUtils.marshallBoolean(info.isUnitTerritoryUnbound());
+			aInfo.unitRangeChange = JaxbUtils.marshallInteger(info.getUnitRangeChange());
+			aInfo.unitRangeModifier = JaxbUtils.marshallInteger(info.getUnitRangeModifier());
+			aInfo.cultureDefenceModifier = JaxbUtils.marshallInteger(info.getCultureDefenceModifier());
+
+			if (CollectionUtils.hasElements(info.getForestPlotYieldChanges())) {
+				aInfo.forestPlotYieldChanges = new ArrayList<Integer>();
+				for(Integer val: info.getForestPlotYieldChanges()) {
+					aInfo.forestPlotYieldChanges.add(JaxbUtils.marshallMandatoryInteger(val));
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getRiverPlotYieldChanges())) {
+				aInfo.riverPlotYieldChanges = new ArrayList<Integer>();
+				for(Integer val: info.getRiverPlotYieldChanges()) {
+					aInfo.riverPlotYieldChanges.add(JaxbUtils.marshallMandatoryInteger(val));
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getSeaPlotYieldChanges())) {
+				aInfo.seaPlotYieldChanges = new ArrayList<Integer>();
+				for(Integer val: info.getSeaPlotYieldChanges()) {
+					aInfo.seaPlotYieldChanges.add(JaxbUtils.marshallMandatoryInteger(val));
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getWorldViewRevoltTurnChanges())) {
+				aInfo.worldViewRevoltTurnChanges = new ArrayList<AdaptedWorldViewRevoltTurnChanges>();
+				for (IPair<String, Integer> pair: info.getWorldViewRevoltTurnChanges()) {
+					AdaptedWorldViewRevoltTurnChanges adaptor = new AdaptedWorldViewRevoltTurnChanges();
+					adaptor.worldViewType = pair.getKey();
+					adaptor.iChange = pair.getValue();
+					aInfo.worldViewRevoltTurnChanges.add(adaptor);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getFlavors())) {
+				aInfo.flavors = new ArrayList<AdaptedFlavors>();
+				for (IPair<String, Integer> pair: info.getFlavors()) {
+					AdaptedFlavors adaptor = new AdaptedFlavors();
+					adaptor.flavorType = pair.getKey();
+					adaptor.iFlavor = pair.getValue();
+					aInfo.flavors.add(adaptor);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getOrPreReqs())) {
+				aInfo.orPreReqs = new ArrayList<String>();
+				for(String val: info.getOrPreReqs()) {
+					aInfo.orPreReqs.add(JaxbUtils.marshallMandatoryString(val));
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getAndPreReqs())) {
+				aInfo.andPreReqs = new ArrayList<String>();
+				for(String val: info.getAndPreReqs()) {
+					aInfo.andPreReqs.add(JaxbUtils.marshallMandatoryString(val));
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getEnabledWorldViews())) {
+				aInfo.enabledWorldViews = new ArrayList<String>();
+				for(String val: info.getEnabledWorldViews()) {
+					aInfo.enabledWorldViews.add(JaxbUtils.marshallMandatoryString(val));
+				}
+			}
+			aInfo.quote = JaxbUtils.marshallString(info.getQuote());
+			aInfo.sound = JaxbUtils.marshallString(info.getSound());
+			aInfo.soundMP = JaxbUtils.marshallString(info.getSoundMP());
+			aInfo.button = JaxbUtils.marshallMandatoryString(info.getButton());
+
+			map.entries.add(aInfo);
+		}
+		return map;
+	}
 }

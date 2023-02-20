@@ -1,29 +1,25 @@
 package org.archid.civ4.info.tech;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import org.archid.civ4.info.AbstractInfos;
 import org.archid.utils.IPair;
-import org.archid.utils.StringUtils;
 
 @XmlRootElement(name="Civ4TechInfos", namespace="x-schema:CIV4TechnologiesSchema.xml")
 @XmlAccessorType(XmlAccessType.NONE)
 public class TechInfos extends AbstractInfos<ITechInfo> {
-	
+
 	public TechInfos() {
-		super(new TreeMap<String, ITechInfo>());
+		super(new LinkedHashMap<String, ITechInfo>());
 	}
-	
-	/** All know techs */
+
 	@XmlJavaTypeAdapter(TechMapAdapter.class)
 	@XmlElement(name="TechInfos")
 	public Map<String, ITechInfo> getInfoMap() {
@@ -38,1060 +34,797 @@ public class TechInfos extends AbstractInfos<ITechInfo> {
 	public void setInfoMap(Map<String, ITechInfo> infos) {
 		this.infos = infos;
 	}
-	
-	private static class TechInfo implements ITechInfo {
-		private String type = "";
-		private String description = "";
+
+	private static class TechInfo implements ITechInfo{
+
+		private String type;
+		private String description;
 		private String civilopedia;
 		private String help;
 		private String strategy;
-		private String advisor = "NO_ADVISOR";
-		private String era = "NO_ERA";
+		private String advisor;
+		private Integer aIWeight;
+		private Integer aITradeModifier;
+		private Integer cost;
+		private Integer advancedStartCost;
+		private Integer advancedStartCostIncrease;
+		private String era;
+		private Boolean civSettled;
 		private String freeCapitalBuildingClass;
 		private String firstFreeUnitClass;
 		private String freeUnitClass;
-		private String quote;
-		private String sound;
-		private String soundMp;
-		private String button;
-		private int aiWeight;
-		private int aiTradeModifier;
-		private int cost = 0;
-		private int advancedStartCost = 100;
-		private int advancedStartCostIncrease;
-		private int featureProductionModifier;
-		private int workerSpeedModifier;
-		private int tradeRoutes;
-		private int health;
-		private int happiness;
-		private int firstFreeTechs;
-		private int asset = 0;
-		private int power;
-		private int gridX = 1;
-		private int gridY = 1;
-		private int unitRangeChange;
-		private int unitRangeModifier;
-		private int cultureDefenceModifier;
-		private boolean repeat;
-		private boolean trade;
-		private boolean embassyTrading;
-		private boolean freeTradeAgreementTrading;
-		private boolean nonAggressionTrading;
-		private boolean disable;
-		private boolean goodyTech;
-		private boolean extraWaterSeeFrom;
-		private boolean mapCentering;
-		private boolean mapVisible;
-		private boolean mapTrading;
-		private boolean techTrading;
-		private boolean goldTrading;
-		private boolean openBordersTrading;
-		private boolean limitedBordersTrading;
-		private boolean defensivePactTrading;
-		private boolean permanentAllianceTrading;
-		private boolean vassalTrading;
-		private boolean bridgeBuilding;
-		private boolean irrigation;
-		private boolean ignoreIrrigation;
-		private boolean waterWork;
-		private boolean canPassPeaks;
-		private boolean moveFastPeaks;
-		private boolean canFoundOnPeaks;
-		private boolean riverTrade;
-		private boolean captureCities;
-		private boolean unitRangeUnbound;
-		private boolean unitTerritoryUnbound;
-		private boolean civSettled;
+		private Integer featureProductionModifier;
+		private Integer workerSpeedModifier;
+		private Integer tradeRoutes;
+		private Integer health;
+		private Integer happiness;
+		private Integer firstFreeTechs;
+		private Integer asset;
+		private Integer power;
+		private Boolean repeat;
+		private Boolean trade;
+		private Boolean embassyTrading;
+		private Boolean freeTradeAgreementTrading;
+		private Boolean nonAggressionTrading;
+		private Boolean disable;
+		private Boolean goodyTech;
+		private Boolean extraWaterSeeFrom;
+		private Boolean mapCentering;
+		private Boolean mapVisible;
+		private Boolean mapTrading;
+		private Boolean techTrading;
+		private Boolean goldTrading;
+		private Boolean openBordersTrading;
+		private Boolean limitedBordersTrading;
+		private Boolean defensivePactTrading;
+		private Boolean permanentAllianceTrading;
+		private Boolean vassalTrading;
+		private Boolean bridgeBuilding;
+		private Boolean irrigation;
+		private Boolean ignoreIrrigation;
+		private Boolean waterWork;
+		private Boolean canPassPeaks;
+		private Boolean moveFastPeaks;
+		private Boolean canFoundOnPeaks;
+		private Integer gridX;
+		private Integer gridY;
 		private List<IPair<String, Integer>> domainExtraMoves = new ArrayList<IPair<String, Integer>>();
-		private List<IPair<String, Integer>> worldViewRevoltTurnChanges = new ArrayList<IPair<String, Integer>>();
-		private List<IPair<String, Integer>> flavors = new ArrayList<IPair<String, Integer>>();
-		private List<Boolean> commerceFlexibles = new ArrayList<Boolean>();
+		private List<Integer> commerceModifiers = new ArrayList<Integer>();
+		private List<Integer> specialistExtraCommerces = new ArrayList<Integer>();
+		private List<Boolean> commerceFlexible = new ArrayList<Boolean>();
+		private List<String> terrainTrades = new ArrayList<String>();
+		private Boolean riverTrade;
+		private Boolean captureCities;
+		private Boolean unitRangeUnbound;
+		private Boolean unitTerritoryUnbound;
+		private Integer unitRangeChange;
+		private Integer unitRangeModifier;
+		private Integer cultureDefenceModifier;
 		private List<Integer> forestPlotYieldChanges = new ArrayList<Integer>();
 		private List<Integer> riverPlotYieldChanges = new ArrayList<Integer>();
 		private List<Integer> seaPlotYieldChanges = new ArrayList<Integer>();
-		private List<Integer> commerceModifiers = new ArrayList<Integer>();
-		private List<Integer> specialistExtraCommerces = new ArrayList<Integer>();
-		private List<String> terrainTrades = new ArrayList<String>();
-		private List<String> orPrereqs = new ArrayList<String>();
-		private List<String> andPrereqs = new ArrayList<String>();
+		private List<IPair<String, Integer>> worldViewRevoltTurnChanges = new ArrayList<IPair<String, Integer>>();
+		private List<IPair<String, Integer>> flavors = new ArrayList<IPair<String, Integer>>();
+		private List<String> orPreReqs = new ArrayList<String>();
+		private List<String> andPreReqs = new ArrayList<String>();
 		private List<String> enabledWorldViews = new ArrayList<String>();
-		
+		private String quote;
+		private String sound;
+		private String soundMP;
+		private String button;
+
 		private TechInfo(String type) {
 			this.type = type;
-			description = "TXT_KEY_" + type;
-			civilopedia = "TXT_KEY_" + type + "_PEDIA";
-			help = "TXT_KEY_" + type + "_HELP";
-			strategy = "TXT_KEY_" + type + "_STRATEGY";
-			quote = "TXT_KEY_" + type + "_QUOTE";
-			sound = "AS2D_TECH_" + StringUtils.titleCaseCompress(type.substring(type.indexOf('_') + 1), '_');
-			soundMp = sound;
-			button = "Art/Interface/Buttons/TechTree/" + type.substring(type.indexOf('_') + 1).toLowerCase() + ".dds";
 		}
-		
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getType()
-		 */
+
 		@Override
 		public String getType() {
 			return type;
 		}
-		
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setType(java.lang.String)
-		 */
+
 		@Override
 		public void setType(String type) {
 			this.type = type;
 		}
-		
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getDescription()
-		 */
+
 		@Override
 		public String getDescription() {
 			return description;
 		}
-		
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setDescription(java.lang.String)
-		 */
+
 		@Override
 		public void setDescription(String description) {
 			this.description = description;
 		}
-		
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getCivilopedia()
-		 */
+
 		@Override
 		public String getCivilopedia() {
 			return civilopedia;
 		}
-		
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setCivilopedia(java.lang.String)
-		 */
+
 		@Override
 		public void setCivilopedia(String civilopedia) {
 			this.civilopedia = civilopedia;
 		}
-		
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getHelp()
-		 */
+
 		@Override
 		public String getHelp() {
 			return help;
 		}
-		
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setHelp(java.lang.String)
-		 */
+
 		@Override
 		public void setHelp(String help) {
 			this.help = help;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getAdvisor()
-		 */
+		@Override
+		public String getStrategy() {
+			return strategy;
+		}
+
+		@Override
+		public void setStrategy(String strategy) {
+			this.strategy = strategy;
+		}
+
 		@Override
 		public String getAdvisor() {
 			return advisor;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setAdvisor(java.lang.String)
-		 */
 		@Override
 		public void setAdvisor(String advisor) {
 			this.advisor = advisor;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getAiWeight()
-		 */
 		@Override
-		public int getAiWeight() {
-			return aiWeight;
+		public Integer getAIWeight() {
+			return aIWeight;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setAiWeight(java.lang.Integer)
-		 */
 		@Override
-		public void setAiWeight(int aiWeight) {
-			this.aiWeight = aiWeight;
+		public void setAIWeight(Integer aIWeight) {
+			this.aIWeight = aIWeight;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getAiTradeModifier()
-		 */
 		@Override
-		public int getAiTradeModifier() {
-			return aiTradeModifier;
+		public Integer getAITradeModifier() {
+			return aITradeModifier;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setAiTradeModifier(java.lang.Integer)
-		 */
 		@Override
-		public void setAiTradeModifier(int aiTradeModifier) {
-			this.aiTradeModifier = aiTradeModifier;
+		public void setAITradeModifier(Integer aITradeModifier) {
+			this.aITradeModifier = aITradeModifier;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getCost()
-		 */
 		@Override
-		public int getCost() {
+		public Integer getCost() {
 			return cost;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setCost(java.lang.Integer)
-		 */
 		@Override
-		public void setCost(int cost) {
+		public void setCost(Integer cost) {
 			this.cost = cost;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getAdvancedStartCost()
-		 */
 		@Override
-		public int getAdvancedStartCost() {
+		public Integer getAdvancedStartCost() {
 			return advancedStartCost;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setAdvancedStartCost(java.lang.Integer)
-		 */
 		@Override
-		public void setAdvancedStartCost(int advancedStartCost) {
+		public void setAdvancedStartCost(Integer advancedStartCost) {
 			this.advancedStartCost = advancedStartCost;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getAdvancedStartCostIncrease()
-		 */
 		@Override
-		public int getAdvancedStartCostIncrease() {
+		public Integer getAdvancedStartCostIncrease() {
 			return advancedStartCostIncrease;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setAdvancedStartCostIncrease(java.lang.Integer)
-		 */
 		@Override
-		public void setAdvancedStartCostIncrease(int advancedStartCostIncrease) {
+		public void setAdvancedStartCostIncrease(Integer advancedStartCostIncrease) {
 			this.advancedStartCostIncrease = advancedStartCostIncrease;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getEra()
-		 */
 		@Override
 		public String getEra() {
 			return era;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setEra(java.lang.String)
-		 */
 		@Override
 		public void setEra(String era) {
 			this.era = era;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getFirstFreeUnitClass()
-		 */
+		@Override
+		public Boolean isCivSettled() {
+			return civSettled;
+		}
+
+		@Override
+		public void setCivSettled(Boolean civSettled) {
+			this.civSettled = civSettled;
+		}
+
+		@Override
+		public String getFreeCapitalBuildingClass() {
+			return freeCapitalBuildingClass;
+		}
+
+		@Override
+		public void setFreeCapitalBuildingClass(String freeCapitalBuildingClass) {
+			this.freeCapitalBuildingClass = freeCapitalBuildingClass;
+		}
+
 		@Override
 		public String getFirstFreeUnitClass() {
 			return firstFreeUnitClass;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setFirstFreeUnitClass(java.lang.String)
-		 */
 		@Override
 		public void setFirstFreeUnitClass(String firstFreeUnitClass) {
 			this.firstFreeUnitClass = firstFreeUnitClass;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getFreeUnitClass()
-		 */
 		@Override
 		public String getFreeUnitClass() {
 			return freeUnitClass;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setFreeUnitClass(java.lang.String)
-		 */
 		@Override
 		public void setFreeUnitClass(String freeUnitClass) {
 			this.freeUnitClass = freeUnitClass;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getFeatureProductionModifier()
-		 */
 		@Override
-		public int getFeatureProductionModifier() {
+		public Integer getFeatureProductionModifier() {
 			return featureProductionModifier;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setFeatureProductionModifier(java.lang.Integer)
-		 */
 		@Override
-		public void setFeatureProductionModifier(int featureProductionModifier) {
+		public void setFeatureProductionModifier(Integer featureProductionModifier) {
 			this.featureProductionModifier = featureProductionModifier;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getWorkerSpeedModifier()
-		 */
 		@Override
-		public int getWorkerSpeedModifier() {
+		public Integer getWorkerSpeedModifier() {
 			return workerSpeedModifier;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setWorkerSpeedModifier(java.lang.Integer)
-		 */
 		@Override
-		public void setWorkerSpeedModifier(int workerSpeedModifier) {
+		public void setWorkerSpeedModifier(Integer workerSpeedModifier) {
 			this.workerSpeedModifier = workerSpeedModifier;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getTradeRoutes()
-		 */
 		@Override
-		public int getTradeRoutes() {
+		public Integer getTradeRoutes() {
 			return tradeRoutes;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setTradeRoutes(java.lang.Integer)
-		 */
 		@Override
-		public void setTradeRoutes(int tradeRoutes) {
+		public void setTradeRoutes(Integer tradeRoutes) {
 			this.tradeRoutes = tradeRoutes;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getHealth()
-		 */
 		@Override
-		public int getHealth() {
+		public Integer getHealth() {
 			return health;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setHealth(java.lang.Integer)
-		 */
 		@Override
-		public void setHealth(int health) {
+		public void setHealth(Integer health) {
 			this.health = health;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getHappiness()
-		 */
 		@Override
-		public int getHappiness() {
+		public Integer getHappiness() {
 			return happiness;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setHappiness(java.lang.Integer)
-		 */
 		@Override
-		public void setHappiness(int happiness) {
+		public void setHappiness(Integer happiness) {
 			this.happiness = happiness;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getFirstFreeTechs()
-		 */
 		@Override
-		public int getFirstFreeTechs() {
+		public Integer getFirstFreeTechs() {
 			return firstFreeTechs;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setFirstFreeTechs(java.lang.Integer)
-		 */
 		@Override
-		public void setFirstFreeTechs(int firstFreeTechs) {
+		public void setFirstFreeTechs(Integer firstFreeTechs) {
 			this.firstFreeTechs = firstFreeTechs;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getAsset()
-		 */
 		@Override
-		public int getAsset() {
+		public Integer getAsset() {
 			return asset;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setAsset(java.lang.Integer)
-		 */
 		@Override
-		public void setAsset(int asset) {
+		public void setAsset(Integer asset) {
 			this.asset = asset;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getPower()
-		 */
 		@Override
-		public int getPower() {
+		public Integer getPower() {
 			return power;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setPower(java.lang.Integer)
-		 */
 		@Override
-		public void setPower(int power) {
+		public void setPower(Integer power) {
 			this.power = power;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getRepeat()
-		 */
 		@Override
-		public boolean isRepeat() {
+		public Boolean isRepeat() {
 			return repeat;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setRepeat(java.lang.Boolean)
-		 */
 		@Override
-		public void setRepeat(boolean repeat) {
+		public void setRepeat(Boolean repeat) {
 			this.repeat = repeat;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getTrade()
-		 */
 		@Override
-		public boolean isTrade() {
+		public Boolean isTrade() {
 			return trade;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setTrade(java.lang.Boolean)
-		 */
 		@Override
-		public void setTrade(boolean trade) {
+		public void setTrade(Boolean trade) {
 			this.trade = trade;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getEmbassyTrading()
-		 */
 		@Override
-		public boolean isEmbassyTrading() {
+		public Boolean isEmbassyTrading() {
 			return embassyTrading;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setEmbassyTrading(java.lang.Boolean)
-		 */
 		@Override
-		public void setEmbassyTrading(boolean embassyTrading) {
+		public void setEmbassyTrading(Boolean embassyTrading) {
 			this.embassyTrading = embassyTrading;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getFreeTradeAgreementTrading()
-		 */
 		@Override
-		public boolean isFreeTradeAgreementTrading() {
+		public Boolean isFreeTradeAgreementTrading() {
 			return freeTradeAgreementTrading;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setFreeTradeAgreementTrading(java.lang.Boolean)
-		 */
 		@Override
-		public void setFreeTradeAgreementTrading(boolean freeTradeAgreementTrading) {
+		public void setFreeTradeAgreementTrading(Boolean freeTradeAgreementTrading) {
 			this.freeTradeAgreementTrading = freeTradeAgreementTrading;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getNonAggressionTrading()
-		 */
 		@Override
-		public boolean isNonAggressionTrading() {
+		public Boolean isNonAggressionTrading() {
 			return nonAggressionTrading;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setNonAggressionTrading(java.lang.Boolean)
-		 */
 		@Override
-		public void setNonAggressionTrading(boolean nonAggressionTrading) {
+		public void setNonAggressionTrading(Boolean nonAggressionTrading) {
 			this.nonAggressionTrading = nonAggressionTrading;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getDisable()
-		 */
 		@Override
-		public boolean isDisable() {
+		public Boolean isDisable() {
 			return disable;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setDisable(java.lang.Boolean)
-		 */
 		@Override
-		public void setDisable(boolean disable) {
+		public void setDisable(Boolean disable) {
 			this.disable = disable;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getGoodyTech()
-		 */
 		@Override
-		public boolean isGoodyTech() {
+		public Boolean isGoodyTech() {
 			return goodyTech;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setGoodyTech(java.lang.Boolean)
-		 */
 		@Override
-		public void setGoodyTech(boolean goodyTech) {
+		public void setGoodyTech(Boolean goodyTech) {
 			this.goodyTech = goodyTech;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getExtraWaterSeeFrom()
-		 */
 		@Override
-		public boolean isExtraWaterSeeFrom() {
+		public Boolean isExtraWaterSeeFrom() {
 			return extraWaterSeeFrom;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setExtraWaterSeeFrom(java.lang.Boolean)
-		 */
 		@Override
-		public void setExtraWaterSeeFrom(boolean extraWaterSeeFrom) {
+		public void setExtraWaterSeeFrom(Boolean extraWaterSeeFrom) {
 			this.extraWaterSeeFrom = extraWaterSeeFrom;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getMapCentering()
-		 */
 		@Override
-		public boolean isMapCentering() {
+		public Boolean isMapCentering() {
 			return mapCentering;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setMapCentering(java.lang.Boolean)
-		 */
 		@Override
-		public void setMapCentering(boolean mapCentering) {
+		public void setMapCentering(Boolean mapCentering) {
 			this.mapCentering = mapCentering;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getMapVisible()
-		 */
 		@Override
-		public boolean isMapVisible() {
+		public Boolean isMapVisible() {
 			return mapVisible;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setMapVisible(java.lang.Boolean)
-		 */
 		@Override
-		public void setMapVisible(boolean mapVisible) {
+		public void setMapVisible(Boolean mapVisible) {
 			this.mapVisible = mapVisible;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getMapTrading()
-		 */
 		@Override
-		public boolean isMapTrading() {
+		public Boolean isMapTrading() {
 			return mapTrading;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setMapTrading(java.lang.Boolean)
-		 */
 		@Override
-		public void setMapTrading(boolean mapTrading) {
+		public void setMapTrading(Boolean mapTrading) {
 			this.mapTrading = mapTrading;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getTechTrading()
-		 */
 		@Override
-		public boolean isTechTrading() {
+		public Boolean isTechTrading() {
 			return techTrading;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setTechTrading(java.lang.Boolean)
-		 */
 		@Override
-		public void setTechTrading(boolean techTrading) {
+		public void setTechTrading(Boolean techTrading) {
 			this.techTrading = techTrading;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getGoldTrading()
-		 */
 		@Override
-		public boolean isGoldTrading() {
+		public Boolean isGoldTrading() {
 			return goldTrading;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setGoldTrading(java.lang.Boolean)
-		 */
 		@Override
-		public void setGoldTrading(boolean goldTrading) {
+		public void setGoldTrading(Boolean goldTrading) {
 			this.goldTrading = goldTrading;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getOpenBordersTrading()
-		 */
 		@Override
-		public boolean isOpenBordersTrading() {
+		public Boolean isOpenBordersTrading() {
 			return openBordersTrading;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setOpenBordersTrading(java.lang.Boolean)
-		 */
 		@Override
-		public void setOpenBordersTrading(boolean openBordersTrading) {
+		public void setOpenBordersTrading(Boolean openBordersTrading) {
 			this.openBordersTrading = openBordersTrading;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getLimitedBordersTrading()
-		 */
 		@Override
-		public boolean isLimitedBordersTrading() {
+		public Boolean isLimitedBordersTrading() {
 			return limitedBordersTrading;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setLimitedBordersTrading(java.lang.Boolean)
-		 */
 		@Override
-		public void setLimitedBordersTrading(boolean limitedBordersTrading) {
+		public void setLimitedBordersTrading(Boolean limitedBordersTrading) {
 			this.limitedBordersTrading = limitedBordersTrading;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getDefensivePactTrading()
-		 */
 		@Override
-		public boolean isDefensivePactTrading() {
+		public Boolean isDefensivePactTrading() {
 			return defensivePactTrading;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setDefensivePactTrading(java.lang.Boolean)
-		 */
 		@Override
-		public void setDefensivePactTrading(boolean defensivePactTrading) {
+		public void setDefensivePactTrading(Boolean defensivePactTrading) {
 			this.defensivePactTrading = defensivePactTrading;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getPermanentAllianceTrading()
-		 */
 		@Override
-		public boolean isPermanentAllianceTrading() {
+		public Boolean isPermanentAllianceTrading() {
 			return permanentAllianceTrading;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setPermanentAllianceTrading(java.lang.Boolean)
-		 */
 		@Override
-		public void setPermanentAllianceTrading(boolean permanentAllianceTrading) {
+		public void setPermanentAllianceTrading(Boolean permanentAllianceTrading) {
 			this.permanentAllianceTrading = permanentAllianceTrading;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getVassalTrading()
-		 */
 		@Override
-		public boolean isVassalTrading() {
+		public Boolean isVassalTrading() {
 			return vassalTrading;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setVassalTrading(java.lang.Boolean)
-		 */
 		@Override
-		public void setVassalTrading(boolean vassalTrading) {
+		public void setVassalTrading(Boolean vassalTrading) {
 			this.vassalTrading = vassalTrading;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getBridgeBuilding()
-		 */
 		@Override
-		public boolean isBridgeBuilding() {
+		public Boolean isBridgeBuilding() {
 			return bridgeBuilding;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setBridgeBuilding(java.lang.Boolean)
-		 */
 		@Override
-		public void setBridgeBuilding(boolean bridgeBuilding) {
+		public void setBridgeBuilding(Boolean bridgeBuilding) {
 			this.bridgeBuilding = bridgeBuilding;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getIrrigation()
-		 */
 		@Override
-		public boolean isIrrigation() {
+		public Boolean isIrrigation() {
 			return irrigation;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setIrrigation(java.lang.Boolean)
-		 */
 		@Override
-		public void setIrrigation(boolean irrigation) {
+		public void setIrrigation(Boolean irrigation) {
 			this.irrigation = irrigation;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getIgnoreIrrigation()
-		 */
 		@Override
-		public boolean isIgnoreIrrigation() {
+		public Boolean isIgnoreIrrigation() {
 			return ignoreIrrigation;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setIgnoreIrrigation(java.lang.Boolean)
-		 */
 		@Override
-		public void setIgnoreIrrigation(boolean ignoreIrrigation) {
+		public void setIgnoreIrrigation(Boolean ignoreIrrigation) {
 			this.ignoreIrrigation = ignoreIrrigation;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getWaterWork()
-		 */
 		@Override
-		public boolean isWaterWork() {
+		public Boolean isWaterWork() {
 			return waterWork;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setWaterWork(java.lang.Boolean)
-		 */
 		@Override
-		public void setWaterWork(boolean waterWork) {
+		public void setWaterWork(Boolean waterWork) {
 			this.waterWork = waterWork;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getCanPassPeaks()
-		 */
 		@Override
-		public boolean isCanPassPeaks() {
+		public Boolean isCanPassPeaks() {
 			return canPassPeaks;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setCanPassPeaks(java.lang.Boolean)
-		 */
 		@Override
-		public void setCanPassPeaks(boolean canPassPeaks) {
+		public void setCanPassPeaks(Boolean canPassPeaks) {
 			this.canPassPeaks = canPassPeaks;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getMoveFastPeaks()
-		 */
 		@Override
-		public boolean isMoveFastPeaks() {
+		public Boolean isMoveFastPeaks() {
 			return moveFastPeaks;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setMoveFastPeaks(java.lang.Boolean)
-		 */
 		@Override
-		public void setMoveFastPeaks(boolean moveFastPeaks) {
+		public void setMoveFastPeaks(Boolean moveFastPeaks) {
 			this.moveFastPeaks = moveFastPeaks;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getCanFoundOnPeaks()
-		 */
 		@Override
-		public boolean isCanFoundOnPeaks() {
+		public Boolean isCanFoundOnPeaks() {
 			return canFoundOnPeaks;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setCanFoundOnPeaks(java.lang.Boolean)
-		 */
 		@Override
-		public void setCanFoundOnPeaks(boolean canFoundOnPeaks) {
+		public void setCanFoundOnPeaks(Boolean canFoundOnPeaks) {
 			this.canFoundOnPeaks = canFoundOnPeaks;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getGridX()
-		 */
 		@Override
-		public int getGridX() {
+		public Integer getGridX() {
 			return gridX;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setGridX(java.lang.Integer)
-		 */
 		@Override
-		public void setGridX(int gridX) {
+		public void setGridX(Integer gridX) {
 			this.gridX = gridX;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getGridY()
-		 */
 		@Override
-		public int getGridY() {
+		public Integer getGridY() {
 			return gridY;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setGridY(java.lang.Integer)
-		 */
 		@Override
-		public void setGridY(int gridY) {
+		public void setGridY(Integer gridY) {
 			this.gridY = gridY;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getDomainExtraMoves()
-		 */
 		@Override
 		public List<IPair<String, Integer>> getDomainExtraMoves() {
-			return new ArrayList<IPair<String, Integer>>(domainExtraMoves);
+			return domainExtraMoves;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#setDomainExtraMoves(java.util.List)
-		 */
 		@Override
 		public void addDomainExtraMove(IPair<String, Integer> domainExtraMove) {
 			this.domainExtraMoves.add(domainExtraMove);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getCommerceFlexibles()
-		 */
 		@Override
-		public List<Boolean> getCommerceFlexibles() {
-			return new ArrayList<Boolean>(commerceFlexibles);
+		public List<Integer> getCommerceModifiers() {
+			return commerceModifiers;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#addCommerceFlexible(boolean)
-		 */
 		@Override
-		public void addCommerceFlexible(boolean flexible) {
-			this.commerceFlexibles.add(flexible);
+		public void addCommerceModifier(Integer commerceModifier) {
+			this.commerceModifiers.add(commerceModifier);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#getTerrainTrades()
-		 */
+		@Override
+		public List<Integer> getSpecialistExtraCommerces() {
+			return specialistExtraCommerces;
+		}
+
+		@Override
+		public void addSpecialistExtraCommerce(Integer specialistExtraCommerce) {
+			this.specialistExtraCommerces.add(specialistExtraCommerce);
+		}
+
+		@Override
+		public List<Boolean> getCommerceFlexible() {
+			return commerceFlexible;
+		}
+
+		@Override
+		public void addCommerceFlexible(Boolean commerceFlexible) {
+			this.commerceFlexible.add(commerceFlexible);
+		}
+
 		@Override
 		public List<String> getTerrainTrades() {
-			return new ArrayList<String>(terrainTrades);
-		}
-
-		/* (non-Javadoc)
-		 * @see org.archid.civ4.xml.techinfo.ITechInfo#addTerrainTrade(java.lang.String)
-		 */
-		@Override
-		public void addTerrainTrade(String terrain) {
-			terrainTrades.add(terrain);
+			return terrainTrades;
 		}
 
 		@Override
-		public boolean isRiverTrade() {
+		public void addTerrainTrade(String terrainTrade) {
+			this.terrainTrades.add(terrainTrade);
+		}
+
+		@Override
+		public Boolean isRiverTrade() {
 			return riverTrade;
 		}
 
 		@Override
-		public void setRiverTrade(boolean riverTrade) {
+		public void setRiverTrade(Boolean riverTrade) {
 			this.riverTrade = riverTrade;
 		}
 
 		@Override
-		public boolean isCaptureCites() {
+		public Boolean isCaptureCities() {
 			return captureCities;
 		}
 
 		@Override
-		public void setCaptureCities(boolean captureCities) {
+		public void setCaptureCities(Boolean captureCities) {
 			this.captureCities = captureCities;
 		}
 
 		@Override
-		public boolean isUnitRangeUnbound() {
+		public Boolean isUnitRangeUnbound() {
 			return unitRangeUnbound;
 		}
 
 		@Override
-		public void setUnitRangeUnbound(boolean unbound) {
-			unitRangeUnbound = unbound;
+		public void setUnitRangeUnbound(Boolean unitRangeUnbound) {
+			this.unitRangeUnbound = unitRangeUnbound;
 		}
 
 		@Override
-		public boolean isUnitTerritoryUnbound() {
+		public Boolean isUnitTerritoryUnbound() {
 			return unitTerritoryUnbound;
 		}
 
 		@Override
-		public void setUnitTerritoryUnbound(boolean unbound) {
-			unitTerritoryUnbound = unbound;
+		public void setUnitTerritoryUnbound(Boolean unitTerritoryUnbound) {
+			this.unitTerritoryUnbound = unitTerritoryUnbound;
 		}
 
 		@Override
-		public int getUnitRangeChange() {
+		public Integer getUnitRangeChange() {
 			return unitRangeChange;
 		}
 
 		@Override
-		public void setUnitRangeChange(int change) {
-			unitRangeChange = change;
+		public void setUnitRangeChange(Integer unitRangeChange) {
+			this.unitRangeChange = unitRangeChange;
 		}
 
 		@Override
-		public int getUnitRangeModifier() {
+		public Integer getUnitRangeModifier() {
 			return unitRangeModifier;
 		}
 
 		@Override
-		public void setUnitRangeModifier(int modifier) {
-			unitRangeModifier = modifier;
+		public void setUnitRangeModifier(Integer unitRangeModifier) {
+			this.unitRangeModifier = unitRangeModifier;
 		}
 
 		@Override
-		public int getCultureDefenceModifier() {
+		public Integer getCultureDefenceModifier() {
 			return cultureDefenceModifier;
 		}
 
 		@Override
-		public void setCultureDefenceModifier(int modifier) {
-			cultureDefenceModifier = modifier;
+		public void setCultureDefenceModifier(Integer cultureDefenceModifier) {
+			this.cultureDefenceModifier = cultureDefenceModifier;
 		}
 
 		@Override
 		public List<Integer> getForestPlotYieldChanges() {
-			return new ArrayList<Integer>(forestPlotYieldChanges);
+			return forestPlotYieldChanges;
 		}
 
 		@Override
-		public void addForestPlotYieldChange(int change) {
-			forestPlotYieldChanges.add(change);
+		public void addForestPlotYieldChange(Integer forestPlotYieldChange) {
+			this.forestPlotYieldChanges.add(forestPlotYieldChange);
 		}
-		
+
 		@Override
 		public List<Integer> getRiverPlotYieldChanges() {
-			return new ArrayList<Integer>(riverPlotYieldChanges);
+			return riverPlotYieldChanges;
 		}
 
 		@Override
-		public void addRiverPlotYieldChange(int change) {
-			riverPlotYieldChanges.add(change);
+		public void addRiverPlotYieldChange(Integer riverPlotYieldChange) {
+			this.riverPlotYieldChanges.add(riverPlotYieldChange);
 		}
-		
+
 		@Override
 		public List<Integer> getSeaPlotYieldChanges() {
-			return new ArrayList<Integer>(seaPlotYieldChanges);
+			return seaPlotYieldChanges;
 		}
 
 		@Override
-		public void addSeaPlotYieldChange(int change) {
-			seaPlotYieldChanges.add(change);
+		public void addSeaPlotYieldChange(Integer seaPlotYieldChange) {
+			this.seaPlotYieldChanges.add(seaPlotYieldChange);
 		}
 
 		@Override
 		public List<IPair<String, Integer>> getWorldViewRevoltTurnChanges() {
-			return new ArrayList<IPair<String, Integer>>(worldViewRevoltTurnChanges);
+			return worldViewRevoltTurnChanges;
 		}
 
 		@Override
 		public void addWorldViewRevoltTurnChange(IPair<String, Integer> worldViewRevoltTurnChange) {
-			worldViewRevoltTurnChanges.add(worldViewRevoltTurnChange);
+			this.worldViewRevoltTurnChanges.add(worldViewRevoltTurnChange);
 		}
-		
+
 		@Override
 		public List<IPair<String, Integer>> getFlavors() {
-			return new ArrayList<IPair<String, Integer>>(flavors);
+			return flavors;
 		}
 
 		@Override
 		public void addFlavor(IPair<String, Integer> flavor) {
-			flavors.add(flavor);
+			this.flavors.add(flavor);
 		}
 
 		@Override
-		public List<String> getOrPrereqs() {
-			return new ArrayList<String>(orPrereqs);
+		public List<String> getOrPreReqs() {
+			return orPreReqs;
 		}
 
 		@Override
-		public void addOrPrereq(String tech) {
-			orPrereqs.add(tech);
+		public void addOrPreReq(String orPreReq) {
+			this.orPreReqs.add(orPreReq);
 		}
 
 		@Override
-		public List<String> getAndPrereqs() {
-			return new ArrayList<String>(andPrereqs);
+		public List<String> getAndPreReqs() {
+			return andPreReqs;
 		}
 
 		@Override
-		public void addAndPrereq(String tech) {
-			andPrereqs.add(tech);
+		public void addAndPreReq(String andPreReq) {
+			this.andPreReqs.add(andPreReq);
 		}
 
 		@Override
 		public List<String> getEnabledWorldViews() {
-			return new ArrayList<String>(enabledWorldViews);
+			return enabledWorldViews;
 		}
 
 		@Override
-		public void addEnabledWorldViews(String worldView) {
-			enabledWorldViews.add(worldView);
+		public void addEnabledWorldView(String enabledWorldView) {
+			this.enabledWorldViews.add(enabledWorldView);
 		}
 
 		@Override
@@ -1116,12 +849,12 @@ public class TechInfos extends AbstractInfos<ITechInfo> {
 
 		@Override
 		public String getSoundMP() {
-			return soundMp;
+			return soundMP;
 		}
 
 		@Override
-		public void setSoundMP(String sound) {
-			soundMp = sound;
+		public void setSoundMP(String soundMP) {
+			this.soundMP = soundMP;
 		}
 
 		@Override
@@ -1133,56 +866,5 @@ public class TechInfos extends AbstractInfos<ITechInfo> {
 		public void setButton(String button) {
 			this.button = button;
 		}
-
-		@Override
-		public String getStrategy() {
-			return strategy;
-		}
-
-		@Override
-		public void setStrategy(String strategy) {
-			this.strategy = strategy;
-		}
-
-		@Override
-		public String getFreeCapitalBuildingClass() {
-			return freeCapitalBuildingClass;
-		}
-
-		@Override
-		public void setFreeCapitalBuildingClass(String freeCapitalBuildingClass) {
-			this.freeCapitalBuildingClass = freeCapitalBuildingClass;
-		}
-
-		@Override
-		public List<Integer> getCommerceModifiers() {
-			return new ArrayList<Integer>(commerceModifiers);
-		}
-
-		@Override
-		public void addCommerceModifier(int change) {
-			commerceModifiers.add(change);
-		}
-
-		@Override
-		public List<Integer> getSpecialistExtraCommerces() {
-			return new ArrayList<Integer>(specialistExtraCommerces);
-		}
-
-		@Override
-		public void addSpecialistExtraCommerce(int change) {
-			specialistExtraCommerces.add(change);
-		}
-
-		@Override
-		public boolean isCivSettled() {
-			return civSettled;
-		}
-
-		@Override
-		public void setCivSettled(boolean civSettled) {
-			this.civSettled = civSettled;
-		}
-
 	}
 }

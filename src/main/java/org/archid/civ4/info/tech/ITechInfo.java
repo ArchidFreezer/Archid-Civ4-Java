@@ -1,305 +1,231 @@
 package org.archid.civ4.info.tech;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.archid.civ4.info.IInfo;
 import org.archid.utils.IPair;
 
 public interface ITechInfo extends IInfo {
-	
-	public String getDescription();
+	String getDescription();
+	void setDescription(String description);
 
-	public void setDescription(String description);
+	String getCivilopedia();
+	void setCivilopedia(String civilopedia);
 
-	public String getCivilopedia();
+	String getHelp();
+	void setHelp(String help);
 
-	public void setCivilopedia(String civilopedia);
+	String getStrategy();
+	void setStrategy(String strategy);
 
-	public String getHelp();
+	String getAdvisor();
+	void setAdvisor(String advisor);
 
-	public void setHelp(String help);
+	Integer getAIWeight();
+	void setAIWeight(Integer aIWeight);
 
-	public String getStrategy();
+	Integer getAITradeModifier();
+	void setAITradeModifier(Integer aITradeModifier);
 
-	public void setStrategy(String strategy);
+	Integer getCost();
+	void setCost(Integer cost);
 
-	public String getAdvisor();
+	Integer getAdvancedStartCost();
+	void setAdvancedStartCost(Integer advancedStartCost);
 
-	public void setAdvisor(String advisor);
+	Integer getAdvancedStartCostIncrease();
+	void setAdvancedStartCostIncrease(Integer advancedStartCostIncrease);
 
-	public int getAiWeight();
+	String getEra();
+	void setEra(String era);
 
-	public void setAiWeight(int aiWeight);
+	Boolean isCivSettled();
+	void setCivSettled(Boolean civSettled);
 
-	public int getAiTradeModifier();
+	String getFreeCapitalBuildingClass();
+	void setFreeCapitalBuildingClass(String freeCapitalBuildingClass);
 
-	public void setAiTradeModifier(int aiTradeModifier);
+	String getFirstFreeUnitClass();
+	void setFirstFreeUnitClass(String firstFreeUnitClass);
 
-	public int getCost();
+	String getFreeUnitClass();
+	void setFreeUnitClass(String freeUnitClass);
 
-	public void setCost(int cost);
+	Integer getFeatureProductionModifier();
+	void setFeatureProductionModifier(Integer featureProductionModifier);
 
-	public int getAdvancedStartCost();
+	Integer getWorkerSpeedModifier();
+	void setWorkerSpeedModifier(Integer workerSpeedModifier);
 
-	public void setAdvancedStartCost(int advancedStartCost);
+	Integer getTradeRoutes();
+	void setTradeRoutes(Integer tradeRoutes);
 
-	public int getAdvancedStartCostIncrease();
+	Integer getHealth();
+	void setHealth(Integer health);
 
-	public void setAdvancedStartCostIncrease(int advancedStartCostIncrease);
+	Integer getHappiness();
+	void setHappiness(Integer happiness);
 
-	public String getEra();
+	Integer getFirstFreeTechs();
+	void setFirstFreeTechs(Integer firstFreeTechs);
 
-	public void setEra(String era);
+	Integer getAsset();
+	void setAsset(Integer asset);
 
-	public String getFreeCapitalBuildingClass();
+	Integer getPower();
+	void setPower(Integer power);
 
-	public void setFreeCapitalBuildingClass(String freeCapitalBuildingClass);
+	Boolean isRepeat();
+	void setRepeat(Boolean repeat);
 
-	public String getFirstFreeUnitClass();
+	Boolean isTrade();
+	void setTrade(Boolean trade);
 
-	public void setFirstFreeUnitClass(String firstFreeUnitClass);
+	Boolean isEmbassyTrading();
+	void setEmbassyTrading(Boolean embassyTrading);
 
-	public String getFreeUnitClass();
+	Boolean isFreeTradeAgreementTrading();
+	void setFreeTradeAgreementTrading(Boolean freeTradeAgreementTrading);
 
-	public void setFreeUnitClass(String freeUnitClass);
+	Boolean isNonAggressionTrading();
+	void setNonAggressionTrading(Boolean nonAggressionTrading);
 
-	public int getFeatureProductionModifier();
+	Boolean isDisable();
+	void setDisable(Boolean disable);
 
-	public void setFeatureProductionModifier(int featureProductionModifier);
+	Boolean isGoodyTech();
+	void setGoodyTech(Boolean goodyTech);
 
-	public int getWorkerSpeedModifier();
+	Boolean isExtraWaterSeeFrom();
+	void setExtraWaterSeeFrom(Boolean extraWaterSeeFrom);
 
-	public void setWorkerSpeedModifier(int workerSpeedModifier);
+	Boolean isMapCentering();
+	void setMapCentering(Boolean mapCentering);
 
-	public int getTradeRoutes();
+	Boolean isMapVisible();
+	void setMapVisible(Boolean mapVisible);
 
-	public void setTradeRoutes(int tradeRoutes);
+	Boolean isMapTrading();
+	void setMapTrading(Boolean mapTrading);
 
-	public int getHealth();
+	Boolean isTechTrading();
+	void setTechTrading(Boolean techTrading);
 
-	public void setHealth(int health);
+	Boolean isGoldTrading();
+	void setGoldTrading(Boolean goldTrading);
 
-	public int getHappiness();
+	Boolean isOpenBordersTrading();
+	void setOpenBordersTrading(Boolean openBordersTrading);
 
-	public void setHappiness(int happiness);
+	Boolean isLimitedBordersTrading();
+	void setLimitedBordersTrading(Boolean limitedBordersTrading);
 
-	public int getFirstFreeTechs();
+	Boolean isDefensivePactTrading();
+	void setDefensivePactTrading(Boolean defensivePactTrading);
 
-	public void setFirstFreeTechs(int firstFreeTechs);
+	Boolean isPermanentAllianceTrading();
+	void setPermanentAllianceTrading(Boolean permanentAllianceTrading);
 
-	public int getAsset();
+	Boolean isVassalTrading();
+	void setVassalTrading(Boolean vassalTrading);
 
-	public void setAsset(int asset);
+	Boolean isBridgeBuilding();
+	void setBridgeBuilding(Boolean bridgeBuilding);
 
-	public int getPower();
+	Boolean isIrrigation();
+	void setIrrigation(Boolean irrigation);
 
-	public void setPower(int power);
+	Boolean isIgnoreIrrigation();
+	void setIgnoreIrrigation(Boolean ignoreIrrigation);
 
-	public boolean isRepeat();
+	Boolean isWaterWork();
+	void setWaterWork(Boolean waterWork);
 
-	public void setRepeat(boolean repeat);
+	Boolean isCanPassPeaks();
+	void setCanPassPeaks(Boolean canPassPeaks);
 
-	public boolean isTrade();
+	Boolean isMoveFastPeaks();
+	void setMoveFastPeaks(Boolean moveFastPeaks);
 
-	public void setTrade(boolean trade);
+	Boolean isCanFoundOnPeaks();
+	void setCanFoundOnPeaks(Boolean canFoundOnPeaks);
 
-	public boolean isEmbassyTrading();
+	Integer getGridX();
+	void setGridX(Integer gridX);
 
-	public void setEmbassyTrading(boolean embassyTrading);
+	Integer getGridY();
+	void setGridY(Integer gridY);
 
-	public boolean isFreeTradeAgreementTrading();
+	List<IPair<String, Integer>> getDomainExtraMoves();
+	void addDomainExtraMove(IPair<String, Integer> domainExtraMove);
 
-	public void setFreeTradeAgreementTrading(boolean freeTradeAgreementTrading);
+	List<Integer> getCommerceModifiers();
+	void addCommerceModifier(Integer commerceModifier);
 
-	public boolean isNonAggressionTrading();
+	List<Integer> getSpecialistExtraCommerces();
+	void addSpecialistExtraCommerce(Integer specialistExtraCommerce);
 
-	public void setNonAggressionTrading(boolean nonAggressionTrading);
+	List<Boolean> getCommerceFlexible();
+	void addCommerceFlexible(Boolean commerceFlexible);
 
-	public boolean isDisable();
+	List<String> getTerrainTrades();
+	void addTerrainTrade(String terrainTrade);
 
-	public void setDisable(boolean disable);
+	Boolean isRiverTrade();
+	void setRiverTrade(Boolean riverTrade);
 
-	public boolean isGoodyTech();
+	Boolean isCaptureCities();
+	void setCaptureCities(Boolean captureCities);
 
-	public void setGoodyTech(boolean goodyTech);
+	Boolean isUnitRangeUnbound();
+	void setUnitRangeUnbound(Boolean unitRangeUnbound);
 
-	public boolean isExtraWaterSeeFrom();
+	Boolean isUnitTerritoryUnbound();
+	void setUnitTerritoryUnbound(Boolean unitTerritoryUnbound);
 
-	public void setExtraWaterSeeFrom(boolean extraWaterSeeFrom);
+	Integer getUnitRangeChange();
+	void setUnitRangeChange(Integer unitRangeChange);
 
-	public boolean isMapCentering();
+	Integer getUnitRangeModifier();
+	void setUnitRangeModifier(Integer unitRangeModifier);
 
-	public void setMapCentering(boolean mapCentering);
+	Integer getCultureDefenceModifier();
+	void setCultureDefenceModifier(Integer cultureDefenceModifier);
 
-	public boolean isMapVisible();
+	List<Integer> getForestPlotYieldChanges();
+	void addForestPlotYieldChange(Integer forestPlotYieldChange);
 
-	public void setMapVisible(boolean mapVisible);
+	List<Integer> getRiverPlotYieldChanges();
+	void addRiverPlotYieldChange(Integer riverPlotYieldChange);
 
-	public boolean isMapTrading();
+	List<Integer> getSeaPlotYieldChanges();
+	void addSeaPlotYieldChange(Integer seaPlotYieldChange);
 
-	public void setMapTrading(boolean mapTrading);
+	List<IPair<String, Integer>> getWorldViewRevoltTurnChanges();
+	void addWorldViewRevoltTurnChange(IPair<String, Integer> worldViewRevoltTurnChange);
 
-	public boolean isTechTrading();
+	List<IPair<String, Integer>> getFlavors();
+	void addFlavor(IPair<String, Integer> flavor);
 
-	public void setTechTrading(boolean techTrading);
+	List<String> getOrPreReqs();
+	void addOrPreReq(String orPreReq);
 
-	public boolean isGoldTrading();
+	List<String> getAndPreReqs();
+	void addAndPreReq(String andPreReq);
 
-	public void setGoldTrading(boolean goldTrading);
+	List<String> getEnabledWorldViews();
+	void addEnabledWorldView(String enabledWorldView);
 
-	public boolean isOpenBordersTrading();
+	String getQuote();
+	void setQuote(String quote);
 
-	public void setOpenBordersTrading(boolean openBordersTrading);
+	String getSound();
+	void setSound(String sound);
 
-	public boolean isLimitedBordersTrading();
+	String getSoundMP();
+	void setSoundMP(String soundMP);
 
-	public void setLimitedBordersTrading(boolean limitedBordersTrading);
+	String getButton();
+	void setButton(String button);
 
-	public boolean isDefensivePactTrading();
-
-	public void setDefensivePactTrading(boolean defensivePactTrading);
-
-	public boolean isPermanentAllianceTrading();
-
-	public void setPermanentAllianceTrading(boolean permanentAllianceTrading);
-
-	public boolean isVassalTrading();
-
-	public void setVassalTrading(boolean vassalTrading);
-
-	public boolean isBridgeBuilding();
-
-	public void setBridgeBuilding(boolean bridgeBuilding);
-
-	public boolean isIrrigation();
-
-	public void setIrrigation(boolean irrigation);
-
-	public boolean isIgnoreIrrigation();
-
-	public void setIgnoreIrrigation(boolean ignoreIrrigation);
-
-	public boolean isWaterWork();
-
-	public void setWaterWork(boolean waterWork);
-
-	public boolean isCanPassPeaks();
-
-	public void setCanPassPeaks(boolean canPassPeaks);
-
-	public boolean isMoveFastPeaks();
-
-	public void setMoveFastPeaks(boolean moveFastPeaks);
-
-	public boolean isCanFoundOnPeaks();
-
-	public void setCanFoundOnPeaks(boolean canFoundOnPeaks);
-
-	public int getGridX();
-
-	public void setGridX(int gridX);
-
-	public int getGridY();
-
-	public void setGridY(int gridY);
-
-	public List<IPair<String, Integer>> getDomainExtraMoves();
-	
-	public void addDomainExtraMove(IPair<String, Integer> domainExtraMove);
-	
-	public List<Integer> getCommerceModifiers();
-	
-	public void addCommerceModifier(int change);
-	
-	public List<Integer> getSpecialistExtraCommerces();
-	
-	public void addSpecialistExtraCommerce(int change);
-	
-	public List<Boolean> getCommerceFlexibles();
-	
-	public void addCommerceFlexible(boolean flexible);
-	
-	public List<String> getTerrainTrades();
-	
-	public void addTerrainTrade(String terrain);
-	
-	public boolean isRiverTrade();
-	
-	public void setRiverTrade(boolean riverTrade);
-	
-	public boolean isCaptureCites();
-	
-	public void setCaptureCities(boolean captureCities);
-	
-	public boolean isUnitRangeUnbound();
-	
-	public void setUnitRangeUnbound(boolean unbound);
-	
-	public boolean isUnitTerritoryUnbound();
-	
-	public void setUnitTerritoryUnbound(boolean unbound);
-	
-	public int getUnitRangeChange();
-	
-	public void setUnitRangeChange(int change);
-	
-	public int getUnitRangeModifier();
-	
-	public void setUnitRangeModifier(int modifier);
-	
-	public int getCultureDefenceModifier();
-	
-	public void setCultureDefenceModifier(int modifier);
-	
-	public List<Integer> getForestPlotYieldChanges();
-	
-	public void addForestPlotYieldChange(int change);
-	
-	public List<Integer> getRiverPlotYieldChanges();
-	
-	public void addRiverPlotYieldChange(int change);
-
-	public List<Integer> getSeaPlotYieldChanges();
-	
-	public void addSeaPlotYieldChange(int change);
-	
-	public List<IPair<String, Integer>> getWorldViewRevoltTurnChanges();
-	
-	public void addWorldViewRevoltTurnChange(IPair<String, Integer> worldViewRevoltTurnChange);
-	
-	public List<IPair<String, Integer>> getFlavors();
-	
-	public void addFlavor(IPair<String, Integer> flavor);
-	
-	public List<String> getOrPrereqs();
-	
-	public void addOrPrereq(String tech);
-	
-	public List<String> getAndPrereqs();
-	
-	public void addAndPrereq(String tech);
-	
-	public List<String> getEnabledWorldViews();
-	
-	public void addEnabledWorldViews(String worldView);
-	
-	public String getQuote();
-	
-	public void setQuote(String quote);
-	
-	public String getSound();
-	
-	public void setSound(String sound);
-	
-	public String getSoundMP();
-	
-	public void setSoundMP(String sound);
-	
-	public String getButton();
-	
-	public void setButton(String button);
-	
-	public boolean isCivSettled();
-	
-	public void setCivSettled(boolean civSettled);
-	
 }

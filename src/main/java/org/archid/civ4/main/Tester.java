@@ -60,7 +60,7 @@ public class Tester {
 		info.setHelp("Help 1");
 		info.setCivilopedia("Civilopedia 1");
 		info.setType("Type 1");
-		info.setAiWeight(5);
+		info.setAIWeight(5);
 		info.setAdvancedStartCost(0);
 		info.setCanPassPeaks(true);
 		info.setRiverTrade(true);

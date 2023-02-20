@@ -1,7 +1,6 @@
 package org.archid.civ4.info.tech;
 
 import java.util.Iterator;
-
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -10,18 +9,21 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.archid.civ4.info.AbstractImporter;
 import org.archid.civ4.info.DefaultXmlFormatter;
 import org.archid.civ4.info.EInfo;
-import org.archid.civ4.info.IImporter;
 import org.archid.civ4.info.IInfos;
 
-public class TechImporter extends AbstractImporter<IInfos<ITechInfo>, ITechInfo> implements IImporter {
+public class TechImporter extends AbstractImporter<IInfos<ITechInfo>, ITechInfo> {
 
 	/** Logging facility */
 	static Logger log = Logger.getLogger(TechImporter.class.getName());
-	
+
 	public TechImporter(EInfo infoEnum) {
-		super(infoEnum, new DefaultXmlFormatter("Tech"));
+		super(infoEnum, new DefaultXmlFormatter("tech"));
 	}
 
+	@Override
+	public String getListSheetName() {
+		return ITechWorkbook.SHEETNAME_LIST;
+	}
 
 	/**
 	 * Overrides the the method from {@link AbstractImporter} to allow the {@code <TechInfo>} objects to be defined
@@ -31,15 +33,16 @@ public class TechImporter extends AbstractImporter<IInfos<ITechInfo>, ITechInfo>
 	 * 
 	 * @param wb {@link Workbook} containing the tech tree and list sheets
 	 */
+	@Override
 	protected boolean parseXlsx(Workbook wb) {
-		
+
 		// Get the iGridX and iGridY values from the tech tree
 		Sheet sheet = wb.getSheet(ITechWorkbook.SHEETNAME_TREE);
 		if (sheet == null) {
 			log.warn("Sheet " + ITechWorkbook.SHEETNAME_TREE + " does not exist in the workbook");
 			return false;
 		}
-		
+
 		Iterator<Row> itRow = sheet.rowIterator();
 		while (itRow.hasNext()) {
 			Row row = itRow.next();
@@ -65,13 +68,13 @@ public class TechImporter extends AbstractImporter<IInfos<ITechInfo>, ITechInfo>
 			log.warn("Sheet " + getListSheetName() + " does not exist in the workbook");
 			return false;
 		}
-		
+
 		itRow = sheet.rowIterator();
 		while (itRow.hasNext()) {
 			Row row = itRow.next();
 			int colNum = 0;
-			
-			String type = row.getCell(colNum++).getStringCellValue();
+
+			String type = row.getCell(0).getStringCellValue();
 			log.debug("Processing: " + type);
 			// Handle cells that have been moved
 			if (type.isEmpty())
@@ -80,13 +83,14 @@ public class TechImporter extends AbstractImporter<IInfos<ITechInfo>, ITechInfo>
 			// Handle deleted techs
 			if (info == null)
 				continue;
+			parseCell(row.getCell(colNum++), String.class, info::setType);
 			parseCell(row.getCell(colNum++), String.class, info::setDescription);
 			parseCell(row.getCell(colNum++), String.class, info::setCivilopedia);
 			parseCell(row.getCell(colNum++), String.class, info::setHelp);
 			parseCell(row.getCell(colNum++), String.class, info::setStrategy);
 			parseCell(row.getCell(colNum++), String.class, info::setAdvisor);
-			parseCell(row.getCell(colNum++), Integer.class, info::setAiWeight);
-			parseCell(row.getCell(colNum++), Integer.class, info::setAiTradeModifier);
+			parseCell(row.getCell(colNum++), Integer.class, info::setAIWeight);
+			parseCell(row.getCell(colNum++), Integer.class, info::setAITradeModifier);
 			parseCell(row.getCell(colNum++), Integer.class, info::setCost);
 			parseCell(row.getCell(colNum++), Integer.class, info::setAdvancedStartCost);
 			parseCell(row.getCell(colNum++), Integer.class, info::setAdvancedStartCostIncrease);
@@ -128,11 +132,11 @@ public class TechImporter extends AbstractImporter<IInfos<ITechInfo>, ITechInfo>
 			parseCell(row.getCell(colNum++), Boolean.class, info::setCanPassPeaks);
 			parseCell(row.getCell(colNum++), Boolean.class, info::setMoveFastPeaks);
 			parseCell(row.getCell(colNum++), Boolean.class, info::setCanFoundOnPeaks);
-			// We need to skip the iGridX & iGridY rows
-			colNum += 2;
+			colNum++; // skip the iGridX col
+			colNum++; // skip the iGridY col
+			parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addDomainExtraMove);
 			parseListCell(row.getCell(colNum++), Integer.class, info::addCommerceModifier);
 			parseListCell(row.getCell(colNum++), Integer.class, info::addSpecialistExtraCommerce);
-			parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addDomainExtraMove);
 			parseListCell(row.getCell(colNum++), Boolean.class, info::addCommerceFlexible);
 			parseListCell(row.getCell(colNum++), String.class, info::addTerrainTrade);
 			parseCell(row.getCell(colNum++), Boolean.class, info::setRiverTrade);
@@ -147,35 +151,27 @@ public class TechImporter extends AbstractImporter<IInfos<ITechInfo>, ITechInfo>
 			parseListCell(row.getCell(colNum++), Integer.class, info::addSeaPlotYieldChange);
 			parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addWorldViewRevoltTurnChange);
 			parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addFlavor);
-			parseListCell(row.getCell(colNum++), String.class, info::addOrPrereq);
-			parseListCell(row.getCell(colNum++), String.class, info::addAndPrereq);
-			parseListCell(row.getCell(colNum++), String.class, info::addEnabledWorldViews);
+			parseListCell(row.getCell(colNum++), String.class, info::addOrPreReq);
+			parseListCell(row.getCell(colNum++), String.class, info::addAndPreReq);
+			parseListCell(row.getCell(colNum++), String.class, info::addEnabledWorldView);
 			parseCell(row.getCell(colNum++), String.class, info::setQuote);
 			parseCell(row.getCell(colNum++), String.class, info::setSound);
 			parseCell(row.getCell(colNum++), String.class, info::setSoundMP);
 			parseCell(row.getCell(colNum++), String.class, info::setButton);
 		}
-		
+
 		return true;
 	}
-	
+
 	private Integer getGridXFromCell(Cell cell) {
 		Integer gridX = 0;
 		Integer colIndex = cell.getColumnIndex();
-		
+
 		if (colIndex > 0) {
 			gridX = colIndex / 2;
 		}
-		
-		return ++gridX;
-	}
 
-	/* (non-Javadoc)
-	 * @see org.archid.civ4.info.IImporter#getListSheetName()
-	 */
-	@Override
-	public String getListSheetName() {
-		return ITechWorkbook.SHEETNAME_LIST;
+		return ++gridX;
 	}
 
 	/**
@@ -185,5 +181,4 @@ public class TechImporter extends AbstractImporter<IInfos<ITechInfo>, ITechInfo>
 	protected ITechInfo parseRow(Row row) {
 		return null;
 	}
-
 }

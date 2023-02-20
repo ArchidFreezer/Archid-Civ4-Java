@@ -7,6 +7,7 @@ import org.archid.civ4.java.infoprocessor.CivicInfoProcessor;
 import org.archid.civ4.java.infoprocessor.DefaultInfoProcessor;
 import org.archid.civ4.java.infoprocessor.EraInfoProcessor;
 import org.archid.civ4.java.infoprocessor.IInfoProcessor;
+import org.archid.civ4.java.infoprocessor.TechInfoProcessor;
 import org.archid.civ4.java.infoprocessor.UnitInfoProcessor;
 
 public class InfoProcessorFactory {
@@ -22,6 +23,8 @@ public class InfoProcessorFactory {
 			return new CivicInfoProcessor();
 		} else if (infoName.equalsIgnoreCase("EraInfo")) {
 			return new EraInfoProcessor();
+		} else if (infoName.equalsIgnoreCase("TechInfo")) {
+			return new TechInfoProcessor();
 		} else if (infoName.equalsIgnoreCase("UnitInfo")) {
 			return new UnitInfoProcessor();
 		} else {
