@@ -1,5 +1,7 @@
 package org.archid.civ4.java;
 
+import org.archid.utils.StringUtils;
+
 public class DefaultResourceArrayTagProcessor extends AbstractTagProcessor {
 	
 	private final DefaultResourceArrayTagProcessorData tagVals;
@@ -211,7 +213,7 @@ public class DefaultResourceArrayTagProcessor extends AbstractTagProcessor {
 	public String getAdapterElement() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(NEWLINETT + "@XmlElement(name=\"" + tagName + "\")");
-		sb.append(NEWLINETT + "private " + getTagName() + " " + getVarName() + ";");
+		sb.append(NEWLINETT + "private " + getTagName() + " " + StringUtils.lCaseFirstChar(tagName) + ";");
 		return sb.toString();
 	}
 	

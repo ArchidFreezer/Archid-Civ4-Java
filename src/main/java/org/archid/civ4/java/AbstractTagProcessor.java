@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.archid.utils.StringUtils;
-
 public abstract class AbstractTagProcessor implements ITagProcessor {
 	
 	protected final String tagName;
@@ -41,14 +39,11 @@ public abstract class AbstractTagProcessor implements ITagProcessor {
 	
 	@Override
 	public String getAdapterElement() {
+		TagInstance tag = JavaCodeGeneratorData.getInstance().getTagInstance(tagName);
 		StringBuilder sb = new StringBuilder();
 		sb.append(NEWLINETT + "@XmlElement(name=\"" + tagName + "\")");
-		sb.append(NEWLINETT + "private " + JavaCodeGeneratorData.getInstance().getTagInstance(tagName).getDataType() + " " + getVarName() + ";");
+		sb.append(NEWLINETT + "private " + tag.getDataType() + " " + tag.getVarName() + ";");
 		return sb.toString();
-	}
-	
-	protected String getVarName() {
-		return StringUtils.lCaseFirstChar(tagName);
 	}
 	
 	public Map<String, String> getFilesToWrite() {
