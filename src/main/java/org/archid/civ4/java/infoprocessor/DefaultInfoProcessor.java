@@ -81,7 +81,7 @@ public class DefaultInfoProcessor implements IInfoProcessor {
 		return filesToWrite;
 	}
 	
-	protected DefaultResourceArrayTagProcessorData getTagData(String outer, String wrapper, String resource, String list, String element) {
+	protected DefaultResourceArrayTagProcessorData getTagProcessorData(String outer, String wrapper, String resource, String list, String element) {
 		DefaultResourceArrayTagProcessorData tagData = new DefaultResourceArrayTagProcessorData();
 		tagData.outer = outer;
 		tagData.wrapper = wrapper;

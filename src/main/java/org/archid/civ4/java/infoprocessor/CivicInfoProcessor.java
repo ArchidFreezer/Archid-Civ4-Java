@@ -14,11 +14,7 @@ public class CivicInfoProcessor extends DefaultInfoProcessor {
 		importImports.add("import org.apache.poi.ss.usermodel.Cell;");
 		importImports.add("import org.archid.civ4.info.IInfoWorkbook;");
 		importImports.add("import org.archid.utils.StringUtils;");
-		addTagProcessor(getImprovementYieldChangesProcessor());
-	}
-	
-	private DefaultResourceArrayTagProcessor getImprovementYieldChangesProcessor() {
-		return new DefaultResourceArrayTagProcessor(getTagData("ImprovementYieldChanges", "ImprovementYieldChange", "ImprovementType", "ImprovementYields", "iYield"), tagNameData);
+		addTagProcessor(new DefaultResourceArrayTagProcessor(getTagProcessorData("ImprovementYieldChanges", "ImprovementYieldChange", "ImprovementType", "ImprovementYields", "iYield"), tagNameData));
 	}
 	
 	@Override
@@ -32,8 +28,8 @@ public class CivicInfoProcessor extends DefaultInfoProcessor {
 	}
 	
 	@Override
-	protected DefaultResourceArrayTagProcessorData getTagData(String outer, String wrapper, String resource, String list, String element) {
-		DefaultResourceArrayTagProcessorData tagData = super.getTagData(outer, wrapper, resource, list, element);
+	protected DefaultResourceArrayTagProcessorData getTagProcessorData(String outer, String wrapper, String resource, String list, String element) {
+		DefaultResourceArrayTagProcessorData tagData = super.getTagProcessorData(outer, wrapper, resource, list, element);
 		tagData.infoInterface = "ICivicInfo";
 		tagData.folder = "civic";
 		return tagData;

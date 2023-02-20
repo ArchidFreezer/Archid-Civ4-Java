@@ -14,34 +14,13 @@ public class BuildingInfoProcessor extends DefaultInfoProcessor {
 		importImports.add("import org.apache.poi.ss.usermodel.Cell;");
 		importImports.add("import org.archid.civ4.info.IInfoWorkbook;");
 		importImports.add("import org.archid.utils.StringUtils;");
-		addTagProcessor(getSpecialistYieldChangesProcessor());
-		addTagProcessor(getBonusYieldModifiersProcessor());
-		addTagProcessor(getBonusYieldChangesProcessor());
-		addTagProcessor(getVicinityBonusYieldChangesProcessor());
-		addTagProcessor(getTechCommerceChangesProcessor());
+		addTagProcessor(new DefaultResourceArrayTagProcessor(getTagProcessorData("SpecialistYieldChanges", "SpecialistYieldChange", "SpecialistType", "YieldChanges", "iYield"), tagNameData));
+		addTagProcessor(new DefaultResourceArrayTagProcessor(getTagProcessorData("BonusYieldModifiers", "BonusYieldModifier", "BonusType", "YieldModifiers", "iYield"), tagNameData));
+		addTagProcessor(new DefaultResourceArrayTagProcessor(getTagProcessorData("BonusYieldChanges", "BonusYieldChange", "BonusType", "YieldChanges", "iYield"), tagNameData));
+		addTagProcessor(new DefaultResourceArrayTagProcessor(getTagProcessorData("VicinityBonusYieldChanges", "VicinityBonusYieldChange", "BonusType", "YieldChanges", "iYield"), tagNameData));
+		addTagProcessor(new DefaultResourceArrayTagProcessor(getTagProcessorData("TechCommerceChanges", "TechCommerceChange", "TechType", "CommerceChanges", "iCommerce"), tagNameData));
 	}
 	
-	private DefaultResourceArrayTagProcessor getSpecialistYieldChangesProcessor() {
-		return new DefaultResourceArrayTagProcessor(getTagData("SpecialistYieldChanges", "SpecialistYieldChange", "SpecialistType", "YieldChanges", "iYield"), tagNameData);
-	}
-	
-	private DefaultResourceArrayTagProcessor getBonusYieldModifiersProcessor() {
-		return new DefaultResourceArrayTagProcessor(getTagData("BonusYieldModifiers", "BonusYieldModifier", "BonusType", "YieldModifiers", "iYield"), tagNameData);
-	}
-	
-	private DefaultResourceArrayTagProcessor getBonusYieldChangesProcessor() {
-		return new DefaultResourceArrayTagProcessor(getTagData("BonusYieldChanges", "BonusYieldChange", "BonusType", "YieldChanges", "iYield"), tagNameData);
-	}
-	
-	private DefaultResourceArrayTagProcessor getVicinityBonusYieldChangesProcessor() {
-		return new DefaultResourceArrayTagProcessor(getTagData("VicinityBonusYieldChanges", "VicinityBonusYieldChange", "BonusType", "YieldChanges", "iYield"), tagNameData);
-	}
-		
-	private DefaultResourceArrayTagProcessor getTechCommerceChangesProcessor() {
-		return new DefaultResourceArrayTagProcessor(getTagData("TechCommerceChanges", "TechCommerceChange", "TechType", "CommerceChanges", "iCommerce"), tagNameData);
-	}
-	
-
 	@Override
 	public String getXmlFormatter() {
 		return "BuildingInfoXmlFormatter()";
@@ -53,8 +32,8 @@ public class BuildingInfoProcessor extends DefaultInfoProcessor {
 	}
 	
 	@Override
-	protected DefaultResourceArrayTagProcessorData getTagData(String outer, String wrapper, String resource, String list, String element) {
-		DefaultResourceArrayTagProcessorData tagData = super.getTagData(outer, wrapper, resource, list, element);
+	protected DefaultResourceArrayTagProcessorData getTagProcessorData(String outer, String wrapper, String resource, String list, String element) {
+		DefaultResourceArrayTagProcessorData tagData = super.getTagProcessorData(outer, wrapper, resource, list, element);
 		tagData.infoInterface = "IBuildingInfo";
 		tagData.folder = "building";
 		return tagData;
