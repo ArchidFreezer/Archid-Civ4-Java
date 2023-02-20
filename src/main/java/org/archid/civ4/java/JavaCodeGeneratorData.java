@@ -11,18 +11,12 @@ import org.archid.civ4.schema.SchemaParser;
 import org.archid.civ4.schema.XmlTagDefinition;
 import org.archid.civ4.schema.XmlTagInstance;
 import org.archid.civ4.schema.XmlTagDefinition.DataType;
-import org.archid.utils.FileUtils;
-import org.archid.utils.IPropertyHandler;
-import org.archid.utils.PropertyHandler;
-import org.archid.utils.PropertyKeys;
 
 public class JavaCodeGeneratorData {
 	
 	// Singleton instance
 	private static JavaCodeGeneratorData singleton = new JavaCodeGeneratorData();
 	
-	private IPropertyHandler props = PropertyHandler.getInstance();
-
 	private String namespaceFolder = null; // somevalue
 	private String infoName = null;        // SomeValueInfo
 	private String infoNameRoot = null;    // SomeValue

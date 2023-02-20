@@ -5,11 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-import org.archid.utils.CollectionUtils;
 import org.archid.utils.JaxbUtils;
-import org.archid.utils.StringUtils;
 
 public class BonusClassMapAdapter extends XmlAdapter<BonusClassMapAdapter.BonusClassMap, Map<String, IBonusClassInfo>> {
 
