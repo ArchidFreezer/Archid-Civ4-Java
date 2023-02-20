@@ -17,15 +17,11 @@ public abstract class AbstractTagProcessor implements ITagProcessor {
 	
 	public AbstractTagProcessor (String tagName) {
 		this.tagName = tagName;
-		addAdapterImports();
 	}
 
 	@Override
 	public String getTagName() {
 		return tagName;
-	}
-	
-	private void addAdapterImports() {
 	}
 	
 	@Override
