@@ -57,6 +57,7 @@ public class DefaultInfoProcessor implements IInfoProcessor {
 
 	@Override
 	public String getXmlFormatter() {
+		importImports.add("import org.archid.civ4.info.DefaultXmlFormatter;");
 		return "DefaultXmlFormatter(\"" + packageName + "\")";
 	}
 
