@@ -219,8 +219,8 @@ public interface ICivicInfo extends IInfo {
 	List<Integer> getCapitalCommerceModifiers();
 	void addCapitalCommerceModifier(Integer capitalCommerceModifier);
 
-	List<Integer> getSpecialistExtraCommerces();
-	void addSpecialistExtraCommerce(Integer specialistExtraCommerce);
+	List<Integer> getSpecialistCommerceChanges();
+	void addSpecialistCommerceChange(Integer specialistCommerceChange);
 
 	List<String> getHurrys();
 	void addHurry(String hurry);

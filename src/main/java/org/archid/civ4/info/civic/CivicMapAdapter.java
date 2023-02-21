@@ -170,9 +170,9 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 		@XmlElementWrapper(name="CapitalCommerceModifiers")
 		@XmlElement(name="iCommerce")
 		private List<Integer> capitalCommerceModifiers;
-		@XmlElementWrapper(name="SpecialistExtraCommerces")
+		@XmlElementWrapper(name="SpecialistCommerceChanges")
 		@XmlElement(name="iCommerce")
-		private List<Integer> specialistExtraCommerces;
+		private List<Integer> specialistCommerceChanges;
 		@XmlElementWrapper(name="Hurrys")
 		@XmlElement(name="HurryType")
 		private List<String> hurrys;
@@ -306,44 +306,44 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 
 			if (CollectionUtils.hasElements(aInfo.yieldModifiers)) {
 				for (Integer val: aInfo.yieldModifiers) {
-					info.addYieldModifier(val);
+					info.addYieldModifier(JaxbUtils.unmarshallInteger(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(aInfo.capitalYieldModifiers)) {
 				for (Integer val: aInfo.capitalYieldModifiers) {
-					info.addCapitalYieldModifier(val);
+					info.addCapitalYieldModifier(JaxbUtils.unmarshallInteger(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(aInfo.tradeYieldModifiers)) {
 				for (Integer val: aInfo.tradeYieldModifiers) {
-					info.addTradeYieldModifier(val);
+					info.addTradeYieldModifier(JaxbUtils.unmarshallInteger(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(aInfo.commerceModifiers)) {
 				for (Integer val: aInfo.commerceModifiers) {
-					info.addCommerceModifier(val);
+					info.addCommerceModifier(JaxbUtils.unmarshallInteger(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(aInfo.capitalCommerceModifiers)) {
 				for (Integer val: aInfo.capitalCommerceModifiers) {
-					info.addCapitalCommerceModifier(val);
+					info.addCapitalCommerceModifier(JaxbUtils.unmarshallInteger(val));
 				}
 			}
 
-			if (CollectionUtils.hasElements(aInfo.specialistExtraCommerces)) {
-				for (Integer val: aInfo.specialistExtraCommerces) {
-					info.addSpecialistExtraCommerce(val);
+			if (CollectionUtils.hasElements(aInfo.specialistCommerceChanges)) {
+				for (Integer val: aInfo.specialistCommerceChanges) {
+					info.addSpecialistCommerceChange(JaxbUtils.unmarshallInteger(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(aInfo.hurrys)) {
 				for (String val: aInfo.hurrys) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addHurry(val);
+						info.addHurry(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -351,7 +351,7 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 			if (CollectionUtils.hasElements(aInfo.specialBuildingNotRequireds)) {
 				for (String val: aInfo.specialBuildingNotRequireds) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addSpecialBuildingNotRequired(val);
+						info.addSpecialBuildingNotRequired(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -359,7 +359,7 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 			if (CollectionUtils.hasElements(aInfo.specialistValids)) {
 				for (String val: aInfo.specialistValids) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addSpecialistValid(val);
+						info.addSpecialistValid(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -481,63 +481,63 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 			if (CollectionUtils.hasElements(info.getYieldModifiers())) {
 				aInfo.yieldModifiers = new ArrayList<Integer>();
 				for(Integer val: info.getYieldModifiers()) {
-					aInfo.yieldModifiers.add(val);
+					aInfo.yieldModifiers.add(JaxbUtils.marshallMandatoryInteger(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getCapitalYieldModifiers())) {
 				aInfo.capitalYieldModifiers = new ArrayList<Integer>();
 				for(Integer val: info.getCapitalYieldModifiers()) {
-					aInfo.capitalYieldModifiers.add(val);
+					aInfo.capitalYieldModifiers.add(JaxbUtils.marshallMandatoryInteger(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getTradeYieldModifiers())) {
 				aInfo.tradeYieldModifiers = new ArrayList<Integer>();
 				for(Integer val: info.getTradeYieldModifiers()) {
-					aInfo.tradeYieldModifiers.add(val);
+					aInfo.tradeYieldModifiers.add(JaxbUtils.marshallMandatoryInteger(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getCommerceModifiers())) {
 				aInfo.commerceModifiers = new ArrayList<Integer>();
 				for(Integer val: info.getCommerceModifiers()) {
-					aInfo.commerceModifiers.add(val);
+					aInfo.commerceModifiers.add(JaxbUtils.marshallMandatoryInteger(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getCapitalCommerceModifiers())) {
 				aInfo.capitalCommerceModifiers = new ArrayList<Integer>();
 				for(Integer val: info.getCapitalCommerceModifiers()) {
-					aInfo.capitalCommerceModifiers.add(val);
+					aInfo.capitalCommerceModifiers.add(JaxbUtils.marshallMandatoryInteger(val));
 				}
 			}
 
-			if (CollectionUtils.hasElements(info.getSpecialistExtraCommerces())) {
-				aInfo.specialistExtraCommerces = new ArrayList<Integer>();
-				for(Integer val: info.getSpecialistExtraCommerces()) {
-					aInfo.specialistExtraCommerces.add(val);
+			if (CollectionUtils.hasElements(info.getSpecialistCommerceChanges())) {
+				aInfo.specialistCommerceChanges = new ArrayList<Integer>();
+				for(Integer val: info.getSpecialistCommerceChanges()) {
+					aInfo.specialistCommerceChanges.add(JaxbUtils.marshallMandatoryInteger(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getHurrys())) {
 				aInfo.hurrys = new ArrayList<String>();
 				for(String val: info.getHurrys()) {
-					aInfo.hurrys.add(val);
+					aInfo.hurrys.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getSpecialBuildingNotRequireds())) {
 				aInfo.specialBuildingNotRequireds = new ArrayList<String>();
 				for(String val: info.getSpecialBuildingNotRequireds()) {
-					aInfo.specialBuildingNotRequireds.add(val);
+					aInfo.specialBuildingNotRequireds.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getSpecialistValids())) {
 				aInfo.specialistValids = new ArrayList<String>();
 				for(String val: info.getSpecialistValids()) {
-					aInfo.specialistValids.add(val);
+					aInfo.specialistValids.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 

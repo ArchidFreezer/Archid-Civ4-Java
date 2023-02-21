@@ -109,7 +109,7 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 		private List<Integer> tradeYieldModifiers = new ArrayList<Integer>();
 		private List<Integer> commerceModifiers = new ArrayList<Integer>();
 		private List<Integer> capitalCommerceModifiers = new ArrayList<Integer>();
-		private List<Integer> specialistExtraCommerces = new ArrayList<Integer>();
+		private List<Integer> specialistCommerceChanges = new ArrayList<Integer>();
 		private List<String> hurrys = new ArrayList<String>();
 		private List<String> specialBuildingNotRequireds = new ArrayList<String>();
 		private List<String> specialistValids = new ArrayList<String>();
@@ -847,13 +847,13 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 		}
 
 		@Override
-		public List<Integer> getSpecialistExtraCommerces() {
-			return specialistExtraCommerces;
+		public List<Integer> getSpecialistCommerceChanges() {
+			return specialistCommerceChanges;
 		}
 
 		@Override
-		public void addSpecialistExtraCommerce(Integer specialistExtraCommerce) {
-			this.specialistExtraCommerces.add(specialistExtraCommerce);
+		public void addSpecialistCommerceChange(Integer specialistCommerceChange) {
+			this.specialistCommerceChanges.add(specialistCommerceChange);
 		}
 
 		@Override

@@ -116,7 +116,7 @@ public class CivicExporter extends AbstractExporter<IInfos<ICivicInfo>, ICivicIn
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getTradeYieldModifiers(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getCommerceModifiers(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getCapitalCommerceModifiers(), maxHeight);
-		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getSpecialistExtraCommerces(), maxHeight);
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getSpecialistCommerceChanges(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getHurrys(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getSpecialBuildingNotRequireds(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getSpecialistValids(), maxHeight);
@@ -133,20 +133,20 @@ public class CivicExporter extends AbstractExporter<IInfos<ICivicInfo>, ICivicIn
 	}
 
 	private int addImprovementYieldChangeCell(Cell cell, ImprovementYieldChanges list, int maxHeight) {
-		if (list == null) return maxHeight;
-
 		int currHeight = 0;
 		cell.setCellStyle(csWrap);
 		StringBuilder cellvalue = new StringBuilder();
-		for (ImprovementYieldChange wrapper: list.getImprovementYieldChangeList()) {
-			if (currHeight > 0) cellvalue.append(IInfoWorkbook.CELL_NEWLINE);
-			cellvalue.append(wrapper.getResource() + IInfoWorkbook.CELL_NEWLINE);
-			for (Integer element: wrapper.getElements()) {
-				cellvalue.append(element + IInfoWorkbook.CELL_NEWLINE);
-				currHeight ++;
+		if (list != null) {
+			for (ImprovementYieldChange wrapper: list.getImprovementYieldChangeList()) {
+				if (currHeight > 0) cellvalue.append(IInfoWorkbook.CELL_NEWLINE);
+				cellvalue.append(wrapper.getResource() + IInfoWorkbook.CELL_NEWLINE);
+				for (Integer element: wrapper.getElements()) {
+					cellvalue.append(element + IInfoWorkbook.CELL_NEWLINE);
+					currHeight ++;
+				}
+				cellvalue.append("-");
+				currHeight += 2;
 			}
-			cellvalue.append("-");
-			currHeight += 2;
 		}
 		cell.setCellValue(cellvalue.toString());
 		if (currHeight > maxHeight) maxHeight = currHeight;

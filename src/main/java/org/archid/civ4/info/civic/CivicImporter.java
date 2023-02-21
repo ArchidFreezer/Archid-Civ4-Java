@@ -107,7 +107,7 @@ public class CivicImporter extends AbstractImporter<IInfos<ICivicInfo>, ICivicIn
 		parseListCell(row.getCell(colNum++), Integer.class, info::addTradeYieldModifier);
 		parseListCell(row.getCell(colNum++), Integer.class, info::addCommerceModifier);
 		parseListCell(row.getCell(colNum++), Integer.class, info::addCapitalCommerceModifier);
-		parseListCell(row.getCell(colNum++), Integer.class, info::addSpecialistExtraCommerce);
+		parseListCell(row.getCell(colNum++), Integer.class, info::addSpecialistCommerceChange);
 		parseListCell(row.getCell(colNum++), String.class, info::addHurry);
 		parseListCell(row.getCell(colNum++), String.class, info::addSpecialBuildingNotRequired);
 		parseListCell(row.getCell(colNum++), String.class, info::addSpecialistValid);
