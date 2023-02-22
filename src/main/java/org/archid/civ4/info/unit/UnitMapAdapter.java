@@ -146,6 +146,8 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 		private Integer militaryTrade;
 		@XmlElement(name="bBarbarianLeader")
 		private Integer barbarianLeader;
+		@XmlElement(name="bCityPacifier")
+		private Integer cityPacifier;
 		@XmlElementWrapper(name="UnitClassUpgrades")
 		@XmlElement(name="UnitClassType")
 		private List<String> unitClassUpgrades;
@@ -301,6 +303,10 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 		private Integer greatWorkCulture;
 		@XmlElement(name="iEspionagePoints")
 		private Integer espionagePoints;
+		@XmlElement(name="iGreatJestHappiness")
+		private Integer greatJestHappiness;
+		@XmlElement(name="iGreatJestDuration")
+		private Integer greatJestDuration;
 		@XmlElementWrapper(name="TerrainImpassables")
 		@XmlElement(name="TerrainType")
 		private List<String> terrainImpassables;
@@ -567,7 +573,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.uniqueNames)) {
 				for (String val: aInfo.uniqueNames) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addUniqueName(val);
+						info.addUniqueName(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -578,7 +584,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.subCombatTypes)) {
 				for (String val: aInfo.subCombatTypes) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addSubCombatType(val);
+						info.addSubCombatType(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -592,7 +598,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.seeInvisibles)) {
 				for (String val: aInfo.seeInvisibles) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addSeeInvisible(val);
+						info.addSeeInvisible(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -643,11 +649,12 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			info.setWorkerTrade(JaxbUtils.unmarshallBoolean(aInfo.workerTrade));
 			info.setMilitaryTrade(JaxbUtils.unmarshallBoolean(aInfo.militaryTrade));
 			info.setBarbarianLeader(JaxbUtils.unmarshallBoolean(aInfo.barbarianLeader));
+			info.setCityPacifier(JaxbUtils.unmarshallBoolean(aInfo.cityPacifier));
 
 			if (CollectionUtils.hasElements(aInfo.unitClassUpgrades)) {
 				for (String val: aInfo.unitClassUpgrades) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addUnitClassUpgrade(val);
+						info.addUnitClassUpgrade(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -655,7 +662,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.unitClassTargets)) {
 				for (String val: aInfo.unitClassTargets) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addUnitClassTarget(val);
+						info.addUnitClassTarget(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -663,7 +670,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.unitCombatTargets)) {
 				for (String val: aInfo.unitCombatTargets) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addUnitCombatTarget(val);
+						info.addUnitCombatTarget(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -671,7 +678,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.unitClassDefenders)) {
 				for (String val: aInfo.unitClassDefenders) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addUnitClassDefender(val);
+						info.addUnitClassDefender(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -679,7 +686,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.unitCombatDefenders)) {
 				for (String val: aInfo.unitCombatDefenders) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addUnitCombatDefender(val);
+						info.addUnitCombatDefender(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -695,7 +702,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.unitAIs)) {
 				for (String val: aInfo.unitAIs) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addUnitAI(val);
+						info.addUnitAI(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -703,7 +710,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.notUnitAIs)) {
 				for (String val: aInfo.notUnitAIs) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addNotUnitAI(val);
+						info.addNotUnitAI(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -711,7 +718,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.builds)) {
 				for (String val: aInfo.builds) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addBuild(val);
+						info.addBuild(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -735,7 +742,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.greatPeoples)) {
 				for (String val: aInfo.greatPeoples) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addGreatPeople(val);
+						info.addGreatPeople(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -744,7 +751,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.buildings)) {
 				for (String val: aInfo.buildings) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addBuilding(val);
+						info.addBuilding(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -752,7 +759,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.forceBuildings)) {
 				for (String val: aInfo.forceBuildings) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addForceBuilding(val);
+						info.addForceBuilding(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -766,7 +773,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.prereqTechs)) {
 				for (String val: aInfo.prereqTechs) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addPrereqTech(val);
+						info.addPrereqTech(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -776,7 +783,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.prereqOrBonuses)) {
 				for (String val: aInfo.prereqOrBonuses) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addPrereqOrBonus(val);
+						info.addPrereqOrBonus(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -784,7 +791,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.prereqAndCivics)) {
 				for (String val: aInfo.prereqAndCivics) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addPrereqAndCivic(val);
+						info.addPrereqAndCivic(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -792,7 +799,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.prereqOrCivics)) {
 				for (String val: aInfo.prereqOrCivics) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addPrereqOrCivic(val);
+						info.addPrereqOrCivic(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -800,7 +807,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.prereqAndTerrains)) {
 				for (String val: aInfo.prereqAndTerrains) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addPrereqAndTerrain(val);
+						info.addPrereqAndTerrain(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -808,7 +815,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.prereqOrTerrains)) {
 				for (String val: aInfo.prereqOrTerrains) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addPrereqOrTerrain(val);
+						info.addPrereqOrTerrain(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -816,7 +823,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.prereqOrBuildingClasses)) {
 				for (String val: aInfo.prereqOrBuildingClasses) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addPrereqOrBuildingClass(val);
+						info.addPrereqOrBuildingClass(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -824,7 +831,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.prereqNotBuildingClasses)) {
 				for (String val: aInfo.prereqNotBuildingClasses) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addPrereqNotBuildingClass(val);
+						info.addPrereqNotBuildingClass(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -832,7 +839,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.prereqVicinityAndBonus)) {
 				for (String val: aInfo.prereqVicinityAndBonus) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addPrereqVicinityAndBonu(val);
+						info.addPrereqVicinityAndBonu(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -840,7 +847,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.prereqVicinityOrBonus)) {
 				for (String val: aInfo.prereqVicinityOrBonus) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addPrereqVicinityOrBonu(val);
+						info.addPrereqVicinityOrBonu(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -848,7 +855,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.prereqVicinityImprovements)) {
 				for (String val: aInfo.prereqVicinityImprovements) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addPrereqVicinityImprovement(val);
+						info.addPrereqVicinityImprovement(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -856,7 +863,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.prereqVicinityFeatures)) {
 				for (String val: aInfo.prereqVicinityFeatures) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addPrereqVicinityFeature(val);
+						info.addPrereqVicinityFeature(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -864,7 +871,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.prereqWorldViews)) {
 				for (String val: aInfo.prereqWorldViews) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addPrereqWorldView(val);
+						info.addPrereqWorldView(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -909,11 +916,13 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			info.setTradeMultiplier(JaxbUtils.unmarshallInteger(aInfo.tradeMultiplier));
 			info.setGreatWorkCulture(JaxbUtils.unmarshallInteger(aInfo.greatWorkCulture));
 			info.setEspionagePoints(JaxbUtils.unmarshallInteger(aInfo.espionagePoints));
+			info.setGreatJestHappiness(JaxbUtils.unmarshallInteger(aInfo.greatJestHappiness));
+			info.setGreatJestDuration(JaxbUtils.unmarshallInteger(aInfo.greatJestDuration));
 
 			if (CollectionUtils.hasElements(aInfo.terrainImpassables)) {
 				for (String val: aInfo.terrainImpassables) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addTerrainImpassable(val);
+						info.addTerrainImpassable(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -921,7 +930,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.featureImpassables)) {
 				for (String val: aInfo.featureImpassables) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addFeatureImpassable(val);
+						info.addFeatureImpassable(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -964,7 +973,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.terrainNatives)) {
 				for (String val: aInfo.terrainNatives) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addTerrainNative(val);
+						info.addTerrainNative(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -972,7 +981,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.featureNatives)) {
 				for (String val: aInfo.featureNatives) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addFeatureNative(val);
+						info.addFeatureNative(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -1059,13 +1068,13 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 
 			if (CollectionUtils.hasElements(aInfo.yieldsFromKill)) {
 				for (Integer val: aInfo.yieldsFromKill) {
-					info.addYieldsFromKill(val);
+					info.addYieldsFromKill(JaxbUtils.unmarshallInteger(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(aInfo.commercesFromKill)) {
 				for (Integer val: aInfo.commercesFromKill) {
-					info.addCommercesFromKill(val);
+					info.addCommercesFromKill(JaxbUtils.unmarshallInteger(val));
 				}
 			}
 			info.setBombRate(JaxbUtils.unmarshallInteger(aInfo.bombRate));
@@ -1089,7 +1098,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(aInfo.freePromotions)) {
 				for (String val: aInfo.freePromotions) {
 					if (StringUtils.hasCharacters(val)) {
-						info.addFreePromotion(val);
+						info.addFreePromotion(JaxbUtils.unmarshallString(val));
 					}
 				}
 			}
@@ -1107,13 +1116,13 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 		UnitMap map = new UnitMap();
 		for (IUnitInfo info: v.values()) {
 			AdaptedUnit aInfo = new AdaptedUnit();
-			aInfo.type = info.getType();
+			aInfo.type = JaxbUtils.marshallString(info.getType());
 			aInfo.clazz = JaxbUtils.marshallMandatoryString(info.getClazz());
 
 			if (CollectionUtils.hasElements(info.getUniqueNames())) {
 				aInfo.uniqueNames = new ArrayList<String>();
 				for(String val: info.getUniqueNames()) {
-					aInfo.uniqueNames.add(val);
+					aInfo.uniqueNames.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 			aInfo.special = JaxbUtils.marshallString(info.getSpecial());
@@ -1123,7 +1132,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(info.getSubCombatTypes())) {
 				aInfo.subCombatTypes = new ArrayList<String>();
 				for(String val: info.getSubCombatTypes()) {
-					aInfo.subCombatTypes.add(val);
+					aInfo.subCombatTypes.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 			aInfo.domain = JaxbUtils.marshallMandatoryString(info.getDomain());
@@ -1136,7 +1145,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(info.getSeeInvisibles())) {
 				aInfo.seeInvisibles = new ArrayList<String>();
 				for(String val: info.getSeeInvisibles()) {
-					aInfo.seeInvisibles.add(val);
+					aInfo.seeInvisibles.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 			aInfo.description = JaxbUtils.marshallString(info.getDescription());
@@ -1186,39 +1195,40 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			aInfo.workerTrade = JaxbUtils.marshallBoolean(info.isWorkerTrade());
 			aInfo.militaryTrade = JaxbUtils.marshallBoolean(info.isMilitaryTrade());
 			aInfo.barbarianLeader = JaxbUtils.marshallBoolean(info.isBarbarianLeader());
+			aInfo.cityPacifier = JaxbUtils.marshallBoolean(info.isCityPacifier());
 
 			if (CollectionUtils.hasElements(info.getUnitClassUpgrades())) {
 				aInfo.unitClassUpgrades = new ArrayList<String>();
 				for(String val: info.getUnitClassUpgrades()) {
-					aInfo.unitClassUpgrades.add(val);
+					aInfo.unitClassUpgrades.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getUnitClassTargets())) {
 				aInfo.unitClassTargets = new ArrayList<String>();
 				for(String val: info.getUnitClassTargets()) {
-					aInfo.unitClassTargets.add(val);
+					aInfo.unitClassTargets.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getUnitCombatTargets())) {
 				aInfo.unitCombatTargets = new ArrayList<String>();
 				for(String val: info.getUnitCombatTargets()) {
-					aInfo.unitCombatTargets.add(val);
+					aInfo.unitCombatTargets.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getUnitClassDefenders())) {
 				aInfo.unitClassDefenders = new ArrayList<String>();
 				for(String val: info.getUnitClassDefenders()) {
-					aInfo.unitClassDefenders.add(val);
+					aInfo.unitClassDefenders.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getUnitCombatDefenders())) {
 				aInfo.unitCombatDefenders = new ArrayList<String>();
 				for(String val: info.getUnitCombatDefenders()) {
-					aInfo.unitCombatDefenders.add(val);
+					aInfo.unitCombatDefenders.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 
@@ -1235,21 +1245,21 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(info.getUnitAIs())) {
 				aInfo.unitAIs = new ArrayList<String>();
 				for(String val: info.getUnitAIs()) {
-					aInfo.unitAIs.add(val);
+					aInfo.unitAIs.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getNotUnitAIs())) {
 				aInfo.notUnitAIs = new ArrayList<String>();
 				for(String val: info.getNotUnitAIs()) {
-					aInfo.notUnitAIs.add(val);
+					aInfo.notUnitAIs.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getBuilds())) {
 				aInfo.builds = new ArrayList<String>();
 				for(String val: info.getBuilds()) {
-					aInfo.builds.add(val);
+					aInfo.builds.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 
@@ -1276,7 +1286,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(info.getGreatPeoples())) {
 				aInfo.greatPeoples = new ArrayList<String>();
 				for(String val: info.getGreatPeoples()) {
-					aInfo.greatPeoples.add(val);
+					aInfo.greatPeoples.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 			aInfo.slaveSpecialistType = JaxbUtils.marshallString(info.getSlaveSpecialistType());
@@ -1284,14 +1294,14 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(info.getBuildings())) {
 				aInfo.buildings = new ArrayList<String>();
 				for(String val: info.getBuildings()) {
-					aInfo.buildings.add(val);
+					aInfo.buildings.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getForceBuildings())) {
 				aInfo.forceBuildings = new ArrayList<String>();
 				for(String val: info.getForceBuildings()) {
-					aInfo.forceBuildings.add(val);
+					aInfo.forceBuildings.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 			aInfo.holyCity = JaxbUtils.marshallString(info.getHolyCity());
@@ -1304,7 +1314,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(info.getPrereqTechs())) {
 				aInfo.prereqTechs = new ArrayList<String>();
 				for(String val: info.getPrereqTechs()) {
-					aInfo.prereqTechs.add(val);
+					aInfo.prereqTechs.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 			aInfo.obsoleteTech = JaxbUtils.marshallString(info.getObsoleteTech());
@@ -1313,84 +1323,84 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(info.getPrereqOrBonuses())) {
 				aInfo.prereqOrBonuses = new ArrayList<String>();
 				for(String val: info.getPrereqOrBonuses()) {
-					aInfo.prereqOrBonuses.add(val);
+					aInfo.prereqOrBonuses.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getPrereqAndCivics())) {
 				aInfo.prereqAndCivics = new ArrayList<String>();
 				for(String val: info.getPrereqAndCivics()) {
-					aInfo.prereqAndCivics.add(val);
+					aInfo.prereqAndCivics.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getPrereqOrCivics())) {
 				aInfo.prereqOrCivics = new ArrayList<String>();
 				for(String val: info.getPrereqOrCivics()) {
-					aInfo.prereqOrCivics.add(val);
+					aInfo.prereqOrCivics.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getPrereqAndTerrains())) {
 				aInfo.prereqAndTerrains = new ArrayList<String>();
 				for(String val: info.getPrereqAndTerrains()) {
-					aInfo.prereqAndTerrains.add(val);
+					aInfo.prereqAndTerrains.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getPrereqOrTerrains())) {
 				aInfo.prereqOrTerrains = new ArrayList<String>();
 				for(String val: info.getPrereqOrTerrains()) {
-					aInfo.prereqOrTerrains.add(val);
+					aInfo.prereqOrTerrains.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getPrereqOrBuildingClasses())) {
 				aInfo.prereqOrBuildingClasses = new ArrayList<String>();
 				for(String val: info.getPrereqOrBuildingClasses()) {
-					aInfo.prereqOrBuildingClasses.add(val);
+					aInfo.prereqOrBuildingClasses.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getPrereqNotBuildingClasses())) {
 				aInfo.prereqNotBuildingClasses = new ArrayList<String>();
 				for(String val: info.getPrereqNotBuildingClasses()) {
-					aInfo.prereqNotBuildingClasses.add(val);
+					aInfo.prereqNotBuildingClasses.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getPrereqVicinityAndBonus())) {
 				aInfo.prereqVicinityAndBonus = new ArrayList<String>();
 				for(String val: info.getPrereqVicinityAndBonus()) {
-					aInfo.prereqVicinityAndBonus.add(val);
+					aInfo.prereqVicinityAndBonus.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getPrereqVicinityOrBonus())) {
 				aInfo.prereqVicinityOrBonus = new ArrayList<String>();
 				for(String val: info.getPrereqVicinityOrBonus()) {
-					aInfo.prereqVicinityOrBonus.add(val);
+					aInfo.prereqVicinityOrBonus.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getPrereqVicinityImprovements())) {
 				aInfo.prereqVicinityImprovements = new ArrayList<String>();
 				for(String val: info.getPrereqVicinityImprovements()) {
-					aInfo.prereqVicinityImprovements.add(val);
+					aInfo.prereqVicinityImprovements.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getPrereqVicinityFeatures())) {
 				aInfo.prereqVicinityFeatures = new ArrayList<String>();
 				for(String val: info.getPrereqVicinityFeatures()) {
-					aInfo.prereqVicinityFeatures.add(val);
+					aInfo.prereqVicinityFeatures.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getPrereqWorldViews())) {
 				aInfo.prereqWorldViews = new ArrayList<String>();
 				for(String val: info.getPrereqWorldViews()) {
-					aInfo.prereqWorldViews.add(val);
+					aInfo.prereqWorldViews.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 			aInfo.minPopulation = JaxbUtils.marshallInteger(info.getMinPopulation());
@@ -1438,18 +1448,20 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			aInfo.tradeMultiplier = JaxbUtils.marshallInteger(info.getTradeMultiplier());
 			aInfo.greatWorkCulture = JaxbUtils.marshallInteger(info.getGreatWorkCulture());
 			aInfo.espionagePoints = JaxbUtils.marshallInteger(info.getEspionagePoints());
+			aInfo.greatJestHappiness = JaxbUtils.marshallInteger(info.getGreatJestHappiness());
+			aInfo.greatJestDuration = JaxbUtils.marshallInteger(info.getGreatJestDuration());
 
 			if (CollectionUtils.hasElements(info.getTerrainImpassables())) {
 				aInfo.terrainImpassables = new ArrayList<String>();
 				for(String val: info.getTerrainImpassables()) {
-					aInfo.terrainImpassables.add(val);
+					aInfo.terrainImpassables.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getFeatureImpassables())) {
 				aInfo.featureImpassables = new ArrayList<String>();
 				for(String val: info.getFeatureImpassables()) {
-					aInfo.featureImpassables.add(val);
+					aInfo.featureImpassables.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 
@@ -1495,14 +1507,14 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(info.getTerrainNatives())) {
 				aInfo.terrainNatives = new ArrayList<String>();
 				for(String val: info.getTerrainNatives()) {
-					aInfo.terrainNatives.add(val);
+					aInfo.terrainNatives.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getFeatureNatives())) {
 				aInfo.featureNatives = new ArrayList<String>();
 				for(String val: info.getFeatureNatives()) {
-					aInfo.featureNatives.add(val);
+					aInfo.featureNatives.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 
@@ -1609,14 +1621,14 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(info.getYieldsFromKill())) {
 				aInfo.yieldsFromKill = new ArrayList<Integer>();
 				for(Integer val: info.getYieldsFromKill()) {
-					aInfo.yieldsFromKill.add(val);
+					aInfo.yieldsFromKill.add(JaxbUtils.marshallMandatoryInteger(val));
 				}
 			}
 
 			if (CollectionUtils.hasElements(info.getCommercesFromKill())) {
 				aInfo.commercesFromKill = new ArrayList<Integer>();
 				for(Integer val: info.getCommercesFromKill()) {
-					aInfo.commercesFromKill.add(val);
+					aInfo.commercesFromKill.add(JaxbUtils.marshallMandatoryInteger(val));
 				}
 			}
 			aInfo.bombRate = JaxbUtils.marshallInteger(info.getBombRate());
@@ -1640,7 +1652,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			if (CollectionUtils.hasElements(info.getFreePromotions())) {
 				aInfo.freePromotions = new ArrayList<String>();
 				for(String val: info.getFreePromotions()) {
-					aInfo.freePromotions.add(val);
+					aInfo.freePromotions.add(JaxbUtils.marshallMandatoryString(val));
 				}
 			}
 			aInfo.leaderPromotion = JaxbUtils.marshallString(info.getLeaderPromotion());
