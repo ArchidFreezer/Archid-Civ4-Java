@@ -1,6 +1,7 @@
 package org.archid.civ4.java.infoprocessor;
 
 import org.archid.civ4.java.AbstractTagProcessor;
+import org.archid.civ4.java.JavaCodeGeneratorData;
 
 public class UnitInfoProcessor extends DefaultInfoProcessor {
 	
@@ -31,6 +32,8 @@ public class UnitInfoProcessor extends DefaultInfoProcessor {
 			importImports.add("import org.archid.civ4.info.IInfoWorkbook;");
 			importImports.add("import org.archid.utils.StringUtils;");
 			importImports.add("import org.archid.civ4.info.unit.UnitMeshGroups.UnitMeshGroup;");
+			JavaCodeGeneratorData.getInstance().getTagInstance(tagName).setDataType(getTagName());
+			JavaCodeGeneratorData.getInstance().getTagInstance(tagName).resetLevels();
 		}
 
 		@Override
