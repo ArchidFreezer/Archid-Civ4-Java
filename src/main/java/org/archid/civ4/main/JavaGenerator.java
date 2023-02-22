@@ -36,7 +36,7 @@ public class JavaGenerator {
 		
 		options.addOption(Option.builder("h").longOpt("help").hasArg(false).desc("Display this usage message").build());
 		options.addOption(Option.builder("i").longOpt("schemaDir").hasArg(true).argName("Schema Dir").desc("Directory containing the schema file to parse").build());
-		options.addOption(Option.builder("I").longOpt("schema").required().hasArg(true).argName("Schema File").desc("Name of schema file to parse").build());
+		options.addOption(Option.builder("I").longOpt("schema").hasArg(true).argName("Schema File").desc("Name of schema file to parse").build());
 		options.addOption(Option.builder("o").longOpt("output").required().hasArg(true).argName("Output Dir").desc("Directory to create the output in").build());
 		options.addOption(Option.builder("s").longOpt("saveProps").hasArg(false).argName("Save Property Values").desc("Save properties on exit").build());
 		options.addOption(Option.builder("t").longOpt("type").required().hasArg(true).argName("Info Type").desc("Type of info to process, such as Civ4EventTriggerInfos").build());
@@ -50,11 +50,15 @@ public class JavaGenerator {
 			
 			if (cmd.hasOption("h"))
 				help();
+			
+			// Set default values based on the type
+			setDefaults(cmd.getOptionValue("t"));
 
 			// Set the input info first
 			if (cmd.hasOption("i"))
 				props.setAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA_DIR, cmd.getOptionValue("i"));
-			props.setAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA, cmd.getOptionValue("I"));
+			if (cmd.hasOption("I"))
+				props.setAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA, cmd.getOptionValue("I"));
 			props.setAppProperty(PropertyKeys.PROPERTY_KEY_JAVA_OUTPUT_DIR, cmd.getOptionValue("o"));
 			
 			// Now perform the action
@@ -92,6 +96,40 @@ public class JavaGenerator {
 	private void exit(int exitCode, boolean saveProperties) {
 		if (saveProperties)	props.save();
 		System.exit(exitCode);
+	}
+	
+	private void setDefaults(String tag) {
+		if (tag.equals("Civ4BonusInfos")) {
+			props.setAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA_DIR, "E:\\Projects\\Civ4\\github\\Archid-Civ4\\mod\\Assets\\Xml\\Terrain");
+			props.setAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA, "CIV4TerrainSchema.xml");
+		} else if (tag.equals("Civ4BonusClassInfos")) {
+			props.setAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA_DIR, "E:\\Projects\\Civ4\\github\\Archid-Civ4\\mod\\Assets\\Xml\\Terrain");
+			props.setAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA, "CIV4TerrainSchema.xml");
+		} else if (tag.equals("Civ4BuildingInfos")) {
+			props.setAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA_DIR, "E:\\Projects\\Civ4\\github\\Archid-Civ4\\mod\\Assets\\Xml\\Buildings");
+			props.setAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA, "CIV4BuildingsSchema.xml");
+		} else if (tag.equals("Civ4BuildingClassInfos")) {
+			props.setAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA_DIR, "E:\\Projects\\Civ4\\github\\Archid-Civ4\\mod\\Assets\\Xml\\Buildings");
+			props.setAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA, "CIV4BuildingsSchema.xml");
+		} else if (tag.equals("Civ4CivicInfos")) {
+			props.setAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA_DIR, "E:\\Projects\\Civ4\\github\\Archid-Civ4\\mod\\Assets\\Xml\\GameInfo");
+			props.setAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA, "CIV4GameInfoSchema.xml");
+		} else if (tag.equals("Civ4EraInfos")) {
+			props.setAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA_DIR, "E:\\Projects\\Civ4\\github\\Archid-Civ4\\mod\\Assets\\Xml\\GameInfo");
+			props.setAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA, "CIV4GameInfoSchema.xml");
+		} else if (tag.equals("Civ4EventInfos")) {
+			props.setAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA_DIR, "E:\\Projects\\Civ4\\github\\Archid-Civ4\\mod\\Assets\\Xml\\Events");
+			props.setAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA, "CIV4EventSchema.xml");
+		} else if (tag.equals("Civ4EventTriggerInfos")) {
+			props.setAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA_DIR, "E:\\Projects\\Civ4\\github\\Archid-Civ4\\mod\\Assets\\Xml\\Events");
+			props.setAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA, "CIV4EventSchema.xml");
+		} else if (tag.equals("Civ4TechInfos")) {
+			props.setAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA_DIR, "E:\\Projects\\Civ4\\github\\Archid-Civ4\\mod\\Assets\\Xml\\Technologies");
+			props.setAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA, "CIV4TechnologiesSchema.xml");
+		} else if (tag.equals("Civ4UnitInfos")) {
+			props.setAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA_DIR, "E:\\Projects\\Civ4\\github\\Archid-Civ4\\mod\\Assets\\Xml\\Units");
+			props.setAppProperty(PropertyKeys.PROPERTY_KEY_MOD_SCHEMA, "CIV4UnitSchema.xml");
+		}
 	}
 
 	/**
