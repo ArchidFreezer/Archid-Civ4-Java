@@ -220,6 +220,7 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo> {
 		private BonusYieldModifiers bonusYieldModifiers = new BonusYieldModifiers();
 		private BonusYieldChanges bonusYieldChanges = new BonusYieldChanges();
 		private VicinityBonusYieldChanges vicinityBonusYieldChanges = new VicinityBonusYieldChanges();
+		private TechYieldChanges techYieldChanges = new TechYieldChanges();
 		private TechCommerceChanges techCommerceChanges = new TechCommerceChanges();
 		private List<IPair<String, Integer>> improvementFreeSpecialists = new ArrayList<IPair<String, Integer>>();
 		private List<IPair<String, Integer>> flavors = new ArrayList<IPair<String, Integer>>();
@@ -2063,6 +2064,16 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo> {
 		@Override
 		public void setVicinityBonusYieldChanges(VicinityBonusYieldChanges vicinityBonusYieldChanges) {
 			this.vicinityBonusYieldChanges = vicinityBonusYieldChanges;
+		}
+
+		@Override
+		public TechYieldChanges getTechYieldChanges() {
+			return techYieldChanges;
+		}
+
+		@Override
+		public void setTechYieldChanges(TechYieldChanges techYieldChanges) {
+			this.techYieldChanges = techYieldChanges;
 		}
 
 		@Override

@@ -415,13 +415,13 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		@XmlElement(name="PrereqNumOfBuildingClass")
 		private List<AdaptedPrereqNumOfBuildingClasses> prereqNumOfBuildingClasses;
 		@XmlElementWrapper(name="PrereqAndBuildingClasses")
-		@XmlElement(name="BuildingClass")
+		@XmlElement(name="BuildingClassType")
 		private List<String> prereqAndBuildingClasses;
 		@XmlElementWrapper(name="PrereqOrBuildingClasses")
-		@XmlElement(name="BuildingClass")
+		@XmlElement(name="BuildingClassType")
 		private List<String> prereqOrBuildingClasses;
 		@XmlElementWrapper(name="PrereqNotBuildingClasses")
-		@XmlElement(name="BuildingClass")
+		@XmlElement(name="BuildingClassType")
 		private List<String> prereqNotBuildingClasses;
 		@XmlElementWrapper(name="ReplacedByBuildingClasses")
 		@XmlElement(name="BuildingClassType")
@@ -434,6 +434,8 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		private BonusYieldChanges bonusYieldChanges;
 		@XmlElement(name="VicinityBonusYieldChanges")
 		private VicinityBonusYieldChanges vicinityBonusYieldChanges;
+		@XmlElement(name="TechYieldChanges")
+		private TechYieldChanges techYieldChanges;
 		@XmlElement(name="TechCommerceChanges")
 		private TechCommerceChanges techCommerceChanges;
 		@XmlElementWrapper(name="ImprovementFreeSpecialists")
@@ -1050,6 +1052,7 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 			info.setBonusYieldModifiers(aInfo.bonusYieldModifiers);
 			info.setBonusYieldChanges(aInfo.bonusYieldChanges);
 			info.setVicinityBonusYieldChanges(aInfo.vicinityBonusYieldChanges);
+			info.setTechYieldChanges(aInfo.techYieldChanges);
 			info.setTechCommerceChanges(aInfo.techCommerceChanges);
 
 			if (CollectionUtils.hasElements(aInfo.improvementFreeSpecialists)) {
@@ -1592,6 +1595,7 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 			aInfo.bonusYieldModifiers = info.getBonusYieldModifiers();
 			aInfo.bonusYieldChanges = info.getBonusYieldChanges();
 			aInfo.vicinityBonusYieldChanges = info.getVicinityBonusYieldChanges();
+			aInfo.techYieldChanges = info.getTechYieldChanges();
 			aInfo.techCommerceChanges = info.getTechCommerceChanges();
 
 			if (CollectionUtils.hasElements(info.getImprovementFreeSpecialists())) {

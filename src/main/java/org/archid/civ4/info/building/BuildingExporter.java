@@ -14,6 +14,7 @@ import org.archid.civ4.info.building.BonusYieldModifiers.BonusYieldModifier;
 import org.archid.civ4.info.building.IBuildingWorkbook.SheetHeaders;
 import org.archid.civ4.info.building.SpecialistYieldChanges.SpecialistYieldChange;
 import org.archid.civ4.info.building.TechCommerceChanges.TechCommerceChange;
+import org.archid.civ4.info.building.TechYieldChanges.TechYieldChange;
 import org.archid.civ4.info.building.VicinityBonusYieldChanges.VicinityBonusYieldChange;
 
 public class BuildingExporter extends AbstractExporter<IInfos<IBuildingInfo>, IBuildingInfo> {
@@ -231,6 +232,7 @@ public class BuildingExporter extends AbstractExporter<IInfos<IBuildingInfo>, IB
 		maxHeight = addBonusYieldModifierCell(row.createCell(colNum++), info.getBonusYieldModifiers(), maxHeight);
 		maxHeight = addBonusYieldChangeCell(row.createCell(colNum++), info.getBonusYieldChanges(), maxHeight);
 		maxHeight = addVicinityBonusYieldChangeCell(row.createCell(colNum++), info.getVicinityBonusYieldChanges(), maxHeight);
+		maxHeight = addTechYieldChangeCell(row.createCell(colNum++), info.getTechYieldChanges(), maxHeight);
 		maxHeight = addTechCommerceChangeCell(row.createCell(colNum++), info.getTechCommerceChanges(), maxHeight);
 		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getImprovementFreeSpecialists(), maxHeight);
 		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getFlavors(), maxHeight);
@@ -317,6 +319,28 @@ public class BuildingExporter extends AbstractExporter<IInfos<IBuildingInfo>, IB
 		StringBuilder cellvalue = new StringBuilder();
 		if (list != null) {
 			for (VicinityBonusYieldChange wrapper: list.getVicinityBonusYieldChangeList()) {
+				if (currHeight > 0) cellvalue.append(IInfoWorkbook.CELL_NEWLINE);
+				cellvalue.append(wrapper.getResource() + IInfoWorkbook.CELL_NEWLINE);
+				for (Integer element: wrapper.getElements()) {
+					cellvalue.append(element + IInfoWorkbook.CELL_NEWLINE);
+					currHeight ++;
+				}
+				cellvalue.append("-");
+				currHeight += 2;
+			}
+		}
+		cell.setCellValue(cellvalue.toString());
+		if (currHeight > maxHeight) maxHeight = currHeight;
+		return maxHeight;
+	}
+
+
+	private int addTechYieldChangeCell(Cell cell, TechYieldChanges list, int maxHeight) {
+		int currHeight = 0;
+		cell.setCellStyle(csWrap);
+		StringBuilder cellvalue = new StringBuilder();
+		if (list != null) {
+			for (TechYieldChange wrapper: list.getTechYieldChangeList()) {
 				if (currHeight > 0) cellvalue.append(IInfoWorkbook.CELL_NEWLINE);
 				cellvalue.append(wrapper.getResource() + IInfoWorkbook.CELL_NEWLINE);
 				for (Integer element: wrapper.getElements()) {

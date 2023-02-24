@@ -94,7 +94,7 @@ public class BuildingInfoXmlFormatter extends AbstractXmlFormatter {
 		
 		// Now loop through the buildings, in most cases there will only be a single instance, but there
 		// will be multiples where there are UBs for the class that need to be sorted
-		// The map is maintained in the following keys: Unit Comment / Unit
+		// The map is maintained in the following keys: Building Comment / Building
 		Map<String, IXmlInfo> sortedGroup =  new TreeMap<String, IXmlInfo>();
 		for (IXmlInfo info: standard.values()) {
 			// If the type matches the class then we will use the type only

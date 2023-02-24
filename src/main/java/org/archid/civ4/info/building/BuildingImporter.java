@@ -13,6 +13,7 @@ import org.archid.civ4.info.building.BonusYieldChanges.BonusYieldChange;
 import org.archid.civ4.info.building.BonusYieldModifiers.BonusYieldModifier;
 import org.archid.civ4.info.building.SpecialistYieldChanges.SpecialistYieldChange;
 import org.archid.civ4.info.building.TechCommerceChanges.TechCommerceChange;
+import org.archid.civ4.info.building.TechYieldChanges.TechYieldChange;
 import org.archid.civ4.info.building.VicinityBonusYieldChanges.VicinityBonusYieldChange;
 import org.archid.utils.StringUtils;
 
@@ -222,6 +223,7 @@ public class BuildingImporter extends AbstractImporter<IInfos<IBuildingInfo>, IB
 		parseBonusYieldModifierCell(row.getCell(colNum++), info);
 		parseBonusYieldChangeCell(row.getCell(colNum++), info);
 		parseVicinityBonusYieldChangeCell(row.getCell(colNum++), info);
+		parseTechYieldChangeCell(row.getCell(colNum++), info);
 		parseTechCommerceChangeCell(row.getCell(colNum++), info);
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addImprovementFreeSpecialist);
 		parsePairsCell(row.getCell(colNum++), String.class, Integer.class, info::addFlavor);
@@ -339,6 +341,34 @@ public class BuildingImporter extends AbstractImporter<IInfos<IBuildingInfo>, IB
 							wrapper.addElement(element);
 						}
 						info.getVicinityBonusYieldChanges().getVicinityBonusYieldChangeList().add(wrapper);
+						first = !first;
+					} else {
+						list.add(Integer.valueOf(str));
+					}
+				}
+			}
+		}
+	}
+
+	private void parseTechYieldChangeCell(Cell cell, IBuildingInfo info) {
+		String[] arr = cell.getStringCellValue().split(IInfoWorkbook.CELL_NEWLINE);
+		if (arr.length > 1) {
+			boolean first = true;
+			String resource = null;
+			List<Integer> list = null;
+			for (String str: arr) {
+				if (StringUtils.hasCharacters(str)) {
+					if (first) {
+						list = new ArrayList<Integer>();
+						resource = getVal(str, String.class);
+						first = false;
+					} else if (str.equals("-")) {
+						TechYieldChange wrapper = new TechYieldChange();
+						wrapper.setResource(resource);
+						for (Integer element: list) {
+							wrapper.addElement(element);
+						}
+						info.getTechYieldChanges().getTechYieldChangeList().add(wrapper);
 						first = !first;
 					} else {
 						list.add(Integer.valueOf(str));

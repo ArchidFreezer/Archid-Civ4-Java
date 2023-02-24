@@ -19,6 +19,7 @@ public class BuildingInfoProcessor extends DefaultInfoProcessor {
 		addTagProcessor(new DefaultResourceArrayTagProcessor(getTagProcessorData("BonusYieldChanges", "BonusYieldChange", "BonusType", "YieldChanges", "iYield"), tagNameData));
 		addTagProcessor(new DefaultResourceArrayTagProcessor(getTagProcessorData("VicinityBonusYieldChanges", "VicinityBonusYieldChange", "BonusType", "YieldChanges", "iYield"), tagNameData));
 		addTagProcessor(new DefaultResourceArrayTagProcessor(getTagProcessorData("TechCommerceChanges", "TechCommerceChange", "TechType", "CommerceChanges", "iCommerce"), tagNameData));
+		addTagProcessor(new DefaultResourceArrayTagProcessor(getTagProcessorData("TechYieldChanges", "TechYieldChange", "TechType", "YieldChanges", "iYield"), tagNameData));
 	}
 	
 	@Override

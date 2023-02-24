@@ -552,6 +552,9 @@ public interface IBuildingInfo extends IInfo {
 	VicinityBonusYieldChanges getVicinityBonusYieldChanges();
 	void setVicinityBonusYieldChanges(VicinityBonusYieldChanges vicinityBonusYieldChanges);
 
+	TechYieldChanges getTechYieldChanges();
+	void setTechYieldChanges(TechYieldChanges techYieldChanges);
+
 	TechCommerceChanges getTechCommerceChanges();
 	void setTechCommerceChanges(TechCommerceChanges techCommerceChanges);
 
