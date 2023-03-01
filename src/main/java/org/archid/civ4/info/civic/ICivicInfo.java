@@ -234,6 +234,9 @@ public interface ICivicInfo extends IInfo {
 	List<IPair<String, Integer>> getFreeSpecialistCounts();
 	void addFreeSpecialistCount(IPair<String, Integer> freeSpecialistCount);
 
+	List<IPair<String, Integer>> getBuildingClassProductionModifiers();
+	void addBuildingClassProductionModifier(IPair<String, Integer> buildingClassProductionModifier);
+
 	List<IPair<String, Integer>> getBuildingHappinessChanges();
 	void addBuildingHappinessChange(IPair<String, Integer> buildingHappinessChange);
 

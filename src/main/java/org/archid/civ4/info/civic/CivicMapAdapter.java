@@ -185,6 +185,9 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 		@XmlElementWrapper(name="FreeSpecialistCounts")
 		@XmlElement(name="FreeSpecialistCount")
 		private List<AdaptedFreeSpecialistCounts> freeSpecialistCounts;
+		@XmlElementWrapper(name="BuildingClassProductionModifiers")
+		@XmlElement(name="BuildingClassProductionModifier")
+		private List<AdaptedBuildingClassProductionModifiers> buildingClassProductionModifiers;
 		@XmlElementWrapper(name="BuildingHappinessChanges")
 		@XmlElement(name="BuildingHappinessChange")
 		private List<AdaptedBuildingHappinessChanges> buildingHappinessChanges;
@@ -209,6 +212,13 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 		private String specialistType;
 		@XmlElement(name="iCount")
 		private Integer iCount;
+	}
+
+	private static class AdaptedBuildingClassProductionModifiers {
+		@XmlElement(name="BuildingClassType")
+		private String buildingClassType;
+		@XmlElement(name="iModifier")
+		private Integer iModifier;
 	}
 
 	private static class AdaptedBuildingHappinessChanges {
@@ -368,6 +378,14 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 				for (AdaptedFreeSpecialistCounts adaptor: aInfo.freeSpecialistCounts) {
 					if (StringUtils.hasCharacters(adaptor.specialistType)) {
 						info.addFreeSpecialistCount(new Pair<String, Integer>(adaptor.specialistType, adaptor.iCount));
+					}
+				}
+			}
+
+			if (CollectionUtils.hasElements(aInfo.buildingClassProductionModifiers)) {
+				for (AdaptedBuildingClassProductionModifiers adaptor: aInfo.buildingClassProductionModifiers) {
+					if (StringUtils.hasCharacters(adaptor.buildingClassType)) {
+						info.addBuildingClassProductionModifier(new Pair<String, Integer>(adaptor.buildingClassType, adaptor.iModifier));
 					}
 				}
 			}
@@ -548,6 +566,16 @@ public class CivicMapAdapter extends XmlAdapter<CivicMapAdapter.CivicMap, Map<St
 					adaptor.specialistType = pair.getKey();
 					adaptor.iCount = pair.getValue();
 					aInfo.freeSpecialistCounts.add(adaptor);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getBuildingClassProductionModifiers())) {
+				aInfo.buildingClassProductionModifiers = new ArrayList<AdaptedBuildingClassProductionModifiers>();
+				for (IPair<String, Integer> pair: info.getBuildingClassProductionModifiers()) {
+					AdaptedBuildingClassProductionModifiers adaptor = new AdaptedBuildingClassProductionModifiers();
+					adaptor.buildingClassType = pair.getKey();
+					adaptor.iModifier = pair.getValue();
+					aInfo.buildingClassProductionModifiers.add(adaptor);
 				}
 			}
 

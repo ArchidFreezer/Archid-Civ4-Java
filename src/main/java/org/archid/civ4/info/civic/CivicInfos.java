@@ -114,6 +114,7 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 		private List<String> specialBuildingNotRequireds = new ArrayList<String>();
 		private List<String> specialistValids = new ArrayList<String>();
 		private List<IPair<String, Integer>> freeSpecialistCounts = new ArrayList<IPair<String, Integer>>();
+		private List<IPair<String, Integer>> buildingClassProductionModifiers = new ArrayList<IPair<String, Integer>>();
 		private List<IPair<String, Integer>> buildingHappinessChanges = new ArrayList<IPair<String, Integer>>();
 		private List<IPair<String, Integer>> buildingHealthChanges = new ArrayList<IPair<String, Integer>>();
 		private List<IPair<String, Integer>> featureHappinessChanges = new ArrayList<IPair<String, Integer>>();
@@ -894,6 +895,16 @@ public class CivicInfos extends AbstractInfos<ICivicInfo> {
 		@Override
 		public void addFreeSpecialistCount(IPair<String, Integer> freeSpecialistCount) {
 			this.freeSpecialistCounts.add(freeSpecialistCount);
+		}
+
+		@Override
+		public List<IPair<String, Integer>> getBuildingClassProductionModifiers() {
+			return buildingClassProductionModifiers;
+		}
+
+		@Override
+		public void addBuildingClassProductionModifier(IPair<String, Integer> buildingClassProductionModifier) {
+			this.buildingClassProductionModifiers.add(buildingClassProductionModifier);
 		}
 
 		@Override
