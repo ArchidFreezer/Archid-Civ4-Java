@@ -210,6 +210,7 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo> {
 		private List<IPair<String, Integer>> domainFreeExperiences = new ArrayList<IPair<String, Integer>>();
 		private List<IPair<String, Integer>> domainProductionModifiers = new ArrayList<IPair<String, Integer>>();
 		private List<IPair<String, Integer>> buildingClassProductionModifiers = new ArrayList<IPair<String, Integer>>();
+		private List<IPair<String, Integer>> unitCombatProductionModifiers = new ArrayList<IPair<String, Integer>>();
 		private List<IPair<String, Integer>> buildingHappinessChanges = new ArrayList<IPair<String, Integer>>();
 		private List<IPair<String, Integer>> prereqNumOfBuildingClasses = new ArrayList<IPair<String, Integer>>();
 		private List<String> prereqAndBuildingClasses = new ArrayList<String>();
@@ -1964,6 +1965,16 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo> {
 		@Override
 		public void addBuildingClassProductionModifier(IPair<String, Integer> buildingClassProductionModifier) {
 			this.buildingClassProductionModifiers.add(buildingClassProductionModifier);
+		}
+
+		@Override
+		public List<IPair<String, Integer>> getUnitCombatProductionModifiers() {
+			return unitCombatProductionModifiers;
+		}
+
+		@Override
+		public void addUnitCombatProductionModifier(IPair<String, Integer> unitCombatProductionModifier) {
+			this.unitCombatProductionModifiers.add(unitCombatProductionModifier);
 		}
 
 		@Override

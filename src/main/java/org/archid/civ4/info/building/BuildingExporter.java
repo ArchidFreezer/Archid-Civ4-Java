@@ -222,6 +222,7 @@ public class BuildingExporter extends AbstractExporter<IInfos<IBuildingInfo>, IB
 		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getDomainFreeExperiences(), maxHeight);
 		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getDomainProductionModifiers(), maxHeight);
 		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getBuildingClassProductionModifiers(), maxHeight);
+		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getUnitCombatProductionModifiers(), maxHeight);
 		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getBuildingHappinessChanges(), maxHeight);
 		maxHeight = addRepeatingPairCell(row.createCell(colNum++), info.getPrereqNumOfBuildingClasses(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPrereqAndBuildingClasses(), maxHeight);

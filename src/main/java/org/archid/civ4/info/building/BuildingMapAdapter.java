@@ -408,6 +408,9 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		@XmlElementWrapper(name="BuildingClassProductionModifiers")
 		@XmlElement(name="BuildingClassProductionModifier")
 		private List<AdaptedBuildingClassProductionModifiers> buildingClassProductionModifiers;
+		@XmlElementWrapper(name="UnitCombatProductionModifiers")
+		@XmlElement(name="UnitCombatProductionModifier")
+		private List<AdaptedUnitCombatProductionModifiers> unitCombatProductionModifiers;
 		@XmlElementWrapper(name="BuildingHappinessChanges")
 		@XmlElement(name="BuildingHappinessChange")
 		private List<AdaptedBuildingHappinessChanges> buildingHappinessChanges;
@@ -540,6 +543,13 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 	private static class AdaptedBuildingClassProductionModifiers {
 		@XmlElement(name="BuildingClassType")
 		private String buildingClassType;
+		@XmlElement(name="iModifier")
+		private Integer iModifier;
+	}
+
+	private static class AdaptedUnitCombatProductionModifiers {
+		@XmlElement(name="UnitCombatType")
+		private String unitCombatType;
 		@XmlElement(name="iModifier")
 		private Integer iModifier;
 	}
@@ -997,6 +1007,14 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 				for (AdaptedBuildingClassProductionModifiers adaptor: aInfo.buildingClassProductionModifiers) {
 					if (StringUtils.hasCharacters(adaptor.buildingClassType)) {
 						info.addBuildingClassProductionModifier(new Pair<String, Integer>(adaptor.buildingClassType, adaptor.iModifier));
+					}
+				}
+			}
+
+			if (CollectionUtils.hasElements(aInfo.unitCombatProductionModifiers)) {
+				for (AdaptedUnitCombatProductionModifiers adaptor: aInfo.unitCombatProductionModifiers) {
+					if (StringUtils.hasCharacters(adaptor.unitCombatType)) {
+						info.addUnitCombatProductionModifier(new Pair<String, Integer>(adaptor.unitCombatType, adaptor.iModifier));
 					}
 				}
 			}
@@ -1541,6 +1559,16 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 					adaptor.buildingClassType = pair.getKey();
 					adaptor.iModifier = pair.getValue();
 					aInfo.buildingClassProductionModifiers.add(adaptor);
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getUnitCombatProductionModifiers())) {
+				aInfo.unitCombatProductionModifiers = new ArrayList<AdaptedUnitCombatProductionModifiers>();
+				for (IPair<String, Integer> pair: info.getUnitCombatProductionModifiers()) {
+					AdaptedUnitCombatProductionModifiers adaptor = new AdaptedUnitCombatProductionModifiers();
+					adaptor.unitCombatType = pair.getKey();
+					adaptor.iModifier = pair.getValue();
+					aInfo.unitCombatProductionModifiers.add(adaptor);
 				}
 			}
 

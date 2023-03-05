@@ -522,6 +522,9 @@ public interface IBuildingInfo extends IInfo {
 	List<IPair<String, Integer>> getBuildingClassProductionModifiers();
 	void addBuildingClassProductionModifier(IPair<String, Integer> buildingClassProductionModifier);
 
+	List<IPair<String, Integer>> getUnitCombatProductionModifiers();
+	void addUnitCombatProductionModifier(IPair<String, Integer> unitCombatProductionModifier);
+
 	List<IPair<String, Integer>> getBuildingHappinessChanges();
 	void addBuildingHappinessChange(IPair<String, Integer> buildingHappinessChange);
 
