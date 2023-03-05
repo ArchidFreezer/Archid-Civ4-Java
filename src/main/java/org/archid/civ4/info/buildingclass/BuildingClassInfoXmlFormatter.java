@@ -53,7 +53,7 @@ public class BuildingClassInfoXmlFormatter extends AbstractXmlFormatter {
 		labels.put(15, "Security");
 		labels.put(16, "Food");
 		labels.put(17, "Military Training");
-		labels.put(18, "Military Other");
+		labels.put(18, "Military Production");
 		labels.put(19, "Seafood");
 		labels.put(20, "Water Trade");
 		labels.put(21, "Taxes");
