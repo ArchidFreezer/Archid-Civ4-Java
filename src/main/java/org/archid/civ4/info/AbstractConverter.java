@@ -35,6 +35,8 @@ public abstract class AbstractConverter implements IConverter {
 	private Pattern tagEmptyPattern = Pattern.compile("\\s*?<([a-zA-Z0-9]+)/>.*");
 
 	private String typeHeader = " <!-- xxxTYPExxx -->";
+	
+	protected IXmlFormatter formatter;
 
 	/* (non-Javadoc)
 	 * @see org.archid.civ4.info.IConverter#convert(java.lang.String)
@@ -60,6 +62,7 @@ public abstract class AbstractConverter implements IConverter {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(new File(path)));
 			writer.write(out.toString());
 			writer.close();
+			if (formatter != null) formatter.format(path);
 			
 		} catch (IOException e) {
 			log.error("Could not access the file", e);
@@ -323,6 +326,8 @@ public abstract class AbstractConverter implements IConverter {
 	 */
 	protected Set<String> getMultiSingleValues(String tagXml) {
 		Set<String> vals = new LinkedHashSet<String>();
+		if (!StringUtils.hasCharacters(tagXml)) return vals;
+
 		String[] arr = tagXml.split(newline);
 		
 		// We know we can ignore the first and last lines
@@ -380,5 +385,6 @@ public abstract class AbstractConverter implements IConverter {
 	protected String getPrefix() {
 		return "\\t\\t\\t";
 	}
+	
 }
 
