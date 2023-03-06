@@ -3,6 +3,7 @@ package org.archid.civ4.info;
 import org.apache.log4j.Logger;
 import org.archid.civ4.info.bonus.BonusConverter;
 import org.archid.civ4.info.building.BuildingConverter;
+import org.archid.civ4.info.building.KBuildingConverter;
 import org.archid.civ4.info.unit.UnitConverter;
 
 public class ConverterFactory {
@@ -17,7 +18,7 @@ public class ConverterFactory {
 			converter = new BonusConverter();
 			break;
 		case BUILDING:
-			converter = new BuildingConverter();
+			converter = new KBuildingConverter();
 			break;
 		case UNIT:
 			converter = new UnitConverter();

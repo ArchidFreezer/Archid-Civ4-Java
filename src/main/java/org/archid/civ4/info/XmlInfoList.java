@@ -47,7 +47,7 @@ public class XmlInfoList {
 	private final String tagTemplate = ".*<xxxTAGxxx>([a-zA-Z0-9_]+).*";
 	private final String typeTag = "Type";
 	
-	private final Pattern patternInfoStart = Pattern.compile(".*<[a-zA-Z]+Info>\\s*");
+	private final Pattern patternInfoStart = Pattern.compile(".*<[a-zA-Z]+Info>.*");
 	private final Pattern patternInfoEnd = Pattern.compile(".*</[a-zA-Z]+Info>\\s*");
 	private final Pattern patternInfosEnd = Pattern.compile(".*</[a-zA-Z]+Infos>\\s*");
 	
