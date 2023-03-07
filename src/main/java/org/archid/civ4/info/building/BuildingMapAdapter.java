@@ -377,7 +377,7 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		@XmlElement(name="SpecialistCount")
 		private List<AdaptedSpecialistCounts> specialistCounts;
 		@XmlElementWrapper(name="FreeSpecialistCounts")
-		@XmlElement(name="SpecialistCount")
+		@XmlElement(name="FreeSpecialistCount")
 		private List<AdaptedFreeSpecialistCounts> freeSpecialistCounts;
 		@XmlElementWrapper(name="CommerceFlexibles")
 		@XmlElement(name="bCommerce")

@@ -15,6 +15,8 @@ public class TechImporter extends AbstractImporter<IInfos<ITechInfo>, ITechInfo>
 
 	/** Logging facility */
 	static Logger log = Logger.getLogger(TechImporter.class.getName());
+	
+	private static String DUMMY_TECH_TYPE = "TECH_SPECIAL_PROMOTION";
 
 	public TechImporter(EInfo infoEnum) {
 		super(infoEnum, new DefaultXmlFormatter("tech"));
@@ -61,6 +63,11 @@ public class TechImporter extends AbstractImporter<IInfos<ITechInfo>, ITechInfo>
 				infos.addInfo(info);
 			}
 		}
+		// We also need to handle the dummy tech used for manually added promotions as it doesn't appear on the tree
+		ITechInfo dummyInfo = TechInfos.createInfo(DUMMY_TECH_TYPE);
+		dummyInfo.setGridX(-1);
+		dummyInfo.setGridY(-1);
+		infos.addInfo(dummyInfo);
 
 		// Get the rest of the values from the tech tree
 		sheet = wb.getSheet(getListSheetName());
