@@ -152,6 +152,7 @@ public class UnitExporter extends AbstractExporter<IInfos<IUnitInfo>, IUnitInfo>
 		addSingleCell(row.createCell(colNum++), info.getAdvancedStartCost());
 		addSingleCell(row.createCell(colNum++), info.getAdvancedStartCostIncrease());
 		addSingleCell(row.createCell(colNum++), info.getMinAreaSize());
+		addSingleCell(row.createCell(colNum++), info.getMorale());
 		addSingleCell(row.createCell(colNum++), info.getMoves());
 		addSingleCell(row.createCell(colNum++), info.getUnitRangeType());
 		addSingleCell(row.createCell(colNum++), info.isNoRevealMap());

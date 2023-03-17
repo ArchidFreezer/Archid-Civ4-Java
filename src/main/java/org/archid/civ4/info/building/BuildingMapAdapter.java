@@ -130,6 +130,10 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		private String freeBuilding;
 		@XmlElement(name="FreePromotion")
 		private String freePromotion;
+		@XmlElement(name="FreeUnitClass")
+		private String freeUnitClass;
+		@XmlElement(name="CreateFeatureType")
+		private String createFeatureType;
 		@XmlElement(name="CivicOption")
 		private String civicOption;
 		@XmlElement(name="GreatPeopleUnitClass")
@@ -182,6 +186,14 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		private Integer centerInCity;
 		@XmlElement(name="bSlaveMarket")
 		private Integer slaveMarket;
+		@XmlElement(name="bApplyAllFreePromotionsOnMove")
+		private Integer applyAllFreePromotionsOnMove;
+		@XmlElement(name="bApplyFreePromotionOnMove")
+		private Integer applyFreePromotionOnMove;
+		@XmlElement(name="bUnitCityDeathCulture")
+		private Integer unitCityDeathCulture;
+		@XmlElement(name="bUnitAllCityDeathCulture")
+		private Integer unitAllCityDeathCulture;
 		@XmlElement(name="bForceDisableStarSigns")
 		private Integer forceDisableStarSigns;
 		@XmlElement(name="bStarSignGoodOnly")
@@ -304,6 +316,8 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		private Integer foreignTradeRouteModifier;
 		@XmlElement(name="iGlobalPopulationChange")
 		private Integer globalPopulationChange;
+		@XmlElement(name="iGlobalFoundPopulationChange")
+		private Integer globalFoundPopulationChange;
 		@XmlElement(name="iFreeTechs")
 		private Integer freeTechs;
 		@XmlElement(name="iDefense")
@@ -334,6 +348,9 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		@XmlElementWrapper(name="YieldChanges")
 		@XmlElement(name="iYield")
 		private List<Integer> yieldChanges;
+		@XmlElementWrapper(name="GlobalYieldChanges")
+		@XmlElement(name="iYield")
+		private List<Integer> globalYieldChanges;
 		@XmlElementWrapper(name="YieldModifiers")
 		@XmlElement(name="iYield")
 		private List<Integer> yieldModifiers;
@@ -725,6 +742,8 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 			info.setNumFreeBonuses(JaxbUtils.unmarshallInteger(aInfo.numFreeBonuses));
 			info.setFreeBuilding(JaxbUtils.unmarshallString(aInfo.freeBuilding));
 			info.setFreePromotion(JaxbUtils.unmarshallString(aInfo.freePromotion));
+			info.setFreeUnitClass(JaxbUtils.unmarshallString(aInfo.freeUnitClass));
+			info.setCreateFeatureType(JaxbUtils.unmarshallString(aInfo.createFeatureType));
 			info.setCivicOption(JaxbUtils.unmarshallString(aInfo.civicOption));
 			info.setGreatPeopleUnitClass(JaxbUtils.unmarshallString(aInfo.greatPeopleUnitClass));
 			info.setGreatPeopleRateChange(JaxbUtils.unmarshallInteger(aInfo.greatPeopleRateChange));
@@ -751,6 +770,10 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 			info.setPrereqReligionBool(JaxbUtils.unmarshallBoolean(aInfo.prereqReligionBool));
 			info.setCenterInCity(JaxbUtils.unmarshallBoolean(aInfo.centerInCity));
 			info.setSlaveMarket(JaxbUtils.unmarshallBoolean(aInfo.slaveMarket));
+			info.setApplyAllFreePromotionsOnMove(JaxbUtils.unmarshallBoolean(aInfo.applyAllFreePromotionsOnMove));
+			info.setApplyFreePromotionOnMove(JaxbUtils.unmarshallBoolean(aInfo.applyFreePromotionOnMove));
+			info.setUnitCityDeathCulture(JaxbUtils.unmarshallBoolean(aInfo.unitCityDeathCulture));
+			info.setUnitAllCityDeathCulture(JaxbUtils.unmarshallBoolean(aInfo.unitAllCityDeathCulture));
 			info.setForceDisableStarSigns(JaxbUtils.unmarshallBoolean(aInfo.forceDisableStarSigns));
 			info.setStarSignGoodOnly(JaxbUtils.unmarshallBoolean(aInfo.starSignGoodOnly));
 			info.setStarSignMitigateChangePercent(JaxbUtils.unmarshallInteger(aInfo.starSignMitigateChangePercent));
@@ -812,6 +835,7 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 			info.setTradeRouteModifier(JaxbUtils.unmarshallInteger(aInfo.tradeRouteModifier));
 			info.setForeignTradeRouteModifier(JaxbUtils.unmarshallInteger(aInfo.foreignTradeRouteModifier));
 			info.setGlobalPopulationChange(JaxbUtils.unmarshallInteger(aInfo.globalPopulationChange));
+			info.setGlobalFoundPopulationChange(JaxbUtils.unmarshallInteger(aInfo.globalFoundPopulationChange));
 			info.setFreeTechs(JaxbUtils.unmarshallInteger(aInfo.freeTechs));
 			info.setDefense(JaxbUtils.unmarshallInteger(aInfo.defense));
 			info.setObsoleteDefence(JaxbUtils.unmarshallInteger(aInfo.obsoleteDefence));
@@ -843,6 +867,12 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 			if (CollectionUtils.hasElements(aInfo.yieldChanges)) {
 				for (Integer val: aInfo.yieldChanges) {
 					info.addYieldChange(JaxbUtils.unmarshallInteger(val));
+				}
+			}
+
+			if (CollectionUtils.hasElements(aInfo.globalYieldChanges)) {
+				for (Integer val: aInfo.globalYieldChanges) {
+					info.addGlobalYieldChange(JaxbUtils.unmarshallInteger(val));
 				}
 			}
 
@@ -1238,6 +1268,8 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 			aInfo.numFreeBonuses = JaxbUtils.marshallInteger(info.getNumFreeBonuses());
 			aInfo.freeBuilding = JaxbUtils.marshallString(info.getFreeBuilding());
 			aInfo.freePromotion = JaxbUtils.marshallString(info.getFreePromotion());
+			aInfo.freeUnitClass = JaxbUtils.marshallString(info.getFreeUnitClass());
+			aInfo.createFeatureType = JaxbUtils.marshallString(info.getCreateFeatureType());
 			aInfo.civicOption = JaxbUtils.marshallString(info.getCivicOption());
 			aInfo.greatPeopleUnitClass = JaxbUtils.marshallString(info.getGreatPeopleUnitClass());
 			aInfo.greatPeopleRateChange = JaxbUtils.marshallInteger(info.getGreatPeopleRateChange());
@@ -1264,6 +1296,10 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 			aInfo.prereqReligionBool = JaxbUtils.marshallBoolean(info.isPrereqReligionBool());
 			aInfo.centerInCity = JaxbUtils.marshallBoolean(info.isCenterInCity());
 			aInfo.slaveMarket = JaxbUtils.marshallBoolean(info.isSlaveMarket());
+			aInfo.applyAllFreePromotionsOnMove = JaxbUtils.marshallBoolean(info.isApplyAllFreePromotionsOnMove());
+			aInfo.applyFreePromotionOnMove = JaxbUtils.marshallBoolean(info.isApplyFreePromotionOnMove());
+			aInfo.unitCityDeathCulture = JaxbUtils.marshallBoolean(info.isUnitCityDeathCulture());
+			aInfo.unitAllCityDeathCulture = JaxbUtils.marshallBoolean(info.isUnitAllCityDeathCulture());
 			aInfo.forceDisableStarSigns = JaxbUtils.marshallBoolean(info.isForceDisableStarSigns());
 			aInfo.starSignGoodOnly = JaxbUtils.marshallBoolean(info.isStarSignGoodOnly());
 			aInfo.starSignMitigateChangePercent = JaxbUtils.marshallInteger(info.getStarSignMitigateChangePercent());
@@ -1325,6 +1361,7 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 			aInfo.tradeRouteModifier = JaxbUtils.marshallInteger(info.getTradeRouteModifier());
 			aInfo.foreignTradeRouteModifier = JaxbUtils.marshallInteger(info.getForeignTradeRouteModifier());
 			aInfo.globalPopulationChange = JaxbUtils.marshallInteger(info.getGlobalPopulationChange());
+			aInfo.globalFoundPopulationChange = JaxbUtils.marshallInteger(info.getGlobalFoundPopulationChange());
 			aInfo.freeTechs = JaxbUtils.marshallInteger(info.getFreeTechs());
 			aInfo.defense = JaxbUtils.marshallInteger(info.getDefense());
 			aInfo.obsoleteDefence = JaxbUtils.marshallInteger(info.getObsoleteDefence());
@@ -1360,6 +1397,13 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 				aInfo.yieldChanges = new ArrayList<Integer>();
 				for(Integer val: info.getYieldChanges()) {
 					aInfo.yieldChanges.add(JaxbUtils.marshallMandatoryInteger(val));
+				}
+			}
+
+			if (CollectionUtils.hasElements(info.getGlobalYieldChanges())) {
+				aInfo.globalYieldChanges = new ArrayList<Integer>();
+				for(Integer val: info.getGlobalYieldChanges()) {
+					aInfo.globalYieldChanges.add(JaxbUtils.marshallMandatoryInteger(val));
 				}
 			}
 

@@ -271,6 +271,8 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 		private Integer advancedStartCostIncrease;
 		@XmlElement(name="iMinAreaSize")
 		private Integer minAreaSize;
+		@XmlElement(name="iMorale")
+		private Integer morale;
 		@XmlElement(name="iMoves")
 		private Integer moves;
 		@XmlElement(name="UnitRangeType")
@@ -900,6 +902,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			info.setAdvancedStartCost(JaxbUtils.unmarshallInteger(aInfo.advancedStartCost));
 			info.setAdvancedStartCostIncrease(JaxbUtils.unmarshallInteger(aInfo.advancedStartCostIncrease));
 			info.setMinAreaSize(JaxbUtils.unmarshallInteger(aInfo.minAreaSize));
+			info.setMorale(JaxbUtils.unmarshallInteger(aInfo.morale));
 			info.setMoves(JaxbUtils.unmarshallInteger(aInfo.moves));
 			info.setUnitRangeType(JaxbUtils.unmarshallString(aInfo.unitRangeType));
 			info.setNoRevealMap(JaxbUtils.unmarshallBoolean(aInfo.noRevealMap));
@@ -1432,6 +1435,7 @@ public class UnitMapAdapter extends XmlAdapter<UnitMapAdapter.UnitMap, Map<Strin
 			aInfo.advancedStartCost = JaxbUtils.marshallInteger(info.getAdvancedStartCost());
 			aInfo.advancedStartCostIncrease = JaxbUtils.marshallInteger(info.getAdvancedStartCostIncrease());
 			aInfo.minAreaSize = JaxbUtils.marshallInteger(info.getMinAreaSize());
+			aInfo.morale = JaxbUtils.marshallInteger(info.getMorale());
 			aInfo.moves = JaxbUtils.marshallInteger(info.getMoves());
 			aInfo.unitRangeType = JaxbUtils.marshallString(info.getUnitRangeType());
 			aInfo.noRevealMap = JaxbUtils.marshallBoolean(info.isNoRevealMap());

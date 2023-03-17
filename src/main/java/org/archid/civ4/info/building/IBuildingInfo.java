@@ -147,6 +147,12 @@ public interface IBuildingInfo extends IInfo {
 	String getFreePromotion();
 	void setFreePromotion(String freePromotion);
 
+	String getFreeUnitClass();
+	void setFreeUnitClass(String freeUnitClass);
+
+	String getCreateFeatureType();
+	void setCreateFeatureType(String createFeatureType);
+
 	String getCivicOption();
 	void setCivicOption(String civicOption);
 
@@ -224,6 +230,18 @@ public interface IBuildingInfo extends IInfo {
 
 	Boolean isSlaveMarket();
 	void setSlaveMarket(Boolean slaveMarket);
+
+	Boolean isApplyAllFreePromotionsOnMove();
+	void setApplyAllFreePromotionsOnMove(Boolean applyAllFreePromotionsOnMove);
+
+	Boolean isApplyFreePromotionOnMove();
+	void setApplyFreePromotionOnMove(Boolean applyFreePromotionOnMove);
+
+	Boolean isUnitCityDeathCulture();
+	void setUnitCityDeathCulture(Boolean unitCityDeathCulture);
+
+	Boolean isUnitAllCityDeathCulture();
+	void setUnitAllCityDeathCulture(Boolean unitAllCityDeathCulture);
 
 	Boolean isForceDisableStarSigns();
 	void setForceDisableStarSigns(Boolean forceDisableStarSigns);
@@ -408,6 +426,9 @@ public interface IBuildingInfo extends IInfo {
 	Integer getGlobalPopulationChange();
 	void setGlobalPopulationChange(Integer globalPopulationChange);
 
+	Integer getGlobalFoundPopulationChange();
+	void setGlobalFoundPopulationChange(Integer globalFoundPopulationChange);
+
 	Integer getFreeTechs();
 	void setFreeTechs(Integer freeTechs);
 
@@ -446,6 +467,9 @@ public interface IBuildingInfo extends IInfo {
 
 	List<Integer> getYieldChanges();
 	void addYieldChange(Integer yieldChange);
+
+	List<Integer> getGlobalYieldChanges();
+	void addGlobalYieldChange(Integer globalYieldChange);
 
 	List<Integer> getYieldModifiers();
 	void addYieldModifier(Integer yieldModifier);

@@ -97,6 +97,8 @@ public class BuildingExporter extends AbstractExporter<IInfos<IBuildingInfo>, IB
 		addSingleCell(row.createCell(colNum++), info.getNumFreeBonuses());
 		addSingleCell(row.createCell(colNum++), info.getFreeBuilding());
 		addSingleCell(row.createCell(colNum++), info.getFreePromotion());
+		addSingleCell(row.createCell(colNum++), info.getFreeUnitClass());
+		addSingleCell(row.createCell(colNum++), info.getCreateFeatureType());
 		addSingleCell(row.createCell(colNum++), info.getCivicOption());
 		addSingleCell(row.createCell(colNum++), info.getGreatPeopleUnitClass());
 		addSingleCell(row.createCell(colNum++), info.getGreatPeopleRateChange());
@@ -123,6 +125,10 @@ public class BuildingExporter extends AbstractExporter<IInfos<IBuildingInfo>, IB
 		addSingleCell(row.createCell(colNum++), info.isPrereqReligionBool());
 		addSingleCell(row.createCell(colNum++), info.isCenterInCity());
 		addSingleCell(row.createCell(colNum++), info.isSlaveMarket());
+		addSingleCell(row.createCell(colNum++), info.isApplyAllFreePromotionsOnMove());
+		addSingleCell(row.createCell(colNum++), info.isApplyFreePromotionOnMove());
+		addSingleCell(row.createCell(colNum++), info.isUnitCityDeathCulture());
+		addSingleCell(row.createCell(colNum++), info.isUnitAllCityDeathCulture());
 		addSingleCell(row.createCell(colNum++), info.isForceDisableStarSigns());
 		addSingleCell(row.createCell(colNum++), info.isStarSignGoodOnly());
 		addSingleCell(row.createCell(colNum++), info.getStarSignMitigateChangePercent());
@@ -184,6 +190,7 @@ public class BuildingExporter extends AbstractExporter<IInfos<IBuildingInfo>, IB
 		addSingleCell(row.createCell(colNum++), info.getTradeRouteModifier());
 		addSingleCell(row.createCell(colNum++), info.getForeignTradeRouteModifier());
 		addSingleCell(row.createCell(colNum++), info.getGlobalPopulationChange());
+		addSingleCell(row.createCell(colNum++), info.getGlobalFoundPopulationChange());
 		addSingleCell(row.createCell(colNum++), info.getFreeTechs());
 		addSingleCell(row.createCell(colNum++), info.getDefense());
 		addSingleCell(row.createCell(colNum++), info.getObsoleteDefence());
@@ -197,6 +204,7 @@ public class BuildingExporter extends AbstractExporter<IInfos<IBuildingInfo>, IB
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getRiverPlotYieldChanges(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getGlobalSeaPlotYieldChanges(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getYieldChanges(), maxHeight);
+		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getGlobalYieldChanges(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getYieldModifiers(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getPowerYieldModifiers(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getAreaYieldModifiers(), maxHeight);

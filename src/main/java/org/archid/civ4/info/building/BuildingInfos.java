@@ -85,6 +85,8 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo> {
 		private Integer numFreeBonuses;
 		private String freeBuilding;
 		private String freePromotion;
+		private String freeUnitClass;
+		private String createFeatureType;
 		private String civicOption;
 		private String greatPeopleUnitClass;
 		private Integer greatPeopleRateChange;
@@ -111,6 +113,10 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo> {
 		private Boolean prereqReligionBool;
 		private Boolean centerInCity;
 		private Boolean slaveMarket;
+		private Boolean applyAllFreePromotionsOnMove;
+		private Boolean applyFreePromotionOnMove;
+		private Boolean unitCityDeathCulture;
+		private Boolean unitAllCityDeathCulture;
 		private Boolean forceDisableStarSigns;
 		private Boolean starSignGoodOnly;
 		private Integer starSignMitigateChangePercent;
@@ -172,6 +178,7 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo> {
 		private Integer tradeRouteModifier;
 		private Integer foreignTradeRouteModifier;
 		private Integer globalPopulationChange;
+		private Integer globalFoundPopulationChange;
 		private Integer freeTechs;
 		private Integer defense;
 		private Integer obsoleteDefence;
@@ -185,6 +192,7 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo> {
 		private List<Integer> riverPlotYieldChanges = new ArrayList<Integer>();
 		private List<Integer> globalSeaPlotYieldChanges = new ArrayList<Integer>();
 		private List<Integer> yieldChanges = new ArrayList<Integer>();
+		private List<Integer> globalYieldChanges = new ArrayList<Integer>();
 		private List<Integer> yieldModifiers = new ArrayList<Integer>();
 		private List<Integer> powerYieldModifiers = new ArrayList<Integer>();
 		private List<Integer> areaYieldModifiers = new ArrayList<Integer>();
@@ -718,6 +726,26 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo> {
 		}
 
 		@Override
+		public String getFreeUnitClass() {
+			return freeUnitClass;
+		}
+
+		@Override
+		public void setFreeUnitClass(String freeUnitClass) {
+			this.freeUnitClass = freeUnitClass;
+		}
+
+		@Override
+		public String getCreateFeatureType() {
+			return createFeatureType;
+		}
+
+		@Override
+		public void setCreateFeatureType(String createFeatureType) {
+			this.createFeatureType = createFeatureType;
+		}
+
+		@Override
 		public String getCivicOption() {
 			return civicOption;
 		}
@@ -975,6 +1003,46 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo> {
 		@Override
 		public void setSlaveMarket(Boolean slaveMarket) {
 			this.slaveMarket = slaveMarket;
+		}
+
+		@Override
+		public Boolean isApplyAllFreePromotionsOnMove() {
+			return applyAllFreePromotionsOnMove;
+		}
+
+		@Override
+		public void setApplyAllFreePromotionsOnMove(Boolean applyAllFreePromotionsOnMove) {
+			this.applyAllFreePromotionsOnMove = applyAllFreePromotionsOnMove;
+		}
+
+		@Override
+		public Boolean isApplyFreePromotionOnMove() {
+			return applyFreePromotionOnMove;
+		}
+
+		@Override
+		public void setApplyFreePromotionOnMove(Boolean applyFreePromotionOnMove) {
+			this.applyFreePromotionOnMove = applyFreePromotionOnMove;
+		}
+
+		@Override
+		public Boolean isUnitCityDeathCulture() {
+			return unitCityDeathCulture;
+		}
+
+		@Override
+		public void setUnitCityDeathCulture(Boolean unitCityDeathCulture) {
+			this.unitCityDeathCulture = unitCityDeathCulture;
+		}
+
+		@Override
+		public Boolean isUnitAllCityDeathCulture() {
+			return unitAllCityDeathCulture;
+		}
+
+		@Override
+		public void setUnitAllCityDeathCulture(Boolean unitAllCityDeathCulture) {
+			this.unitAllCityDeathCulture = unitAllCityDeathCulture;
 		}
 
 		@Override
@@ -1588,6 +1656,16 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo> {
 		}
 
 		@Override
+		public Integer getGlobalFoundPopulationChange() {
+			return globalFoundPopulationChange;
+		}
+
+		@Override
+		public void setGlobalFoundPopulationChange(Integer globalFoundPopulationChange) {
+			this.globalFoundPopulationChange = globalFoundPopulationChange;
+		}
+
+		@Override
 		public Integer getFreeTechs() {
 			return freeTechs;
 		}
@@ -1715,6 +1793,16 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo> {
 		@Override
 		public void addYieldChange(Integer yieldChange) {
 			this.yieldChanges.add(yieldChange);
+		}
+
+		@Override
+		public List<Integer> getGlobalYieldChanges() {
+			return globalYieldChanges;
+		}
+
+		@Override
+		public void addGlobalYieldChange(Integer globalYieldChange) {
+			this.globalYieldChanges.add(globalYieldChange);
 		}
 
 		@Override

@@ -88,6 +88,8 @@ public class BuildingImporter extends AbstractImporter<IInfos<IBuildingInfo>, IB
 		parseCell(row.getCell(colNum++), Integer.class, info::setNumFreeBonuses);
 		parseCell(row.getCell(colNum++), String.class, info::setFreeBuilding);
 		parseCell(row.getCell(colNum++), String.class, info::setFreePromotion);
+		parseCell(row.getCell(colNum++), String.class, info::setFreeUnitClass);
+		parseCell(row.getCell(colNum++), String.class, info::setCreateFeatureType);
 		parseCell(row.getCell(colNum++), String.class, info::setCivicOption);
 		parseCell(row.getCell(colNum++), String.class, info::setGreatPeopleUnitClass);
 		parseCell(row.getCell(colNum++), Integer.class, info::setGreatPeopleRateChange);
@@ -114,6 +116,10 @@ public class BuildingImporter extends AbstractImporter<IInfos<IBuildingInfo>, IB
 		parseCell(row.getCell(colNum++), Boolean.class, info::setPrereqReligionBool);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setCenterInCity);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setSlaveMarket);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setApplyAllFreePromotionsOnMove);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setApplyFreePromotionOnMove);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setUnitCityDeathCulture);
+		parseCell(row.getCell(colNum++), Boolean.class, info::setUnitAllCityDeathCulture);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setForceDisableStarSigns);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setStarSignGoodOnly);
 		parseCell(row.getCell(colNum++), Integer.class, info::setStarSignMitigateChangePercent);
@@ -175,6 +181,7 @@ public class BuildingImporter extends AbstractImporter<IInfos<IBuildingInfo>, IB
 		parseCell(row.getCell(colNum++), Integer.class, info::setTradeRouteModifier);
 		parseCell(row.getCell(colNum++), Integer.class, info::setForeignTradeRouteModifier);
 		parseCell(row.getCell(colNum++), Integer.class, info::setGlobalPopulationChange);
+		parseCell(row.getCell(colNum++), Integer.class, info::setGlobalFoundPopulationChange);
 		parseCell(row.getCell(colNum++), Integer.class, info::setFreeTechs);
 		parseCell(row.getCell(colNum++), Integer.class, info::setDefense);
 		parseCell(row.getCell(colNum++), Integer.class, info::setObsoleteDefence);
@@ -188,6 +195,7 @@ public class BuildingImporter extends AbstractImporter<IInfos<IBuildingInfo>, IB
 		parseListCell(row.getCell(colNum++), Integer.class, info::addRiverPlotYieldChange);
 		parseListCell(row.getCell(colNum++), Integer.class, info::addGlobalSeaPlotYieldChange);
 		parseListCell(row.getCell(colNum++), Integer.class, info::addYieldChange);
+		parseListCell(row.getCell(colNum++), Integer.class, info::addGlobalYieldChange);
 		parseListCell(row.getCell(colNum++), Integer.class, info::addYieldModifier);
 		parseListCell(row.getCell(colNum++), Integer.class, info::addPowerYieldModifier);
 		parseListCell(row.getCell(colNum++), Integer.class, info::addAreaYieldModifier);

@@ -146,6 +146,7 @@ public class UnitInfos extends AbstractInfos<IUnitInfo> {
 		private Integer advancedStartCost;
 		private Integer advancedStartCostIncrease;
 		private Integer minAreaSize;
+		private Integer morale;
 		private Integer moves;
 		private String unitRangeType;
 		private Boolean noRevealMap;
@@ -1317,6 +1318,14 @@ public class UnitInfos extends AbstractInfos<IUnitInfo> {
 			this.minAreaSize = minAreaSize;
 		}
 
+		@Override
+		public Integer getMorale() {
+			return morale;
+		}
+		@Override
+		public void setMorale(Integer morale) {
+			this.morale = morale;
+		}
 		@Override
 		public Integer getMoves() {
 			return moves;

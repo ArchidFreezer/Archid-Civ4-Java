@@ -330,6 +330,8 @@ public interface IUnitInfo extends IInfo {
 	Integer getMinAreaSize();
 	void setMinAreaSize(Integer minAreaSize);
 
+	Integer getMorale();
+	void setMorale(Integer morale);
 	Integer getMoves();
 	void setMoves(Integer moves);
 

@@ -143,6 +143,7 @@ public class UnitImporter extends AbstractImporter<IInfos<IUnitInfo>, IUnitInfo>
 		parseCell(row.getCell(colNum++), Integer.class, info::setAdvancedStartCost);
 		parseCell(row.getCell(colNum++), Integer.class, info::setAdvancedStartCostIncrease);
 		parseCell(row.getCell(colNum++), Integer.class, info::setMinAreaSize);
+		parseCell(row.getCell(colNum++), Integer.class, info::setMorale);
 		parseCell(row.getCell(colNum++), Integer.class, info::setMoves);
 		parseCell(row.getCell(colNum++), String.class, info::setUnitRangeType);
 		parseCell(row.getCell(colNum++), Boolean.class, info::setNoRevealMap);
