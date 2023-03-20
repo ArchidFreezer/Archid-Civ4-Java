@@ -453,6 +453,9 @@ public interface IBuildingInfo extends IInfo {
 	Integer getPower();
 	void setPower(Integer power);
 
+	Integer getGlobalWonderProductionModifier();
+	void setGlobalWonderProductionModifier(Integer globalWonderProductionModifier);
+
 	String getfVisibilityPriority();
 	void setfVisibilityPriority(String fVisibilityPriority);
 

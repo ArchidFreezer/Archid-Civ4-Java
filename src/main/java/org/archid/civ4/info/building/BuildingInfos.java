@@ -187,6 +187,7 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo> {
 		private Integer espionageDefense;
 		private Integer asset;
 		private Integer power;
+		private Integer globalWonderProductionModifier;
 		private String fVisibilityPriority;
 		private List<Integer> seaPlotYieldChanges = new ArrayList<Integer>();
 		private List<Integer> riverPlotYieldChanges = new ArrayList<Integer>();
@@ -1743,6 +1744,16 @@ public class BuildingInfos extends AbstractInfos<IBuildingInfo> {
 		@Override
 		public void setPower(Integer power) {
 			this.power = power;
+		}
+
+		@Override
+		public Integer getGlobalWonderProductionModifier() {
+			return globalWonderProductionModifier;
+		}
+
+		@Override
+		public void setGlobalWonderProductionModifier(Integer globalWonderProductionModifier) {
+			this.globalWonderProductionModifier = globalWonderProductionModifier;
 		}
 
 		@Override

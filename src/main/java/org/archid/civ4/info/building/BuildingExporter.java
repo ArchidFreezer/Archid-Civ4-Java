@@ -199,6 +199,7 @@ public class BuildingExporter extends AbstractExporter<IInfos<IBuildingInfo>, IB
 		addSingleCell(row.createCell(colNum++), info.getEspionageDefense());
 		addSingleCell(row.createCell(colNum++), info.getAsset());
 		addSingleCell(row.createCell(colNum++), info.getPower());
+		addSingleCell(row.createCell(colNum++), info.getGlobalWonderProductionModifier());
 		addSingleCell(row.createCell(colNum++), info.getfVisibilityPriority());
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getSeaPlotYieldChanges(), maxHeight);
 		maxHeight = addRepeatingCell(row.createCell(colNum++), info.getRiverPlotYieldChanges(), maxHeight);

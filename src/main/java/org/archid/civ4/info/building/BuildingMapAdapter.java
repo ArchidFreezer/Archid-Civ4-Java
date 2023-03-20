@@ -334,6 +334,8 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 		private Integer asset;
 		@XmlElement(name="iPower")
 		private Integer power;
+		@XmlElement(name="iGlobalWonderProductionModifier")
+		private Integer globalWonderProductionModifier;
 		@XmlElement(name="fVisibilityPriority")
 		private String fVisibilityPriority;
 		@XmlElementWrapper(name="SeaPlotYieldChanges")
@@ -844,6 +846,7 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 			info.setEspionageDefense(JaxbUtils.unmarshallInteger(aInfo.espionageDefense));
 			info.setAsset(JaxbUtils.unmarshallInteger(aInfo.asset));
 			info.setPower(JaxbUtils.unmarshallInteger(aInfo.power));
+			info.setGlobalWonderProductionModifier(JaxbUtils.unmarshallInteger(aInfo.globalWonderProductionModifier));
 			info.setfVisibilityPriority(JaxbUtils.unmarshallString(aInfo.fVisibilityPriority));
 
 			if (CollectionUtils.hasElements(aInfo.seaPlotYieldChanges)) {
@@ -1370,6 +1373,7 @@ public class BuildingMapAdapter extends XmlAdapter<BuildingMapAdapter.BuildingMa
 			aInfo.espionageDefense = JaxbUtils.marshallInteger(info.getEspionageDefense());
 			aInfo.asset = JaxbUtils.marshallInteger(info.getAsset());
 			aInfo.power = JaxbUtils.marshallInteger(info.getPower());
+			aInfo.globalWonderProductionModifier = JaxbUtils.marshallInteger(info.getGlobalWonderProductionModifier());
 			aInfo.fVisibilityPriority = JaxbUtils.marshallString(info.getfVisibilityPriority());
 
 			if (CollectionUtils.hasElements(info.getSeaPlotYieldChanges())) {

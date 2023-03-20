@@ -190,6 +190,7 @@ public class BuildingImporter extends AbstractImporter<IInfos<IBuildingInfo>, IB
 		parseCell(row.getCell(colNum++), Integer.class, info::setEspionageDefense);
 		parseCell(row.getCell(colNum++), Integer.class, info::setAsset);
 		parseCell(row.getCell(colNum++), Integer.class, info::setPower);
+		parseCell(row.getCell(colNum++), Integer.class, info::setGlobalWonderProductionModifier);
 		parseCell(row.getCell(colNum++), String.class, info::setfVisibilityPriority);
 		parseListCell(row.getCell(colNum++), Integer.class, info::addSeaPlotYieldChange);
 		parseListCell(row.getCell(colNum++), Integer.class, info::addRiverPlotYieldChange);
